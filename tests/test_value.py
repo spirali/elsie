@@ -1,0 +1,93 @@
+from elsie.value import SizeValue, PosValue
+from elsie.lazy import LazyValue
+from elsie.show import ShowInfo
+
+import pytest
+
+
+def test_size_parse_value():
+
+    a = SizeValue.parse(100)
+    assert a.min_size == 100.0
+    assert a.fill == 0
+    assert a.ratio is None
+
+    a = SizeValue.parse("100")
+    assert a.min_size == 100.0
+    assert a.fill == 0
+    assert a.ratio is None
+
+    a = SizeValue.parse("90%")
+    assert a.ratio == 0.9
+    assert a.min_size == 0
+    assert a.fill == 0
+
+    a = SizeValue.parse("fill")
+    assert a.fill == 1
+    assert a.min_size == 0
+    assert a.ratio is None
+
+    a = SizeValue.parse("fill(23)")
+    assert a.fill == 23
+    assert a.min_size == 0
+    assert a.ratio is None
+
+    a = SizeValue.parse(LazyValue(lambda: 10))
+    assert a.fill == 0
+    assert a.min_size == 0
+    assert a.ratio is None
+    assert a.lazy_value is not None
+
+    with pytest.raises(Exception):
+        SizeValue.parse("abc")
+
+
+def test_pos_parse_value():
+
+    a = PosValue.parse(100)
+    assert a.fix_pos == 100.0
+    assert a.ratio is None
+    assert a.align is None
+
+    a = PosValue.parse("100")
+    assert a.fix_pos == 100.0
+    assert a.ratio is None
+    assert a.align is None
+
+    a = PosValue.parse("90%")
+    assert a.fix_pos is None
+    assert a.ratio == 0.9
+    assert a.align is None
+
+    a = PosValue.parse("[90%]")
+    assert a.fix_pos is None
+    assert a.align == 0.9
+    assert a.ratio is None
+
+    a = PosValue.parse(LazyValue(lambda: 10))
+    assert a.fix_pos is None
+    assert a.ratio is None
+    assert a.align is None
+    assert a.lazy_value is not None
+
+    with pytest.raises(Exception):
+        PosValue.parse("abc")
+
+
+def test_parse_show_info():
+
+    a = ShowInfo.parse(2)
+    assert a.begin == 2
+    assert a.end == 2
+
+    a = ShowInfo.parse("2")
+    assert a.begin == 2
+    assert a.end == 2
+
+    a = ShowInfo.parse("2+")
+    assert a.begin == 2
+    assert a.end is None
+
+    a = ShowInfo.parse("2-123")
+    assert a.begin == 2
+    assert a.end == 123
