@@ -46,14 +46,12 @@ def parse_text(text, escape_char="~", begin_char="{", end_char="}"):
             i += 1
             start = i
             counter += 1
-        elif c == end_char:
+        elif c == end_char and counter >= 1:
             result.append(("text", text[start:i]))
             result.append(("end", None))
             i += 1
             start = i
             counter -= 1
-            if counter < 0:
-                raise Exception("Invalid format, too many closing characters")
         else:
             i += 1
     if i != start:
