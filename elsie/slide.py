@@ -65,3 +65,24 @@ class Slide:
         full_name = os.path.join(cache_dir, pdf_name)
         convert_to_pdf(svg, full_name)
         return pdf_name
+
+
+class DummyPdfSlide:
+
+    def __init__(self, filename):
+        self.filename = os.path.abspath(filename)
+
+    def queries(self):
+        return []
+
+    def prepare(self):
+        pass
+
+    def steps(self):
+        return 1
+
+    def make_svg(self):
+        return None
+
+    def render(self, step, cache_dir, pdfs_in_dir, debug):
+        return self.filename

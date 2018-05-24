@@ -1,10 +1,10 @@
 import os
-from PyPDF2 import PdfFileMerger
 
-from .slide import Slide
+from .slide import Slide, DummyPdfSlide
 from .query import compute_query
 from .textstyle import check_style
 from .highlight import make_highlight_styles
+from .pdfmerge import get_pdf_merger_by_name
 from concurrent.futures import ThreadPoolExecutor
 import sys
 import json
@@ -68,6 +68,10 @@ class Slides:
         self._slides.append(slide)
         return slide.box()
 
+    def add_pdf(self, filename):
+        """ Just add pdf without touches into resulting slides """
+        self._slides.append(DummyPdfSlide(filename))
+
     def _load_query_cache(self, cache_file):
         if os.path.isfile(cache_file):
             with open(cache_file) as f:
@@ -102,7 +106,7 @@ class Slides:
         sys.stdout.flush()
 
     def render(self, output, cache_dir="./elsie-cache",
-               threads=None, return_svg=False):
+               threads=None, return_svg=False, pdf_merger="pypdf"):
         if not os.path.isdir(cache_dir):
             print("Creating cache directory:", cache_dir)
             os.makedirs(cache_dir)
@@ -146,7 +150,7 @@ class Slides:
         if return_svg:
             return [slide.make_svg(step) for slide, step in renders]
 
-        merger = PdfFileMerger()
+        merger = get_pdf_merger_by_name(pdf_merger)
         self._show_progress("Building", first=True)
         computed_pdfs = set()
         for i, pdf in enumerate(pool.map(
@@ -158,8 +162,7 @@ class Slides:
             self._show_progress("Building", i, len(renders))
         self._show_progress("Building", len(renders), len(renders), last=True)
 
-        with open(output, 'wb') as f:
-            merger.write(f)
+        merger.write(output, self.debug)
         print("Slides written into '{}'".format(output))
 
         for pdf in pdfs_in_dir.difference(computed_pdfs):
