@@ -62,6 +62,13 @@ class Slides:
         new_style.update(kwargs)
         self._styles[name] = new_style
 
+    def derive_style(self, old_style_name, new_style_name, **kwargs):
+        """ Copy an existing style under a new name and modify it. """
+        check_style(kwargs)
+        new_style = self._styles[old_style_name].copy()
+        new_style.update(kwargs)
+        self._styles[new_style_name] = new_style
+
     def new_slide(self):
         slide = Slide(
             len(self._slides), self.width, self.height, self._styles.copy())
