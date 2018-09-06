@@ -42,9 +42,9 @@ def svg_size_to_pixels(text):
         suffix = text[-1] + suffix
         text = text[:-1]
     if suffix == "mm":
-        factor = 3.543307
+        factor = 3.77953
     elif suffix == "cm":
-        factor = 35.43307
+        factor = 37.7953
     elif suffix == "pt":
         factor = 1.33333
     else:
