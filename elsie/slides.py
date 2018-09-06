@@ -82,13 +82,13 @@ class Slides:
     def _load_query_cache(self, cache_file):
         if os.path.isfile(cache_file):
             with open(cache_file) as f:
-                return json.load(f)
+                return dict((tuple(key), value) for key, value in json.load(f))
         else:
             return {}
 
     def _save_query_cache(self, cache, cache_file):
         with open(cache_file, "w") as f:
-            json.dump(cache, f)
+            json.dump(list(cache.items()), f)
 
     def _show_progress(
             self, name, value=0, max_value=0, first=False, last=False):
@@ -128,15 +128,15 @@ class Slides:
             threads = os.cpu_count() or 1
         pool = ThreadPoolExecutor(threads)
 
-        cache_file = os.path.join(cache_dir, "queries.cache")
+        cache_file = os.path.join(cache_dir, "queries2.cache")
         cache = self._load_query_cache(cache_file)
         queries = sum((s.queries() for s in self._slides), [])
 
         self._show_progress("Preprocessing", first=True)
-        need_compute = list(set(key for key, callback in queries
-                                if key not in cache))
-        new_cache = dict((key, cache[key]) for key, callback in queries
-                         if key in cache)
+        need_compute = list(set(q.key for q in queries
+                                if q.key not in cache))
+        new_cache = dict((q.key, cache[q.key]) for q in queries
+                         if q.key in cache)
         for i, result in enumerate(pool.map(compute_query, need_compute)):
             key = need_compute[i]
             new_cache[key] = result
@@ -144,8 +144,8 @@ class Slides:
         self._show_progress(
             "Preprocessing", len(need_compute), len(need_compute), last=True)
 
-        for key, callback in queries:
-            callback(new_cache[key])
+        for q in queries:
+            q.callback(new_cache[q.key])
 
         self._save_query_cache(new_cache, cache_file)
 

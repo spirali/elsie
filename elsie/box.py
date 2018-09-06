@@ -11,7 +11,8 @@ from .image import get_image_steps, create_image_data
 from .svg import svg_size_to_pixels
 from .lazy import LazyValue, eval_value, LazyPoint, unpack_point
 from .value import SizeValue, PosValue
-
+from .latex import render_latex
+from .query import Query
 
 class Painter:
 
@@ -234,6 +235,15 @@ class Box:
         points = [unpack_point(p) for p in points]
         self.add_child(draw_rect)
 
+    def _render_svg(self, ctx, x, y, scale, data):
+        ctx.xml.element("g")
+        transform = ["translate({}, {})".format(x, y)]
+        if scale != 1.0:
+            transform.append("scale({})".format(scale))
+        ctx.xml.set("transform", " ".join(transform))
+        ctx.xml.raw_text(data)
+        ctx.xml.close()
+
     def image(self, filename, scale=None, fragments=True, show_begin=1):
         """ Draw an svg image """
 
@@ -268,14 +278,8 @@ class Box:
             h = image_height * s
             x = rect.x + (rect.width - w) / 2
             y = rect.y + (rect.height - h) / 2
+            self._render_svg(ctx, x, y, s, data)
 
-            ctx.xml.element("g")
-            transform = ["translate({}, {})".format(x, y)]
-            if s != 1.0:
-                transform.append("scale({})".format(s))
-            ctx.xml.set("transform", " ".join(transform))
-            ctx.xml.raw_text(data)
-            ctx.xml.close()
         self.add_child(draw)
 
     def code(self, language, text, tabsize=4):
@@ -296,6 +300,48 @@ class Box:
 
         parsed_text = parse_text(text, escape_char=escape_char)
         self._text_helper(parsed_text, style)
+
+    def latex(self, text, scale=1.0, header=None, tail=None):
+        """ Renders LaTeX text into box. """
+
+        if header is None:
+            header = """
+\\documentclass[varwidth,border=1pt]{standalone}
+\\usepackage[utf8x]{inputenc}
+\\usepackage{ucs}
+\\usepackage{amsmath}
+\\usepackage{amsfonts}
+\\usepackage{amssymb}
+\\usepackage{graphicx}
+\\begin{document}"""
+
+        if tail is None:
+            tail = "\\end{document}"
+
+        tex_text = "\n".join((header, text, tail))
+
+        container = [None, None, None]
+
+        def on_query(svg):
+            root = et.fromstring(svg)
+            svg_width = svg_size_to_pixels(root.get("width")) * scale
+            svg_height = svg_size_to_pixels(root.get("height")) * scale
+
+            self._ensure_width(svg_width)
+            self._ensure_height(svg_height)
+
+            container[0] = svg_width
+            container[1] = svg_height
+            container[2] = svg
+
+        def draw(ctx, rect):
+            svg_width, svg_height, data = container
+            x = rect.x + (rect.width - svg_width) / 2
+            y = rect.y + (rect.height - svg_height) / 2
+            self._render_svg(ctx, x, y, scale, data)
+
+        self._queries.append(Query(("latex", tex_text), on_query))
+        self.add_child(draw)
 
     def new_style(self, name, **kwargs):
         """ Define a new style, it is an error if it already exists. """
@@ -397,7 +443,7 @@ class Box:
         real_size = [None, None]
         xml = Xml()
         draw_text(xml, 0, 0, parsed_text, style, self._styles, id="target")
-        self._queries.append((xml.to_string(), on_query))
+        self._queries.append(Query(("inkscape", xml.to_string()), on_query))
         self.add_child(draw)
 
     def _set_rect(self, rect):

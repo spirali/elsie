@@ -9,7 +9,7 @@ if sys.version_info.major < 3 or \
     sys.exit("Python 3.4 or newer is required")
 
 setup(name='elsie',
-      version='1.1',
+      version='1.2',
       description='Framework for making slides',
       long_description="""
 Elsie is a Framework for making slides in Python,

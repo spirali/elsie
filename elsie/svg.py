@@ -45,6 +45,23 @@ def svg_size_to_pixels(text):
         factor = 3.543307
     elif suffix == "cm":
         factor = 35.43307
+    elif suffix == "pt":
+        factor = 1.33333
     else:
         factor = 1.0
     return float(text) * factor
+
+
+def rename_ids(root, suffix):
+    ids = []
+    for e in root.iter():
+        e_id = e.get("id")
+        if e_id:
+            ids.append("#" + e_id)
+            e.set("id", e_id + suffix)
+
+    for e in root.iter():
+        for name, value in e.attrib.items():
+            for e_id in ids:
+                if e_id in value:
+                    e.set(name, value.replace(e_id, e_id + suffix))
