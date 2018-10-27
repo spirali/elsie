@@ -289,7 +289,10 @@ class Box:
         """ Draw a code with syntax highlighting """
 
         text = text.replace("\t", " " * tabsize)
-        parsed_text = highlight_code(text, language)
+        if language:
+            parsed_text = highlight_code(text, language)
+        else:
+            parsed_text = parse_text(text, escape_char=None)
         style = self._styles["code"]
         self._text_helper(parsed_text, style)
 
