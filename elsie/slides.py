@@ -16,11 +16,13 @@ class Slides:
                  width=1024,
                  height=768,
                  debug=False,
-                 pygments_theme="default"):
+                 pygments_theme="default",
+                 bg_color=None):
 
         self.width = width
         self.height = height
         self.debug = debug
+        self.bg_color = bg_color
         self._slides = []
         self._styles = {
             "default": {
@@ -69,11 +71,16 @@ class Slides:
         new_style.update(kwargs)
         self._styles[new_style_name] = new_style
 
-    def new_slide(self):
+    def new_slide(self, bg_color=None):
         slide = Slide(
             len(self._slides), self.width, self.height, self._styles.copy())
         self._slides.append(slide)
-        return slide.box()
+        box = slide.box()
+        if bg_color is None:
+            bg_color = self.bg_color
+        if bg_color:
+            box.rect(bg_color=bg_color)
+        return box
 
     def add_pdf(self, filename):
         """ Just add pdf without touches into resulting slides """
