@@ -79,7 +79,8 @@ class Slides:
         if bg_color is None:
             bg_color = self.bg_color
         if bg_color:
-            box.rect(bg_color=bg_color)
+            box.box(x=0, y=0, width="100%", height="100%", z_level=-1000000) \
+                .rect(bg_color=bg_color)
         return box
 
     def add_pdf(self, filename):
