@@ -25,17 +25,21 @@ class Painter:
         self.fn(ctx, self.rect)
 
 
-def set_paint_style(xml, color, bg_color, stroke_width):
+def set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray):
     styles = []
     if bg_color:
         styles.append("fill:{}".format(bg_color))
     else:
         styles.append("fill:none")
+
     if color:
         styles.append("stroke:{}".format(color))
         styles.append("stroke-width:{}".format(stroke_width))
+        if stroke_dasharray:
+            styles.append("stroke-dasharray:{}".format(stroke_dasharray))
     else:
         styles.append("stroke:none")
+
     xml.set("style", ";".join(styles))
 
 
@@ -175,7 +179,9 @@ class Box:
         return self.box(**kwargs)
 
     def rect(self,
-             color=None, bg_color=None, stroke_width=1, rx=None, ry=None):
+             color=None, bg_color=None,
+             stroke_width=1, stroke_dasharray=None,
+             rx=None, ry=None):
         """ Draw a rect around the box """
 
         def draw_rect(ctx, rect):
@@ -189,11 +195,14 @@ class Box:
                 xml.set("rx", rx)
             if ry:
                 xml.set("ry", ry)
-            set_paint_style(xml, color, bg_color, stroke_width)
+            set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
             xml.close("rect")
         self.add_child(draw_rect)
 
-    def polygon(self, points, color=None, bg_color=None, stroke_width=1):
+    def polygon(self,
+                points,
+                color=None, bg_color=None,
+                stroke_width=1, stroke_dasharray=None):
         """ Draw a polygon """
 
         def draw_rect(ctx, rect):
@@ -201,12 +210,12 @@ class Box:
             xml.element("polygon")
             xml.set("points", " ".join("{},{}".format(
                 eval_value(x), eval_value(y)) for x, y in points))
-            set_paint_style(xml, color, bg_color, stroke_width)
+            set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
             xml.close("polygon")
         points = [unpack_point(p) for p in points]
         self.add_child(draw_rect)
 
-    def line(self, points, color="black", stroke_width=1,
+    def line(self, points, color="black", stroke_width=1, stroke_dasharray=None,
              start_arrow=None, end_arrow=None):
         """ Draw a line """
 
@@ -222,7 +231,7 @@ class Box:
             xml = ctx.xml
             xml.element("polyline")
             xml.set("points", " ".join("{},{}".format(x, y) for x, y in p2))
-            set_paint_style(xml, color, None, stroke_width)
+            set_paint_style(xml, color, None, stroke_width, stroke_dasharray)
             xml.close("polyline")
 
             if start_arrow:
