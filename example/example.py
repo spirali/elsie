@@ -330,10 +330,10 @@ slide = slides.new_slide()
 slide.box(100, 100, 200, 200).rect(color="green")
 slide.box(120, 120, 160, 160).rect(bg_color="green")
 
-slide.box(320, 100, 200, 200).rect(color="blue", rx=20, ry=20)
+slide.box(320, 100, 200, 200).rect(color="blue", rx=20, ry=20, stroke_dasharray="4,4")
 slide.box(340, 120, 160, 160).rect(bg_color="blue", rx=20, ry=20)
 
-slide.polygon([(540, 300), (740, 300), (640, 100)], color="red")
+slide.polygon([(540, 300), (740, 300), (640, 100)], color="red", stroke_width=3, stroke_dasharray="20,8,3,3,3,8")
 slide.polygon([(570, 280), (710, 280), (640, 140)], bg_color="red")
 
 slide.line([(760, 100), (940, 100), (760, 300), (960, 300)],
