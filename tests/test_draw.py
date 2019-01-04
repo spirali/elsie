@@ -61,4 +61,18 @@ def test_line_highlight_no_fragments(test_env):
     slide.line([(900, 600), (1000, 600)], color="black", stroke_width=10,
                start_arrow=arrow3, end_arrow=arrow3)
 
+    # Dashes
+
+    # dash(10) space(10) ...
+    slide.line([(100, 350), (500, 350)], stroke_width=10, stroke_dasharray="10")
+
+    # dash(10) space(20) ...
+    slide.line([(100, 380), (500, 380)], stroke_width=10, stroke_dasharray="10 20")
+
+    # dash(20) space(10) dash(2) space(10) ...
+    slide.line([(100, 410), (500, 410)], stroke_width=10, stroke_dasharray="20 10 2 10")
+
+    # dashed rectangle
+    slide.box(550, 350, 50, 50).rect(stroke_width=5, stroke_dasharray="2", color="black", rx=5, ry=5)
+
     test_env.check("shapes")
