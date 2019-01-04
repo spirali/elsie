@@ -1,4 +1,7 @@
 
+END_MARKER = ("end", None)
+NEWLINE_1 = ("newline", 1)
+
 def number_of_lines(parsed_text):
     lines = 1
     for (token, value) in parsed_text:
@@ -29,6 +32,24 @@ def normalize_tokens(tokens):
     return tokens
 
 
+def add_line_numbers(tokens):
+    lines_len = len(str(number_of_lines(tokens)))
+    begin = ("begin", "code_lineno")
+    result = [begin, ("text", "1".zfill(lines_len) + " "), END_MARKER]
+    line = 1
+    for token in tokens:
+        if token[0] != "newline":
+            result.append(token)
+            continue
+        for i in range(token[1]):
+            line += 1
+            result.append(NEWLINE_1)
+            result.append(begin)
+            result.append(("text", str(line).zfill(lines_len) + " "))
+            result.append(END_MARKER)
+    return result
+
+
 def parse_text(text, escape_char="~", begin_char="{", end_char="}"):
     result = []
     start = 0
@@ -48,7 +69,7 @@ def parse_text(text, escape_char="~", begin_char="{", end_char="}"):
             counter += 1
         elif c == end_char and counter >= 1:
             result.append(("text", text[start:i]))
-            result.append(("end", None))
+            result.append(END_MARKER)
             i += 1
             start = i
             counter -= 1
@@ -65,7 +86,7 @@ def parse_text(text, escape_char="~", begin_char="{", end_char="}"):
         lines = r[1].split("\n")
         final_result.append(("text", lines[0]))
         for line in lines[1:]:
-            final_result.append(("newline", 1))
+            final_result.append(NEWLINE_1)
             final_result.append(("text", line))
     if counter > 0:
         raise Exception("Invalid format, unclosed command")

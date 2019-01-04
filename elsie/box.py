@@ -3,7 +3,7 @@ import lxml.etree as et
 from .geom import Rect
 from .draw import draw_text
 from .sxml import Xml
-from .textparser import parse_text, number_of_lines
+from .textparser import parse_text, number_of_lines, add_line_numbers
 from .textstyle import check_style
 from .highlight import highlight_code
 from .show import ShowInfo
@@ -294,7 +294,7 @@ class Box:
 
         self.add_child(draw)
 
-    def code(self, language, text, tabsize=4):
+    def code(self, language, text, tabsize=4, line_numbers=False):
         """ Draw a code with syntax highlighting """
 
         text = text.replace("\t", " " * tabsize)
@@ -302,6 +302,10 @@ class Box:
             parsed_text = highlight_code(text, language)
         else:
             parsed_text = parse_text(text, escape_char=None)
+
+        if line_numbers:
+            parsed_text = add_line_numbers(parsed_text)
+
         style = self._styles["code"]
         self._text_helper(parsed_text, style)
 

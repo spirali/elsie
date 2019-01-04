@@ -32,6 +32,26 @@ def test_line_highlight(test_env):
     test_env.check("linehighlight", 5)
 
 
+def test_line_numbers(test_env):
+    slide = test_env.slide
+
+    slide.box().text("Line Highlighting")
+    slide.box().code("c", """#include <stdio.h>
+/* Hello world program */
+
+
+int main() {
+    printf("Hello world!\\n");
+    return 0;
+
+
+
+}
+    """, line_numbers=True)
+
+    test_env.check("linenumbers", 1)
+
+
 def test_console(test_env):
     slide = test_env.slide
     slide.derive_style("code", "shell", color="white")

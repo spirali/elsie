@@ -49,6 +49,9 @@ class Slides:
                 "line_spacing": 1.20,
                 "size": 20,
             },
+            "code_lineno": {
+                "color": "gray"
+            }
         }
         self._styles.update(make_highlight_styles(pygments_theme))
 
