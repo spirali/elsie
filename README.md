@@ -10,7 +10,8 @@ Elsie is based on experience with my previous project
 https://github.com/spirali/elphie/. It is a complete rewrite while making it
 more flexible by directly exposing boxes.
 
-# Requirements
+
+## Requirements
 
 * Python 3.4 or newer
 * Inkscape
@@ -19,7 +20,13 @@ more flexible by directly exposing boxes.
 * lxml
 * (Optional for LaTeX support): pdflatex, pdf2svg
 
-# Installation
+
+## PIP Installation
+
+    pip3 install elsie
+
+
+## Manual Installation
 
     python setup.py build
     python setup.py install
