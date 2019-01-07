@@ -4,38 +4,53 @@ import re
 class ShowInfo:
 
     parser = re.compile(
-        r"^(?P<exact>\d+)$|^(?P<from>\d+)\+$|^(?P<begin>^\d+)\-(?P<end>\d+)$")
+        r"^(?P<from>\d+)(?:(?P<open>\+)|-(?P<end>\d+))?$")
 
-    def __init__(self, begin=1, end=None, min_steps=None):
-        assert begin >= 1
-        assert end is None or end >= 1
-        self.begin = begin
-        self.end = end
+    def __init__(self, steps=(), open_step=None, min_steps=None):
+        if steps == () and open_step is None:
+            open_step = 1
+
+        self.steps = steps
+        self.open_step = open_step
+
         if min_steps:
             self._min_steps = min_steps
         else:
-            self._min_steps = max(begin, end if end else 1)
+            self._min_steps = max(open_step if open_step else 1, max(self.steps, default=1))
 
     @classmethod
     def parse(cls, obj):
         if obj is None:
             return ShowInfo()
         if isinstance(obj, int):
-            return ShowInfo(obj, obj)
+            return ShowInfo((obj, ))
         if isinstance(obj, str):
-            m = cls.parser.match(obj)
-            if m is None:
+            steps = set()
+            open_step = None
+            intervals = [i.strip() for i in obj.split(",")]
+            if not intervals:
                 raise Exception("Invalid format of 'show' string: {!r}"
                                 .format(obj))
-            m = m.groupdict()
 
-            if m["exact"] is not None:
-                exact = int(m["exact"])
-                return ShowInfo(exact, exact)
+            for interval in intervals:
+                m = cls.parser.match(interval)
+                if m is None:
+                    raise Exception("Invalid format of 'show' string: {!r}"
+                                    .format(obj))
+                m = m.groupdict()
+                if m["open"] is not None:
+                    if open_step is not None:
+                        raise Exception("Multiple open steps ({}, {}) in input {!r}"
+                                        .format(open_step, m["open"], obj))
+                    open_step = int(m["from"])
+                    continue
 
-            if m["from"] is not None:
-                return ShowInfo(int(m["from"]))
-            return ShowInfo(int(m["begin"]), int(m["end"]))
+                start = int(m["from"])
+                end = start
+                if m["end"] is not None:
+                    end = int(m["end"])
+                steps.update(range(start, end + 1))
+            return ShowInfo(tuple(sorted(steps)), open_step)
         else:
             raise Exception("Invalid show argument")
 
@@ -44,11 +59,11 @@ class ShowInfo:
 
     def ensure_steps(self, steps):
         min_steps = max(self._min_steps, steps)
-        return ShowInfo(self.begin, self.end, min_steps)
+        return ShowInfo(self.steps, self.open_step, min_steps)
 
     def is_visible(self, step):
-        return self.begin <= step and (self.end is None or step <= self.end)
+        return step in self.steps or (self.open_step is not None and self.open_step <= step)
 
     def __repr__(self):
-        return "<ShowInfo begin={} end={} min={}>".format(
-            self.begin, self.end, self._min_steps)
+        return "<ShowInfo steps={} open_step={} min={}>".format(
+            self.steps, self.open_step, self._min_steps)

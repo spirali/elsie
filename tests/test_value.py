@@ -75,19 +75,49 @@ def test_pos_parse_value():
 
 
 def test_parse_show_info():
+    s = ShowInfo.parse(2)
+    assert s.steps == (2,)
+    assert not s.open_step
+    assert s._min_steps == 2
 
-    a = ShowInfo.parse(2)
-    assert a.begin == 2
-    assert a.end == 2
-
-    a = ShowInfo.parse("2")
-    assert a.begin == 2
-    assert a.end == 2
-
-    a = ShowInfo.parse("2+")
-    assert a.begin == 2
-    assert a.end is None
+    s = ShowInfo.parse("5")
+    assert s.steps == (5,)
+    assert not s.open_step
+    assert s._min_steps == 5
 
     a = ShowInfo.parse("2-123")
-    assert a.begin == 2
-    assert a.end == 123
+    assert a.steps == tuple(range(2, 124))
+    assert not a.open_step
+    assert a.min_steps() == 123
+
+    s = ShowInfo.parse("5-8, 1-6, 9")
+    assert s.steps == (1, 2, 3, 4, 5, 6, 7, 8, 9)
+    assert not s.open_step
+    assert s._min_steps == 9
+
+    s = ShowInfo.parse("5+")
+    assert s.steps == ()
+    assert s.open_step == 5
+    assert s._min_steps == 5
+
+    s = ShowInfo.parse("1,3-5,8+,4-6")
+    assert s.steps == (1, 3, 4, 5, 6)
+    assert s.open_step == 8
+    assert s._min_steps == 8
+
+    with pytest.raises(Exception):
+        ShowInfo.parse("")
+
+    with pytest.raises(Exception):
+        ShowInfo.parse("5+,6+")
+
+
+def test_show_is_visible():
+    s = ShowInfo.parse("1,3-5,8+,4-6")
+    assert s.is_visible(1)
+    assert not s.is_visible(2)
+    assert s.is_visible(3)
+    assert s.is_visible(4)
+    assert s.is_visible(5)
+    assert s.is_visible(8)
+    assert s.is_visible(10)
