@@ -105,6 +105,10 @@ def test_parse_show_info():
     assert s.open_step == 8
     assert s._min_steps == 8
 
+    s = ShowInfo.parse(None)
+    assert s.open_step == 1
+    assert not s.steps
+
     with pytest.raises(Exception):
         ShowInfo.parse("")
 

@@ -6,11 +6,12 @@ class ShowInfo:
     parser = re.compile(
         r"^(?P<from>\d+)(?:(?P<open>\+)|-(?P<end>\d+))?$")
 
-    def __init__(self, steps=(), open_step=None, min_steps=None):
-        if steps == () and open_step is None:
-            open_step = 1
-
-        self.steps = steps
+    def __init__(self, steps=None, open_step=None, min_steps=None):
+        if steps is None:
+            if open_step is None:
+                open_step = 1
+            steps = ()
+        self.steps = tuple(steps)
         self.open_step = open_step
 
         if min_steps:
@@ -50,7 +51,7 @@ class ShowInfo:
                 if m["end"] is not None:
                     end = int(m["end"])
                 steps.update(range(start, end + 1))
-            return ShowInfo(tuple(sorted(steps)), open_step)
+            return ShowInfo(sorted(steps), open_step)
         else:
             raise Exception("Invalid show argument")
 

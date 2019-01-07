@@ -92,6 +92,7 @@ slide.box().text("Elsie supports ...")
 # "2" - Show only on the second page
 # "2+" - Show from the second page to the last page
 # "2-5" - Show on second page to 5th page
+# "2,3,4" - Show on pages 2, 3, and 4
 slide.box(show="2+").text("... fragments ...")
 slide.box(show="3+").text("... revealing.")
 
