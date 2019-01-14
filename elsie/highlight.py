@@ -1,5 +1,5 @@
 
-from .textparser import normalize_tokens
+from .textparser import normalize_tokens, NEWLINE_1
 
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
@@ -17,10 +17,14 @@ class MyFormatter(Formatter):
         stream = self.stream
         for ttype, value in tokensource:
             if value == "\n":
-                stream.append(("newline", 1))
+                stream.append(NEWLINE_1)
             else:
                 stream.append(("begin", "pygments-" + str(ttype)))
-                stream.append(("text", value))
+                if value.endswith("\n"):
+                    stream.append(("text", value[:-1]))
+                    stream.append(NEWLINE_1)
+                else:
+                    stream.append(("text", value))
                 stream.append(("end", None))
 
 
