@@ -5,6 +5,7 @@ from .query import compute_query
 from .textstyle import check_style
 from .highlight import make_highlight_styles
 from .pdfmerge import get_pdf_merger_by_name
+from .version import VERSION
 from concurrent.futures import ThreadPoolExecutor
 import sys
 import json
@@ -93,13 +94,20 @@ class Slides:
     def _load_query_cache(self, cache_file):
         if os.path.isfile(cache_file):
             with open(cache_file) as f:
-                return dict((tuple(key), value) for key, value in json.load(f))
+                cache_config = json.load(f)
+            if cache_config.get("version") != VERSION:
+                return {}
+            return dict((tuple(key), value) for key, value in cache_config.get("queries", ()))
         else:
             return {}
 
     def _save_query_cache(self, cache, cache_file):
+        cache_config = {
+            "version": VERSION,
+            "queries": list(cache.items())
+        }
         with open(cache_file, "w") as f:
-            json.dump(list(cache.items()), f)
+            json.dump(cache_config, f)
 
     def _show_progress(
             self, name, value=0, max_value=0, first=False, last=False):
@@ -139,7 +147,7 @@ class Slides:
             threads = os.cpu_count() or 1
         pool = ThreadPoolExecutor(threads)
 
-        cache_file = os.path.join(cache_dir, "queries2.cache")
+        cache_file = os.path.join(cache_dir, "queries3.cache")
         cache = self._load_query_cache(cache_file)
         queries = sum((s.queries() for s in self._slides), [])
 
