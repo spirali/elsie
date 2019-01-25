@@ -26,14 +26,8 @@
       <rect ry="40" rx="40" y="424.50504" x="86.428581" height="148.57143" width="148.57143" id="rect4136" style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#0066ff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:4, 4;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"/>
       <text sodipodi:linespacing="125%" id="text4151" y="532.36212" x="131.91405" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:91.90435028px;line-height:125%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" xml:space="preserve"><tspan y="532.36212" x="131.91405" id="tspan4153" sodipodi:role="line">1</tspan></text>
     </g>
-    <g id="g4177" transform="translate(204.7651,0)" inkscape:label="**2+">
-      </g>
-    <g id="g4183" transform="translate(196.19367,0)" inkscape:label="**3+">
-      </g>
     <rect style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:none;fill-opacity:1;stroke:#0066ff;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:12, 12;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" id="rect4208" width="998.57147" height="630" x="32.857143" y="382.36221"/>
     <rect style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:12, 12;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" id="rect4210" width="233.78621" height="55.524216" x="174.28572" y="348.07648"/>
     <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:28px;line-height:125%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#0066ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;" x="182.85715" y="388.79074" id="text4204" sodipodi:linespacing="125%"><tspan sodipodi:role="line" id="tspan4206" x="182.85715" y="388.79074">This is SVG image</tspan></text>
     <flowRoot xml:space="preserve" id="flowRoot4176" style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Ubuntu;font-style:normal;font-weight:normal;font-size:28px;line-height:125%;letter-spacing:0px;word-spacing:0px;-inkscape-font-specification:Ubuntu;font-stretch:normal;font-variant:normal"><flowRegion id="flowRegion4178"><rect id="rect4180" width="351.42856" height="188.57143" x="117.14285" y="348.66141"/></flowRegion><flowPara id="flowPara4182"/></flowRoot>  </g>
-  <g inkscape:groupmode="layer" id="layer2" inkscape:label="Layer **3+">
-    </g>
-</svg></g></svg>
+  </svg></g></svg>
