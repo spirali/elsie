@@ -26,7 +26,7 @@ def create_image_data(root, step):
 
     def find_hidden_elements(element):
         for child in element:
-            show_info = parse_extern_show(element)
+            show_info = parse_extern_show(child)
             if show_info is not None and not show_info.is_visible(step):
                 hidden.append((element, child))
                 continue

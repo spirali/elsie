@@ -31,3 +31,10 @@ def test_line_highlight_no_fragments(test_env):
     b.fbox().image(img, fragments=False)
 
     test_env.check("imagenofrag")
+
+
+def test_image_show(test_env):
+    """ Regresion test for show attribute when element has no childs """
+    slide = test_env.slide
+    slide.image(test_env.data_path("testimage2.svg"))
+    test_env.check("imageshowx", 3)
