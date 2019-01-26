@@ -262,10 +262,11 @@ class Box:
 
         if fragments:
             image_steps = get_image_steps(root)
-            self._show_info = self._show_info.ensure_steps(
-                show_begin + image_steps - 1)
         else:
             image_steps = 1
+
+        self._show_info = self._show_info.ensure_steps(
+            show_begin + image_steps - 1)
 
         image_data = None
         if image_steps == 1:
@@ -278,6 +279,8 @@ class Box:
                     return
                 data = create_image_data(root, ctx.step - show_begin + 1)
             else:
+                if ctx.step < show_begin:
+                    return
                 data = image_data
 
             if scale is None:

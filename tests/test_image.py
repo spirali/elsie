@@ -38,3 +38,10 @@ def test_image_show(test_env):
     slide = test_env.slide
     slide.image(test_env.data_path("testimage2.svg"))
     test_env.check("imageshowx", 3)
+
+
+def test_image_no_fragments_show_begin(test_env):
+    slide = test_env.slide
+    img = test_env.data_path("testimage.svg")
+    slide.image(img, fragments=False, show_begin=3)
+    test_env.check("nofrag_showbegin", 3)
