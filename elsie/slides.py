@@ -97,8 +97,10 @@ class Slides:
             with open(cache_file) as f:
                 cache_config = json.load(f)
             if cache_config.get("version") != VERSION:
+                print("Elsie version changed; cache dropped")
                 return {}
             if cache_config.get("inkscape") != inkscape_version:
+                print("Inkscape version changed; cache dropped")
                 return {}
             return dict((tuple(key), value) for key, value in cache_config.get("queries", ()))
         else:
