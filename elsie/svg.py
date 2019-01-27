@@ -27,6 +27,11 @@ def run_inkscape(extra_args, filename=None, stdin=None):
         stdout, stderr = p.communicate(stdin.encode("utf-8"))
         return stdout
 
+def get_inkscape_version():
+    args = ("/usr/bin/inkscape", "--version")
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = p.communicate()
+    return stdout.decode().strip()
 
 def run_inkscape_get_width(svg):
     return float(run_inkscape(("--query-id=target", "-W"), None, svg))

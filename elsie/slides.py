@@ -5,6 +5,7 @@ from .query import compute_query
 from .textstyle import check_style
 from .highlight import make_highlight_styles
 from .pdfmerge import get_pdf_merger_by_name
+from .svg import get_inkscape_version
 from .version import VERSION
 from concurrent.futures import ThreadPoolExecutor
 import sys
@@ -91,20 +92,23 @@ class Slides:
         """ Just add pdf without touches into resulting slides """
         self._slides.append(DummyPdfSlide(filename))
 
-    def _load_query_cache(self, cache_file):
+    def _load_query_cache(self, cache_file, inkscape_version):
         if os.path.isfile(cache_file):
             with open(cache_file) as f:
                 cache_config = json.load(f)
             if cache_config.get("version") != VERSION:
                 return {}
+            if cache_config.get("inkscape") != inkscape_version:
+                return {}
             return dict((tuple(key), value) for key, value in cache_config.get("queries", ()))
         else:
             return {}
 
-    def _save_query_cache(self, cache, cache_file):
+    def _save_query_cache(self, cache, cache_file, inkscape_version):
         cache_config = {
             "version": VERSION,
-            "queries": list(cache.items())
+            "inkscape": inkscape_version,
+            "queries": list(cache.items()),
         }
         with open(cache_file, "w") as f:
             json.dump(cache_config, f)
@@ -133,6 +137,7 @@ class Slides:
 
     def render(self, output, cache_dir="./elsie-cache",
                threads=None, return_svg=False, pdf_merger="pypdf"):
+        inkscape_version = get_inkscape_version()
         if not os.path.isdir(cache_dir):
             print("Creating cache directory:", cache_dir)
             os.makedirs(cache_dir)
@@ -148,7 +153,7 @@ class Slides:
         pool = ThreadPoolExecutor(threads)
 
         cache_file = os.path.join(cache_dir, "queries3.cache")
-        cache = self._load_query_cache(cache_file)
+        cache = self._load_query_cache(cache_file, inkscape_version)
         queries = sum((s.queries() for s in self._slides), [])
 
         self._show_progress("Preprocessing", first=True)
@@ -166,7 +171,7 @@ class Slides:
         for q in queries:
             q.callback(new_cache[q.key])
 
-        self._save_query_cache(new_cache, cache_file)
+        self._save_query_cache(new_cache, cache_file, inkscape_version)
 
         renders = []
         for slide in self._slides:
