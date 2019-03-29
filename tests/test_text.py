@@ -114,6 +114,10 @@ def test_styles(test_env):
     slide.box().text(text)
 
     slide.box().text("~my_red{red} ~my_green{green} ~my_blue{blue}")
+
+    # Inline style
+    slide.box().text("~my_red{red} gray ~my_blue{blue}", {"size": 7, "color": "gray"})
+
     test_env.check("styles")
 
 
@@ -126,3 +130,5 @@ def test_pygments_single_line_comment():
 
     c = highlight_code(test, "rust")
     assert number_of_lines(c) == 3
+
+

@@ -312,16 +312,31 @@ class Box:
         style = self._styles["code"]
         self._text_helper(parsed_text, style)
 
-    def text(self, text, style_name="default", escape_char="~"):
-        """ Draw a text """
+    def _get_style(self, style):
+        result_style = self._styles["default"]
+        if style == "default":
+            return result_style
+        elif isinstance(style, str):
+            style_name = style
+            style = self._styles.get(style_name)
+            if style is None:
+                raise Exception("Style '{}' not found".format(style_name))
+        elif isinstance(style, dict):
+            check_style(style)
+        else:
+            raise Exception("Invalid type used as style")
+        result_style = result_style.copy()
+        result_style.update(style)
+        return result_style
 
-        style = self._styles["default"]
-        if style_name != "default":
-            style = style.copy()
-            style.update(self._styles[style_name])
+    def text(self, text, style="default", escape_char="~"):
+        """ Draw a text
 
+            "style" can be string with the name of style or dict defining the style
+        """
+        result_style = self._get_style(style)
         parsed_text = parse_text(text, escape_char=escape_char)
-        self._text_helper(parsed_text, style)
+        self._text_helper(parsed_text, result_style)
 
     def latex(self, text, scale=1.0, header=None, tail=None):
         """ Renders LaTeX text into box. """
