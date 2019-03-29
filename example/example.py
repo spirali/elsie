@@ -510,8 +510,11 @@ bb.text("Fill (width='fill(3)')", "inner")
 # The final slide #################################
 
 slide = slides.new_slide()
-slide.update_style("default", size=60)
-slide.text("Have a nice day!")
+
+# Demonstration of inline style
+# we do not provide style name, but directly create
+# style in place
+slide.text("Have a nice day!", {"size": 60})
 
 # RENDER THE SLIDES NOW!
 
