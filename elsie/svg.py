@@ -38,7 +38,7 @@ def run_inkscape_get_width(svg):
 
 
 def convert_to_pdf(source, target):
-    run_inkscape(("-A", target), stdin=source)
+    run_inkscape(("--export-pdf", target, "--export-area-page"), stdin=source)
 
 
 def svg_size_to_pixels(text):
