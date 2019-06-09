@@ -65,3 +65,22 @@ def test_image_scale_width_height(test_env):
 def test_image_scale_no_dimensions(test_env):
     test_env.slide.box().image(test_env.data_path("scale.svg"))
     test_env.check("scale-no-dimensions")
+
+def test_image_bitmap(test_env):
+    slide = test_env.slide
+    img_png = test_env.data_path("imgs/test.png")
+    img_jpg = test_env.data_path("imgs/test.jpeg")
+
+    b = slide.fbox(height=140)
+    b.rect(bg_color="green")
+    b.image(img_png)
+
+    b = slide.fbox(height=300)
+    b.rect(bg_color="blue")
+    b.image(img_png)
+
+    b = slide.fbox(height=300)
+    b.rect(bg_color="green")
+    b.image(img_jpg)
+
+    test_env.check("image-bitmap", 1)

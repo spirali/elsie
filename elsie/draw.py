@@ -67,3 +67,13 @@ def draw_text(xml, x, y, parsed_text, style, styles, id=None):
     for s in active_styles:
         xml.close("tspan")
     xml.close("text")
+
+
+def draw_bitmap(xml, x, y, width, height, mime, data):
+    xml.element("image")
+    xml.set("x", x)
+    xml.set("y", y)
+    xml.set("width", width)
+    xml.set("height", height)
+    xml.set("xlink:href", "data:{};base64,{}".format(mime, data), escape=False)
+    xml.close("image")

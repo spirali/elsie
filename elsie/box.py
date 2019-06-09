@@ -1,8 +1,11 @@
 import logging
 
 import lxml.etree as et
+import base64
+from PIL import Image
+import io
 
-from .draw import draw_text
+from .draw import draw_text, draw_bitmap
 from .geom import Rect
 from .highlight import highlight_code
 from .image import get_image_steps, create_image_data
@@ -43,6 +46,19 @@ def set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray):
         styles.append("stroke:none")
 
     xml.set("style", ";".join(styles))
+
+
+def scaler(rect, image_width, image_height):
+    scale_x = rect.width / image_width
+    scale_y = rect.height / image_height
+
+    if rect.width and rect.height:
+        return min(scale_x, scale_y)
+    elif rect.width:
+        return scale_x
+    elif rect.height:
+        return scale_y
+    return None
 
 
 class Box:
@@ -268,6 +284,46 @@ class Box:
         ctx.xml.close()
 
     def image(self, filename, scale=None, fragments=True, show_begin=1):
+        """ Draw an svg/png/jpeg image, detect by extension """
+        if filename.endswith("svg"):
+            self.image_svg(filename, scale, fragments, show_begin)
+        elif any(filename.endswith(ext) for ext in [".png", ".jpeg", ".jpg"]):
+            self._image_bitmap(filename, scale)
+        else:
+            raise Exception("Unkown image extension")
+        return self
+
+    def _image_bitmap(self, filename, scale):
+
+        with open(filename, "rb") as f:
+            data = f.read()
+
+        img = Image.open(io.BytesIO(data))
+        mime = Image.MIME[img.format]
+        image_width, image_height = img.size
+        del img
+
+        data = base64.b64encode(data).decode("ascii")
+
+        def draw(ctx, rect):
+            if scale is None:
+                s = scaler(rect, image_width, image_height)
+                if s is None:
+                    logging.warning(
+                        "Scale of image {} is 0, set scale explicitly or set at least one "
+                        "dimension for the parent box".format(filename))
+            else:
+                s = scale
+
+            w = image_width * s
+            h = image_height * s
+            x = rect.x + (rect.width - w) / 2
+            y = rect.y + (rect.height - h) / 2
+            draw_bitmap(ctx.xml, x, y, w, h, mime, data)
+
+        self.add_child(draw)
+
+    def _image_svg(self, filename, scale=None, fragments=True, show_begin=1):
         """ Draw an svg image """
 
         root = et.parse(filename).getroot()
@@ -298,17 +354,8 @@ class Box:
                 data = image_data
 
             if scale is None:
-                scale_x = rect.width / image_width
-                scale_y = rect.height / image_height
-
-                s = 0
-                if rect.width and rect.height:
-                    s = min(scale_x, scale_y)
-                elif rect.width:
-                    s = scale_x
-                elif rect.height:
-                    s = scale_y
-                else:
+                s = scaler(rect, image_width, image_height)
+                if s is None:
                     logging.warning(
                         "Scale of image {} is 0, set scale explicitly or set at least one "
                         "dimension for the parent box".format(filename))
@@ -322,8 +369,6 @@ class Box:
             self._render_svg(ctx, x, y, s, data)
 
         self.add_child(draw)
-
-        return self
 
     def code(self, language, text, tabsize=4, line_numbers=False, style="code"):
         """ Draw a code with syntax highlighting """

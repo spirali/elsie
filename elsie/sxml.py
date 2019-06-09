@@ -23,9 +23,10 @@ class Xml:
         self.stack.append(name)
         self.is_open = True
 
-    def set(self, name, value):
+    def set(self, name, value, escape=True):
         assert self.is_open
-        value = str(value).replace("'", "\\'")
+        if escape:
+            value = str(value).replace("'", "\\'")
         self.chunks.append(" {}='{}'".format(name, escape_text(value)))
 
     def text(self, text):
