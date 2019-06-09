@@ -297,7 +297,7 @@ class Box:
 
         self.add_child(draw)
 
-    def code(self, language, text, tabsize=4, line_numbers=False, style=None):
+    def code(self, language, text, tabsize=4, line_numbers=False, style="code"):
         """ Draw a code with syntax highlighting """
 
         text = text.replace("\t", " " * tabsize)
@@ -309,10 +309,7 @@ class Box:
         if line_numbers:
             parsed_text = add_line_numbers(parsed_text)
 
-        if style:
-            style = self._get_style(style)
-        else:
-            style = self._styles["code"]
+        style = self._get_style(style)
         self._text_helper(parsed_text, style)
 
     def _get_style(self, style):
