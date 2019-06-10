@@ -150,7 +150,7 @@ class Slides:
 
     def render(self, output, cache_dir="./elsie-cache",
                threads=None, return_svg=False, pdf_merger="pypdf",
-               drop_redundant_slides=True):
+               drop_redundant_slides=False):
         inkscape_version = get_inkscape_version()
         if not os.path.isdir(cache_dir):
             print("Creating cache directory:", cache_dir)
