@@ -45,3 +45,23 @@ def test_image_no_fragments_show_begin(test_env):
     img = test_env.data_path("testimage.svg")
     slide.image(img, fragments=False, show_begin=3)
     test_env.check("nofrag_showbegin", 3)
+
+
+def test_image_scale_width(test_env):
+    test_env.slide.box(width=300).image(test_env.data_path("scale.svg"))
+    test_env.check("scale-width")
+
+
+def test_image_scale_height(test_env):
+    test_env.slide.box(height=100).image(test_env.data_path("scale.svg"))
+    test_env.check("scale-height")
+
+
+def test_image_scale_width_height(test_env):
+    test_env.slide.box(width=300, height=100).image(test_env.data_path("scale.svg"))
+    test_env.check("scale-width-height")
+
+
+def test_image_scale_no_dimensions(test_env):
+    test_env.slide.box().image(test_env.data_path("scale.svg"))
+    test_env.check("scale-no-dimensions")
