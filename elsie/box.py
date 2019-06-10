@@ -1,3 +1,5 @@
+import logging
+
 import lxml.etree as et
 
 from .draw import draw_text
@@ -292,9 +294,21 @@ class Box:
             if scale is None:
                 scale_x = rect.width / image_width
                 scale_y = rect.height / image_height
-                s = min(scale_x, scale_y)
+
+                s = 0
+                if rect.width and rect.height:
+                    s = min(scale_x, scale_y)
+                elif rect.width:
+                    s = scale_x
+                elif rect.height:
+                    s = scale_y
+                else:
+                    logging.warning(
+                        "Scale of image {} is 0, set scale explicitly or set at least one "
+                        "dimension for the parent box".format(filename))
             else:
                 s = scale
+
             w = image_width * s
             h = image_height * s
             x = rect.x + (rect.width - w) / 2
