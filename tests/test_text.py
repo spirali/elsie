@@ -1,6 +1,7 @@
 from elsie.highlight import highlight_code
 from elsie.textparser import number_of_lines
 
+
 def test_line_highlight(test_env):
     slide = test_env.slide
 
@@ -130,5 +131,3 @@ def test_pygments_single_line_comment():
 
     c = highlight_code(test, "rust")
     assert number_of_lines(c) == 3
-
-

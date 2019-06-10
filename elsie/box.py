@@ -1,18 +1,18 @@
 import lxml.etree as et
 
-from .geom import Rect
 from .draw import draw_text
+from .geom import Rect
+from .highlight import highlight_code
+from .image import get_image_steps, create_image_data
+from .lazy import LazyValue, eval_value, LazyPoint, unpack_point
+from .query import Query
+from .show import ShowInfo
+from .svg import svg_size_to_pixels
 from .sxml import Xml
 from .textparser import parse_text, number_of_lines, add_line_numbers
 from .textstyle import check_style
-from .highlight import highlight_code
-from .show import ShowInfo
-from .image import get_image_steps, create_image_data
-from .svg import svg_size_to_pixels
-from .lazy import LazyValue, eval_value, LazyPoint, unpack_point
 from .value import SizeValue, PosValue
-from .latex import render_latex
-from .query import Query
+
 
 class Painter:
 
@@ -199,6 +199,8 @@ class Box:
             xml.close("rect")
         self.add_child(draw_rect)
 
+        return self
+
     def polygon(self,
                 points,
                 color=None, bg_color=None,
@@ -214,6 +216,8 @@ class Box:
             xml.close("polygon")
         points = [unpack_point(p) for p in points]
         self.add_child(draw_rect)
+
+        return self
 
     def line(self, points, color="black", stroke_width=1, stroke_dasharray=None,
              start_arrow=None, end_arrow=None):
@@ -243,6 +247,8 @@ class Box:
         assert len(points) >= 2
         points = [unpack_point(p) for p in points]
         self.add_child(draw_rect)
+
+        return self
 
     def _render_svg(self, ctx, x, y, scale, data):
         ctx.xml.element("g")
@@ -297,6 +303,8 @@ class Box:
 
         self.add_child(draw)
 
+        return self
+
     def code(self, language, text, tabsize=4, line_numbers=False, style="code"):
         """ Draw a code with syntax highlighting """
 
@@ -311,6 +319,8 @@ class Box:
 
         style = self._get_style(style)
         self._text_helper(parsed_text, style)
+
+        return self
 
     def _get_style(self, style):
         result_style = self._styles["default"]
@@ -337,6 +347,8 @@ class Box:
         result_style = self._get_style(style)
         parsed_text = parse_text(text, escape_char=escape_char)
         self._text_helper(parsed_text, result_style)
+
+        return self
 
     def latex(self, text, scale=1.0, header=None, tail=None):
         """ Renders LaTeX text into box. """
@@ -379,6 +391,8 @@ class Box:
 
         self._queries.append(Query(("latex", tex_text), on_query))
         self.add_child(draw)
+
+        return self
 
     def new_style(self, name, **kwargs):
         """ Define a new style, it is an error if it already exists. """
