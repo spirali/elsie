@@ -15,8 +15,9 @@ class Slide:
         self.width = width
         self.height = height
         self.index = index
-        self._box = Box(0, 0, width, height, styles, ShowInfo())
+        self._box = Box(self, 0, 0, width, height, styles, ShowInfo())
         self._box._styles = styles
+        self.max_step = 0
 
     def box(self):
         return self._box

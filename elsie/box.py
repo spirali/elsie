@@ -48,6 +48,7 @@ def set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray):
 class Box:
 
     def __init__(self,
+                 slide,
                  x,
                  y,
                  width,
@@ -71,6 +72,7 @@ class Box:
         else:
             self._y = None
 
+        self.slide = slide
         self._width = SizeValue.parse(width or 0)
         self._height = SizeValue.parse(height or 0)
         self.childs = []
@@ -121,12 +123,16 @@ class Box:
         if z_level is None:
             z_level = self.z_level
 
-        box = Box(x,
+        show = ShowInfo.parse(show, self.slide.max_step)
+        self.slide.max_step = show.max_step()
+
+        box = Box(self.slide,
+                  x,
                   y,
                   width,
                   height,
                   self._styles.copy(),
-                  ShowInfo.parse(show),
+                  show,
                   p_left,
                   p_right,
                   p_top,
