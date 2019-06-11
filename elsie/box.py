@@ -124,7 +124,7 @@ class Box:
             z_level = self.z_level
 
         show = ShowInfo.parse(show, self.slide.max_step)
-        self.slide.max_step = show.max_step()
+        self.slide.max_step = max(self.slide.max_step, show.max_step())
 
         box = Box(self.slide,
                   x,
