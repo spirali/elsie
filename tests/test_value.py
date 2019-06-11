@@ -115,6 +115,28 @@ def test_parse_show_info():
     with pytest.raises(Exception):
         ShowInfo.parse("5+,6+")
 
+    s = ShowInfo.parse("5", 1)
+    assert s.steps == (5, )
+
+    s = ShowInfo.parse("next", 0)
+    assert s.steps == (1,)
+
+    s = ShowInfo.parse("next", 2)
+    assert s.steps == (3,)
+
+    s = ShowInfo.parse("next+", 2)
+    assert s.steps == ()
+    assert s.open_step == 3
+
+    with pytest.raises(Exception):
+        ShowInfo.parse("next")
+
+
+def test_show_max_step():
+    assert ShowInfo((1, 2, 3)).max_step() == 3
+    assert ShowInfo((1, 2, 3), open_step=4).max_step() == 4
+    assert ShowInfo(None, open_step=4).max_step() == 4
+
 
 def test_show_is_visible():
     s = ShowInfo.parse("1,3-5,8+,4-6")

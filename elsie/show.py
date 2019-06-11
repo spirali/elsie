@@ -17,10 +17,18 @@ class ShowInfo:
         if min_steps:
             self._min_steps = min_steps
         else:
-            self._min_steps = max(open_step if open_step else 1, max(self.steps, default=1))
+            self._min_steps = self.max_step()
 
     @classmethod
-    def parse(cls, obj):
+    def parse(cls, obj, current_max=None):
+        if current_max is not None:
+            if obj == "next":
+                return ShowInfo((current_max + 1,))
+            elif obj == "next+":
+                return ShowInfo(None, current_max + 1)
+        elif obj in ("next", "next+"):
+            raise Exception("You have to pass the current maximum step if you use next or next+")
+
         if obj is None:
             return ShowInfo()
         if isinstance(obj, int):
@@ -57,6 +65,10 @@ class ShowInfo:
 
     def min_steps(self):
         return self._min_steps
+
+    def max_step(self):
+        return max(max(self.steps, default=1),
+                   self.open_step if self.open_step else 1)
 
     def ensure_steps(self, steps):
         min_steps = max(self._min_steps, steps)
