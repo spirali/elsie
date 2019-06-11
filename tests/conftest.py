@@ -45,7 +45,9 @@ class SlideTester:
     def data_path(self, subpath):
         return os.path.join(DATA_DIR, subpath)
 
-    def check(self, expected, expect_count=1, **render_args):
+    def check(self, expected, expect_count=1, render_args=None):
+        if render_args is None:
+            render_args = {}
         done = False
         svgs = self.slides.render(output=None, return_svg=True, **render_args)
         try:

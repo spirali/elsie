@@ -10,17 +10,7 @@ from .version import VERSION
 from concurrent.futures import ThreadPoolExecutor
 import sys
 import json
-
-
-def drop_redundant(items):
-    last_key = None
-    result = []
-
-    for item in items:
-        if item != last_key:
-            last_key = item
-            result.append(item)
-    return result
+import itertools
 
 
 class Slides:
@@ -150,7 +140,7 @@ class Slides:
 
     def render(self, output, cache_dir="./elsie-cache",
                threads=None, return_svg=False, pdf_merger="pypdf",
-               drop_redundant_slides=False):
+               drop_duplicates=False):
         inkscape_version = get_inkscape_version()
         if not os.path.isdir(cache_dir):
             print("Creating cache directory:", cache_dir)
@@ -194,28 +184,23 @@ class Slides:
 
         if return_svg:
             svgs = [slide.make_svg(step) for slide, step in renders]
-            if drop_redundant_slides:
-                return drop_redundant(svgs)
+            if drop_duplicates:
+                return [x[0] for x in itertools.groupby(svgs)]
             return svgs
 
         merger = get_pdf_merger_by_name(pdf_merger)
-        target_pdfs = []
         self._show_progress("Building", first=True)
         computed_pdfs = set()
+        prev_pdf = None
         for i, pdf in enumerate(pool.map(
                 lambda x: x[0].render(
                     x[1], cache_dir, pdfs_in_dir, self.debug),
                 renders)):
-            target_pdfs.append(os.path.join(cache_dir, pdf))
-            computed_pdfs.add(pdf)
+            if not drop_duplicates or prev_pdf != pdf:
+                merger.append(os.path.join(cache_dir, pdf))
+                prev_pdf = pdf
             self._show_progress("Building", i, len(renders))
         self._show_progress("Building", len(renders), len(renders), last=True)
-
-        if drop_redundant_slides:
-            target_pdfs = drop_redundant(target_pdfs)
-
-        for pdf in target_pdfs:
-            merger.append(pdf)
 
         merger.write(output, self.debug)
         print("Slides written into '{}'".format(output))
