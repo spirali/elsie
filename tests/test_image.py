@@ -2,7 +2,7 @@
 def test_line_highlight_fragments(test_env):
     slide = test_env.slide
 
-    img = test_env.data_path("testimage.svg")
+    img = test_env.assets_path("testimage.svg")
     slide.image(img)
 
     b = slide.box(x="[90%]", y="[30%]", width="30%", height="30%", show="4+")
@@ -19,7 +19,7 @@ def test_line_highlight_fragments(test_env):
 def test_line_highlight_no_fragments(test_env):
     slide = test_env.slide
 
-    img = test_env.data_path("testimage.svg")
+    img = test_env.assets_path("testimage.svg")
     slide.image(img, fragments=False)
 
     b = slide.box(x="[90%]", y="[30%]", width="30%", height="30%")
@@ -36,40 +36,40 @@ def test_line_highlight_no_fragments(test_env):
 def test_image_show(test_env):
     """ Regresion test for show attribute when element has no childs """
     slide = test_env.slide
-    slide.image(test_env.data_path("testimage2.svg"))
+    slide.image(test_env.assets_path("testimage2.svg"))
     test_env.check("imageshowx", 3)
 
 
 def test_image_no_fragments_show_begin(test_env):
     slide = test_env.slide
-    img = test_env.data_path("testimage.svg")
+    img = test_env.assets_path("testimage.svg")
     slide.image(img, fragments=False, show_begin=3)
     test_env.check("nofrag_showbegin", 3)
 
 
 def test_image_scale_width(test_env):
-    test_env.slide.box(width=300).image(test_env.data_path("scale.svg"))
+    test_env.slide.box(width=300).image(test_env.assets_path("scale.svg"))
     test_env.check("scale-width")
 
 
 def test_image_scale_height(test_env):
-    test_env.slide.box(height=100).image(test_env.data_path("scale.svg"))
+    test_env.slide.box(height=100).image(test_env.assets_path("scale.svg"))
     test_env.check("scale-height")
 
 
 def test_image_scale_width_height(test_env):
-    test_env.slide.box(width=300, height=100).image(test_env.data_path("scale.svg"))
+    test_env.slide.box(width=300, height=100).image(test_env.assets_path("scale.svg"))
     test_env.check("scale-width-height")
 
 
 def test_image_scale_no_dimensions(test_env):
-    test_env.slide.box().image(test_env.data_path("scale.svg"))
+    test_env.slide.box().image(test_env.assets_path("scale.svg"))
     test_env.check("scale-no-dimensions")
 
 def test_image_bitmap(test_env):
     slide = test_env.slide
-    img_png = test_env.data_path("imgs/test.png")
-    img_jpg = test_env.data_path("imgs/test.jpeg")
+    img_png = test_env.assets_path("test.png")
+    img_jpg = test_env.assets_path("test.jpeg")
 
     b = slide.fbox(height=140)
     b.rect(bg_color="green")

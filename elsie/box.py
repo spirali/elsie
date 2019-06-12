@@ -286,7 +286,7 @@ class Box:
     def image(self, filename, scale=None, fragments=True, show_begin=1):
         """ Draw an svg/png/jpeg image, detect by extension """
         if filename.endswith("svg"):
-            self.image_svg(filename, scale, fragments, show_begin)
+            self._image_svg(filename, scale, fragments, show_begin)
         elif any(filename.endswith(ext) for ext in [".png", ".jpeg", ".jpg"]):
             self._image_bitmap(filename, scale)
         else:
@@ -309,6 +309,7 @@ class Box:
             if scale is None:
                 s = scaler(rect, image_width, image_height)
                 if s is None:
+                    s = 0
                     logging.warning(
                         "Scale of image {} is 0, set scale explicitly or set at least one "
                         "dimension for the parent box".format(filename))
@@ -356,6 +357,7 @@ class Box:
             if scale is None:
                 s = scaler(rect, image_width, image_height)
                 if s is None:
+                    s = 0
                     logging.warning(
                         "Scale of image {} is 0, set scale explicitly or set at least one "
                         "dimension for the parent box".format(filename))

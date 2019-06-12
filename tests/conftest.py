@@ -45,6 +45,9 @@ class SlideTester:
     def data_path(self, subpath):
         return os.path.join(DATA_DIR, subpath)
 
+    def assets_path(self, subpath):
+        return os.path.join(DATA_DIR, "assets", subpath)
+
     def check(self, expected, expect_count=1, render_args=None):
         if render_args is None:
             render_args = {}
@@ -53,7 +56,7 @@ class SlideTester:
         try:
             assert len(svgs) == expect_count
             for i, result in enumerate(svgs):
-                filename = self.data_path("{}-{}.svg".format(expected, i))
+                filename = self.data_path(os.path.join("checks", "{}-{}.svg".format(expected, i)))
                 with open(filename) as f:
                     expected_content = f.read()
                 print("Slide", i)
