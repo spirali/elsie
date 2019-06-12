@@ -294,16 +294,21 @@ class Box:
         return self
 
     def _image_bitmap(self, filename, scale):
+        key = (filename, "bitmap")
+        entry = self.slide.temp_cache.get(key)
+        if entry is None:
+            with open(filename, "rb") as f:
+                data = f.read()
 
-        with open(filename, "rb") as f:
-            data = f.read()
+            img = Image.open(io.BytesIO(data))
+            mime = Image.MIME[img.format]
+            image_width, image_height = img.size
+            del img
 
-        img = Image.open(io.BytesIO(data))
-        mime = Image.MIME[img.format]
-        image_width, image_height = img.size
-        del img
-
-        data = base64.b64encode(data).decode("ascii")
+            data = base64.b64encode(data).decode("ascii")
+            self.slide.temp_cache[key] = (image_width, image_height, mime, data)
+        else:
+            image_width, image_height, mime, data = entry
 
         def draw(ctx, rect):
             if scale is None:
@@ -327,7 +332,12 @@ class Box:
     def _image_svg(self, filename, scale=None, fragments=True, show_begin=1):
         """ Draw an svg image """
 
-        root = et.parse(filename).getroot()
+        key = (filename, "svg")
+        root = self.slide.temp_cache.get(key)
+        if root is None:
+            root = et.parse(filename).getroot()
+            self.slide.temp_cache[key] = root
+
         image_width = svg_size_to_pixels(root.get("width"))
         image_height = svg_size_to_pixels(root.get("height"))
 

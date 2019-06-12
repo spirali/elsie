@@ -56,6 +56,7 @@ class Slides:
                 "color": "gray"
             }
         }
+        self.temp_cache = {}
         self._styles.update(make_highlight_styles(pygments_theme))
 
     def new_style(self, name, **kwargs):
@@ -79,7 +80,7 @@ class Slides:
 
     def new_slide(self, bg_color=None):
         slide = Slide(
-            len(self._slides), self.width, self.height, self._styles.copy())
+            len(self._slides), self.width, self.height, self._styles.copy(), self.temp_cache)
         self._slides.append(slide)
         box = slide.box()
         if bg_color is None:

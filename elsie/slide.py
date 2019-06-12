@@ -11,13 +11,14 @@ from .show import ShowInfo
 
 class Slide:
 
-    def __init__(self, index, width, height, styles):
+    def __init__(self, index, width, height, styles, temp_cache):
         self.width = width
         self.height = height
         self.index = index
         self._box = Box(self, 0, 0, width, height, styles, ShowInfo())
         self._box._styles = styles
         self.max_step = 0
+        self.temp_cache = temp_cache
 
     def box(self):
         return self._box

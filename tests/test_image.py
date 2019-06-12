@@ -66,6 +66,7 @@ def test_image_scale_no_dimensions(test_env):
     test_env.slide.box().image(test_env.assets_path("scale.svg"))
     test_env.check("scale-no-dimensions")
 
+
 def test_image_bitmap(test_env):
     slide = test_env.slide
     img_png = test_env.assets_path("test.png")
