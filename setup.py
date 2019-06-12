@@ -24,7 +24,7 @@ see http://github.com/spirali/elsie for an example.
       author='Stanislav Bohm',
       url='http://github.com/spirali/elsie',
       packages=['elsie'],
-      install_requires=["pypdf2", "pygments", "lxml"],
+      install_requires=["pillow", "pypdf2", "pygments", "lxml"],
       classifiers=("Programming Language :: Python :: 3",
                    "License :: OSI Approved :: MIT License",
                    "Operating System :: OS Independent"))
