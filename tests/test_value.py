@@ -131,6 +131,22 @@ def test_parse_show_info():
     with pytest.raises(Exception):
         ShowInfo.parse("next")
 
+    with pytest.raises(Exception):
+        ShowInfo.parse("next+")
+
+    with pytest.raises(Exception):
+        ShowInfo.parse("last")
+
+    with pytest.raises(Exception):
+        ShowInfo.parse("last+")
+
+    s = ShowInfo.parse("last", 2)
+    assert s.steps == (2, )
+
+    s = ShowInfo.parse("last+", 3)
+    assert s.steps == ()
+    assert s.open_step == 3
+
 
 def test_show_max_step():
     assert ShowInfo((1, 2, 3)).max_step() == 3
