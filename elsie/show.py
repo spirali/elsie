@@ -26,8 +26,12 @@ class ShowInfo:
                 return ShowInfo((current_max + 1,))
             elif obj == "next+":
                 return ShowInfo(None, current_max + 1)
-        elif obj in ("next", "next+"):
-            raise Exception("You have to pass the current maximum step if you use next or next+")
+            elif obj == "last":
+                return ShowInfo((current_max,))
+            elif obj == "last+":
+                return ShowInfo(None, current_max)
+        elif obj in ("next", "next+", "last", "last+"):
+            raise Exception("You have to pass the current maximum step if you use relative values")
 
         if obj is None:
             return ShowInfo()
