@@ -33,8 +33,13 @@ def get_inkscape_version():
     stdout, stderr = p.communicate()
     return stdout.decode().strip()
 
+
 def run_inkscape_get_width(svg):
     return float(run_inkscape(("--query-id=target", "-W"), None, svg))
+
+
+def run_inkscape_get_x(svg):
+    return float(run_inkscape(("--query-id=target", "-X"), None, svg))
 
 
 def convert_to_pdf(source, target):

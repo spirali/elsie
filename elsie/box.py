@@ -14,7 +14,7 @@ from .query import Query
 from .show import ShowInfo
 from .svg import svg_size_to_pixels
 from .sxml import Xml
-from .textparser import parse_text, number_of_lines, add_line_numbers
+from .textparser import parse_text, number_of_lines, add_line_numbers, extract_line, extract_styled_content
 from .textstyle import check_style
 from .value import SizeValue, PosValue
 
@@ -61,6 +61,19 @@ def scaler(rect, image_width, image_height):
     return None
 
 
+def text_x_in_rect(rect, style):
+    align = style["align"]
+    if align == "left":
+        return rect.x
+    elif align == "middle":
+        return rect.x + rect.width / 2
+    elif align == "right":
+        return rect.x + rect.width
+    else:
+        raise Exception(
+            "Invalid value of align: " + repr(align))
+
+
 class Box:
 
     def __init__(self,
@@ -96,7 +109,8 @@ class Box:
         self._queries = []
         self._styles = styles
         self._show_info = show_info
-        self._text_lines = 0
+        self._parsed_text = None
+        self._text_style = None
         self._text_height = 0
 
         self.p_left = p_left
@@ -185,22 +199,70 @@ class Box:
         """ Create a box around a line of text.
             'self' has to contain a text """
         def compute_y():
-            if not self._text_lines:
+            if self._parsed_text is None:
                 raise Exception("line_box() called on box with no text")
-            line_height = self._text_height / self._text_lines
+            text_lines = number_of_lines(self._parsed_text)
+            line_height = self._text_height / text_lines
             y = self._rect.y + (self._rect.height - self._text_height) / 2
             return y + line_height * index
 
         def compute_height():
-            if not self._text_lines:
+            if self._parsed_text is None:
                 raise Exception("line_box() called on box with no text")
-            return lines * self._text_height / self._text_lines + 1
+            text_lines = number_of_lines(self._parsed_text)
+            return lines * self._text_height / text_lines + 1
 
         kwargs.setdefault("width", "fill")
         kwargs.setdefault("x", 0)
         kwargs.setdefault("y", LazyValue(compute_y))
         kwargs.setdefault("height", LazyValue(compute_height))
         return self.box(**kwargs)
+
+    def text_box(self, style_name, **kwargs):
+        """ Create a box around a styled text """
+        if self._parsed_text is None:
+            raise Exception("text_box() called on box with no text")
+        for (i, token) in enumerate(self._parsed_text):
+            if token[0] == "begin" and token[1] == style_name:
+                return self._text_box_helper(i, kwargs)
+        raise Exception("Style '{}' not found".format(style_name))
+
+    def _text_box_helper(self, index, box_args):
+        def on_query_x(x):
+            query_result[0] = x
+
+        def on_query_h(width):
+            query_result[1] = width
+
+        def compute_y():
+            line_number = number_of_lines(self._parsed_text[:index]) - 1
+            text_lines = number_of_lines(self._parsed_text)
+            line_height = self._text_height / text_lines
+            y = self._rect.y + (self._rect.height - self._text_height) / 2
+            return y + line_height * line_number
+
+        def compute_height():
+            text_lines = number_of_lines(self._parsed_text)
+            return self._text_height / text_lines + 1
+
+        query_result = [None, None]
+
+        line, index_in_line = extract_line(self._parsed_text, index)
+        xml = Xml()
+        draw_text(xml, 0, 0, line, self._text_style, self._styles, id="target", id_index=index_in_line)
+        text = xml.to_string()
+        del xml
+
+        self._queries.append(Query(("inkscape-x", text), on_query_x))
+        self._queries.append(Query(("inkscape", text), on_query_h))
+
+        box_args.setdefault("x", LazyValue(lambda: text_x_in_rect(self._rect, self._text_style) + query_result[0]))
+        box_args.setdefault("y", LazyValue(compute_y))
+        box_args.setdefault("width", LazyValue(lambda: query_result[1]))
+        box_args.setdefault("height", LazyValue(compute_height))
+
+        return self.box(**box_args)
+
 
     def rect(self,
              color=None, bg_color=None,
@@ -424,7 +486,6 @@ class Box:
         result_style = self._get_style(style)
         parsed_text = parse_text(text, escape_char=escape_char)
         self._text_helper(parsed_text, result_style)
-
         return self
 
     def latex(self, text, scale=1.0, header=None, tail=None):
@@ -544,7 +605,7 @@ class Box:
     def _text_helper(self, parsed_text, style):
         def on_query(width):
             line_height = style["size"] * style["line_spacing"]
-            height = lines * line_height
+            height = number_of_lines(parsed_text) * line_height
             self._ensure_width(width)
             self._ensure_height(height)
 
@@ -554,20 +615,11 @@ class Box:
 
         def draw(ctx, rect):
             y = rect.y + (rect.height - real_size[1]) / 2 + style["size"]
-            if style["align"] == "left":
-                x = rect.x
-            elif style["align"] == "middle":
-                x = rect.x + rect.width / 2
-            elif style["align"] == "right":
-                x = rect.x + rect.width
-            else:
-                raise Exception(
-                    "Invalid value of align: " + repr(style["align"]))
+            x = text_x_in_rect(rect, style)
             draw_text(ctx.xml, x, y, parsed_text, style, self._styles)
 
-        lines = number_of_lines(parsed_text)
-        self._text_lines = lines
-
+        self._parsed_text = parsed_text
+        self._text_style = style
         real_size = [None, None]
         xml = Xml()
         draw_text(xml, 0, 0, parsed_text, style, self._styles, id="target")

@@ -95,3 +95,58 @@ def parse_text(text, escape_char="~", begin_char="{", end_char="}"):
         raise Exception("Invalid format, unclosed command")
 
     return normalize_tokens(final_result)
+
+
+def _open_blocks(tokens):
+    blocks = []
+    for token in tokens:
+        if token[0] == "begin":
+            blocks.append(token)
+        elif token[0] == "end":
+            blocks.pop()
+    return blocks
+
+
+def _open_blocks_count(tokens):
+    count = 0
+    for token in tokens:
+        if token[0] == "begin":
+            count += 1
+        elif token[0] == "end":
+            count -= 1
+    return count
+
+
+def extract_line(tokens, index):
+    b = index
+    while b >= 0 and tokens[b][0] != "newline":
+        b -= 1
+    b += 1
+
+    e = index
+    while e < len(tokens) and tokens[e][0] != "newline":
+        e += 1
+
+    open_blocks = _open_blocks(tokens[:b])
+    result = open_blocks + tokens[b:e]
+    result += [END_MARKER] * _open_blocks_count(result)
+    return result, index - b + len(open_blocks)
+
+
+def extract_styled_content(tokens, index):
+    assert tokens[index][0] == "begin"
+    start = index
+    index += 1
+    count = 0
+    while index < len(tokens):
+        name = tokens[index][0]
+        if name == "end":
+            count -= 1
+            if count < 0:
+                break
+        elif name == "begin":
+            count += 1
+        break
+        index += 1
+    result = _open_blocks(tokens[:start]) + tokens[start:index + 1]
+    return result + [END_MARKER] * _open_blocks_count(result)

@@ -1,5 +1,5 @@
 from elsie.highlight import highlight_code
-from elsie.textparser import number_of_lines
+from elsie.textparser import number_of_lines, parse_text, extract_line
 
 
 def test_line_highlight(test_env):
@@ -142,3 +142,65 @@ def test_pygments_single_line_comment():
 
     c = highlight_code(test, "rust")
     assert number_of_lines(c) == 3
+
+
+def test_extract_line():
+    text = "Hello ~x{world}!"
+    tokens = parse_text(text)
+
+    for i in range(3):
+        r = extract_line(tokens, i)
+        assert tokens == r[0]
+        assert r[1] == i
+
+
+    text = "First ~z{ line\nA ~a{second~w{line}}\nThis} line} ~v{There}\n"
+    tokens = parse_text(text)
+
+    assert tokens[7][1] == "w"
+    r, p = extract_line(tokens, 7)
+    assert r == [
+        ('begin', 'z'), ('text', 'A '), ('begin', 'a'), ('text', 'second'),
+        ('begin', 'w'), ('text', 'line'), ('end', None), ('end', None), ('end', None)]
+    assert p == 4
+
+def _test_text_box_slide(slide):
+    slide.new_style("my_red", color="red")
+    slide.new_style("my_green", color="green")
+    slide.new_style("my_blue", color="blue")
+
+
+    text = "This is a long ~my_red{text}\n\nthat\n~my_green{has} a various\nproperties, ~my_blue{like a boxes} used in the text."
+
+    b = slide.box().text(text)
+    b.text_box("my_red").rect(color="red")
+    b.text_box("my_green").rect(color="green")
+    b.text_box("my_blue").rect(color="blue")
+
+    slide.box(height=70)
+
+    b = slide.box().text(text, style={"size": 40})
+    b.text_box("my_red").rect(color="red")
+    b.text_box("my_green").rect(color="green")
+    b.text_box("my_blue").rect(color="blue")
+
+
+def test_text_box_left(test_env):
+    slide = test_env.slide
+    slide.update_style("default", align="left")
+    _test_text_box_slide(slide)
+    test_env.check("text-box-left")
+
+
+def test_text_box_middle(test_env):
+    slide = test_env.slide
+    slide.update_style("default", align="middle")
+    _test_text_box_slide(slide)
+    test_env.check("text-box-middle")
+
+
+def test_text_box_right(test_env):
+    slide = test_env.slide
+    slide.update_style("default", align="right")
+    _test_text_box_slide(slide)
+    test_env.check("text-box-right")

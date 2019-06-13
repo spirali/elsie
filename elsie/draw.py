@@ -15,10 +15,10 @@ def set_font_from_style(xml, style):
         xml.set("style", s)
 
 
-def draw_text(xml, x, y, parsed_text, style, styles, id=None):
+def draw_text(xml, x, y, parsed_text, style, styles, id=None, id_index=None):
     xml.element("text")
 
-    if id is not None:
+    if id is not None and id_index is None:
         xml.set("id", id)
 
     xml.set("x", x)
@@ -39,7 +39,7 @@ def draw_text(xml, x, y, parsed_text, style, styles, id=None):
 
     xml.element("tspan")
 
-    for token_type, value in parsed_text:
+    for i, (token_type, value) in enumerate(parsed_text):
         if token_type == "text":
             xml.text(value)
         elif token_type == "newline":
@@ -56,6 +56,8 @@ def draw_text(xml, x, y, parsed_text, style, styles, id=None):
             s = styles[value]
             active_styles.append(s)
             xml.element("tspan")
+            if id is not None and id_index == i:
+                xml.set("id", id)
             xml.set("xml:space", "preserve")
             set_font_from_style(xml, s)
         elif token_type == "end":
