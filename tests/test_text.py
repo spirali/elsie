@@ -1,4 +1,5 @@
 from elsie.highlight import highlight_code
+from elsie.style import Style
 from elsie.textparser import number_of_lines
 
 
@@ -58,7 +59,7 @@ int main() {
 
 def test_console(test_env):
     slide = test_env.slide
-    slide.derive_style("code", "shell", color="white")
+    shell = slide.get_style("code").update(color="white")
     slide.new_style("prompt", color="#aaaaff")
     slide.new_style("cmd", color="yellow")
 
@@ -73,7 +74,7 @@ def test_console(test_env):
         "!prompt{~/path/to/elphie/example$} !cmd{python3 example.py}\n"
         "Preprocessing................. done\n"
         "Building...................... done\n"
-        "Creating 'example.pdf'........ done\n", "shell", escape_char="!")
+        "Creating 'example.pdf'........ done\n", shell, escape_char="!")
 
     test_env.check("console")
 
@@ -117,7 +118,7 @@ def test_styles(test_env):
     slide.box().text("~my_red{red} ~my_green{green} ~my_blue{blue}")
 
     # Inline style
-    slide.box().text("~my_red{red} gray ~my_blue{blue}", {"size": 7, "color": "gray"})
+    slide.box().text("~my_red{red} gray ~my_blue{blue}", Style(size=7, color="gray"))
 
     test_env.check("styles")
 

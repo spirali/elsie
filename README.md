@@ -18,6 +18,7 @@ more flexible by directly exposing boxes.
 * pypdf2 (or pdfunite; configurable in `render` method)
 * pygments
 * lxml
+* pillow
 * (Optional for LaTeX support): pdflatex, pdf2svg
 
 

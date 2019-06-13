@@ -1,16 +1,16 @@
+import itertools
+import json
 import os
+import sys
+from concurrent.futures import ThreadPoolExecutor
 
-from .slide import Slide, DummyPdfSlide
-from .query import compute_query
-from .textstyle import check_style
 from .highlight import make_highlight_styles
 from .pdfmerge import get_pdf_merger_by_name
+from .query import compute_query
+from .slide import Slide, DummyPdfSlide
+from .style import Style
 from .svg import get_inkscape_version
 from .version import VERSION
-from concurrent.futures import ThreadPoolExecutor
-import sys
-import json
-import itertools
 
 
 class Slides:
@@ -28,55 +28,43 @@ class Slides:
         self.bg_color = bg_color
         self._slides = []
         self._styles = {
-            "default": {
-                "font": "Ubuntu",
-                "color": "black",
-                "size": 28,
-                "line_spacing": 1.20,
-                "align": "middle",
-            },
-            "tt": {
-                "font": "Ubuntu mono",
-            },
-            "emph": {
-                "italic": True,
-            },
-            "alert": {
-                "bold": True,
-                "color": "red",
-            },
-            "code": {
-                "font": "Ubuntu Mono",
-                "align": "left",
-                "color": "#222",
-                "line_spacing": 1.20,
-                "size": 20,
-            },
-            "code_lineno": {
-                "color": "gray"
-            }
+            "default": Style(font="Ubuntu",
+                             color="black",
+                             size=28,
+                             line_spacing=1.2,
+                             align="middle"),
+            "tt": Style(font="Ubuntu mono"),
+            "emph": Style(italic=True),
+            "alert": Style(bold=True, color="red"),
+            "code": Style(font="Ubuntu Mono",
+                          align="left",
+                          color="#222",
+                          line_spacing=1.2,
+                          size=20),
+            "code_lineno": Style(color="gray")
         }
         self.temp_cache = {}
         self._styles.update(make_highlight_styles(pygments_theme))
 
-    def new_style(self, name, **kwargs):
+    def new_style(self, name, style=None, **kwargs):
+        if style is not None:
+            assert isinstance(style, Style)
+            source = style
+        else:
+            source = Style()
+
         if name in self._styles:
             raise Exception("Style already exists")
-        check_style(kwargs)
-        self._styles[name] = kwargs
+        self._styles[name] = source.update(**kwargs)
 
-    def update_style(self, name, **kwargs):
-        check_style(kwargs)
-        new_style = self._styles[name].copy()
-        new_style.update(kwargs)
-        self._styles[name] = new_style
+    def update_style(self, name, style=None, **kwargs):
+        source = self._styles[name]
 
-    def derive_style(self, old_style_name, new_style_name, **kwargs):
-        """ Copy an existing style under a new name and modify it. """
-        check_style(kwargs)
-        new_style = self._styles[old_style_name].copy()
-        new_style.update(kwargs)
-        self._styles[new_style_name] = new_style
+        if style is not None:
+            assert isinstance(style, Style)
+            source = source.update_from(style)
+
+        self._styles[name] = source.update(**kwargs)
 
     def new_slide(self, bg_color=None):
         slide = Slide(

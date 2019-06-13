@@ -1,15 +1,15 @@
 def set_font_from_style(xml, style):
-    if "font" in style:
-        xml.set("font-family", style["font"])
-    if "size" in style:
-        xml.set("font-size", style["size"])
+    if style.font is not None:
+        xml.set("font-family", style.font)
+    if style.size is not None:
+        xml.set("font-size", style.size)
 
     s = ""
-    if "color" in style:
-        s += "fill:{};".format(style["color"])
-    if style.get("bold", False):
+    if style.color is not None:
+        s += "fill:{};".format(style.color)
+    if style.bold:
         s += "font-weight: bold;"
-    if style.get("italic", False):
+    if style.italic:
         s += "font-style: italic;"
     if s:
         xml.set("style", s)
@@ -30,11 +30,11 @@ def draw_text(xml, x, y, parsed_text, style, styles, id=None):
         "right": "end"
     }
 
-    xml.set("text-anchor", anchor[style["align"]])
+    xml.set("text-anchor", anchor[style.align])
 
     set_font_from_style(xml, style)
 
-    line_size = style["size"] * style["line_spacing"]
+    line_size = style.size * style.line_spacing
     active_styles = [style]
 
     xml.element("tspan")

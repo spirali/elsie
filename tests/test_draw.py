@@ -1,7 +1,7 @@
 from elsie import Arrow
 
 
-def test_line_highlight_no_fragments(test_env):
+def test_shapes(test_env):
     slide = test_env.slide
 
     slide.box(100, 100, 200, 200).rect(color="green")

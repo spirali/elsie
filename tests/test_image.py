@@ -1,3 +1,5 @@
+from elsie.style import Style
+
 
 def test_line_highlight_fragments(test_env):
     slide = test_env.slide

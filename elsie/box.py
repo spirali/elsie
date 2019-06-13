@@ -1,9 +1,9 @@
+import base64
+import io
 import logging
 
 import lxml.etree as et
-import base64
 from PIL import Image
-import io
 
 from .draw import draw_text, draw_bitmap
 from .geom import Rect
@@ -12,10 +12,10 @@ from .image import get_image_steps, create_image_data
 from .lazy import LazyValue, eval_value, LazyPoint, unpack_point
 from .query import Query
 from .show import ShowInfo
+from .style import Style
 from .svg import svg_size_to_pixels
 from .sxml import Xml
 from .textparser import parse_text, number_of_lines, add_line_numbers
-from .textstyle import check_style
 from .value import SizeValue, PosValue
 
 
@@ -394,12 +394,12 @@ class Box:
         if line_numbers:
             parsed_text = add_line_numbers(parsed_text)
 
-        style = self._get_style(style)
+        style = self.get_style(style)
         self._text_helper(parsed_text, style)
 
         return self
 
-    def _get_style(self, style):
+    def get_style(self, style):
         result_style = self._styles["default"]
         if style == "default":
             return result_style
@@ -408,20 +408,16 @@ class Box:
             style = self._styles.get(style_name)
             if style is None:
                 raise Exception("Style '{}' not found".format(style_name))
-        elif isinstance(style, dict):
-            check_style(style)
-        else:
+        elif not isinstance(style, Style):
             raise Exception("Invalid type used as style")
-        result_style = result_style.copy()
-        result_style.update(style)
-        return result_style
+        return result_style.update_from(style)
 
     def text(self, text, style="default", escape_char="~"):
         """ Draw a text
 
             "style" can be string with the name of style or dict defining the style
         """
-        result_style = self._get_style(style)
+        result_style = self.get_style(style)
         parsed_text = parse_text(text, escape_char=escape_char)
         self._text_helper(parsed_text, result_style)
 
@@ -471,26 +467,27 @@ class Box:
 
         return self
 
-    def new_style(self, name, **kwargs):
+    def new_style(self, name, style=None, **kwargs):
         """ Define a new style, it is an error if it already exists. """
+        if style is not None:
+            assert isinstance(style, Style)
+            source = style
+        else:
+            source = Style()
+
         if name in self._styles:
             raise Exception("Style already exists")
-        check_style(kwargs)
-        self._styles[name] = kwargs
+        self._styles[name] = source.update(**kwargs)
 
-    def update_style(self, name, **kwargs):
+    def update_style(self, name, style=None, **kwargs):
         """ Update a style, it is an error if style does not exists. """
-        check_style(kwargs)
-        new_style = self._styles[name].copy()
-        new_style.update(kwargs)
-        self._styles[name] = new_style
+        source = self._styles[name]
 
-    def derive_style(self, old_style_name, new_style_name, **kwargs):
-        """ Copy an existing style under a new name and modify it. """
-        check_style(kwargs)
-        new_style = self._styles[old_style_name].copy()
-        new_style.update(kwargs)
-        self._styles[new_style_name] = new_style
+        if style is not None:
+            assert isinstance(style, Style)
+            source = source.update_from(style)
+
+        self._styles[name] = source.update(**kwargs)
 
     def x(self, value):
         """ Create position on x-axis relative to the box """
@@ -543,7 +540,7 @@ class Box:
 
     def _text_helper(self, parsed_text, style):
         def on_query(width):
-            line_height = style["size"] * style["line_spacing"]
+            line_height = style.size * style.line_spacing
             height = lines * line_height
             self._ensure_width(width)
             self._ensure_height(height)
@@ -553,16 +550,16 @@ class Box:
             self._text_height = height
 
         def draw(ctx, rect):
-            y = rect.y + (rect.height - real_size[1]) / 2 + style["size"]
-            if style["align"] == "left":
+            y = rect.y + (rect.height - real_size[1]) / 2 + style.size
+            if style.align == "left":
                 x = rect.x
-            elif style["align"] == "middle":
+            elif style.align == "middle":
                 x = rect.x + rect.width / 2
-            elif style["align"] == "right":
+            elif style.align == "right":
                 x = rect.x + rect.width
             else:
                 raise Exception(
-                    "Invalid value of align: " + repr(style["align"]))
+                    "Invalid value of align: " + repr(style.align))
             draw_text(ctx.xml, x, y, parsed_text, style, self._styles)
 
         lines = number_of_lines(parsed_text)

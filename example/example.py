@@ -1,7 +1,8 @@
 
-from elsie import Slides, Arrow
+from elsie import Slides, Arrow, Style
 
 # Let us our primary colors used in slides
+
 COLOR1 = "#328cc1"
 COLOR2 = "#d9b310"
 
@@ -219,7 +220,7 @@ slide.box(show="6").line([p1, p1.add(40, 0),
 
 slide = slides.new_slide()
 
-slide.derive_style("code", "shell", color="white")
+shell = slide.get_style("code").update(color="white")
 slide.new_style("prompt", color="#aaaaff")
 slide.new_style("cmd", color="yellow")
 
@@ -237,7 +238,7 @@ console.box(p_x=10, p_y=5).text(
     "!prompt{~/path/to/elsie/example$} !cmd{python3 example.py}\n"
     "Preprocessing................. done\n"
     "Building...................... done\n"
-    "Creating 'example.pdf'........ done\n", "shell", escape_char="!")
+    "Creating 'example.pdf'........ done\n", shell, escape_char="!")
 
 
 # LaTeX demo ##############################################
@@ -514,7 +515,7 @@ slide = slides.new_slide()
 # Demonstration of inline style
 # we do not provide style name, but directly create
 # style in place
-slide.text("Have a nice day!", {"size": 60})
+slide.text("Have a nice day!", Style(size=60))
 
 # RENDER THE SLIDES NOW!
 

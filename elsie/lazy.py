@@ -32,7 +32,7 @@ def unpack_point(obj):
         return (obj.x, obj.y)
     if (isinstance(obj, tuple) or isinstance(obj, list)) and len(obj) == 2:
         return tuple(obj)
-    raise Exception("Invalid point: {:r}".format(obj))
+    raise Exception("Invalid point: {}".format(obj))
 
 
 def eval_value(obj):
