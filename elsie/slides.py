@@ -199,6 +199,7 @@ class Slides:
                 renders)):
             if not drop_duplicates or prev_pdf != pdf:
                 merger.append(os.path.join(cache_dir, pdf))
+                computed_pdfs.add(pdf)
                 prev_pdf = pdf
             self._show_progress("Building", i, len(renders))
         self._show_progress("Building", len(renders), len(renders), last=True)
