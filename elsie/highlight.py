@@ -32,10 +32,7 @@ def highlight_code(code, language):
     lexer = get_lexer_by_name(language)
     formatter = MyFormatter()
     highlight(code, lexer, formatter)
-    stream = formatter.stream
-    if stream and stream[-1] == (("newline", None)):
-        stream = stream[:-1]
-    return normalize_tokens(stream)
+    return normalize_tokens(formatter.stream)
 
 
 def make_highlight_styles(pygments_style):

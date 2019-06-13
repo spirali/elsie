@@ -2,6 +2,7 @@
 END_MARKER = ("end", None)
 NEWLINE_1 = ("newline", 1)
 
+
 def number_of_lines(parsed_text):
     lines = 1
     for (token, value) in parsed_text:
@@ -10,7 +11,30 @@ def number_of_lines(parsed_text):
     return lines
 
 
+def remove_trailing_whitespaces(stream):
+    """
+    Removes newlines from the end, skipping over ("end", None).
+    """
+    if not stream:
+        return stream
+
+    while stream:
+        changed = False
+        for index, item in enumerate(stream[::-1]):
+            if item == ("end", None):
+                continue
+            elif item[0] == "newline":
+                stream = stream[:-(index + 1)] + stream[len(stream)-index:]
+                changed = True
+            break
+        if not changed:
+            break
+
+    return stream
+
+
 def normalize_tokens(tokens):
+    tokens = remove_trailing_whitespaces(tokens)
     result = []
 
     for token in tokens:
@@ -25,8 +49,7 @@ def normalize_tokens(tokens):
         result.append(token)
 
     # Remove trailing empty lines
-    if result and result[-1][0] == "newline":
-        result.pop()
+    result = remove_trailing_whitespaces(result)
     return result
 
 
