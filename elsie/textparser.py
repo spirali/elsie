@@ -11,25 +11,23 @@ def number_of_lines(parsed_text):
 
 
 def normalize_tokens(tokens):
-    # Remove empty texts
-    tokens = [kv for kv in tokens if kv[0] != "text" or kv[1]]
+    result = []
 
-    # Merge lines
-    i = 1
-    while i < len(tokens):
-        token_name, value = tokens[i]
-        if token_name == "newline" and tokens[i - 1][0] == "newline":
-            value2 = tokens[i - 1][1]
-            del tokens[i]
-            del tokens[i - 1]
-            tokens.insert(i - 1, ("newline", value + value2))
+    for token in tokens:
+        key, value = token
+        if key == "text" and not value:
+            continue  # Remove empty texts
+
+        if key == "newline" and result and result[-1][0] == "newline":
+            result[-1] = ("newline", result[-1][1] + value)
             continue
-        i += 1
+
+        result.append(token)
 
     # Remove trailing empty lines
-    if tokens and tokens[-1][0] == "newline":
-        tokens = tokens[:-1]
-    return tokens
+    if result and result[-1][0] == "newline":
+        result.pop()
+    return result
 
 
 def add_line_numbers(tokens):
