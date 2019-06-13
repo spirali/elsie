@@ -56,6 +56,17 @@ int main() {
     test_env.check("linenumbers", 1)
 
 
+def test_highlight_whitespace(test_env):
+    slide = test_env.slide
+
+    box = slide.box().rect(bg_color="red")
+    box.box(padding=10).code("rust", """
+line
+second_line // comment""")
+
+    test_env.check("highlight-whitespace", 1)
+
+
 def test_console(test_env):
     slide = test_env.slide
     slide.derive_style("code", "shell", color="white")
