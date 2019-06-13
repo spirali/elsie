@@ -1,3 +1,7 @@
+import glob
+import os
+
+from elsie import Slides
 
 
 def test_next(test_env):
@@ -12,4 +16,19 @@ def test_next(test_env):
     test_env.check("test_next", 8)
 
 
+def test_cache(test_env):
+    slides = Slides()
 
+    slide = slides.new_slide()
+    slide.box(show="next+").text("1")
+    slide.box(show="next+").text("2")
+    slide.box(show="next+").text("3")
+
+    cache_dir = "elsie-cache"
+    slides.render(output="test.pdf", cache_dir=cache_dir)
+
+    assert set(os.path.basename(p) for p in glob.glob("{}/*.pdf".format(cache_dir))) == {
+        "7cdc642e30c1a38b89bf9bb00bcc0f60fc9617bf.pdf",
+        "748bb89d5eb54a97933e39f406b1e6ed25d0b219.pdf",
+        "f3362fd290216e782a7ced435ca2ceff011776d1.pdf"
+    }
