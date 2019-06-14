@@ -17,7 +17,7 @@ class Slide:
         self.index = index
         self._box = Box(self, 0, 0, width, height, styles, ShowInfo())
         self._box._styles = styles
-        self.max_step = 0
+        self.max_step = 1
         self.temp_cache = temp_cache
 
     def box(self):
