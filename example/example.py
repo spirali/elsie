@@ -214,6 +214,23 @@ slide.box(show="6").line([p1, p1.add(40, 0),
                           p2.add(40, 0), p2],
                          stroke_width=3, color="orange", end_arrow=arrow)
 
+# Text box demo ###############################################
+
+slide = slides.new_slide()
+
+b = slide.box().text("~#A{Demo} for ~#B{highlighting} a part of a line")
+
+# Now we select part of text accoring style
+# You can select any style (e.g. "emph")
+# But you can also use "dummy style" that starts with "#"
+# Such style does not have to be declared and it serves
+# only purpose of selecting part of the text
+b.text_box("#A", z_level=-1, show="2").rect(bg_color=COLOR2)
+
+b2 = b.text_box("#B", z_level=-1, show="3", padding=-3).rect(color=COLOR2)
+arrow = Arrow(10)
+b2.line([b2.p("50%", "160%"), b2.p("50%", "100%")],
+                         stroke_width=3, color=COLOR2, end_arrow=arrow)
 
 # Console demo ############################################
 
