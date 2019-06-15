@@ -208,6 +208,6 @@ def test_text_box_right(test_env):
 
 def test_text_dummy_style(test_env):
     slide = test_env.slide
-    b = slide.box().text("This is ~#ABC{a text}.")
-    b.text_box("#ABC").rect(color="black")
+    b = slide.box().text("~#ABC{This} ~#ABC{is} ~#ABC{a text}.")
+    b.text_box("#ABC", n_th=3).rect(color="black")
     test_env.check("dummy-style")

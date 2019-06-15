@@ -218,14 +218,18 @@ class Box:
         kwargs.setdefault("height", LazyValue(compute_height))
         return self.box(**kwargs)
 
-    def text_box(self, style_name, **kwargs):
+    def text_box(self, style_name, n_th=1, **kwargs):
         """ Create a box around a styled text """
+        assert n_th > 0
+        count = n_th
         if self._parsed_text is None:
             raise Exception("text_box() called on box with no text")
         for (i, token) in enumerate(self._parsed_text):
             if token[0] == "begin" and token[1] == style_name:
-                return self._text_box_helper(i, kwargs)
-        raise Exception("Style '{}' not found".format(style_name))
+                count -= 1
+                if count == 0:
+                    return self._text_box_helper(i, kwargs)
+        raise Exception("Style {}. occurence of style '{}' not found".format(n_th, style_name))
 
     def _text_box_helper(self, index, box_args):
         def on_query_x(x):
