@@ -46,6 +46,8 @@ def draw_text(xml, x, y, parsed_text, style, styles, id=None, id_index=None):
             for s in active_styles:
                 xml.close("tspan")  # tspan
             for i, s in enumerate(active_styles):
+                if s is None:
+                    continue
                 xml.element("tspan")
                 xml.set("xml:space", "preserve")
                 if i == 0:
@@ -53,13 +55,17 @@ def draw_text(xml, x, y, parsed_text, style, styles, id=None, id_index=None):
                     xml.set("dy", line_size * value)
                 set_font_from_style(xml, s)
         elif token_type == "begin":
-            s = styles[value]
+            is_dummy = value and value[0] == "#"
+            s = styles.get(value, None)
+            if s is None and not is_dummy:
+                raise Exception("Style '{}' not found".format(value))
             active_styles.append(s)
             xml.element("tspan")
             if id is not None and id_index == i:
                 xml.set("id", id)
             xml.set("xml:space", "preserve")
-            set_font_from_style(xml, s)
+            if not is_dummy:
+                set_font_from_style(xml, s)
         elif token_type == "end":
             xml.close("tspan")
             active_styles.pop()
@@ -67,7 +73,8 @@ def draw_text(xml, x, y, parsed_text, style, styles, id=None, id_index=None):
             raise Exception("Invalid token")
 
     for s in active_styles:
-        xml.close("tspan")
+        if s is not None:
+            xml.close("tspan")
     xml.close("text")
 
 

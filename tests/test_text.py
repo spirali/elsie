@@ -204,3 +204,10 @@ def test_text_box_right(test_env):
     slide.update_style("default", align="right")
     _test_text_box_slide(slide)
     test_env.check("text-box-right")
+
+
+def test_text_dummy_style(test_env):
+    slide = test_env.slide
+    b = slide.box().text("This is ~#ABC{a text}.")
+    b.text_box("#ABC").rect(color="black")
+    test_env.check("dummy-style")
