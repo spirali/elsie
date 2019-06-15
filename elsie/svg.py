@@ -27,6 +27,7 @@ def run_inkscape(extra_args, filename=None, stdin=None):
         stdout, stderr = p.communicate(stdin.encode("utf-8"))
         return stdout
 
+
 def get_inkscape_version():
     args = ("/usr/bin/inkscape", "--version")
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

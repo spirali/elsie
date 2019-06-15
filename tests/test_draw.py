@@ -73,6 +73,10 @@ def test_line_highlight_no_fragments(test_env):
     slide.line([(100, 410), (500, 410)], stroke_width=10, stroke_dasharray="20 10 2 10")
 
     # dashed rectangle
-    slide.box(550, 350, 50, 50).rect(stroke_width=5, stroke_dasharray="2", color="black", rx=5, ry=5)
+    slide.box(550, 350, 50, 50).rect(stroke_width=5,
+                                     stroke_dasharray="2",
+                                     color="black",
+                                     rx=5,
+                                     ry=5)
 
     test_env.check("shapes")

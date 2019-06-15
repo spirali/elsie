@@ -153,7 +153,6 @@ def test_extract_line():
         assert tokens == r[0]
         assert r[1] == i
 
-
     text = "First ~z{ line\nA ~a{second~w{line}}\nThis} line} ~v{There}\n"
     tokens = parse_text(text)
 
@@ -164,13 +163,14 @@ def test_extract_line():
         ('begin', 'w'), ('text', 'line'), ('end', None), ('end', None), ('end', None)]
     assert p == 4
 
+
 def _test_text_box_slide(slide):
     slide.new_style("my_red", color="red")
     slide.new_style("my_green", color="green")
     slide.new_style("my_blue", color="blue")
 
-
-    text = "This is a long ~my_red{text}\n\nthat\n~my_green{has} a various\nproperties, ~my_blue{like a boxes} used in the text."
+    text = "This is a long ~my_red{text}\n\nthat\n~my_green{has} a various\nproperties," \
+           " ~my_blue{like a boxes} used in the text."
 
     b = slide.box().text(text)
     b.text_box("my_red").rect(color="red")

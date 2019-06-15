@@ -14,7 +14,7 @@ from .query import Query
 from .show import ShowInfo
 from .svg import svg_size_to_pixels
 from .sxml import Xml
-from .textparser import parse_text, number_of_lines, add_line_numbers, extract_line, extract_styled_content
+from .textparser import parse_text, number_of_lines, add_line_numbers, extract_line
 from .textstyle import check_style
 from .value import SizeValue, PosValue
 
@@ -253,20 +253,21 @@ class Box:
 
         line, index_in_line = extract_line(self._parsed_text, index)
         xml = Xml()
-        draw_text(xml, 0, 0, line, self._text_style, self._styles, id="target", id_index=index_in_line)
+        draw_text(xml, 0, 0, line, self._text_style, self._styles,
+                  id="target", id_index=index_in_line)
         text = xml.to_string()
         del xml
 
         self._queries.append(Query(("inkscape-x", text), on_query_x))
         self._queries.append(Query(("inkscape", text), on_query_h))
 
-        box_args.setdefault("x", LazyValue(lambda: text_x_in_rect(self._rect, self._text_style) + query_result[0]))
+        box_args.setdefault("x", LazyValue(lambda: text_x_in_rect(
+            self._rect, self._text_style) + query_result[0]))
         box_args.setdefault("y", LazyValue(compute_y))
         box_args.setdefault("width", LazyValue(lambda: query_result[1]))
         box_args.setdefault("height", LazyValue(compute_height))
 
         return self.box(**box_args)
-
 
     def rect(self,
              color=None, bg_color=None,
