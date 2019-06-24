@@ -1,6 +1,6 @@
 import os
 
-from .slide import Slide, DummyPdfSlide
+from .slidecls import Slide, DummyPdfSlide
 from .query import compute_query
 from .textstyle import check_style
 from .highlight import make_highlight_styles
@@ -209,3 +209,45 @@ class Slides:
 
         for pdf in pdfs_in_dir.difference(computed_pdfs):
             os.remove(os.path.join(cache_dir, pdf))
+
+
+_global_slides = None
+
+
+def set_global_slides(slides):
+    """Set global slides (used in @slide decorator)"""
+    assert isinstance(slides, Slides)
+    global _global_slides
+    _global_slides = slides
+
+
+def get_global_slides():
+    """Get global slides
+
+    If not exists, default slides is created
+    """
+    global _global_slides
+    if _global_slides is None:
+        _global_slides = Slides()
+    return _global_slides
+
+
+# Decorator
+def slide(*, bg_color=None):
+    slides = get_global_slides()
+
+    def _helper(fn):
+        slide = slides.new_slide(bg_color=bg_color)
+        fn(slide)
+        return fn
+
+    return _helper
+
+
+def render(output="output.pdf", cache_dir="./elsie-cache",
+           threads=None, return_svg=False, pdf_merger="pypdf",
+           drop_duplicates=False):
+    """Render global slides"""
+    if _global_slides is None:
+        raise Exception("No slides to render")
+    _global_slides.render(output, cache_dir, threads, return_svg, pdf_merger, drop_duplicates)

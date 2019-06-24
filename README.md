@@ -3,8 +3,8 @@
 Elsie is a framework for making slides in Python
 
 Example:
-  * Result: [example.pdf](example/example.pdf)
-  * Source code: [example.py](example/example.py)
+  * Result: [example.pdf](examples/bigdemo/example.pdf)
+  * Source code: [example.py](examples/bigdemo/example.py)
 
 Elsie is based on experience with my previous project
 https://github.com/spirali/elphie/. It is a complete rewrite while making it

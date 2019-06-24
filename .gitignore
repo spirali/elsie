@@ -4,3 +4,4 @@ tests/work
 *-cache
 /build
 /dist
+examples/**/*.pdf
