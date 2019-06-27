@@ -47,26 +47,6 @@ def test_image_no_fragments_show_begin(test_env):
     test_env.check("nofrag_showbegin", 3)
 
 
-def test_image_scale_width(test_env):
-    test_env.slide.box(width=300).image(test_env.assets_path("scale.svg"))
-    test_env.check("scale-width")
-
-
-def test_image_scale_height(test_env):
-    test_env.slide.box(height=100).image(test_env.assets_path("scale.svg"))
-    test_env.check("scale-height")
-
-
-def test_image_scale_width_height(test_env):
-    test_env.slide.box(width=300, height=100).image(test_env.assets_path("scale.svg"))
-    test_env.check("scale-width-height")
-
-
-def test_image_scale_no_dimensions(test_env):
-    test_env.slide.box().image(test_env.assets_path("scale.svg"))
-    test_env.check("scale-no-dimensions")
-
-
 def test_image_bitmap(test_env):
     slide = test_env.slide
     img_png = test_env.assets_path("test.png")
@@ -85,3 +65,45 @@ def test_image_bitmap(test_env):
     b.image(img_jpg)
 
     test_env.check("image-bitmap", 1)
+
+
+def test_image_svg_no_size(test_env):
+    slide = test_env.slide
+
+    b = slide.box(width="fill", horizontal=True)
+    b.box(x="[90%]").image(test_env.assets_path("test100x30.svg"))
+
+    slide.box(y="[90%]").image(test_env.assets_path("test100x30.svg"))
+    test_env.check("test-image-svg-no-size")
+
+
+def test_image_bitmap_no_size(test_env):
+    slide = test_env.slide
+
+    b = slide.box(width="fill", horizontal=True)
+    b.box(x="[90%]").image(test_env.assets_path("test.png"))
+
+    slide.box(y="[90%]").image(test_env.assets_path("test.jpeg"))
+    test_env.check("test-image-bitmap-no-size")
+
+
+def test_image_width(test_env):
+    test_env.slide.box(width=300).rect(bg_color="green").image(test_env.assets_path("test100x30.svg"))
+    test_env.slide.box(width=50).image(test_env.assets_path("test100x30.svg"))
+    test_env.slide.box(width=300).image(test_env.assets_path("test.png"))
+    test_env.slide.box(width=300).image(test_env.assets_path("test100x30.svg"))
+    test_env.check("image-width")
+
+
+def test_image_height(test_env):
+    test_env.slide.box(height=100).rect(bg_color="green").image(test_env.assets_path("test100x30.svg"))
+    test_env.slide.box(height=10).image(test_env.assets_path("test100x30.svg"))
+    test_env.slide.box(height=100).image(test_env.assets_path("test.png"))
+    test_env.slide.box(height=200).image(test_env.assets_path("test100x30.svg"))
+    test_env.check("image-height")
+
+
+def test_image_width_height(test_env):
+    test_env.slide.box(width=300, height=100).image(test_env.assets_path("test100x30.svg"))
+    test_env.slide.box(width=300, height=100).image(test_env.assets_path("test.png"))
+    test_env.check("image-width-height")

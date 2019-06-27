@@ -105,6 +105,8 @@ class Box:
         self.slide = slide
         self._width = SizeValue.parse(width or 0)
         self._height = SizeValue.parse(height or 0)
+        self._width_definition = width
+        self._height_definition = height
         self.childs = []
         self._rect = None
         self._queries = []
@@ -361,9 +363,21 @@ class Box:
             raise Exception("Unkown image extension")
         return self
 
+    def _set_image_size_request(self, image_width, image_height):
+        if self._width_definition is None and self._height_definition is None:
+            self._ensure_width(image_width)
+            self._ensure_height(image_height)
+            return
+        minx, miny = self._min_child_size()
+        sizex = max(self._width.min_size, minx)
+        sizey = max(self._height.min_size, miny)
+        self._ensure_width(sizey * image_width / image_height)
+        self._ensure_height(sizex * image_height / image_width)
+
     def _image_bitmap(self, filename, scale):
         key = (filename, "bitmap")
         entry = self.slide.temp_cache.get(key)
+
         if entry is None:
             with open(filename, "rb") as f:
                 data = f.read()
@@ -377,6 +391,8 @@ class Box:
             self.slide.temp_cache[key] = (image_width, image_height, mime, data)
         else:
             image_width, image_height, mime, data = entry
+
+        self._set_image_size_request(image_width * (scale or 1), image_height * (scale or 1))
 
         def draw(ctx, rect):
             if scale is None:
@@ -408,6 +424,8 @@ class Box:
 
         image_width = svg_size_to_pixels(root.get("width"))
         image_height = svg_size_to_pixels(root.get("height"))
+
+        self._set_image_size_request(image_width * (scale or 1), image_height * (scale or 1))
 
         if fragments:
             image_steps = get_image_steps(root)

@@ -9,13 +9,13 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="819.2337"
-   height="289.33255"
-   viewBox="0 0 216.75558 76.552571"
+   width="100mm"
+   height="30mm"
+   viewBox="0 0 100 30"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.4 (unknown)"
-   sodipodi:docname="scale.svg">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="test100x30.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -25,22 +25,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="414.82958"
-     inkscape:cy="28.461698"
+     inkscape:zoom="1.4"
+     inkscape:cx="400"
+     inkscape:cy="91.891157"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0"
-     units="px"
      inkscape:window-width="1920"
-     inkscape:window-height="1012"
+     inkscape:window-height="1010"
      inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1" />
+     inkscape:window-y="30"
+     inkscape:window-maximized="1"
+     units="mm" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -57,13 +53,18 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-32.072342,-41.490334)">
+     transform="translate(0,-267)">
     <rect
-       style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:1.5875001;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect10"
-       width="216.75558"
-       height="76.552574"
-       x="32.072342"
-       y="41.490334" />
+       width="100"
+       height="30"
+       x="0"
+       y="267"
+       style="fill:#ff6600;stroke-width:0.26458332" />
+    <path
+       style="fill:#008000;stroke:#22241c;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 0,267 100,30"
+       id="path12"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
