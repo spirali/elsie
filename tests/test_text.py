@@ -1,5 +1,7 @@
 from elsie.highlight import highlight_code
-from elsie.textparser import number_of_lines, parse_text, extract_line
+from elsie.textparser import (number_of_lines, parse_text, extract_line,
+                              tokens_to_text_without_style,
+                              tokens_merge)
 
 
 def test_line_highlight(test_env):
@@ -34,6 +36,20 @@ def test_line_highlight(test_env):
 
     test_env.check("linehighlight", 5)
 
+
+def test_styles_and_highlight(test_env):
+    slide = test_env.slide
+    b = slide.box()
+    b.code("c", """#include <stdio.h>
+/* Hello world program */
+
+int ~#A{main}() {
+    printf("Hello ~emph{world!\\n");}
+    return 0;
+}""", use_styles=True)
+
+    b.text_box("#A", z_level=-1).rect(bg_color="red")
+    test_env.check("styles-highlight")
 
 def test_line_numbers(test_env):
     slide = test_env.slide
@@ -211,3 +227,32 @@ def test_text_dummy_style(test_env):
     b = slide.box().text("~#ABC{This} ~#ABC{is} ~#ABC{a text}.")
     b.text_box("#ABC", n_th=3).rect(color="black")
     test_env.check("dummy-style")
+
+
+def test_text_merge_and_destylize():
+    t1 = "Hello world!\n  This is nice line   \n\n\nLast line "
+    t2 = "Hello ~b{~a{world!}\n  ~c{This} is nice} line   \n\n\n~d{Last line} "
+    t3 = "Hello ~x{world!\n  Th}~y{is is nice line }  \n\n\nLast~z{ }line "
+
+
+    p2 = parse_text(t2)
+    p3 = parse_text(t3)
+
+    assert t1 == tokens_to_text_without_style(parse_text(t1))
+    assert t1 == tokens_to_text_without_style(p2)
+    assert t1 == tokens_to_text_without_style(p3)
+
+    r = tokens_merge(p2, p3)
+    assert t1 == tokens_to_text_without_style(r)
+
+    r2 = [('text', 'Hello '), ('begin', 'b'), ('begin', 'a'), ('begin', 'x'),
+          ('text', 'world!'), ('end', None), ('end', None), ('begin', 'x'),
+          ('newline', 1), ('text', '  '), ('begin', 'c'), ('text', 'Th'),
+          ('end', None), ('end', None), ('begin', 'c'), ('begin', 'y'), ('text', 'is'),
+          ('end', None), ('end', None), ('begin', 'y'), ('text', ' is nice'),
+          ('end', None), ('end', None), ('begin', 'y'), ('text', ' line '), ('end', None),
+          ('text', '  '), ('newline', 3), ('begin', 'd'), ('text', 'Last'), ('begin', 'z'),
+          ('text', ' '), ('end', None), ('text', 'line'), ('end', None), ('text', ' ')]
+    assert r == r2
+
+

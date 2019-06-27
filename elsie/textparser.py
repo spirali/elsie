@@ -150,3 +150,111 @@ def extract_styled_content(tokens, index):
         index += 1
     result = _open_blocks(tokens[:start]) + tokens[start:index + 1]
     return result + [END_MARKER] * _open_blocks_count(result)
+
+
+def tokens_to_text_without_style(tokens):
+    result = []
+    for name, value in tokens:
+        if name == "text":
+            result.append(value)
+        elif name == "newline":
+            result.append("\n" * value)
+    return "".join(result)
+
+
+def tokens_merge(tokens1, tokens2):
+    tokens = _tokens_merge_helper(tokens1, tokens2)
+    result = []
+    opened = []
+    for token in tokens:
+        if token[0] != "_block":
+            result.append(token)
+            continue
+
+        _, index, t = token
+        if t[0] == "begin":
+            opened.append(token)
+            result.append(t)
+            continue
+        assert t[0] == "end"
+        reopen = []
+        pos = -1
+        for _, i2, t2 in reversed(opened):
+            result.append(END_MARKER)
+            if i2 != index:
+                pos -= 1
+                reopen.append(t2)
+            else:
+                break
+        del opened[pos]
+        result.extend(reopen)
+    assert not opened
+    return normalize_tokens(result)
+
+
+def _tokens_merge_helper(tokens1, tokens2):
+    result = []
+
+    tokens = (iter(tokens1), iter(tokens2))
+    last = [None, None]
+
+    def read(i):
+        try:
+            last[i] = next(tokens[i])
+        except StopIteration:
+            last[i] = ("<END>", None)
+        return last[i]
+
+    def new_block(i):
+        result.append(("_block", i, last[i]))
+        read(i)
+
+    read(0)
+    read(1)
+    while True:
+        ((n1, v1), (n2, v2)) = last
+
+        if n1 == "end":
+            new_block(0)
+            continue
+
+        if n2 == "end":
+            new_block(1)
+            continue
+
+        if n1 == "begin":
+            new_block(0)
+            continue
+
+        if n2 == "begin":
+            new_block(1)
+            continue
+
+        if n1 == "<END>" or n2 == "<END>":
+            assert n1 == "<END>" and n2 == "<END>"
+            break
+
+        if n1 == "newline" or n2 == "newline":
+            assert n1 == "newline" and n2 == "newline"
+            assert v1 == v2
+            result.append(last[0])
+            read(0)
+            read(1)
+            continue
+
+        assert n1 == "text" and n2 == "text"
+        if len(v1) == len(v2):
+            result.append(last[0])
+            read(0)
+            read(1)
+            continue
+
+        if len(v1) < len(v2):
+            result.append(last[0])
+            read(0)
+            last[1] = ("text", v2[len(v1):])
+        else:
+            result.append(last[1])
+            read(1)
+            last[0] = ("text", v1[len(v2):])
+    return result

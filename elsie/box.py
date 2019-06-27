@@ -15,6 +15,7 @@ from .show import ShowInfo
 from .svg import svg_size_to_pixels
 from .sxml import Xml
 from .textparser import parse_text, number_of_lines, add_line_numbers, extract_line
+from .textparser import tokens_merge, tokens_to_text_without_style
 from .textstyle import check_style
 from .value import SizeValue, PosValue
 
@@ -449,14 +450,21 @@ class Box:
 
         self.add_child(draw)
 
-    def code(self, language, text, tabsize=4, line_numbers=False, style="code"):
+    def code(self, language, text, tabsize=4, line_numbers=False, style="code",
+             use_styles=False, escape_char="~"):
         """ Draw a code with syntax highlighting """
 
         text = text.replace("\t", " " * tabsize)
+
         if language:
+            if use_styles:
+                ptext = parse_text(text, escape_char)
+                text = tokens_to_text_without_style(ptext)
             parsed_text = highlight_code(text, language)
+            if use_styles:
+                parsed_text = tokens_merge(parsed_text, ptext)
         else:
-            parsed_text = parse_text(text, escape_char=None)
+            parsed_text = parse_text(text, escape_char=escape_char if use_styles else None)
 
         if line_numbers:
             parsed_text = add_line_numbers(parsed_text)
