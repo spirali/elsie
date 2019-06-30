@@ -238,6 +238,34 @@ def text_box_demo(slide):
                             stroke_width=3, color=COLOR2, end_arrow=arrow)
 
 
+@elsie.slide()
+def text_box_in_code_demo(slide):
+    slide.derive_style("default", "small", size=10)
+    b = slide.box().text("Words inside code block")
+    slide.box(height=80)
+
+    c = slide.box().code("c", """#include <stdio.h>
+
+/* Hello world program */
+
+    int ~#MAIN{main}() {
+    printf(~small{"Hello world!\\n"});
+    return ~#RETURN_VALUE{0};
+}""", use_styles=True)  # <--- use_styles=True is important to enable styling in code block
+
+    p2 = c.text_box("#RETURN_VALUE").p("50%", "100%")
+
+    c.text_box("#MAIN", z_level=-1, p_x=-2).rect(bg_color="#FBB", color="black")
+
+    arrow = elsie.Arrow(10)
+    slide.line([p2.add(0, 40), p2],
+               end_arrow=arrow, stroke_width=3)
+
+    c.line_box(4).box(x="100%", height="100%").text("← Box world highlight", "small")
+    c.line_box(5).box(x="100%", height="100%").text("← Font style changed", "small")
+    c.line_box(6).box(x="100%", height="100%").text("← Pointing to a word", "small")
+
+
 # Console demo ############################################
 
 @elsie.slide()
