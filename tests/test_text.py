@@ -229,11 +229,41 @@ def test_text_dummy_style(test_env):
     test_env.check("dummy-style")
 
 
+def test_text_merge2():
+
+    def test(t1, t2):
+        p1 = parse_text(t1)
+        p2 = parse_text(t2)
+
+        r1 = tokens_merge(p1, p2)
+        r2 = tokens_merge(p2, p1)
+        assert r1 == r2
+        assert r1.count(("begin", "a")) == 1
+        assert r1.count(("begin", "b")) == 1
+        assert r1.count(("end", None)) == 2
+        assert tokens_to_text_without_style(r1) == "Aaa Bbb Ccc"
+
+    t1 = "Aaa ~a{Bbb} Ccc"
+    t2 = "~b{Aaa Bbb Ccc}"
+    test(t1, t2)
+
+    t1 = "Aaa ~a{Bbb} Ccc"
+    t2 = "Aaa ~b{Bbb Ccc}"
+    test(t1, t2)
+
+    t1 = "Aaa ~a{Bbb} Ccc"
+    t2 = "~b{Aaa Bbb} Ccc"
+    test(t1, t2)
+
+    t1 = "~b{Aaa ~a{Bbb} Ccc}"
+    t2 = "Aaa Bbb Ccc"
+    test(t1, t2)
+
+
 def test_text_merge_and_destylize():
     t1 = "Hello world!\n  This is nice line   \n\n\nLast line "
     t2 = "Hello ~b{~a{world!}\n  ~c{This} is nice} line   \n\n\n~d{Last line} "
     t3 = "Hello ~x{world!\n  Th}~y{is is nice line }  \n\n\nLast~z{ }line "
-
 
     p2 = parse_text(t2)
     p3 = parse_text(t3)
@@ -245,14 +275,14 @@ def test_text_merge_and_destylize():
     r = tokens_merge(p2, p3)
     assert t1 == tokens_to_text_without_style(r)
 
-    r2 = [('text', 'Hello '), ('begin', 'b'), ('begin', 'a'), ('begin', 'x'),
-          ('text', 'world!'), ('end', None), ('end', None), ('begin', 'x'),
-          ('newline', 1), ('text', '  '), ('begin', 'c'), ('text', 'Th'),
-          ('end', None), ('end', None), ('begin', 'c'), ('begin', 'y'), ('text', 'is'),
-          ('end', None), ('end', None), ('begin', 'y'), ('text', ' is nice'),
-          ('end', None), ('end', None), ('begin', 'y'), ('text', ' line '), ('end', None),
-          ('text', '  '), ('newline', 3), ('begin', 'd'), ('text', 'Last'), ('begin', 'z'),
-          ('text', ' '), ('end', None), ('text', 'line'), ('end', None), ('text', ' ')]
+    r2 = [('text', 'Hello '), ('begin', 'b'), ('begin', 'x'), ('begin', 'a'),
+          ('text', 'world!'), ('end', None), ('newline', 1),
+          ('text', '  '), ('begin', 'c'), ('text', 'Th'), ('end', None), ('end', None),
+          ('begin', 'c'), ('begin', 'y'), ('text', 'is'), ('end', None), ('end', None),
+          ('begin', 'y'), ('text', ' is nice'), ('end', None), ('end', None), ('begin', 'y'),
+          ('text', ' line '), ('end', None), ('text', '  '), ('newline', 3), ('begin', 'd'),
+          ('text', 'Last'), ('begin', 'z'), ('text', ' '), ('end', None),
+          ('text', 'line'), ('end', None), ('text', ' ')]
     assert r == r2
 
 

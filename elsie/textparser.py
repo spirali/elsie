@@ -117,6 +117,22 @@ def _open_blocks_count(tokens):
     return count
 
 
+def _get_block_end_index(tokens, index):
+    assert tokens[index][0] == "begin"
+    index += 1
+    count = 0
+
+    while index < len(tokens):
+        name, value = tokens[index]
+        if name == "begin":
+            count += 1
+        elif name == "end":
+            count -= 1
+            if count < 0:
+                return index
+        index += 1
+
+
 def extract_line(tokens, index):
     b = index
     while b >= 0 and tokens[b][0] != "newline":
@@ -195,14 +211,18 @@ def tokens_merge(tokens1, tokens2):
 def _tokens_merge_helper(tokens1, tokens2):
     result = []
 
-    tokens = (iter(tokens1), iter(tokens2))
+    tokens = (tokens1, tokens2)
     last = [None, None]
+    indices = [0, 0]
+    stacks = ([], [])
 
     def read(i):
-        try:
-            last[i] = next(tokens[i])
-        except StopIteration:
+        index = indices[i]
+        if index >= len(tokens[i]):
             last[i] = ("<END>", None)
+        else:
+            last[i] = tokens[i][index]
+        indices[i] += 1
         return last[i]
 
     def new_block(i):
@@ -214,19 +234,34 @@ def _tokens_merge_helper(tokens1, tokens2):
     while True:
         ((n1, v1), (n2, v2)) = last
 
-        if n1 == "end":
+        if n1 == "end" and (n2 != "end" or stacks[0] > stacks[1]):
+            stacks[0].pop()
             new_block(0)
             continue
 
         if n2 == "end":
+            stacks[1].pop()
             new_block(1)
             continue
 
         if n1 == "begin":
-            new_block(0)
-            continue
+            i1 = indices[0] - 1
+            if n2 == "begin":
+                # Find which block is shorter
+                i2 = indices[1] - 1
+                t1 = tokens_to_text_without_style(tokens[0][i1:_get_block_end_index(tokens[0], i1)])
+                t2 = tokens_to_text_without_style(tokens[1][i2:_get_block_end_index(tokens[1], i2)])
+                if len(t1) > len(t2):
+                    stacks[0].append(i1)
+                    new_block(0)
+                    continue
+            else:
+                stacks[0].append(i1)
+                new_block(0)
+                continue
 
         if n2 == "begin":
+            stacks[1].append(indices[0] - 1)
             new_block(1)
             continue
 
