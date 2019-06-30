@@ -7,6 +7,9 @@ class LazyValue:
     def map(self, fn):
         return LazyValue(lambda: fn(self.eval()))
 
+    def add(self, value):
+        return self.map(lambda v: v + value)
+
     def eval(self):
         return self.fn()
 
