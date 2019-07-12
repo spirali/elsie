@@ -35,7 +35,7 @@ def unpack_point(obj):
         return (obj.x, obj.y)
     if (isinstance(obj, tuple) or isinstance(obj, list)) and len(obj) == 2:
         return tuple(obj)
-    raise Exception("Invalid point: {:r}".format(obj))
+    raise Exception("Invalid point: {!r}".format(obj))
 
 
 def eval_value(obj):
@@ -43,3 +43,6 @@ def eval_value(obj):
         return obj.eval()
     else:
         return obj
+
+def eval_pair(pair):
+    return eval_value(pair[0]), eval_value(pair[1])

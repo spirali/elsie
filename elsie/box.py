@@ -9,7 +9,7 @@ from .draw import draw_text, draw_bitmap
 from .geom import Rect
 from .highlight import highlight_code
 from .image import get_image_steps, create_image_data
-from .lazy import LazyValue, eval_value, LazyPoint, unpack_point
+from .lazy import LazyValue, eval_value, LazyPoint, unpack_point, eval_pair
 from .query import Query
 from .show import ShowInfo
 from .svg import svg_size_to_pixels
@@ -18,6 +18,8 @@ from .textparser import parse_text, number_of_lines, add_line_numbers, extract_l
 from .textparser import tokens_merge, tokens_to_text_without_style
 from .textstyle import check_style
 from .value import SizeValue, PosValue
+from .path import (check_and_unpack_path_commands, eval_path_commands,
+                   path_points_for_end_arrow, path_update_end_point)
 
 
 class Painter:
@@ -313,12 +315,40 @@ class Box:
 
         return self
 
+    def path(self, commands, color="black", bg_color=None, stroke_width=1, stroke_dasharray=None,
+             end_arrow=None):
+        commands = check_and_unpack_path_commands(commands)
+        if not commands:
+            return
+
+        def command_to_str(command):
+            name, pairs = command
+            return name + " ".join("{},{}".format(p[0], p[1]) for p in pairs)
+
+        def draw(ctx, rect):
+            cmds = eval_path_commands(commands)
+            if end_arrow:
+                end_p1, end_p2 = path_points_for_end_arrow(cmds)
+                end_new_p2 = end_arrow.move_end_point(end_p1, end_p2)
+                path_update_end_point(cmds, end_new_p2)
+
+            xml = ctx.xml
+            xml.element("path")
+            xml.set("d", " ".join(command_to_str(c) for c in cmds))
+            set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
+            xml.close("path")
+
+            if end_arrow:
+                end_arrow.render(xml, end_p1, end_p2, color)
+
+        self.add_child(draw)
+
     def line(self, points, color="black", stroke_width=1, stroke_dasharray=None,
              start_arrow=None, end_arrow=None):
         """ Draw a line """
 
         def draw_rect(ctx, rect):
-            p = [(eval_value(x), eval_value(y)) for x, y in points]
+            p = [eval_pair(p) for p in points]
             p2 = p[:]
 
             if start_arrow:
