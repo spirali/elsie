@@ -310,14 +310,14 @@ class Box:
                 eval_value(x), eval_value(y)) for x, y in points))
             set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
             xml.close("polygon")
-        points = [unpack_point(p) for p in points]
+        points = [unpack_point(p, self) for p in points]
         self.add_child(draw_rect)
 
         return self
 
     def path(self, commands, color="black", bg_color=None, stroke_width=1, stroke_dasharray=None,
              end_arrow=None):
-        commands = check_and_unpack_path_commands(commands)
+        commands = check_and_unpack_path_commands(commands, self)
         if not commands:
             return
 
@@ -369,7 +369,7 @@ class Box:
                 end_arrow.render(xml, p[-2], p[-1], color)
 
         assert len(points) >= 2
-        points = [unpack_point(p) for p in points]
+        points = [unpack_point(p, self) for p in points]
         self.add_child(draw_rect)
 
         return self

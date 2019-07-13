@@ -5,7 +5,7 @@ COMMAND_NARGS = {
 }
 
 
-def check_and_unpack_path_commands(commands):
+def check_and_unpack_path_commands(commands, box):
     result = []
     for command in commands:
         if (not isinstance(command, tuple) and not isinstance(command, list)) or not command:
@@ -16,7 +16,7 @@ def check_and_unpack_path_commands(commands):
             raise Exception("Invalid command name: '{}'".format(name))
         if (len(command) - 1) % nargs != 0:
             raise Exception("Invalid number of arguments for command '{}' (got {} arguments)".format(name, len(command) - 1))
-        unpacked = tuple(unpack_point(p) for p in command[1:])
+        unpacked = tuple(unpack_point(p, box) for p in command[1:])
         result.append((name, unpacked))
     return result
 

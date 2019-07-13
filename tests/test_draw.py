@@ -127,3 +127,16 @@ def test_path(test_env):
 
 
     test_env.check("path")
+
+
+def test_draw_relative_to_box(test_env):
+    slide = test_env.slide
+
+    box = slide.box(x=100, y=200, width=400, height=150).rect(bg_color="#ccc")
+
+    box.polygon([(0, 0), ("100%", "0%"), ("50%", 20)], bg_color="yellow")
+    box.line([(0, 50), ("100%", "50%")], color="red")
+    box.path([("M", (0, 50)), ("L", ("50%", "100%"))], color="green")
+
+
+    test_env.check("draw-boxrel")
