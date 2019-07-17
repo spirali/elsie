@@ -209,8 +209,6 @@ def tokens_merge(tokens1, tokens2):
 
 
 def _tokens_merge_helper(tokens1, tokens2):
-    print("T1", tokens1)
-    print("T2", tokens2)
     result = []
 
     tokens = (tokens1, tokens2)
