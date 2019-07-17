@@ -51,6 +51,7 @@ int ~#A{main}() {
     b.text_box("#A", z_level=-1).rect(bg_color="red")
     test_env.check("styles-highlight")
 
+
 def test_line_numbers(test_env):
     slide = test_env.slide
 
@@ -227,6 +228,15 @@ def test_text_dummy_style(test_env):
     b = slide.box().text("~#ABC{This} ~#ABC{is} ~#ABC{a text}.")
     b.text_box("#ABC", n_th=3).rect(color="black")
     test_env.check("dummy-style")
+
+
+def test_code_dummy_style(test_env):
+    slide = test_env.slide
+    b = slide.box().code("cpp", """
+    ~#access{int v = array[mid];}
+""", use_styles=True)
+    b.text_box("#access", show="next+").rect(bg_color="red")
+    test_env.check("dummy-style-code")
 
 
 def test_text_merge2():
