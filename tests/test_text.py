@@ -233,10 +233,10 @@ def test_text_dummy_style(test_env):
 def test_code_dummy_style(test_env):
     slide = test_env.slide
     b = slide.box().code("cpp", """
-    ~#access{int v = array[mid];}
+~#access{int v = array[mid];}
 """, use_styles=True)
     b.text_box("#access", show="next+").rect(bg_color="red")
-    test_env.check("dummy-style-code")
+    test_env.check("dummy-style-code", 2)
 
 
 def test_text_merge2():

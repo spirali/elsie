@@ -506,6 +506,10 @@ class Box:
 
         if language:
             if use_styles:
+                # pygments strips newlines at the beginning
+                # and it makes a problem with mering styles
+                # therefore we strips newlines right away
+                text = text.strip()
                 ptext = parse_text(text, escape_char)
                 text = tokens_to_text_without_style(ptext)
             parsed_text = highlight_code(text, language)
