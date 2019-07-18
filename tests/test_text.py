@@ -233,11 +233,26 @@ def test_text_dummy_style(test_env):
 def test_code_dummy_style(test_env):
     slide = test_env.slide
     b = slide.box().code("cpp", """
-~#access{int v = array[mid];}
-""", use_styles=True)
+~#access{int v = array[mid];}""", use_styles=True)
     b.text_box("#access", show="next+").rect(bg_color="red")
     test_env.check("dummy-style-code", 2)
 
+
+def test_code_dummy_use_style(test_env):
+    c1 = """
+    async fn binary_search(array: &[u32], needle: u32) -> i32
+    {
+        let mid = (l + r) / 2;
+
+        // start a memory read and suspend the coroutine
+        prefetch(&array[mid]);          """
+    c2 = """
+            Delay::new(Duration::from_nanos(500)).await;
+        }
+    }"""
+    slide = test_env.slide
+    slide.box().code("rust", c1 + c2, use_styles=True)
+    test_env.check("code-use-styles")
 
 def test_text_merge2():
 

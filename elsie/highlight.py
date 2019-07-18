@@ -20,9 +20,12 @@ class MyFormatter(Formatter):
                 stream.append(NEWLINE_1)
             else:
                 stream.append(("begin", "pygments-" + str(ttype)))
-                if value.endswith("\n"):
-                    stream.append(("text", value[:-1]))
-                    stream.append(NEWLINE_1)
+                if "\n" in value:
+                    for t in value.split("\n"):
+                        if t:
+                            stream.append(("text", t))
+                        stream.append(NEWLINE_1)
+                    stream.pop()
                 else:
                     stream.append(("text", value))
                 stream.append(("end", None))

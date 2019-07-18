@@ -507,14 +507,22 @@ class Box:
         if language:
             if use_styles:
                 # pygments strips newlines at the beginning
+                # of whole text
                 # and it makes a problem with mering styles
                 # therefore we strips newlines right away
-                text = text.strip()
+
+                start_newlines = 0
+                while text.startswith("\n"):
+                    start_newlines += 1
+                    text = text[1:]
+
                 ptext = parse_text(text, escape_char)
                 text = tokens_to_text_without_style(ptext)
             parsed_text = highlight_code(text, language)
             if use_styles:
                 parsed_text = tokens_merge(parsed_text, ptext)
+                if start_newlines:
+                    parsed_text.insert(0, ("newline", start_newlines))
         else:
             parsed_text = parse_text(text, escape_char=escape_char if use_styles else None)
 
