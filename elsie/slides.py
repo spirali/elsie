@@ -250,4 +250,4 @@ def render(output="output.pdf", cache_dir="./elsie-cache",
     """Render global slides"""
     if _global_slides is None:
         raise Exception("No slides to render")
-    _global_slides.render(output, cache_dir, threads, return_svg, pdf_merger, drop_duplicates)
+    return _global_slides.render(output, cache_dir, threads, return_svg, pdf_merger, drop_duplicates)
