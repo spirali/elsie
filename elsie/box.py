@@ -443,6 +443,11 @@ class Box:
 
         self.add_child(draw)
 
+    def _ensure_steps(self, steps):
+        self._show_info = self._show_info.ensure_steps(steps)
+        self.slide.max_step = max(self.slide.max_step, steps)
+        print(self.slide.max_step, steps + 1)
+
     def _image_svg(self, filename, scale=None, fragments=True, show_begin=1):
         """ Draw an svg image """
 
@@ -462,8 +467,7 @@ class Box:
         else:
             image_steps = 1
 
-        self._show_info = self._show_info.ensure_steps(
-            show_begin + image_steps - 1)
+        self._ensure_steps(show_begin - 1 + image_steps)
 
         image_data = None
         if image_steps == 1:

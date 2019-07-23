@@ -107,3 +107,11 @@ def test_image_width_height(test_env):
     test_env.slide.box(width=300, height=100).image(test_env.assets_path("test100x30.svg"))
     test_env.slide.box(width=300, height=100).image(test_env.assets_path("test.png"))
     test_env.check("image-width-height")
+
+
+def test_image_show_next(test_env):
+    slide = test_env.slide
+    img = test_env.assets_path("testimage.svg")
+    slide.box(width=100, height=100).image(img, show_begin=2)
+    slide.box(width=30, height=30, show="next").rect(bg_color="black")
+    test_env.check("image-show-next", 5)

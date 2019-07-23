@@ -1,0 +1,38 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1024' height='768'><g transform='translate(437.0, 319.0) scale(0.1322915812283538)'><svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="300mm" height="200mm" viewBox="0 0 1062.9921 708.6614" id="svg2" version="1.1" inkscape:version="0.91 r13725" sodipodi:docname="testimage.svg">
+  <defs id="defs4">
+    <marker inkscape:stockid="Arrow2Send" orient="auto" refY="0.0" refX="0.0" id="Arrow2Send" style="overflow:visible;" inkscape:isstock="true">
+      <path id="path4270" style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#002255;stroke-opacity:1;fill:#002255;fill-opacity:1" d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z " transform="scale(0.3) rotate(180) translate(-2.3,0)"/>
+    </marker>
+    <marker inkscape:stockid="Arrow1Send" orient="auto" refY="0.0" refX="0.0" id="Arrow1Send" style="overflow:visible;" inkscape:isstock="true">
+      <path id="path4252" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z " style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1" transform="scale(0.2) rotate(180) translate(6,0)"/>
+    </marker>
+    <marker inkscape:stockid="Arrow1Mend" orient="auto" refY="0.0" refX="0.0" id="Arrow1Mend" style="overflow:visible;" inkscape:isstock="true">
+      <path id="path4246" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z " style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1" transform="scale(0.4) rotate(180) translate(10,0)"/>
+    </marker>
+  </defs>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="0.9899495" inkscape:cx="488.41852" inkscape:cy="489.69542" inkscape:document-units="px" inkscape:current-layer="layer2" showgrid="false" inkscape:window-width="1600" inkscape:window-height="1139" inkscape:window-x="0" inkscape:window-y="32" inkscape:window-maximized="1"/>
+  <metadata id="metadata7">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g inkscape:label="BaseLayer" inkscape:groupmode="layer" id="layer1" transform="translate(0,-343.70079)">
+    <g id="g4171" transform="translate(204.05081,0)">
+      <rect style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#b7c4c8;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:4, 4;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" id="rect4149" width="148.57143" height="148.57143" x="88.571442" y="427.36218" rx="40" ry="40"/>
+      <rect ry="40" rx="40" y="424.50504" x="86.428581" height="148.57143" width="148.57143" id="rect4136" style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#0066ff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:4, 4;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"/>
+      <text sodipodi:linespacing="125%" id="text4151" y="532.36212" x="131.91405" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:91.90435028px;line-height:125%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" xml:space="preserve"><tspan y="532.36212" x="131.91405" id="tspan4153" sodipodi:role="line">1</tspan></text>
+    </g>
+    <g id="g4177" transform="translate(204.7651,0)" inkscape:label="**2+">
+      <rect ry="40" rx="40" y="425.93362" x="272.14288" height="148.57143" width="148.57143" id="rect4155" style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#b7c4c8;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:4, 4;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"/>
+      <rect style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#0066ff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:4, 4;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" id="rect4157" width="148.57143" height="148.57143" x="270" y="423.07648" rx="40" ry="40"/>
+      <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:91.90435028px;line-height:125%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" x="317.62833" y="529.50494" id="text4159" sodipodi:linespacing="125%"><tspan sodipodi:role="line" id="tspan4161" x="317.62833" y="529.50494">2</tspan></text>
+    </g>
+    <rect style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:none;fill-opacity:1;stroke:#0066ff;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:12, 12;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" id="rect4208" width="998.57147" height="630" x="32.857143" y="382.36221"/>
+    <rect style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:12, 12;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" id="rect4210" width="233.78621" height="55.524216" x="174.28572" y="348.07648"/>
+    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:28px;line-height:125%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#0066ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;" x="182.85715" y="388.79074" id="text4204" sodipodi:linespacing="125%"><tspan sodipodi:role="line" id="tspan4206" x="182.85715" y="388.79074">This is SVG image</tspan></text>
+    <flowRoot xml:space="preserve" id="flowRoot4176" style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Ubuntu;font-style:normal;font-weight:normal;font-size:28px;line-height:125%;letter-spacing:0px;word-spacing:0px;-inkscape-font-specification:Ubuntu;font-stretch:normal;font-variant:normal"><flowRegion id="flowRegion4178"><rect id="rect4180" width="351.42856" height="188.57143" x="117.14285" y="348.66141"/></flowRegion><flowPara id="flowPara4182"/></flowRoot>  </g>
+  </svg></g></svg>
