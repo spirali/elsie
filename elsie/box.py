@@ -446,7 +446,6 @@ class Box:
     def _ensure_steps(self, steps):
         self._show_info = self._show_info.ensure_steps(steps)
         self.slide.max_step = max(self.slide.max_step, steps)
-        print(self.slide.max_step, steps + 1)
 
     def _image_svg(self, filename, scale=None, fragments=True, show_begin=1):
         """ Draw an svg image """
