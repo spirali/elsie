@@ -1,10 +1,22 @@
 import re
 
 
+def replace_relative_steps(match, current_max):
+    item = match.get("from")
+    if item:
+        if item in ("next", "last") and current_max is None:
+            raise Exception("You have to pass the current maximum step if you use relative values")
+
+        if item == "next":
+            match["from"] = str(current_max + 1)
+        if item == "last":
+            match["from"] = str(current_max)
+
+
 class ShowInfo:
 
     parser = re.compile(
-        r"^(?P<from>\d+)(?:(?P<open>\+)|-(?P<end>\d+))?$")
+        r"^(?P<from>\d+|next|last)(?:(?P<open>\+)|-(?P<end>\d+))?$")
 
     def __init__(self, steps=None, open_step=None, min_steps=None):
         if steps is None:
@@ -21,18 +33,6 @@ class ShowInfo:
 
     @classmethod
     def parse(cls, obj, current_max=None):
-        if current_max is not None:
-            if obj == "next":
-                return ShowInfo((current_max + 1,))
-            elif obj == "next+":
-                return ShowInfo(None, current_max + 1)
-            elif obj == "last":
-                return ShowInfo((current_max,))
-            elif obj == "last+":
-                return ShowInfo(None, current_max)
-        elif obj in ("next", "next+", "last", "last+"):
-            raise Exception("You have to pass the current maximum step if you use relative values")
-
         if obj is None:
             return ShowInfo()
         if isinstance(obj, int):
@@ -51,6 +51,7 @@ class ShowInfo:
                     raise Exception("Invalid format of 'show' string: {!r}"
                                     .format(obj))
                 m = m.groupdict()
+                replace_relative_steps(m, current_max)
                 if m["open"] is not None:
                     if open_step is not None:
                         raise Exception("Multiple open steps ({}, {}) in input {!r}"
@@ -62,6 +63,7 @@ class ShowInfo:
                 end = start
                 if m["end"] is not None:
                     end = int(m["end"])
+                assert start <= end
                 steps.update(range(start, end + 1))
             return ShowInfo(sorted(steps), open_step)
         else:
