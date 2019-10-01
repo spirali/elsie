@@ -140,7 +140,8 @@ class Box:
             p_y=None,          # vertical padding (sets p_top & p_bottom)
             padding=None,      # sets the same padding to all directions
             horizontal=False,
-            z_level=None):
+            z_level=None,
+            prepend=False):
         """ Create a new child box """
 
         def set_padding(a, b):
@@ -174,7 +175,7 @@ class Box:
                   p_bottom,
                   horizontal,
                   z_level)
-        self.add_child(box)
+        self.add_child(box, prepend)
         return box
 
     def overlay(self, **kwargs):
@@ -649,10 +650,13 @@ class Box:
         """ Create a point in the center of the box """
         return self.p("50%", "50%")
 
-    def add_child(self, obj):
+    def add_child(self, obj, prepend=False):
         """ Semi-internal function, you can add your child if you know
             what you are doing. """
-        self.childs.append(obj)
+        if prepend:
+            self.childs.insert(0, obj)
+        else:
+            self.childs.append(obj)
 
     def _min_child_size(self):
         managed_childs = self._managed_childs
