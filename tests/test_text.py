@@ -84,6 +84,31 @@ second_line // comment""")
     test_env.check("highlight-whitespace", 1)
 
 
+def test_highlight_bug2(test_env):
+    text = """strlen("ahoj"); // 4
+
+if (strcmp(str, "hello") == 0) // str equals "hello"
+
+char buffer[80];
+strcpy(buffer, "these");    // copy "these" to buffer
+strcat(buffer, "strings");     // append "strings" to buffer"""
+
+    slide = test_env.slide
+    box = slide.box().code("c", text)
+    test_env.check("highlight-bug-2")
+
+
+
+def test_highlight_bug3(test_env):
+    text = """// b
+
+    """
+
+    slide = test_env.slide
+    box = slide.box().code("c", text, use_styles=True)
+    test_env.check("highlight-bug-3")
+
+
 def test_console(test_env):
     slide = test_env.slide
     slide.derive_style("code", "shell", color="white")
@@ -309,5 +334,3 @@ def test_text_merge_and_destylize():
           ('text', 'Last'), ('begin', 'z'), ('text', ' '), ('end', None),
           ('text', 'line'), ('end', None), ('text', ' ')]
     assert r == r2
-
-

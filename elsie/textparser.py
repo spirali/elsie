@@ -271,10 +271,18 @@ def _tokens_merge_helper(tokens1, tokens2):
 
         if n1 == "newline" or n2 == "newline":
             assert n1 == "newline" and n2 == "newline"
-            assert v1 == v2
-            result.append(last[0])
-            read(0)
-            read(1)
+            if v1 == v2:
+                result.append(last[0])
+                read(0)
+                read(1)
+            elif v1 < v2:
+                result.append(last[0])
+                last[1] = ("newline", v2 - v1)
+                read(0)
+            else:
+                result.append(last[1])
+                last[0] = ("newline", v1 - v2)
+                read(1)
             continue
 
         assert n1 == "text" and n2 == "text"
