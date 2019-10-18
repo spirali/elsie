@@ -1,16 +1,16 @@
+import itertools
+import json
 import os
+import sys
+from concurrent.futures import ThreadPoolExecutor
 
-from .slidecls import Slide, DummyPdfSlide
-from .query import compute_query
-from .textstyle import check_style
 from .highlight import make_highlight_styles
 from .pdfmerge import get_pdf_merger_by_name
+from .query import compute_query
+from .slidecls import Slide, DummyPdfSlide
 from .svg import get_inkscape_version
+from .textstyle import check_style
 from .version import VERSION
-from concurrent.futures import ThreadPoolExecutor
-import sys
-import json
-import itertools
 
 
 class Slides:

@@ -1,4 +1,3 @@
-
 class LazyValue:
 
     def __init__(self, fn):
@@ -43,6 +42,7 @@ def eval_value(obj):
         return obj.eval()
     else:
         return obj
+
 
 def eval_pair(pair):
     return eval_value(pair[0]), eval_value(pair[1])

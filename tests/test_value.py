@@ -1,12 +1,11 @@
-from elsie.value import SizeValue, PosValue
+import pytest
+
 from elsie.lazy import LazyValue
 from elsie.show import ShowInfo
-
-import pytest
+from elsie.value import SizeValue, PosValue
 
 
 def test_size_parse_value():
-
     a = SizeValue.parse(100)
     assert a.min_size == 100.0
     assert a.fill == 0
@@ -43,7 +42,6 @@ def test_size_parse_value():
 
 
 def test_pos_parse_value():
-
     a = PosValue.parse(100)
     assert a.fix_pos == 100.0
     assert a.ratio is None
@@ -116,7 +114,7 @@ def test_parse_show_info():
         ShowInfo.parse("5+,6+")
 
     s = ShowInfo.parse("5", 1)
-    assert s.steps == (5, )
+    assert s.steps == (5,)
 
     s = ShowInfo.parse("next", 0)
     assert s.steps == (1,)
@@ -141,7 +139,7 @@ def test_parse_show_info():
         ShowInfo.parse("last+")
 
     s = ShowInfo.parse("last", 2)
-    assert s.steps == (2, )
+    assert s.steps == (2,)
 
     s = ShowInfo.parse("last+", 3)
     assert s.steps == ()

@@ -1,5 +1,3 @@
-
-
 class Xml:
 
     def __init__(self):

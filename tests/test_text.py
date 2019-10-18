@@ -98,7 +98,6 @@ strcat(buffer, "strings");     // append "strings" to buffer"""
     test_env.check("highlight-bug-2")
 
 
-
 def test_highlight_bug3(test_env):
     text = """// b
 
@@ -279,8 +278,8 @@ def test_code_dummy_use_style(test_env):
     slide.box().code("rust", c1 + c2, use_styles=True)
     test_env.check("code-use-styles")
 
-def test_text_merge2():
 
+def test_text_merge2():
     def test(t1, t2):
         p1 = parse_text(t1)
         p2 = parse_text(t2)

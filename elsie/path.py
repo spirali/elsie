@@ -1,4 +1,4 @@
-from .lazy import LazyPoint, LazyValue, eval_pair, unpack_point
+from .lazy import eval_pair, unpack_point
 
 COMMAND_NARGS = {
     "M": 1, "L": 1, "C": 3, "S": 2, "Q": 2, "T": 1
@@ -15,7 +15,8 @@ def check_and_unpack_path_commands(commands, box):
         if nargs is None:
             raise Exception("Invalid command name: '{}'".format(name))
         if (len(command) - 1) % nargs != 0:
-            raise Exception("Invalid number of arguments for command '{}' (got {} arguments)".format(name, len(command) - 1))
+            raise Exception(
+                "Invalid number of arguments for command '{}' (got {} arguments)".format(name, len(command) - 1))
         unpacked = tuple(unpack_point(p, box) for p in command[1:])
         result.append((name, unpacked))
     return result
@@ -31,7 +32,8 @@ def eval_path_commands(commands):
 def path_points_for_end_arrow(commands):
     name, pairs = commands[-1]
     if name not in "CSQT":
-        raise Exception("Current version supports path when last command is 'C', 'S', 'Q' ot 'T' (got '{}')".format(name))
+        raise Exception(
+            "Current version supports path when last command is 'C', 'S', 'Q' ot 'T' (got '{}')".format(name))
     if len(pairs) >= 2:
         return pairs[-2], pairs[-1]
     if len(commands) >= 2:

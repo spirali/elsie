@@ -1,5 +1,6 @@
-import lxml.etree as et
 from copy import deepcopy
+
+import lxml.etree as et
 
 from .show import ShowInfo
 

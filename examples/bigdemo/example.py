@@ -1,6 +1,5 @@
 import elsie
 
-
 # Let us our create primary colors used in slides
 COLOR1 = "#328cc1"
 COLOR2 = "#d9b310"
@@ -10,7 +9,7 @@ slides = elsie.Slides()
 
 # Modyfy global text styles
 slides.update_style("default", color=COLOR1)  # Default font
-slides.update_style("emph", color=COLOR2)     # Emphasis
+slides.update_style("emph", color=COLOR2)  # Emphasis
 
 elsie.set_global_slides(slides)
 
@@ -45,7 +44,7 @@ def first_slide(slide):
     # Subtitle box
     subtitle = slide.box()
     subtitle.text("Stanislav Böhm\n~tt{https://github.com/spirali/elsie}",
-                "header2")
+                  "header2")
 
 
 # Slide with brief description ############################
@@ -207,16 +206,16 @@ int main() {
     # Here we creates the triangle heading to a line,
     # method 'p' returns a position relatively to the box
     label.polygon([label.p("99%", "40%"),
-                label.p("99%", "60%"),
-                code_box.line_box(4).p(0, "50%")], bg_color="green")
+                   label.p("99%", "60%"),
+                   code_box.line_box(4).p(0, "50%")], bg_color="green")
 
     # Now we are creating an arrow head for the orange line
     arrow = elsie.Arrow(10)
     p1 = code_box.line_box(0).p("100%", "50%")
     p2 = code_box.line_box(5).p("100%", "50%")
     slide.box(show="6").line([p1, p1.add(40, 0),
-                            p2.add(40, 0), p2],
-                            stroke_width=3, color="orange", end_arrow=arrow)
+                              p2.add(40, 0), p2],
+                             stroke_width=3, color="orange", end_arrow=arrow)
 
 
 # Text box demo ###############################################
@@ -235,7 +234,7 @@ def text_box_demo(slide):
     b2 = b.text_box("#B", z_level=-1, show="3", padding=-3).rect(color=COLOR2)
     arrow = elsie.Arrow(10)
     b2.line([b2.p("50%", "160%"), b2.p("50%", "100%")],
-                            stroke_width=3, color=COLOR2, end_arrow=arrow)
+            stroke_width=3, color=COLOR2, end_arrow=arrow)
 
 
 @elsie.slide()
@@ -319,7 +318,6 @@ def latex_demo(slide):
 
 @elsie.slide()
 def text_demo(slide):
-
     # New created styles
     slide.new_style("h1", size=60)
     slide.new_style("h2", size=50)
@@ -390,7 +388,7 @@ def shape_demo(slide):
     slide.polygon([(570, 280), (710, 280), (640, 140)], bg_color="red")
 
     slide.line([(760, 100), (940, 100), (760, 300), (960, 300)],
-            color="orange", stroke_width=5)
+               color="orange", stroke_width=5)
 
     slide.line([(100, 500), (200, 500)], color="black", stroke_width=1)
     slide.line([(100, 550), (200, 550)], color="black", stroke_width=5)
@@ -398,43 +396,43 @@ def shape_demo(slide):
 
     arrow1 = elsie.Arrow(10, stroke_width=1)
     slide.line([(300, 500), (400, 500)], color="black", stroke_width=1,
-            start_arrow=arrow1, end_arrow=arrow1)
+               start_arrow=arrow1, end_arrow=arrow1)
     arrow2 = elsie.Arrow(20, stroke_width=5)
     slide.line([(300, 550), (400, 550)], color="black", stroke_width=5,
-            start_arrow=arrow2, end_arrow=arrow2)
+               start_arrow=arrow2, end_arrow=arrow2)
     arrow3 = elsie.Arrow(30, stroke_width=10)
     slide.line([(300, 600), (400, 600)], color="black", stroke_width=10,
-            start_arrow=arrow3, end_arrow=arrow3)
+               start_arrow=arrow3, end_arrow=arrow3)
 
     arrow1 = elsie.Arrow(10)
     slide.line([(500, 500), (600, 500)], color="black", stroke_width=1,
-            start_arrow=arrow1, end_arrow=arrow1)
+               start_arrow=arrow1, end_arrow=arrow1)
     arrow2 = elsie.Arrow(20)
     slide.line([(500, 550), (600, 550)], color="black", stroke_width=5,
-            start_arrow=arrow2, end_arrow=arrow2)
+               start_arrow=arrow2, end_arrow=arrow2)
     arrow3 = elsie.Arrow(30)
     slide.line([(500, 600), (600, 600)], color="black", stroke_width=10,
-            start_arrow=arrow3, end_arrow=arrow3)
+               start_arrow=arrow3, end_arrow=arrow3)
 
     arrow1 = elsie.Arrow(10, inner=0.5)
     slide.line([(700, 500), (800, 500)], color="black", stroke_width=1,
-            start_arrow=arrow1, end_arrow=arrow1)
+               start_arrow=arrow1, end_arrow=arrow1)
     arrow2 = elsie.Arrow(20, inner=0.5)
     slide.line([(700, 550), (800, 550)], color="black", stroke_width=5,
-            start_arrow=arrow2, end_arrow=arrow2)
+               start_arrow=arrow2, end_arrow=arrow2)
     arrow3 = elsie.Arrow(30, inner=0.5)
     slide.line([(700, 600), (800, 600)], color="black", stroke_width=10,
-            start_arrow=arrow3, end_arrow=arrow3)
+               start_arrow=arrow3, end_arrow=arrow3)
 
     arrow1 = elsie.Arrow(10, inner=2.0)
     slide.line([(900, 500), (1000, 500)], color="black", stroke_width=1,
-            start_arrow=arrow1, end_arrow=arrow1)
+               start_arrow=arrow1, end_arrow=arrow1)
     arrow2 = elsie.Arrow(20, inner=2.0)
     slide.line([(900, 550), (1000, 550)], color="black", stroke_width=5,
-            start_arrow=arrow2, end_arrow=arrow2)
+               start_arrow=arrow2, end_arrow=arrow2)
     arrow3 = elsie.Arrow(30, inner=2.0)
     slide.line([(900, 600), (1000, 600)], color="black", stroke_width=10,
-            start_arrow=arrow3, end_arrow=arrow3)
+               start_arrow=arrow3, end_arrow=arrow3)
 
     # Dashes
 
@@ -456,12 +454,14 @@ def shape_demo(slide):
 
 @elsie.slide()
 def path_demo(slide):
-
     slide.box(x=150, y=150).text("Path demo")
 
-    root = slide.box(x=250, y="[50%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text("Root")
-    child1 = slide.box(x=650, y="[20%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text("Child1")
-    child2 = slide.box(x=650, y="[80%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text("Child2")
+    root = slide.box(x=250, y="[50%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text(
+        "Root")
+    child1 = slide.box(x=650, y="[20%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text(
+        "Child1")
+    child2 = slide.box(x=650, y="[80%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text(
+        "Child2")
 
     arrow = elsie.Arrow(10)
 
@@ -475,21 +475,24 @@ def path_demo(slide):
 
     # Path root -> child2
     c2 = child2.p("0%", "50%")
-    slide.path([("M", r1), ("Q", c2.add(-100, 0), c2)], end_arrow=arrow, stroke_width=2, color=COLOR1, stroke_dasharray="10")
+    slide.path([("M", r1), ("Q", c2.add(-100, 0), c2)], end_arrow=arrow, stroke_width=2, color=COLOR1,
+               stroke_dasharray="10")
 
     # Path chiled1 -> child1
     c1t = child1.p("50%", "0%")
     c1r = child1.p("100%", "50%")
-    slide.path([("M", c1t), ("C", c1t.add(0, -100), c1r.add(100, 0), c1r)], end_arrow=arrow, stroke_width=2, color=COLOR1)
+    slide.path([("M", c1t), ("C", c1t.add(0, -100), c1r.add(100, 0), c1r)], end_arrow=arrow, stroke_width=2,
+               color=COLOR1)
 
-    #c3 = child2.p("50%", "50%")
-    #slide.path([("M", c3.add(0, -100)),
+    # c3 = child2.p("50%", "50%")
+    # slide.path([("M", c3.add(0, -100)),
     #            ("C", c3.add(100, -100), c3.add(100, -0), c3.add(0, 100)),
     #            ("C", c3.add(-150, -100), c3.add(-100, -10), c3.add(0, -100))], bg_color="#909090", color=None)#
 
     slide.path([("M", (650, 350)), ("L", (750, 350))], stroke_width=4, color="green")
     slide.path([("M", (600, 450)), ("L", (700, 250)), ("L", (800, 450))], stroke_width=4, color="red")
     slide.path([("M", (600, 450)), ("Q", (700, 250), (800, 450))], bg_color="blue", color=None)
+
 
 # Chess board ##############################################
 
@@ -606,6 +609,7 @@ def final_slide(slide):
     # we do not provide style name, but directly create
     # style in place
     slide.text("Have a nice day!", {"size": 60})
+
 
 # RENDER THE SLIDES NOW!
 

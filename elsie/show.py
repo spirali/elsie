@@ -14,7 +14,6 @@ def replace_relative_steps(match, current_max):
 
 
 class ShowInfo:
-
     parser = re.compile(
         r"^(?P<from>\d+|next|last)(?:(?P<open>\+)|-(?P<end>\d+))?$")
 
@@ -36,7 +35,7 @@ class ShowInfo:
         if obj is None:
             return ShowInfo()
         if isinstance(obj, int):
-            return ShowInfo((obj, ))
+            return ShowInfo((obj,))
         if isinstance(obj, str):
             steps = set()
             open_step = None

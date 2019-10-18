@@ -1,15 +1,14 @@
-
 # The file is not named "slide.py" because of class of "slide" import in __init__.py
 
-import os.path
 import hashlib
+import os.path
 
 from .box import Box
-from .sxml import Xml
 from .geom import Rect
-from .svg import svg_begin, svg_end, convert_to_pdf
 from .rcontext import RenderingContext
 from .show import ShowInfo
+from .svg import svg_begin, svg_end, convert_to_pdf
+from .sxml import Xml
 
 
 class Slide:

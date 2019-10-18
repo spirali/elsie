@@ -1,7 +1,8 @@
-from .sxml import Xml
-from .svg import svg_begin, svg_end, run_inkscape_get_width, run_inkscape_get_x
-from .latex import render_latex
 from collections import namedtuple
+
+from .latex import render_latex
+from .svg import svg_begin, svg_end, run_inkscape_get_width, run_inkscape_get_x
+from .sxml import Xml
 
 Query = namedtuple("Query", ["key", "callback"])
 

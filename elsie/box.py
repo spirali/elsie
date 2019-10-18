@@ -1,15 +1,17 @@
+import base64
+import io
 import logging
 
 import lxml.etree as et
-import base64
 from PIL import Image
-import io
 
 from .draw import draw_text, draw_bitmap
 from .geom import Rect
 from .highlight import highlight_code
 from .image import get_image_steps, create_image_data
 from .lazy import LazyValue, eval_value, LazyPoint, unpack_point, eval_pair
+from .path import (check_and_unpack_path_commands, eval_path_commands,
+                   path_points_for_end_arrow, path_update_end_point)
 from .query import Query
 from .show import ShowInfo
 from .svg import svg_size_to_pixels
@@ -18,8 +20,6 @@ from .textparser import parse_text, number_of_lines, add_line_numbers, extract_l
 from .textparser import tokens_merge, tokens_to_text_without_style
 from .textstyle import check_style
 from .value import SizeValue, PosValue
-from .path import (check_and_unpack_path_commands, eval_path_commands,
-                   path_points_for_end_arrow, path_update_end_point)
 
 
 class Painter:
@@ -132,13 +132,13 @@ class Box:
             width=None,
             height=None,
             show=None,
-            p_left=None,       # padding left
-            p_right=None,      # padding right
-            p_top=None,        # padding top
-            p_bottom=None,     # padding bottom
-            p_x=None,          # horizontal padding (sets p_left & p_right)
-            p_y=None,          # vertical padding (sets p_top & p_bottom)
-            padding=None,      # sets the same padding to all directions
+            p_left=None,  # padding left
+            p_right=None,  # padding right
+            p_top=None,  # padding top
+            p_bottom=None,  # padding bottom
+            p_x=None,  # horizontal padding (sets p_left & p_right)
+            p_y=None,  # vertical padding (sets p_top & p_bottom)
+            padding=None,  # sets the same padding to all directions
             horizontal=False,
             z_level=None,
             prepend=False):
@@ -204,6 +204,7 @@ class Box:
     def line_box(self, index, lines=1, **kwargs):
         """ Create a box around a line of text.
             'self' has to contain a text """
+
         def compute_y():
             if self._parsed_text is None:
                 raise Exception("line_box() called on box with no text")
@@ -294,6 +295,7 @@ class Box:
                 xml.set("ry", ry)
             set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
             xml.close("rect")
+
         self.add_child(draw_rect)
 
         return self
@@ -311,6 +313,7 @@ class Box:
                 eval_value(x), eval_value(y)) for x, y in points))
             set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
             xml.close("polygon")
+
         points = [unpack_point(p, self) for p in points]
         self.add_child(draw_rect)
 

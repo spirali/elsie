@@ -1,4 +1,3 @@
-
 END_MARKER = ("end", None)
 NEWLINE_1 = ("newline", 1)
 

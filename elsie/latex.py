@@ -1,12 +1,11 @@
-
-from .svg import rename_ids
-
+import hashlib
+import os
+import subprocess
 from tempfile import TemporaryDirectory
 
-import subprocess
-import os
-import hashlib
 import lxml.etree as et
+
+from .svg import rename_ids
 
 
 def render_latex(text):

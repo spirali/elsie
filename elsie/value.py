@@ -5,7 +5,6 @@ from .lazy import LazyValue
 
 
 class SizeValue:
-
     parser = re.compile(
         r"^(?P<min_size>\d+)$|^(?P<ratio>\d+)%$|^(?P<fill_1>fill)$|^fill[(](?P<fill>\d+)[)]+$")  # noqa
 
@@ -74,7 +73,6 @@ class SizeValue:
 
 
 class PosValue:
-
     parser = re.compile(
         r"^(?P<fix_pos>^\d+$)|^(?P<ratio>^\d+)%$|^\[(?P<align>\d+)%\]$")
 

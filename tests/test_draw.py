@@ -91,11 +91,15 @@ def test_path(test_env):
     arrow1 = Arrow(10)
     box.path([("M", box.p(0, 0)), ("L", (300, 400)), ("Q", (400, 400), (300, 500))], end_arrow=arrow1)
 
-    box.path([("M", box.p(0, 0)), ("C", box.p(0, -40), box.p("100%", -40), box.p("100%", 0))], color="red", stroke_width=4, bg_color="blue")
+    box.path([("M", box.p(0, 0)), ("C", box.p(0, -40), box.p("100%", -40), box.p("100%", 0))], color="red",
+             stroke_width=4, bg_color="blue")
 
-    root = slide.box(x=250, y="[50%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text("Root")
-    child1 = slide.box(x=650, y="[20%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text("Child1")
-    child2 = slide.box(x=650, y="[80%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text("Child2")
+    root = slide.box(x=250, y="[50%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text(
+        "Root")
+    child1 = slide.box(x=650, y="[20%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text(
+        "Child1")
+    child2 = slide.box(x=650, y="[80%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text(
+        "Child2")
 
     arrow = Arrow(10)
 
@@ -109,22 +113,23 @@ def test_path(test_env):
 
     # Path root -> child2
     c2 = child2.p("0%", "50%")
-    slide.path([("M", r1), ("Q", c2.add(-100, 0), c2)], end_arrow=arrow, stroke_width=2, color=COLOR1, stroke_dasharray="10")
+    slide.path([("M", r1), ("Q", c2.add(-100, 0), c2)], end_arrow=arrow, stroke_width=2, color=COLOR1,
+               stroke_dasharray="10")
 
     # Path chiled1 -> child1
     c1t = child1.p("50%", "0%")
     c1r = child1.p("100%", "50%")
-    slide.path([("M", c1t), ("C", c1t.add(0, -100), c1r.add(100, 0), c1r)], end_arrow=arrow, stroke_width=2, color=COLOR1)
+    slide.path([("M", c1t), ("C", c1t.add(0, -100), c1r.add(100, 0), c1r)], end_arrow=arrow, stroke_width=2,
+               color=COLOR1)
 
-    #c3 = child2.p("50%", "50%")
-    #slide.path([("M", c3.add(0, -100)),
+    # c3 = child2.p("50%", "50%")
+    # slide.path([("M", c3.add(0, -100)),
     #            ("C", c3.add(100, -100), c3.add(100, -0), c3.add(0, 100)),
     #            ("C", c3.add(-150, -100), c3.add(-100, -10), c3.add(0, -100))], bg_color="#909090", color=None)#
 
     slide.path([("M", (650, 350)), ("L", (750, 350))], stroke_width=4, color="green")
     slide.path([("M", (600, 450)), ("L", (700, 250)), ("L", (800, 450))], stroke_width=4, color="red")
     slide.path([("M", (600, 450)), ("Q", (700, 250), (800, 450))], bg_color="blue", color=None)
-
 
     test_env.check("path")
 
@@ -137,6 +142,5 @@ def test_draw_relative_to_box(test_env):
     box.polygon([(0, 0), ("100%", "0%"), ("50%", 20)], bg_color="yellow")
     box.line([(0, 50), ("100%", "50%")], color="red")
     box.path([("M", (0, 50)), ("L", ("50%", "100%"))], color="green")
-
 
     test_env.check("draw-boxrel")

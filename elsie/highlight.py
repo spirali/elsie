@@ -1,10 +1,9 @@
-
-from .textparser import normalize_tokens, NEWLINE_1
-
 from pygments import highlight
+from pygments.formatter import Formatter
 from pygments.lexers import get_lexer_by_name
 from pygments.styles import get_style_by_name
-from pygments.formatter import Formatter
+
+from .textparser import normalize_tokens, NEWLINE_1
 
 
 class MyFormatter(Formatter):

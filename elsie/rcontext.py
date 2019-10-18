@@ -1,4 +1,3 @@
-
 class RenderingContext:
 
     def __init__(self, xml, step):

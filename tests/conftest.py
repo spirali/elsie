@@ -1,7 +1,8 @@
 import os
-import sys
-import pytest
 import shutil
+import sys
+
+import pytest
 
 PYTEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(PYTEST_DIR)

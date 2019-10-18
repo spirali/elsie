@@ -37,6 +37,7 @@ def test_prepend(test_env):
     slide.box().text("D")
     test_env.check("prepend")
 
+
 def test_vbox_nofill(test_env):
     slide = test_env.slide
     slide.box(width=20, height=40).rect(bg_color="green")

@@ -1,4 +1,3 @@
-
 attributes = ("font",
               "size",
               "align",
