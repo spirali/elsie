@@ -38,6 +38,8 @@ def draw_text(xml, x, y, parsed_text, style, styles, id=None, id_index=None):
     active_styles = [style]
 
     xml.element("tspan")
+    if "variant-numeric" in style:
+        xml.set("font-variant-numeric", style["variant-numeric"])
 
     for i, (token_type, value) in enumerate(parsed_text):
         if token_type == "text":

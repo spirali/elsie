@@ -34,6 +34,7 @@ class Slides:
                 "size": 28,
                 "line_spacing": 1.20,
                 "align": "middle",
+                "variant-numeric": "lining-nums"
             },
             "tt": {
                 "font": "Ubuntu mono",
