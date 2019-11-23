@@ -1,17 +1,15 @@
 import elsie
 
-# Let us our create primary colors used in slides
+# Let us create primary colors used in slides
 COLOR1 = "#328cc1"
 COLOR2 = "#d9b310"
 
-# Top-level slide instances
-slides = elsie.Slides()
-
 # Modyfy global text styles
-slides.update_style("default", color=COLOR1)  # Default font
-slides.update_style("emph", color=COLOR2)  # Emphasis
-
-elsie.set_global_slides(slides)
+# You can instantiate separate instances of slides,
+# and work with them separately, but usually it is convenient
+# just to use global instance of slides
+elsie.update_style("default", color=COLOR1)  # Default font
+elsie.update_style("emph", color=COLOR2)  # Emphasis
 
 
 # First slide #############################################
@@ -260,7 +258,7 @@ def text_box_in_code_demo(slide):
     slide.line([p2.add(0, 40), p2],
                end_arrow=arrow, stroke_width=3)
 
-    c.line_box(4).box(x="100%", height="100%").text("← Box world highlight", "small")
+    c.line_box(4).box(x="100%", height="100%").text("← Inline highlight", "small")
     c.line_box(5).box(x="100%", height="100%").text("← Font style changed", "small")
     c.line_box(6).box(x="100%", height="100%").text("← Pointing to a word", "small")
 

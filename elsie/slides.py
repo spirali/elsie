@@ -233,6 +233,21 @@ def get_global_slides():
     return _global_slides
 
 
+def update_style(name, **kwargs):
+    """Call update_style method on global slides"""
+    get_global_slides().update_style(name, **kwargs)
+
+
+def new_style(name, **kwargs):
+    """Call new_style method on global slides"""
+    get_global_slides().new_style(name, **kwargs)
+
+
+def derive_style(old_style_name, new_style_name, **kwargs):
+    """Call derive_style method on global slides"""
+    get_global_slides().derive_style(old_style_name, new_style_name, **kwargs)
+
+
 # Decorator
 def slide(*, bg_color=None):
     slides = get_global_slides()
