@@ -104,8 +104,24 @@ def test_highlight_bug3(test_env):
     """
 
     slide = test_env.slide
-    box = slide.box().code("c", text, use_styles=True)
+    slide.box().code("c", text, use_styles=True)
     test_env.check("highlight-bug-3")
+
+
+def test_highlight_bug4(test_env):
+    text = """int now = (int) time(NULL); // get current time
+srand(now); // initialize S with the current time
+
+int num1 = rand(); // from interval [0, RAND_MAX]
+int num2 = rand() % 100; // from interval [0, 99]
+int num3 = rand() % 100 + 5; // from interval [5, 104]
+
+// from interval [0.0, 1.0]
+float num4 = rand() / (float) RAND_MAX;"""
+
+    slide = test_env.slide
+    slide.box().code("c", text, use_styles=False)
+    test_env.check("highlight-bug-4")
 
 
 def test_console(test_env):

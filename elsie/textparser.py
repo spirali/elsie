@@ -22,14 +22,16 @@ def normalize_tokens(tokens):
             result[-1] = ("newline", result[-1][1] + value)
             continue
 
+        if key == "end" and result[-1][0] == "newline":
+            last = result[-1]
+            result[-1] = token
+            result.append(last)
+            continue
+
         result.append(token)
 
-    if result:
-        i = len(result) - 1
-        while i >= 0 and result[i][0] == "end":
-            i -= 1
-        if i >= 0 and result[i][0] == "newline":
-            del result[i]
+    if result and result[-1][0] == "newline":
+        result.pop()
 
     return result
 
