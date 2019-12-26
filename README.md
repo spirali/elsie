@@ -1,23 +1,16 @@
 # Elsie
 
-Elsie is a framework for making slides in Python
+Elsie is a framework for making slides in Python.
 
 Example:
   * Result: [example.pdf](examples/bigdemo/example.pdf)
   * Source code: [example.py](examples/bigdemo/example.py)
 
-Elsie is based on experience with my previous project
-https://github.com/spirali/elphie/. It is a complete rewrite while making it
-more flexible by directly exposing boxes.
-
 
 ## Requirements
 
 * Python 3.4 or newer
-* Inkscape
-* pypdf2 (or pdfunite; configurable in `render` method)
-* pygments
-* lxml
+* Inkscape (Elsie uses Inkscape in the background, you do not have to know how to use it.)
 * (Optional for LaTeX support): pdflatex, pdf2svg
 
 
@@ -25,6 +18,7 @@ more flexible by directly exposing boxes.
 
     pip3 install elsie
 
+Note: This does not install Inkscape, you have to do it manually.
 
 ## Manual Installation
 
