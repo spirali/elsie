@@ -2,10 +2,21 @@
 
 Elsie is a framework for making slides in Python.
 
-Example:
+Full demonstration:
   * Result: [example.pdf](examples/bigdemo/example.pdf)
   * Source code: [example.py](examples/bigdemo/example.py)
 
+Minimal example:
+
+```python
+import elsie
+
+@elsie.slide()
+def hello(slide):
+    slide.text("Hello world!")
+
+elsie.render()  # Creates file 'slides.pdf'
+```
 
 ## Requirements
 
