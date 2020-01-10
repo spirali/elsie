@@ -24,4 +24,4 @@ def page_numbering(slides):
             "{}/{}".format(i + 1, len(slides)))
 
 
-elsie.render(slide_preprocessor=page_numbering)
+elsie.render(slide_postprocessing=page_numbering)

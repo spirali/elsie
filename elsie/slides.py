@@ -142,7 +142,7 @@ class Slides:
 
     def render(self, output, cache_dir="./elsie-cache",
                threads=None, return_svg=False, pdf_merger="pypdf",
-               drop_duplicates=False, slide_preprocessor=None):
+               drop_duplicates=False, slide_postprocessing=None):
         inkscape_version = get_inkscape_version()
         if not os.path.isdir(cache_dir):
             print("Creating cache directory:", cache_dir)
@@ -151,8 +151,8 @@ class Slides:
         if not self._slides:
             raise Exception("No slides to render")
 
-        if slide_preprocessor:
-            slide_preprocessor([slide.box() for slide in self._slides])
+        if slide_postprocessing:
+            slide_postprocessing([slide.box() for slide in self._slides])
 
         pdfs_in_dir = set(name for name in os.listdir(cache_dir)
                           if name.endswith(".pdf"))
@@ -265,9 +265,9 @@ def slide(*, bg_color=None):
 
 def render(output="output.pdf", cache_dir="./elsie-cache",
            threads=None, return_svg=False, pdf_merger="pypdf",
-           drop_duplicates=False, slide_preprocessor=None):
+           drop_duplicates=False, slide_postprocessing=None):
     """Render global slides"""
     if _global_slides is None:
         raise Exception("No slides to render")
     return _global_slides.render(output, cache_dir, threads, return_svg, pdf_merger, drop_duplicates,
-                                 slide_preprocessor)
+                                 slide_postprocessing)

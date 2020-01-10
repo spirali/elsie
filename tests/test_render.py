@@ -24,5 +24,5 @@ def test_preprocessor(test_env):
 
     test_env.slides.new_slide().box().text("Slide1")
     test_env.slides.new_slide().box().text("Slide2")
-    test_env.check("preprocessor", expect_count=3, render_args=dict(slide_preprocessor=fn))
+    test_env.check("preprocessor", expect_count=3, render_args=dict(slide_postprocessing=fn))
     assert called[0]
