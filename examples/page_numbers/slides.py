@@ -2,7 +2,7 @@ import elsie
 
 
 @elsie.slide()
-def hello(slide):
+def slide1(slide):
     slide.text("Page numbering demo")
 
 
@@ -14,7 +14,7 @@ def slide2(slide):
 
 
 @elsie.slide()
-def slide2(slide):
+def slide3(slide):
     slide.box().text("Last slide")
 
 
