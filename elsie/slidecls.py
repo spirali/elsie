@@ -13,7 +13,7 @@ from .sxml import Xml
 
 class Slide:
 
-    def __init__(self, index, width, height, styles, temp_cache):
+    def __init__(self, index, width, height, styles, temp_cache, postprocess):
         self.width = width
         self.height = height
         self.index = index
@@ -21,6 +21,7 @@ class Slide:
         self._box._styles = styles
         self.max_step = 1
         self.temp_cache = temp_cache
+        self.posprocess = True
 
     def box(self):
         return self._box

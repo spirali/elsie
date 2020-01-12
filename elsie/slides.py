@@ -81,7 +81,7 @@ class Slides:
 
     def new_slide(self, bg_color=None):
         slide = Slide(
-            len(self._slides), self.width, self.height, self._styles.copy(), self.temp_cache)
+            len(self._slides), self.width, self.height, self._styles.copy(), self.temp_cache, True)
         self._slides.append(slide)
         box = slide.box()
         if bg_color is None:
@@ -252,11 +252,12 @@ def derive_style(old_style_name, new_style_name, **kwargs):
 
 
 # Decorator
-def slide(*, bg_color=None):
+def slide(*, bg_color=None, include_to_postprocessing=True):
     slides = get_global_slides()
 
     def _helper(fn):
         slide = slides.new_slide(bg_color=bg_color)
+        slide.postprocess = include_to_postprocessing
         fn(slide)
         return fn
 
