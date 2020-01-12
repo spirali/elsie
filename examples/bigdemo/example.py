@@ -599,6 +599,13 @@ def position_demo(slide):
     bb.text("Fill (width='fill(2)')", "inner")
 
 
+# Zoom to rectanle at position 300, 200 with size 400, 400
+@elsie.slide(view_box=(300, 200, 400, 400))
+def zoomed_position_demo(slide):
+    position_demo(slide)
+    slide.box(x=390, y=200).rect(bg_color="black").fbox(padding=10).text("Zooming demo", {"color": "white"})
+
+
 # The final slide #################################
 
 @elsie.slide()

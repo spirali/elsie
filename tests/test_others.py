@@ -54,3 +54,8 @@ def test_cache(test_env):
         "d44aa3abda66c75b9749cd0d6b5064303d0f7be3.pdf",
         "queries3.cache"
     }
+
+def test_viewbox(test_env):
+    slide = test_env.slides.new_slide(view_box=(100, 250, 200, 300))
+    slide.box(x=100, y=200, width=200, height=300).rect("green").text("Hello!")
+    test_env.check("viewbox", 1)

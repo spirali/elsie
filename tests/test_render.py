@@ -13,7 +13,7 @@ def test_keep_same_nonconsecutive_slides(test_env):
     test_env.check("drop-interlude", expect_count=3, render_args=dict(drop_duplicates=True))
 
 
-def test_preprocessor(test_env):
+def test_postprocessing(test_env):
     called = [False]
 
     def fn(slides):
@@ -22,6 +22,7 @@ def test_preprocessor(test_env):
         for i, s in enumerate(slides):
             s.box(x=100, y=100).text("{}/{}".format(i, len(slides)))
 
+    test_env.slides.new_slide()
     test_env.slides.new_slide().box().text("Slide1")
     test_env.slides.new_slide().box().text("Slide2")
     test_env.check("preprocessor", expect_count=3, render_args=dict(slide_postprocessing=fn))

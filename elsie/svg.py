@@ -1,13 +1,15 @@
 import subprocess
 
 
-def svg_begin(xml, width=None, height=None):
+def svg_begin(xml, width=None, height=None, view_box=None):
     xml.element("svg")
     xml.set("xmlns", "http://www.w3.org/2000/svg")
     if width is not None:
         xml.set("width", width)
     if height is not None:
         xml.set("height", height)
+    if view_box:
+        xml.set("viewBox", " ".join(str(v) for v in view_box))
 
 
 def svg_end(xml):

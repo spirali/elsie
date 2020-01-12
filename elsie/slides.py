@@ -79,9 +79,12 @@ class Slides:
         new_style.update(kwargs)
         self._styles[new_style_name] = new_style
 
-    def new_slide(self, bg_color=None):
+    def new_slide(self, bg_color=None, *, view_box=None):
+        if view_box is not None and \
+                not (isinstance(view_box, tuple) and len(view_box) == 4 and all(isinstance(v, (int, float)) for v in view_box)):
+            raise Exception("view_box has to be None or tuple of four numbers (x, y, width, height)")
         slide = Slide(
-            len(self._slides), self.width, self.height, self._styles.copy(), self.temp_cache)
+            len(self._slides), self.width, self.height, self._styles.copy(), self.temp_cache, view_box)
         self._slides.append(slide)
         box = slide.box()
         if bg_color is None:
@@ -252,11 +255,11 @@ def derive_style(old_style_name, new_style_name, **kwargs):
 
 
 # Decorator
-def slide(*, bg_color=None):
+def slide(*, bg_color=None, view_box=None):
     slides = get_global_slides()
 
     def _helper(fn):
-        slide = slides.new_slide(bg_color=bg_color)
+        slide = slides.new_slide(bg_color=bg_color, view_box=view_box)
         fn(slide)
         return fn
 

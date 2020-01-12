@@ -41,7 +41,13 @@ class SlideTester:
 
     def __init__(self):
         self.slides = elsie.Slides()
-        self.slide = self.slides.new_slide()
+        self._slide = None
+
+    @property
+    def slide(self):
+        if self._slide is None:
+            self._slide = self.slides.new_slide()
+        return self._slide
 
     def data_path(self, subpath):
         return os.path.join(DATA_DIR, subpath)
