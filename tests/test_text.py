@@ -349,3 +349,50 @@ def test_text_merge_and_destylize():
           ('text', 'Last'), ('begin', 'z'), ('text', ' '), ('end', None),
           ('text', 'line'), ('end', None), ('text', ' ')]
     assert r == r2
+
+
+def test_text_scale_to_fit_a(test_env):
+    slide = test_env.slide
+    slide.box(x=50, y=50, width=300, height=300).rect(bg_color="#bbffbb").text("This is\ntext")
+    b = slide.box(x=650, y=50, width=300, height=300).rect(bg_color="#bbffbb").text("This is\ntext", scale_to_fit=True)
+
+    slide.box(x=50, y=400, width=300, height=300).rect(bg_color="#bbffbb").text("This is\ntext", {"size": 160})
+    slide.box(x=650, y=400, width=300, height=300).rect(bg_color="#bbffbb").text("This is\ntext", {"size": 160}, scale_to_fit=True)
+    test_env.check("text-fit-a")
+
+
+def test_text_scale_to_fit_b(test_env):
+    slide = test_env.slide
+    slide.box(x=50, y=50, width=300, height=300).fbox().rect(bg_color="#bbffbb").text("This is\ntext")
+    b = slide.box(x=650, y=50, width=300, height=300).fbox().rect(bg_color="#bbffbb").text("This is\ntext", scale_to_fit=True)
+
+    slide.box(x=50, y=400, width=300, height=300).fbox().rect(bg_color="#bbffbb").text("This is\ntext", {"size": 160})
+    slide.box(x=650, y=400, width=300, height=300).fbox().rect(bg_color="#bbffbb").text("This is\ntext", {"size": 160}, scale_to_fit=True)
+    test_env.check("text-fit-b")
+
+
+def test_text_scale_to_fit_pointers1(test_env):
+    slide = test_env.slide
+    slide.text("This is ~#A{full}\nslide\ntext!", scale_to_fit=True)
+    slide.line_box(2, z_level=-1).rect(bg_color="red")
+    slide.text_box("#A", z_level=-1).rect(bg_color="blue")
+    test_env.check("text-fit-pointers1")
+
+
+def test_text_scale_to_fit_pointers2(test_env):
+    slide = test_env.slide
+    slide.text("This is full\nslide\ntext!\nvery long ~#A{long} long long long line", scale_to_fit=True)
+    slide.line_box(2, z_level=-1).rect(bg_color="red")
+    slide.text_box("#A", z_level=-1).rect(bg_color="blue")
+    test_env.check("text-fit-pointers2")
+
+
+def test_text_scale_to_fit_code(test_env):
+    slide = test_env.slide
+    slide.code("c", """
+#include <stdio.h>
+
+int main() {
+    return 0;
+}""", scale_to_fit=True)
+    test_env.check("text-fit-code")

@@ -116,8 +116,9 @@ class Box:
         self._show_info = show_info
         self._parsed_text = None
         self._text_style = None
-        self._text_height = 0
-
+        self._text_size = None
+        self._text_scale_to_fit = None
+        self._text_scale = 1
         self.p_left = p_left
         self.p_right = p_right
         self.p_top = p_top
@@ -209,15 +210,15 @@ class Box:
             if self._parsed_text is None:
                 raise Exception("line_box() called on box with no text")
             text_lines = number_of_lines(self._parsed_text)
-            line_height = self._text_height / text_lines
-            y = self._rect.y + (self._rect.height - self._text_height) / 2
+            line_height = self._text_size[1] / text_lines
+            y = self._rect.y + (self._rect.height - self._text_size[1]) / 2
             return y + line_height * index
 
         def compute_height():
             if self._parsed_text is None:
                 raise Exception("line_box() called on box with no text")
             text_lines = number_of_lines(self._parsed_text)
-            return lines * self._text_height / text_lines + 1
+            return lines * self._text_size[1] / text_lines + 1
 
         kwargs.setdefault("width", "fill")
         kwargs.setdefault("x", 0)
@@ -248,13 +249,13 @@ class Box:
         def compute_y():
             line_number = number_of_lines(self._parsed_text[:index]) - 1
             text_lines = number_of_lines(self._parsed_text)
-            line_height = self._text_height / text_lines
-            y = self._rect.y + (self._rect.height - self._text_height) / 2
+            line_height = self._text_size[1] / text_lines
+            y = self._rect.y + (self._rect.height - self._text_size[1]) / 2
             return y + line_height * line_number
 
         def compute_height():
             text_lines = number_of_lines(self._parsed_text)
-            return self._text_height / text_lines + 1
+            return self._text_size[1] / text_lines + 1
 
         query_result = [None, None]
 
@@ -269,9 +270,9 @@ class Box:
         self._queries.append(Query(("inkscape", text), on_query_h))
 
         box_args.setdefault("x", LazyValue(lambda: text_x_in_rect(
-            self._rect, self._text_style) + query_result[0]))
+            self._rect, self._text_style) + query_result[0] * self._text_scale))
         box_args.setdefault("y", LazyValue(compute_y))
-        box_args.setdefault("width", LazyValue(lambda: query_result[1]))
+        box_args.setdefault("width", LazyValue(lambda: query_result[1] * self._text_scale))
         box_args.setdefault("height", LazyValue(compute_height))
 
         return self.box(**box_args)
@@ -505,8 +506,8 @@ class Box:
 
         self.add_child(draw)
 
-    def code(self, language, text, tabsize=4, line_numbers=False, style="code",
-             use_styles=False, escape_char="~"):
+    def code(self, language, text, *, tabsize=4, line_numbers=False, style="code",
+             use_styles=False, escape_char="~", scale_to_fit=False):
         """ Draw a code with syntax highlighting """
 
         text = text.replace("\t", " " * tabsize)
@@ -537,8 +538,7 @@ class Box:
             parsed_text = add_line_numbers(parsed_text)
 
         style = self._get_style(style)
-        self._text_helper(parsed_text, style)
-
+        self._text_helper(parsed_text, style, scale_to_fit)
         return self
 
     def _get_style(self, style):
@@ -558,14 +558,14 @@ class Box:
         result_style.update(style)
         return result_style
 
-    def text(self, text, style="default", escape_char="~"):
+    def text(self, text, style="default", *, escape_char="~", scale_to_fit=False):
         """ Draw a text
 
             "style" can be string with the name of style or dict defining the style
         """
         result_style = self._get_style(style)
         parsed_text = parse_text(text, escape_char=escape_char)
-        self._text_helper(parsed_text, result_style)
+        self._text_helper(parsed_text, result_style, scale_to_fit)
         return self
 
     def latex(self, text, scale=1.0, header=None, tail=None):
@@ -685,22 +685,32 @@ class Box:
     def _ensure_height(self, height):
         self._height = self._height.ensure(height + self.p_top + self.p_bottom)
 
-    def _text_helper(self, parsed_text, style):
+    def _text_helper(self, parsed_text, style, scale_to_fit):
         def on_query(width):
             line_height = style["size"] * style["line_spacing"]
             height = number_of_lines(parsed_text) * line_height
-            self._ensure_width(width)
-            self._ensure_height(height)
+
+            if not scale_to_fit:
+                self._ensure_width(width)
+                self._ensure_height(height)
+            else:
+                self._set_image_size_request(width, height)
 
             real_size[0] = width
             real_size[1] = height
-            self._text_height = height
+            self._text_size = (width, height)
 
         def draw(ctx, rect):
-            y = rect.y + (rect.height - real_size[1]) / 2 + style["size"]
+            scale = self._text_scale
             x = text_x_in_rect(rect, style)
-            draw_text(ctx.xml, x, y, parsed_text, style, self._styles)
+            y = rect.y + (rect.height - real_size[1] * scale) / 2 + style["size"] * scale
+            if scale_to_fit:
+                transform = "scale({})".format(scale)
+            else:
+                transform = None
+            draw_text(ctx.xml, x / scale, y / scale, parsed_text, style, self._styles, transform=transform)
 
+        self._text_scale_to_fit = scale_to_fit
         self._parsed_text = parsed_text
         self._text_style = style
         real_size = [None, None]
@@ -713,6 +723,11 @@ class Box:
         rect = rect.shrink(
             self.p_left, self.p_right, self.p_top, self.p_bottom)
         self._rect = rect
+
+        if self._text_scale_to_fit:
+            scale = min(rect.width / self._text_size[0], rect.height / self._text_size[1])
+            self._text_size = (self._text_size[0] * scale, self._text_size[1] * scale)
+            self._text_scale = scale
 
         if not self.horizontal:
             axis = 1

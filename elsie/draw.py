@@ -15,7 +15,7 @@ def set_font_from_style(xml, style):
         xml.set("style", s)
 
 
-def draw_text(xml, x, y, parsed_text, style, styles, id=None, id_index=None):
+def draw_text(xml, x, y, parsed_text, style, styles, id=None, id_index=None, transform=None):
     xml.element("text")
 
     if id is not None and id_index is None:
@@ -23,6 +23,9 @@ def draw_text(xml, x, y, parsed_text, style, styles, id=None, id_index=None):
 
     xml.set("x", x)
     xml.set("y", y)
+
+    if transform is not None:
+        xml.set("transform", transform)
 
     anchor = {
         "left": "start",
