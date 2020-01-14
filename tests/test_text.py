@@ -396,3 +396,26 @@ int main() {
     return 0;
 }""", scale_to_fit=True)
     test_env.check("text-fit-code")
+
+
+def test_text_scale_to_fit_fill(test_env):
+    slide = test_env.slide
+    box = slide.box(width="100%", height="30%").rect(bg_color="green")
+    box2 = box.box(height="fill").rect(bg_color="blue")
+    box2.code("c", """
+#include <stdio.h>
+
+int main() {
+    return 0;
+}""", scale_to_fit=True)
+
+    box = slide.box(width="30%", height="60%").rect(bg_color="green")
+    box2 = box.box(width="fill").rect(bg_color="blue")
+    box2.code("c", """
+    #include <stdio.h>
+
+    int main() {
+        return 0;
+    }""", scale_to_fit=True)
+
+    test_env.check("text-fit-fill")

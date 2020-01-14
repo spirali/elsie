@@ -693,6 +693,11 @@ class Box:
             if not scale_to_fit:
                 self._ensure_width(width)
                 self._ensure_height(height)
+            else:
+                if self._width_definition is None:
+                    self._ensure_width(width)
+                if self._height_definition is None:
+                    self._ensure_height(height)
 
             real_size[0] = width
             real_size[1] = height
@@ -706,7 +711,8 @@ class Box:
                 transform = "scale({})".format(scale)
             else:
                 transform = None
-            draw_text(ctx.xml, x / scale, y / scale, parsed_text, style, self._styles, transform=transform)
+            if scale > 0.00001:
+                draw_text(ctx.xml, x / scale, y / scale, parsed_text, style, self._styles, transform=transform)
 
         self._text_scale_to_fit = scale_to_fit
         self._parsed_text = parsed_text
@@ -724,6 +730,7 @@ class Box:
 
         if self._text_scale_to_fit:
             scale = min(rect.width / self._text_size[0], rect.height / self._text_size[1])
+            #scaler(rect, self._text_size[0], self._text_size[1])
             self._text_size = (self._text_size[0] * scale, self._text_size[1] * scale)
             self._text_scale = scale
 
