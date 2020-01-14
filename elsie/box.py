@@ -693,8 +693,6 @@ class Box:
             if not scale_to_fit:
                 self._ensure_width(width)
                 self._ensure_height(height)
-            else:
-                self._set_image_size_request(width, height)
 
             real_size[0] = width
             real_size[1] = height

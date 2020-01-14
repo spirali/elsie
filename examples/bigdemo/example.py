@@ -216,6 +216,27 @@ int main() {
                              stroke_width=3, color="orange", end_arrow=arrow)
 
 
+# Scaling into box #######################################
+
+@elsie.slide()
+def text_scaling(slide):
+    slide.box().text("Scaling text into a box")
+    slide.box(height=120)
+
+    code_box = slide.box(width=450, height=400)
+    code_box.rect(bg_color="#ddd", color="#888")
+    code_box.code("c", """#include <stdio.h>
+
+/* Hello world program */
+
+int main() {
+    printf("Hello world!\\n");
+    return 0;
+}""", scale_to_fit=True)
+#     ^^^^^^^^^^^^<<<<<<<< this is important
+
+
+
 # Text box demo ###############################################
 
 @elsie.slide()
