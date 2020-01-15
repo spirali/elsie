@@ -627,6 +627,30 @@ def zoomed_position_demo(slide):
     slide.box(x=390, y=200).rect(bg_color="black").fbox(padding=10).text("Zooming demo", {"color": "white"})
 
 
+@elsie.slide(debug_boxes=True)
+def debugging_slides(slide):
+    slide.new_style("header", size=35, color="white")
+    slide.new_style("header2", size=25, color=COLOR1)
+
+    slide.box(p_bottom=120, width=300, height=200, name="debug title").text("Debugging layout")
+
+    title_box1 = slide.box(width="fill", height=120, name="title")
+    title_box1.rect(bg_color=COLOR2)
+
+    title_box2 = title_box1.fbox(p_y=10, name="header")
+    title_box2.rect(bg_color=COLOR1)
+
+
+    title_box2.text("Elsie: Slides in Python in Programmable Way", "header")
+
+    slide.box(height=30, name="filler")
+
+    # Subtitle box
+    subtitle = slide.box(name="name")
+    subtitle.text("Stanislav Böhm\n~tt{https://github.com/spirali/elsie}",
+                  "header2")
+
+
 # The final slide #################################
 
 @elsie.slide()

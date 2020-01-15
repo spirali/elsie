@@ -92,7 +92,8 @@ class Box:
                  p_top=0,
                  p_bottom=0,
                  horizontal=False,
-                 z_level=0):
+                 z_level=0,
+                 name=None):
 
         if x is not None:
             self._x = PosValue.parse(x)
@@ -105,6 +106,7 @@ class Box:
             self._y = None
 
         self.slide = slide
+        self.name = name
         self._width = SizeValue.parse(width or 0)
         self._height = SizeValue.parse(height or 0)
         self._width_definition = width
@@ -142,7 +144,8 @@ class Box:
             padding=None,  # sets the same padding to all directions
             horizontal=False,
             z_level=None,
-            prepend=False):
+            prepend=False,
+            name=None):
         """ Create a new child box """
 
         def set_padding(a, b):
@@ -175,7 +178,8 @@ class Box:
                   p_top,
                   p_bottom,
                   horizontal,
-                  z_level)
+                  z_level,
+                  name)
         self.add_child(box, prepend)
         return box
 
@@ -808,16 +812,49 @@ class Box:
     def _min_steps(self):
         return self._show_info.min_steps()
 
-    def _get_painters(self, ctx):
+    def _get_painters(self, ctx, depth):
         painters = []
         if not self._show_info.is_visible(ctx.step):
             return painters
+        depth += 1
         for child in self.childs:
             if not isinstance(child, Box):
                 painters.append(Painter(child, self._rect, self.z_level))
             else:
-                painters += child._get_painters(ctx)
+                painters += child._get_painters(ctx, depth)
+        if ctx.debug_boxes:
+            painters.append(Painter(lambda ctx, rect: self._debug_paint(ctx, rect, depth - 1), self._rect, self.z_level))
         return painters
+
+    def _debug_paint(self, ctx, rect, depth):
+        xml = ctx.xml
+        xml.element("rect")
+        xml.set("x", rect.x)
+        xml.set("y", rect.y)
+        xml.set("width", max(rect.width, 0.1))
+        xml.set("height", max(rect.height, 0.1))
+        set_paint_style(xml, "#ff00ff", None, 2, [None, "4 2", "1 2"][depth % 3])
+        xml.close("rect")
+
+        style = self._styles.get("debug_box_name")
+        text = " {}[{},{}]".format(self.name + " " if self.name else "", rect.width, rect.height)
+        size = 14
+        if depth % 2 == 1:
+            text = "↖" + text
+            y = rect.y + 14 * 0.9
+        else:
+            text = "↙" + text
+            y = rect.y + rect.height - size * 0.1
+
+        xml.element("text")
+        xml.set("x", rect.x)
+        xml.set("y", y)
+        xml.set("style", "fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;")
+        xml.element("tspan")
+        xml.text(text)
+        xml.close("tspan")
+        xml.close("text")
+
 
     def _traverse(self, fn):
         fn(self)

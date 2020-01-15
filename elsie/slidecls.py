@@ -13,12 +13,13 @@ from .sxml import Xml
 
 class Slide:
 
-    def __init__(self, index, width, height, styles, temp_cache, view_box):
+    def __init__(self, index, width, height, styles, temp_cache, view_box, name, debug_boxes):
         self.width = width
         self.height = height
         self.index = index
         self.view_box = view_box
-        self._box = Box(self, 0, 0, width, height, styles, ShowInfo())
+        self.debug_boxes = debug_boxes
+        self._box = Box(self, 0, 0, width, height, styles, ShowInfo(), name=name)
         self._box._styles = styles
         self.max_step = 1
         self.temp_cache = temp_cache
@@ -43,8 +44,8 @@ class Slide:
     def make_svg(self, step):
         xml = Xml()
         svg_begin(xml, self.width, self.height, self.view_box)
-        ctx = RenderingContext(xml, step)
-        painters = self._box._get_painters(ctx)
+        ctx = RenderingContext(xml, step, self.debug_boxes)
+        painters = self._box._get_painters(ctx, 0)
         painters.sort(key=lambda p: p.z_level)
         for p in painters:
             p.render(ctx)
