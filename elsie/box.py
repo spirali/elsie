@@ -729,10 +729,11 @@ class Box:
         self._rect = rect
 
         if self._text_scale_to_fit:
-            scale = min(rect.width / self._text_size[0], rect.height / self._text_size[1])
-            #scaler(rect, self._text_size[0], self._text_size[1])
-            self._text_size = (self._text_size[0] * scale, self._text_size[1] * scale)
-            self._text_scale = scale
+            tw, th = self._text_size
+            if tw > 0.00001 and th > 0.00001:
+                scale = min(rect.width / tw, rect.height / th)
+                self._text_size = (tw * scale, th * scale)
+                self._text_scale = scale
 
         if not self.horizontal:
             axis = 1

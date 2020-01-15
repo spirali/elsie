@@ -419,3 +419,9 @@ int main() {
     }""", scale_to_fit=True)
 
     test_env.check("text-fit-fill")
+
+
+def test_text_scale_to_fit_empty(test_env):
+    slide = test_env.slide
+    slide.box().text("", scale_to_fit=True)
+    test_env.check("text-fit-empty")
