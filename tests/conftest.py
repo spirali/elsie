@@ -12,7 +12,7 @@ DATA_DIR = os.path.join(PYTEST_DIR, "data")
 sys.path.insert(0, ROOT_DIR)
 
 import elsie  # noqa
-
+import test_utils
 
 def prepare():
     """Prepare working directory
@@ -67,7 +67,8 @@ class SlideTester:
                 with open(filename) as f:
                     expected_content = f.read()
                 print("Slide", i)
-                assert expected_content == result
+                if expected_content != result:
+                    test_utils.svg_check(expected_content, result)
             done = True
         finally:
             if not done:

@@ -44,7 +44,6 @@ def test_debug_boxes(test_env):
     title_box2 = title_box1.fbox(p_y=10, name="header")
     title_box2.rect(bg_color=COLOR1)
 
-
     title_box2.text("Elsie: Slides in Python in Programmable Way", "header")
 
     slide.box(height=30, name="filler")
