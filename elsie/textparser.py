@@ -165,7 +165,7 @@ def extract_styled_content(tokens, index):
             count += 1
         break
         index += 1
-    result = _open_blocks(tokens[:start]) + tokens[start:index + 1]
+    result = _open_blocks(tokens[:start]) + tokens[start : index + 1]
     return result + [END_MARKER] * _open_blocks_count(result)
 
 
@@ -250,8 +250,12 @@ def _tokens_merge_helper(tokens1, tokens2):
             if n2 == "begin":
                 # Find which block is shorter
                 i2 = indices[1] - 1
-                t1 = tokens_to_text_without_style(tokens[0][i1:_get_block_end_index(tokens[0], i1)])
-                t2 = tokens_to_text_without_style(tokens[1][i2:_get_block_end_index(tokens[1], i2)])
+                t1 = tokens_to_text_without_style(
+                    tokens[0][i1 : _get_block_end_index(tokens[0], i1)]
+                )
+                t2 = tokens_to_text_without_style(
+                    tokens[1][i2 : _get_block_end_index(tokens[1], i2)]
+                )
                 if len(t1) > len(t2):
                     stacks[0].append(i1)
                     new_block(0)
@@ -296,9 +300,9 @@ def _tokens_merge_helper(tokens1, tokens2):
         if len(v1) < len(v2):
             result.append(last[0])
             read(0)
-            last[1] = ("text", v2[len(v1):])
+            last[1] = ("text", v2[len(v1) :])
         else:
             result.append(last[1])
             read(1)
-            last[0] = ("text", v1[len(v2):])
+            last[0] = ("text", v1[len(v2) :])
     return result

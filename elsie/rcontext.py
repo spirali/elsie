@@ -1,5 +1,4 @@
 class RenderingContext:
-
     def __init__(self, xml, step, debug_boxes):
         self.xml = xml
         self.step = step

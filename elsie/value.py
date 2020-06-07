@@ -6,7 +6,8 @@ from .lazy import LazyValue
 
 class SizeValue:
     parser = re.compile(
-        r"^(?P<min_size>\d+)$|^(?P<ratio>\d+)%$|^(?P<fill_1>fill)$|^fill[(](?P<fill>\d+)[)]+$")  # noqa
+        r"^(?P<min_size>\d+)$|^(?P<ratio>\d+)%$|^(?P<fill_1>fill)$|^fill[(](?P<fill>\d+)[)]+$"
+    )  # noqa
 
     def __init__(self, min_size=0, ratio=None, fill=0, lazy_value=None):
         self.min_size = min_size
@@ -69,12 +70,12 @@ class SizeValue:
 
     def __repr__(self):
         return "<SizeValue min_size={} ratio={} fill={} lazy_value={}>".format(
-            self.min_size, self.ratio, self.fill, self.lazy_value is not None)
+            self.min_size, self.ratio, self.fill, self.lazy_value is not None
+        )
 
 
 class PosValue:
-    parser = re.compile(
-        r"^(?P<fix_pos>^\d+$)|^(?P<ratio>^\d+)%$|^\[(?P<align>\d+)%\]$")
+    parser = re.compile(r"^(?P<fix_pos>^\d+$)|^(?P<ratio>^\d+)%$|^\[(?P<align>\d+)%\]$")
 
     def __init__(self, fix_pos=None, ratio=None, align=None, lazy_value=None):
         self.fix_pos = fix_pos

@@ -20,12 +20,10 @@ def run_inkscape(extra_args, filename=None, stdin=None):
     if filename is None:
         filename = "/dev/stdin"
     with open("/dev/null", "w") as devnull:
-        args = ("/usr/bin/inkscape",
-                "--without-gui") + extra_args + (filename,)
-        p = subprocess.Popen(args,
-                             stdin=subprocess.PIPE,
-                             stdout=subprocess.PIPE,
-                             stderr=devnull)
+        args = ("/usr/bin/inkscape", "--without-gui") + extra_args + (filename,)
+        p = subprocess.Popen(
+            args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=devnull
+        )
         stdout, stderr = p.communicate(stdin.encode("utf-8"))
         return stdout
 

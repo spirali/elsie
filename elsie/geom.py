@@ -2,13 +2,9 @@ import math
 
 
 class Rect:
-
-    def __init__(self,
-                 x=None,
-                 y=None,
-                 width=None,
-                 height=None,
-                 position=None, size=None):
+    def __init__(
+        self, x=None, y=None, width=None, height=None, position=None, size=None
+    ):
         self.x = x
         self.y = y
         self.width = width
@@ -45,18 +41,22 @@ class Rect:
         return self.y + self.height
 
     def shrink(self, left=0, right=0, top=0, bottom=0):
-        return Rect(self.x + left,
-                    self.y + top,
-                    self.width - left - right,
-                    self.height - top - bottom)
+        return Rect(
+            self.x + left,
+            self.y + top,
+            self.width - left - right,
+            self.height - top - bottom,
+        )
 
     def __eq__(self, other):
         if not isinstance(other, Rect):
             return False
-        return self.x == other.x and \
-               self.y == other.y and \
-               self.width == other.width and \
-               self.height == other.height
+        return (
+            self.x == other.x
+            and self.y == other.y
+            and self.width == other.width
+            and self.height == other.height
+        )
 
     def __repr__(self):
         return "<Rect x={0.x} y={0.y} w={0.width} h={0.height}>".format(self)

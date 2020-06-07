@@ -20,7 +20,7 @@ def test_cache(test_env):
         "1b4b2f663298abc291a730021e0cea8aef08d4e2.pdf",
         "266c6ab63434f5975a5c55583d5745105991b2a8.pdf",
         "d44aa3abda66c75b9749cd0d6b5064303d0f7be3.pdf",
-        "queries3.cache"
+        "queries3.cache",
     }
 
     slides = Slides()
@@ -36,7 +36,7 @@ def test_cache(test_env):
         "1b4b2f663298abc291a730021e0cea8aef08d4e2.pdf",
         "266c6ab63434f5975a5c55583d5745105991b2a8.pdf",
         "d44aa3abda66c75b9749cd0d6b5064303d0f7be3.pdf",
-        "queries3.cache"
+        "queries3.cache",
     }
 
     slides = Slides()
@@ -52,8 +52,9 @@ def test_cache(test_env):
         "0b85d0f51458a11b8d86f7956847e8783dc7d3e3.pdf",
         "266c6ab63434f5975a5c55583d5745105991b2a8.pdf",
         "d44aa3abda66c75b9749cd0d6b5064303d0f7be3.pdf",
-        "queries3.cache"
+        "queries3.cache",
     }
+
 
 def test_viewbox(test_env):
     slide = test_env.slides.new_slide(view_box=(100, 250, 200, 300))

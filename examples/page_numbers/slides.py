@@ -20,8 +20,9 @@ def slide3(slide):
 
 def page_numbering(slides):
     for i, slide in enumerate(slides):
-        slide.box(x="90%", y="90%", width=70, height=45).rect(bg_color="orange", rx=5, ry=5).text(
-            "{}/{}".format(i + 1, len(slides)))
+        slide.box(x="90%", y="90%", width=70, height=45).rect(
+            bg_color="orange", rx=5, ry=5
+        ).text("{}/{}".format(i + 1, len(slides)))
 
 
 elsie.render(slide_postprocessing=page_numbering)

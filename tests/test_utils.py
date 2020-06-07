@@ -4,6 +4,7 @@ import re
 
 numbers_split = re.compile("([\d\.]+)")
 
+
 def string_check(s1, s2):
     lst1 = numbers_split.split(s1)
     lst2 = numbers_split.split(s2)
@@ -36,8 +37,6 @@ def element_check(e1, e2):
         print(e1, e2)
         # To show pytest error message
         assert e1.keys() == e2.keys()
-
-
 
     for (name, v1) in e1.items():
         v2 = e2.get(name)
@@ -75,7 +74,6 @@ def test_svg_compare():
     svg_check("<x><y a='0.0001'/></x>", "<x><y a='0'/></x>")
     with pytest.raises(AssertionError):
         svg_check("<x><y a='0.7'/></x>", "<x><y a='0'/></x>")
-
 
     svg_check("<x><y a='1.0001, 3.02'/></x>", "<x><y a='0.999, 3.01'/></x>")
     with pytest.raises(AssertionError):

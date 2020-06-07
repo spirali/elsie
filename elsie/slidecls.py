@@ -12,8 +12,9 @@ from .sxml import Xml
 
 
 class Slide:
-
-    def __init__(self, index, width, height, styles, temp_cache, view_box, name, debug_boxes):
+    def __init__(
+        self, index, width, height, styles, temp_cache, view_box, name, debug_boxes
+    ):
         self.width = width
         self.height = height
         self.index = index
@@ -63,8 +64,7 @@ class Slide:
             return pdf_name
 
         if debug:
-            svg_file = os.path.join(
-                cache_dir, "{}-{}.svg".format(self.index, step))
+            svg_file = os.path.join(cache_dir, "{}-{}.svg".format(self.index, step))
             with open(svg_file, "w") as f:
                 f.write(svg)
 
@@ -74,7 +74,6 @@ class Slide:
 
 
 class DummyPdfSlide:
-
     def __init__(self, filename):
         self.filename = os.path.abspath(filename)
 

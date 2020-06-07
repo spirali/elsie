@@ -1,7 +1,11 @@
 from elsie.highlight import highlight_code
-from elsie.textparser import (number_of_lines, parse_text, extract_line,
-                              tokens_to_text_without_style,
-                              tokens_merge)
+from elsie.textparser import (
+    number_of_lines,
+    parse_text,
+    extract_line,
+    tokens_to_text_without_style,
+    tokens_merge,
+)
 
 
 def test_line_highlight(test_env):
@@ -17,22 +21,26 @@ def test_line_highlight(test_env):
 
     b.line_box(4, lines=4, show="4").rect(color="blue")
 
-    b.code("c", """#include <stdio.h>
+    b.code(
+        "c",
+        """#include <stdio.h>
 
     /* Hello world program */
 
     int main() {
         printf("Hello world!\\n");
         return 0;
-    }""")
+    }""",
+    )
 
     label = slide.box(100, 400, 200, 130, show="5+")
     label.update_style("default", color="white")
     label.rect(bg_color="green", rx=10, ry=10)
     label.text("Comment for\nline")
-    label.polygon([label.p("99%", "40%"),
-                   label.p("99%", "60%"),
-                   b.line_box(4).p(0, "50%")], bg_color="green")
+    label.polygon(
+        [label.p("99%", "40%"), label.p("99%", "60%"), b.line_box(4).p(0, "50%")],
+        bg_color="green",
+    )
 
     test_env.check("linehighlight", 5)
 
@@ -40,13 +48,17 @@ def test_line_highlight(test_env):
 def test_styles_and_highlight(test_env):
     slide = test_env.slide
     b = slide.box()
-    b.code("c", """#include <stdio.h>
+    b.code(
+        "c",
+        """#include <stdio.h>
 /* Hello world program */
 
 int ~#A{main}() {
     printf("Hello ~emph{world!\\n");}
     return 0;
-}""", use_styles=True)
+}""",
+        use_styles=True,
+    )
 
     b.text_box("#A", z_level=-1).rect(bg_color="red")
     test_env.check("styles-highlight")
@@ -56,7 +68,9 @@ def test_line_numbers(test_env):
     slide = test_env.slide
 
     slide.box().text("Line Highlighting")
-    slide.box().code("c", """#include <stdio.h>
+    slide.box().code(
+        "c",
+        """#include <stdio.h>
 /* Hello world program */
 
 
@@ -68,7 +82,9 @@ int main() {
 
 }
 
-""", line_numbers=True)
+""",
+        line_numbers=True,
+    )
 
     test_env.check("linenumbers", 1)
 
@@ -77,9 +93,12 @@ def test_highlight_whitespace(test_env):
     slide = test_env.slide
 
     box = slide.box().rect(bg_color="red")
-    box.box(padding=10).code("rust", """
+    box.box(padding=10).code(
+        "rust",
+        """
 line
-second_line // comment""")
+second_line // comment""",
+    )
 
     test_env.check("highlight-whitespace", 1)
 
@@ -141,7 +160,10 @@ def test_console(test_env):
         "!prompt{~/path/to/elphie/example$} !cmd{python3 example.py}\n"
         "Preprocessing................. done\n"
         "Building...................... done\n"
-        "Creating 'example.pdf'........ done\n", "shell", escape_char="!")
+        "Creating 'example.pdf'........ done\n",
+        "shell",
+        escape_char="!",
+    )
 
     test_env.check("console")
 
@@ -216,8 +238,16 @@ def test_extract_line():
     assert tokens[7][1] == "w"
     r, p = extract_line(tokens, 7)
     assert r == [
-        ('begin', 'z'), ('text', 'A '), ('begin', 'a'), ('text', 'second'),
-        ('begin', 'w'), ('text', 'line'), ('end', None), ('end', None), ('end', None)]
+        ("begin", "z"),
+        ("text", "A "),
+        ("begin", "a"),
+        ("text", "second"),
+        ("begin", "w"),
+        ("text", "line"),
+        ("end", None),
+        ("end", None),
+        ("end", None),
+    ]
     assert p == 4
 
 
@@ -226,8 +256,10 @@ def _test_text_box_slide(slide):
     slide.new_style("my_green", color="green")
     slide.new_style("my_blue", color="blue")
 
-    text = "This is a long ~my_red{text}\n\nthat\n~my_green{has} a various\nproperties," \
-           " ~my_blue{like a boxes} used in the text."
+    text = (
+        "This is a long ~my_red{text}\n\nthat\n~my_green{has} a various\nproperties,"
+        " ~my_blue{like a boxes} used in the text."
+    )
 
     b = slide.box().text(text)
     b.text_box("my_red").rect(color="red")
@@ -272,8 +304,12 @@ def test_text_dummy_style(test_env):
 
 def test_code_dummy_style(test_env):
     slide = test_env.slide
-    b = slide.box().code("cpp", """
-~#access{int v = array[mid];}""", use_styles=True)
+    b = slide.box().code(
+        "cpp",
+        """
+~#access{int v = array[mid];}""",
+        use_styles=True,
+    )
     b.text_box("#access", show="next+").rect(bg_color="red")
     test_env.check("dummy-style-code", 2)
 
@@ -340,34 +376,83 @@ def test_text_merge_and_destylize():
     r = tokens_merge(p2, p3)
     assert t1 == tokens_to_text_without_style(r)
 
-    r2 = [('text', 'Hello '), ('begin', 'b'), ('begin', 'x'), ('begin', 'a'),
-          ('text', 'world!'), ('end', None), ('newline', 1),
-          ('text', '  '), ('begin', 'c'), ('text', 'Th'), ('end', None), ('end', None),
-          ('begin', 'c'), ('begin', 'y'), ('text', 'is'), ('end', None), ('end', None),
-          ('begin', 'y'), ('text', ' is nice'), ('end', None), ('end', None), ('begin', 'y'),
-          ('text', ' line '), ('end', None), ('text', '  '), ('newline', 3), ('begin', 'd'),
-          ('text', 'Last'), ('begin', 'z'), ('text', ' '), ('end', None),
-          ('text', 'line'), ('end', None), ('text', ' ')]
+    r2 = [
+        ("text", "Hello "),
+        ("begin", "b"),
+        ("begin", "x"),
+        ("begin", "a"),
+        ("text", "world!"),
+        ("end", None),
+        ("newline", 1),
+        ("text", "  "),
+        ("begin", "c"),
+        ("text", "Th"),
+        ("end", None),
+        ("end", None),
+        ("begin", "c"),
+        ("begin", "y"),
+        ("text", "is"),
+        ("end", None),
+        ("end", None),
+        ("begin", "y"),
+        ("text", " is nice"),
+        ("end", None),
+        ("end", None),
+        ("begin", "y"),
+        ("text", " line "),
+        ("end", None),
+        ("text", "  "),
+        ("newline", 3),
+        ("begin", "d"),
+        ("text", "Last"),
+        ("begin", "z"),
+        ("text", " "),
+        ("end", None),
+        ("text", "line"),
+        ("end", None),
+        ("text", " "),
+    ]
     assert r == r2
 
 
 def test_text_scale_to_fit_a(test_env):
     slide = test_env.slide
-    slide.box(x=50, y=50, width=300, height=300).rect(bg_color="#bbffbb").text("This is\ntext")
-    b = slide.box(x=650, y=50, width=300, height=300).rect(bg_color="#bbffbb").text("This is\ntext", scale_to_fit=True)
+    slide.box(x=50, y=50, width=300, height=300).rect(bg_color="#bbffbb").text(
+        "This is\ntext"
+    )
+    b = (
+        slide.box(x=650, y=50, width=300, height=300)
+        .rect(bg_color="#bbffbb")
+        .text("This is\ntext", scale_to_fit=True)
+    )
 
-    slide.box(x=50, y=400, width=300, height=300).rect(bg_color="#bbffbb").text("This is\ntext", {"size": 160})
-    slide.box(x=650, y=400, width=300, height=300).rect(bg_color="#bbffbb").text("This is\ntext", {"size": 160}, scale_to_fit=True)
+    slide.box(x=50, y=400, width=300, height=300).rect(bg_color="#bbffbb").text(
+        "This is\ntext", {"size": 160}
+    )
+    slide.box(x=650, y=400, width=300, height=300).rect(bg_color="#bbffbb").text(
+        "This is\ntext", {"size": 160}, scale_to_fit=True
+    )
     test_env.check("text-fit-a")
 
 
 def test_text_scale_to_fit_b(test_env):
     slide = test_env.slide
-    slide.box(x=50, y=50, width=300, height=300).fbox().rect(bg_color="#bbffbb").text("This is\ntext")
-    b = slide.box(x=650, y=50, width=300, height=300).fbox().rect(bg_color="#bbffbb").text("This is\ntext", scale_to_fit=True)
+    slide.box(x=50, y=50, width=300, height=300).fbox().rect(bg_color="#bbffbb").text(
+        "This is\ntext"
+    )
+    b = (
+        slide.box(x=650, y=50, width=300, height=300)
+        .fbox()
+        .rect(bg_color="#bbffbb")
+        .text("This is\ntext", scale_to_fit=True)
+    )
 
-    slide.box(x=50, y=400, width=300, height=300).fbox().rect(bg_color="#bbffbb").text("This is\ntext", {"size": 160})
-    slide.box(x=650, y=400, width=300, height=300).fbox().rect(bg_color="#bbffbb").text("This is\ntext", {"size": 160}, scale_to_fit=True)
+    slide.box(x=50, y=400, width=300, height=300).fbox().rect(bg_color="#bbffbb").text(
+        "This is\ntext", {"size": 160}
+    )
+    slide.box(x=650, y=400, width=300, height=300).fbox().rect(bg_color="#bbffbb").text(
+        "This is\ntext", {"size": 160}, scale_to_fit=True
+    )
     test_env.check("text-fit-b")
 
 
@@ -381,7 +466,10 @@ def test_text_scale_to_fit_pointers1(test_env):
 
 def test_text_scale_to_fit_pointers2(test_env):
     slide = test_env.slide
-    slide.text("This is full\nslide\ntext!\nvery long ~#A{long} long long long line", scale_to_fit=True)
+    slide.text(
+        "This is full\nslide\ntext!\nvery long ~#A{long} long long long line",
+        scale_to_fit=True,
+    )
     slide.line_box(2, z_level=-1).rect(bg_color="red")
     slide.text_box("#A", z_level=-1).rect(bg_color="blue")
     test_env.check("text-fit-pointers2")
@@ -389,12 +477,16 @@ def test_text_scale_to_fit_pointers2(test_env):
 
 def test_text_scale_to_fit_code(test_env):
     slide = test_env.slide
-    slide.code("c", """
+    slide.code(
+        "c",
+        """
 #include <stdio.h>
 
 int main() {
     return 0;
-}""", scale_to_fit=True)
+}""",
+        scale_to_fit=True,
+    )
     test_env.check("text-fit-code")
 
 
@@ -402,21 +494,29 @@ def test_text_scale_to_fit_fill(test_env):
     slide = test_env.slide
     box = slide.box(width="100%", height="30%").rect(bg_color="green")
     box2 = box.box(height="fill").rect(bg_color="blue")
-    box2.code("c", """
+    box2.code(
+        "c",
+        """
 #include <stdio.h>
 
 int main() {
     return 0;
-}""", scale_to_fit=True)
+}""",
+        scale_to_fit=True,
+    )
 
     box = slide.box(width="30%", height="60%").rect(bg_color="green")
     box2 = box.box(width="fill").rect(bg_color="blue")
-    box2.code("c", """
+    box2.code(
+        "c",
+        """
     #include <stdio.h>
 
     int main() {
         return 0;
-    }""", scale_to_fit=True)
+    }""",
+        scale_to_fit=True,
+    )
 
     test_env.check("text-fit-fill")
 

@@ -10,7 +10,9 @@ def test_keep_same_nonconsecutive_slides(test_env):
     slide.box().text("Drop")
     test_env.slides.new_slide().box().text("Interlude")
     test_env.slides.new_slide().box().text("Drop")
-    test_env.check("drop-interlude", expect_count=3, render_args=dict(drop_duplicates=True))
+    test_env.check(
+        "drop-interlude", expect_count=3, render_args=dict(drop_duplicates=True)
+    )
 
 
 def test_postprocessing(test_env):
@@ -25,7 +27,9 @@ def test_postprocessing(test_env):
     test_env.slides.new_slide()
     test_env.slides.new_slide().box().text("Slide1")
     test_env.slides.new_slide().box().text("Slide2")
-    test_env.check("preprocessor", expect_count=3, render_args=dict(slide_postprocessing=fn))
+    test_env.check(
+        "preprocessor", expect_count=3, render_args=dict(slide_postprocessing=fn)
+    )
     assert called[0]
 
 
@@ -50,6 +54,5 @@ def test_debug_boxes(test_env):
 
     # Subtitle box
     subtitle = slide.box(name="name")
-    subtitle.text("Stanislav Böhm\n~tt{https://github.com/spirali/elsie}",
-                  "header2")
+    subtitle.text("Stanislav Böhm\n~tt{https://github.com/spirali/elsie}", "header2")
     test_env.check("debug_boxes", 1)

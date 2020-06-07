@@ -14,13 +14,14 @@ from .version import VERSION
 
 
 class Slides:
-
-    def __init__(self,
-                 width=1024,
-                 height=768,
-                 debug=False,
-                 pygments_theme="default",
-                 bg_color=None):
+    def __init__(
+        self,
+        width=1024,
+        height=768,
+        debug=False,
+        pygments_theme="default",
+        bg_color=None,
+    ):
 
         self.width = width
         self.height = height
@@ -34,18 +35,11 @@ class Slides:
                 "size": 28,
                 "line_spacing": 1.20,
                 "align": "middle",
-                "variant-numeric": "lining-nums"
+                "variant-numeric": "lining-nums",
             },
-            "tt": {
-                "font": "Ubuntu mono",
-            },
-            "emph": {
-                "italic": True,
-            },
-            "alert": {
-                "bold": True,
-                "color": "red",
-            },
+            "tt": {"font": "Ubuntu mono",},
+            "emph": {"italic": True,},
+            "alert": {"bold": True, "color": "red",},
             "code": {
                 "font": "Ubuntu Mono",
                 "align": "left",
@@ -53,9 +47,7 @@ class Slides:
                 "line_spacing": 1.20,
                 "size": 20,
             },
-            "code_lineno": {
-                "color": "gray"
-            },
+            "code_lineno": {"color": "gray"},
         }
         self.temp_cache = {}
         self._styles.update(make_highlight_styles(pygments_theme))
@@ -80,18 +72,32 @@ class Slides:
         self._styles[new_style_name] = new_style
 
     def new_slide(self, bg_color=None, *, view_box=None, name=None, debug_boxes=False):
-        if view_box is not None and \
-                not (isinstance(view_box, tuple) and len(view_box) == 4 and all(isinstance(v, (int, float)) for v in view_box)):
-            raise Exception("view_box has to be None or tuple of four numbers (x, y, width, height)")
+        if view_box is not None and not (
+            isinstance(view_box, tuple)
+            and len(view_box) == 4
+            and all(isinstance(v, (int, float)) for v in view_box)
+        ):
+            raise Exception(
+                "view_box has to be None or tuple of four numbers (x, y, width, height)"
+            )
         slide = Slide(
-            len(self._slides), self.width, self.height, self._styles.copy(), self.temp_cache, view_box, name, debug_boxes)
+            len(self._slides),
+            self.width,
+            self.height,
+            self._styles.copy(),
+            self.temp_cache,
+            view_box,
+            name,
+            debug_boxes,
+        )
         self._slides.append(slide)
         box = slide.box()
         if bg_color is None:
             bg_color = self.bg_color
         if bg_color:
-            box.box(x=0, y=0, width="100%", height="100%", z_level=-1000000) \
-                .rect(bg_color=bg_color)
+            box.box(x=0, y=0, width="100%", height="100%", z_level=-1000000).rect(
+                bg_color=bg_color
+            )
         return box
 
     def add_pdf(self, filename):
@@ -108,7 +114,9 @@ class Slides:
             if cache_config.get("inkscape") != inkscape_version:
                 print("Inkscape version changed; cache dropped")
                 return {}
-            return dict((tuple(key), value) for key, value in cache_config.get("queries", ()))
+            return dict(
+                (tuple(key), value) for key, value in cache_config.get("queries", ())
+            )
         else:
             return {}
 
@@ -121,8 +129,7 @@ class Slides:
         with open(cache_file, "w") as f:
             json.dump(cache_config, f)
 
-    def _show_progress(
-            self, name, value=0, max_value=0, first=False, last=False):
+    def _show_progress(self, name, value=0, max_value=0, first=False, last=False):
         if not first:
             prefix = "\r"
         else:
@@ -143,9 +150,16 @@ class Slides:
         sys.stdout.write("{}{} {}{}".format(prefix, name, progress, suffix))
         sys.stdout.flush()
 
-    def render(self, output, cache_dir="./elsie-cache",
-               threads=None, return_svg=False, pdf_merger="pypdf",
-               drop_duplicates=False, slide_postprocessing=None):
+    def render(
+        self,
+        output,
+        cache_dir="./elsie-cache",
+        threads=None,
+        return_svg=False,
+        pdf_merger="pypdf",
+        drop_duplicates=False,
+        slide_postprocessing=None,
+    ):
         inkscape_version = get_inkscape_version()
         if not os.path.isdir(cache_dir):
             print("Creating cache directory:", cache_dir)
@@ -157,8 +171,9 @@ class Slides:
         if slide_postprocessing:
             slide_postprocessing([slide.box() for slide in self._slides])
 
-        pdfs_in_dir = set(name for name in os.listdir(cache_dir)
-                          if name.endswith(".pdf"))
+        pdfs_in_dir = set(
+            name for name in os.listdir(cache_dir) if name.endswith(".pdf")
+        )
 
         if threads is None:
             threads = os.cpu_count() or 1
@@ -169,16 +184,15 @@ class Slides:
         queries = sum((s.queries() for s in self._slides), [])
 
         self._show_progress("Preprocessing", first=True)
-        need_compute = list(set(q.key for q in queries
-                                if q.key not in cache))
-        new_cache = dict((q.key, cache[q.key]) for q in queries
-                         if q.key in cache)
+        need_compute = list(set(q.key for q in queries if q.key not in cache))
+        new_cache = dict((q.key, cache[q.key]) for q in queries if q.key in cache)
         for i, result in enumerate(pool.map(compute_query, need_compute)):
             key = need_compute[i]
             new_cache[key] = result
             self._show_progress("Preprocessing", i, len(need_compute))
         self._show_progress(
-            "Preprocessing", len(need_compute), len(need_compute), last=True)
+            "Preprocessing", len(need_compute), len(need_compute), last=True
+        )
 
         for q in queries:
             q.callback(new_cache[q.key])
@@ -200,10 +214,11 @@ class Slides:
         self._show_progress("Building", first=True)
         computed_pdfs = set()
         prev_pdf = None
-        for i, pdf in enumerate(pool.map(
-                lambda x: x[0].render(
-                    x[1], cache_dir, pdfs_in_dir, self.debug),
-                renders)):
+        for i, pdf in enumerate(
+            pool.map(
+                lambda x: x[0].render(x[1], cache_dir, pdfs_in_dir, self.debug), renders
+            )
+        ):
             if not drop_duplicates or prev_pdf != pdf:
                 merger.append(os.path.join(cache_dir, pdf))
                 computed_pdfs.add(pdf)
@@ -263,18 +278,33 @@ def slide(*, bg_color=None, view_box=None, name=None, debug_boxes=False):
             _name = fn.__name__
         else:
             _name = name
-        slide = slides.new_slide(bg_color=bg_color, view_box=view_box, name=_name, debug_boxes=debug_boxes)
+        slide = slides.new_slide(
+            bg_color=bg_color, view_box=view_box, name=_name, debug_boxes=debug_boxes
+        )
         fn(slide)
         return fn
 
     return _helper
 
 
-def render(output="output.pdf", cache_dir="./elsie-cache",
-           threads=None, return_svg=False, pdf_merger="pypdf",
-           drop_duplicates=False, slide_postprocessing=None):
+def render(
+    output="output.pdf",
+    cache_dir="./elsie-cache",
+    threads=None,
+    return_svg=False,
+    pdf_merger="pypdf",
+    drop_duplicates=False,
+    slide_postprocessing=None,
+):
     """Render global slides"""
     if _global_slides is None:
         raise Exception("No slides to render")
-    return _global_slides.render(output, cache_dir, threads, return_svg, pdf_merger, drop_duplicates,
-                                 slide_postprocessing)
+    return _global_slides.render(
+        output,
+        cache_dir,
+        threads,
+        return_svg,
+        pdf_merger,
+        drop_duplicates,
+        slide_postprocessing,
+    )

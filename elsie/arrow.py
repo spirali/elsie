@@ -4,7 +4,6 @@ from .geom import segment_delta, segment_resize
 
 
 class Arrow:
-
     def __init__(self, size=10, angle=40, stroke_width=None, inner=None):
         self.size = size
         self.angle = angle * math.pi / 180
@@ -22,16 +21,19 @@ class Arrow:
 
         if self.stroke_width is not None:
             xml.element("polyline")
-            xml.set("style", "fill:none;stroke:{};stroke-width: {}".format(
-                color, self.stroke_width))
+            xml.set(
+                "style",
+                "fill:none;stroke:{};stroke-width: {}".format(color, self.stroke_width),
+            )
         else:
             xml.element("polygon")
             xml.set("style", "fill:{};stroke:none;".format(color))
         points = [(x1, y1), p2, (x2, y2)]
 
         if self.inner and not self.stroke_width:
-            points.append(segment_resize(
-                p1, p2, - self.inner * self.size * math.cos(self.angle)))
+            points.append(
+                segment_resize(p1, p2, -self.inner * self.size * math.cos(self.angle))
+            )
         xml.set("points", " ".join("{},{}".format(x, y) for x, y in points))
         xml.close()
 

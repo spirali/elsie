@@ -1,10 +1,4 @@
-attributes = ("font",
-              "size",
-              "align",
-              "line_spacing",
-              "color",
-              "bold",
-              "italic")
+attributes = ("font", "size", "align", "line_spacing", "color", "bold", "italic")
 
 
 def check_style(style):

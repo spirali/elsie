@@ -14,6 +14,7 @@ elsie.update_style("emph", color=COLOR2)  # Emphasis
 
 # First slide #############################################
 
+
 @elsie.slide()
 def first_slide(slide):
     # Create text styles that are local for this slide
@@ -41,11 +42,11 @@ def first_slide(slide):
 
     # Subtitle box
     subtitle = slide.box()
-    subtitle.text("Stanislav Böhm\n~tt{https://github.com/spirali/elsie}",
-                  "header2")
+    subtitle.text("Stanislav Böhm\n~tt{https://github.com/spirali/elsie}", "header2")
 
 
 # Slide with brief description ############################
+
 
 @elsie.slide()
 def brief_description(slide):
@@ -54,6 +55,7 @@ def brief_description(slide):
 
 
 # Hello world example #####################################
+
 
 @elsie.slide()
 def hello_world(slide):
@@ -67,17 +69,21 @@ def hello_world(slide):
     # Method .code works as .text but it calls pygments for syntax highlight.
     # The first argument is the used language
     # We create another box just for applying small padding
-    b.box(p_x=20, p_y=10).code("python", """
+    b.box(p_x=20, p_y=10).code(
+        "python",
+        """
     import elsie
 
     @elsie.slide()
     def hello(slide):
         slide.text("Hello world!")
 
-    elsie.render()""")
+    elsie.render()""",
+    )
 
 
 # Text fragments ##########################################
+
 
 @elsie.slide()
 def fragments(slide):
@@ -97,6 +103,7 @@ def fragments(slide):
 
 
 # SVG image demo ##########################################
+
 
 @elsie.slide()
 def svg_demo(slide):
@@ -124,6 +131,7 @@ def svg_demo(slide):
 
 
 # Header/Footer demo ##########################################
+
 
 @elsie.slide()
 def header_footer(slide):
@@ -153,21 +161,26 @@ def header_footer(slide):
 
 # Syntax highlighting ##########################################
 
+
 @elsie.slide()
 def syntax_highlighting(slide):
     slide.box().text("Syntax Highlighting")
     slide.box(height=30)
-    slide.box().code("c", """#include <stdio.h>
+    slide.box().code(
+        "c",
+        """#include <stdio.h>
 
 /* Hello world program */
 
 int main() {
     printf("Hello world!\\n");
     return 0;
-}""")
+}""",
+    )
 
 
 # Line highlighting #######################################
+
 
 @elsie.slide()
 def line_highlighting(slide):
@@ -175,14 +188,17 @@ def line_highlighting(slide):
     slide.box(height=30)
 
     code_box = slide.box()
-    code_box.code("c", """#include <stdio.h>
+    code_box.code(
+        "c",
+        """#include <stdio.h>
 
 /* Hello world program */
 
 int main() {
     printf("Hello world!\\n");
     return 0;
-}""")
+}""",
+    )
 
     # 'line_box' creates box around a specified line of a text (the 1st argument)
     # Lines are counter from 0
@@ -203,20 +219,29 @@ int main() {
 
     # Here we creates the triangle heading to a line,
     # method 'p' returns a position relatively to the box
-    label.polygon([label.p("99%", "40%"),
-                   label.p("99%", "60%"),
-                   code_box.line_box(4).p(0, "50%")], bg_color="green")
+    label.polygon(
+        [
+            label.p("99%", "40%"),
+            label.p("99%", "60%"),
+            code_box.line_box(4).p(0, "50%"),
+        ],
+        bg_color="green",
+    )
 
     # Now we are creating an arrow head for the orange line
     arrow = elsie.Arrow(10)
     p1 = code_box.line_box(0).p("100%", "50%")
     p2 = code_box.line_box(5).p("100%", "50%")
-    slide.box(show="6").line([p1, p1.add(40, 0),
-                              p2.add(40, 0), p2],
-                             stroke_width=3, color="orange", end_arrow=arrow)
+    slide.box(show="6").line(
+        [p1, p1.add(40, 0), p2.add(40, 0), p2],
+        stroke_width=3,
+        color="orange",
+        end_arrow=arrow,
+    )
 
 
 # Scaling into box #######################################
+
 
 @elsie.slide()
 def text_scaling(slide):
@@ -225,19 +250,25 @@ def text_scaling(slide):
 
     code_box = slide.box(width=450, height=400)
     code_box.rect(bg_color="#ddd", color="#888")
-    code_box.code("c", """#include <stdio.h>
+    code_box.code(
+        "c",
+        """#include <stdio.h>
 
 /* Hello world program */
 
 int main() {
     printf("Hello world!\\n");
     return 0;
-}""", scale_to_fit=True)
+}""",
+        scale_to_fit=True,
+    )
+
+
 #     ^^^^^^^^^^^^<<<<<<<< this is important
 
 
-
 # Text box demo ###############################################
+
 
 @elsie.slide()
 def text_box_demo(slide):
@@ -252,8 +283,12 @@ def text_box_demo(slide):
 
     b2 = b.text_box("#B", z_level=-1, show="3", padding=-3).rect(color=COLOR2)
     arrow = elsie.Arrow(10)
-    b2.line([b2.p("50%", "160%"), b2.p("50%", "100%")],
-            stroke_width=3, color=COLOR2, end_arrow=arrow)
+    b2.line(
+        [b2.p("50%", "160%"), b2.p("50%", "100%")],
+        stroke_width=3,
+        color=COLOR2,
+        end_arrow=arrow,
+    )
 
 
 @elsie.slide()
@@ -262,22 +297,25 @@ def text_box_in_code_demo(slide):
     b = slide.box().text("Words inside code block")
     slide.box(height=80)
 
-    c = slide.box().code("c", """#include <stdio.h>
+    c = slide.box().code(
+        "c",
+        """#include <stdio.h>
 
 /* Hello world program */
 
     int ~#MAIN{main}() {
     printf(~small{"Hello world!\\n"});
     return ~#RETURN_VALUE{0};
-}""", use_styles=True)  # <--- use_styles=True is important to enable styling in code block
+}""",
+        use_styles=True,
+    )  # <--- use_styles=True is important to enable styling in code block
 
     p2 = c.text_box("#RETURN_VALUE").p("50%", "100%")
 
     c.text_box("#MAIN", z_level=-1, p_x=-2).rect(bg_color="#FBB", color="black")
 
     arrow = elsie.Arrow(10)
-    slide.line([p2.add(0, 40), p2],
-               end_arrow=arrow, stroke_width=3)
+    slide.line([p2.add(0, 40), p2], end_arrow=arrow, stroke_width=3)
 
     c.line_box(4).box(x="100%", height="100%").text("← Inline highlight", "small")
     c.line_box(5).box(x="100%", height="100%").text("← Font style changed", "small")
@@ -285,6 +323,7 @@ def text_box_in_code_demo(slide):
 
 
 # Console demo ############################################
+
 
 @elsie.slide()
 def console_demo(slide):
@@ -306,16 +345,21 @@ def console_demo(slide):
         "!prompt{~/path/to/elsie/example$} !cmd{python3 example.py}\n"
         "Preprocessing................. done\n"
         "Building...................... done\n"
-        "Creating 'example.pdf'........ done\n", "shell", escape_char="!")
+        "Creating 'example.pdf'........ done\n",
+        "shell",
+        escape_char="!",
+    )
 
 
 # LaTeX demo ##############################################
+
 
 @elsie.slide()
 def latex_demo(slide):
     slide.box().latex("\TeX{} demo", scale=5.0)
     slide.box(height="50")
-    slide.box().latex("""
+    slide.box().latex(
+        """
     $$
         \\begin{bmatrix}
             1 & \sqrt{x} & 0 \\\\
@@ -330,10 +374,13 @@ def latex_demo(slide):
             \\frac{\\alpha}{x}-1
         \\end{bmatrix}
     $$
-    """, scale=3.0)
+    """,
+        scale=3.0,
+    )
 
 
 # Text demo ###############################################
+
 
 @elsie.slide()
 def text_demo(slide):
@@ -377,6 +424,7 @@ def list_demo(slide):
 
 # Columns demo ############################################
 
+
 @elsie.slide()
 def columns_demo(slide):
     slide.box(padding=40).text("Columns demo")
@@ -395,6 +443,7 @@ def columns_demo(slide):
 
 # Shape demo ##############################################
 
+
 @elsie.slide()
 def shape_demo(slide):
     slide.box(100, 100, 200, 200).rect(color="green")
@@ -406,52 +455,113 @@ def shape_demo(slide):
     slide.polygon([(540, 300), (740, 300), (640, 100)], color="red")
     slide.polygon([(570, 280), (710, 280), (640, 140)], bg_color="red")
 
-    slide.line([(760, 100), (940, 100), (760, 300), (960, 300)],
-               color="orange", stroke_width=5)
+    slide.line(
+        [(760, 100), (940, 100), (760, 300), (960, 300)], color="orange", stroke_width=5
+    )
 
     slide.line([(100, 500), (200, 500)], color="black", stroke_width=1)
     slide.line([(100, 550), (200, 550)], color="black", stroke_width=5)
     slide.line([(100, 600), (200, 600)], color="black", stroke_width=10)
 
     arrow1 = elsie.Arrow(10, stroke_width=1)
-    slide.line([(300, 500), (400, 500)], color="black", stroke_width=1,
-               start_arrow=arrow1, end_arrow=arrow1)
+    slide.line(
+        [(300, 500), (400, 500)],
+        color="black",
+        stroke_width=1,
+        start_arrow=arrow1,
+        end_arrow=arrow1,
+    )
     arrow2 = elsie.Arrow(20, stroke_width=5)
-    slide.line([(300, 550), (400, 550)], color="black", stroke_width=5,
-               start_arrow=arrow2, end_arrow=arrow2)
+    slide.line(
+        [(300, 550), (400, 550)],
+        color="black",
+        stroke_width=5,
+        start_arrow=arrow2,
+        end_arrow=arrow2,
+    )
     arrow3 = elsie.Arrow(30, stroke_width=10)
-    slide.line([(300, 600), (400, 600)], color="black", stroke_width=10,
-               start_arrow=arrow3, end_arrow=arrow3)
+    slide.line(
+        [(300, 600), (400, 600)],
+        color="black",
+        stroke_width=10,
+        start_arrow=arrow3,
+        end_arrow=arrow3,
+    )
 
     arrow1 = elsie.Arrow(10)
-    slide.line([(500, 500), (600, 500)], color="black", stroke_width=1,
-               start_arrow=arrow1, end_arrow=arrow1)
+    slide.line(
+        [(500, 500), (600, 500)],
+        color="black",
+        stroke_width=1,
+        start_arrow=arrow1,
+        end_arrow=arrow1,
+    )
     arrow2 = elsie.Arrow(20)
-    slide.line([(500, 550), (600, 550)], color="black", stroke_width=5,
-               start_arrow=arrow2, end_arrow=arrow2)
+    slide.line(
+        [(500, 550), (600, 550)],
+        color="black",
+        stroke_width=5,
+        start_arrow=arrow2,
+        end_arrow=arrow2,
+    )
     arrow3 = elsie.Arrow(30)
-    slide.line([(500, 600), (600, 600)], color="black", stroke_width=10,
-               start_arrow=arrow3, end_arrow=arrow3)
+    slide.line(
+        [(500, 600), (600, 600)],
+        color="black",
+        stroke_width=10,
+        start_arrow=arrow3,
+        end_arrow=arrow3,
+    )
 
     arrow1 = elsie.Arrow(10, inner=0.5)
-    slide.line([(700, 500), (800, 500)], color="black", stroke_width=1,
-               start_arrow=arrow1, end_arrow=arrow1)
+    slide.line(
+        [(700, 500), (800, 500)],
+        color="black",
+        stroke_width=1,
+        start_arrow=arrow1,
+        end_arrow=arrow1,
+    )
     arrow2 = elsie.Arrow(20, inner=0.5)
-    slide.line([(700, 550), (800, 550)], color="black", stroke_width=5,
-               start_arrow=arrow2, end_arrow=arrow2)
+    slide.line(
+        [(700, 550), (800, 550)],
+        color="black",
+        stroke_width=5,
+        start_arrow=arrow2,
+        end_arrow=arrow2,
+    )
     arrow3 = elsie.Arrow(30, inner=0.5)
-    slide.line([(700, 600), (800, 600)], color="black", stroke_width=10,
-               start_arrow=arrow3, end_arrow=arrow3)
+    slide.line(
+        [(700, 600), (800, 600)],
+        color="black",
+        stroke_width=10,
+        start_arrow=arrow3,
+        end_arrow=arrow3,
+    )
 
     arrow1 = elsie.Arrow(10, inner=2.0)
-    slide.line([(900, 500), (1000, 500)], color="black", stroke_width=1,
-               start_arrow=arrow1, end_arrow=arrow1)
+    slide.line(
+        [(900, 500), (1000, 500)],
+        color="black",
+        stroke_width=1,
+        start_arrow=arrow1,
+        end_arrow=arrow1,
+    )
     arrow2 = elsie.Arrow(20, inner=2.0)
-    slide.line([(900, 550), (1000, 550)], color="black", stroke_width=5,
-               start_arrow=arrow2, end_arrow=arrow2)
+    slide.line(
+        [(900, 550), (1000, 550)],
+        color="black",
+        stroke_width=5,
+        start_arrow=arrow2,
+        end_arrow=arrow2,
+    )
     arrow3 = elsie.Arrow(30, inner=2.0)
-    slide.line([(900, 600), (1000, 600)], color="black", stroke_width=10,
-               start_arrow=arrow3, end_arrow=arrow3)
+    slide.line(
+        [(900, 600), (1000, 600)],
+        color="black",
+        stroke_width=10,
+        start_arrow=arrow3,
+        end_arrow=arrow3,
+    )
 
     # Dashes
 
@@ -466,21 +576,32 @@ def shape_demo(slide):
 
     # dashed rectangle
     slide.box(550, 350, 50, 50).rect(
-        stroke_width=5, stroke_dasharray="2", color="black", rx=5, ry=5)
+        stroke_width=5, stroke_dasharray="2", color="black", rx=5, ry=5
+    )
 
 
 # Path demo ##############################################
+
 
 @elsie.slide()
 def path_demo(slide):
     slide.box(x=150, y=150).text("Path demo")
 
-    root = slide.box(x=250, y="[50%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text(
-        "Root")
-    child1 = slide.box(x=650, y="[20%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text(
-        "Child1")
-    child2 = slide.box(x=650, y="[80%]", width=100, height=50).rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5).text(
-        "Child2")
+    root = (
+        slide.box(x=250, y="[50%]", width=100, height=50)
+        .rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5)
+        .text("Root")
+    )
+    child1 = (
+        slide.box(x=650, y="[20%]", width=100, height=50)
+        .rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5)
+        .text("Child1")
+    )
+    child2 = (
+        slide.box(x=650, y="[80%]", width=100, height=50)
+        .rect(color=COLOR1, bg_color="#EEE", rx=5, ry=5)
+        .text("Child2")
+    )
 
     arrow = elsie.Arrow(10)
 
@@ -490,18 +611,32 @@ def path_demo(slide):
 
     # See SVG <path> documentation for commands explanation
     # In short: M = move to, L = line to, C/S = bezier curve, Q/T = quadratic
-    slide.path([("M", r1), ("C", r1.add(300, 0), c1.add(-300, 0), c1)], end_arrow=arrow, stroke_width=2, color=COLOR1)
+    slide.path(
+        [("M", r1), ("C", r1.add(300, 0), c1.add(-300, 0), c1)],
+        end_arrow=arrow,
+        stroke_width=2,
+        color=COLOR1,
+    )
 
     # Path root -> child2
     c2 = child2.p("0%", "50%")
-    slide.path([("M", r1), ("Q", c2.add(-100, 0), c2)], end_arrow=arrow, stroke_width=2, color=COLOR1,
-               stroke_dasharray="10")
+    slide.path(
+        [("M", r1), ("Q", c2.add(-100, 0), c2)],
+        end_arrow=arrow,
+        stroke_width=2,
+        color=COLOR1,
+        stroke_dasharray="10",
+    )
 
     # Path chiled1 -> child1
     c1t = child1.p("50%", "0%")
     c1r = child1.p("100%", "50%")
-    slide.path([("M", c1t), ("C", c1t.add(0, -100), c1r.add(100, 0), c1r)], end_arrow=arrow, stroke_width=2,
-               color=COLOR1)
+    slide.path(
+        [("M", c1t), ("C", c1t.add(0, -100), c1r.add(100, 0), c1r)],
+        end_arrow=arrow,
+        stroke_width=2,
+        color=COLOR1,
+    )
 
     # c3 = child2.p("50%", "50%")
     # slide.path([("M", c3.add(0, -100)),
@@ -509,11 +644,18 @@ def path_demo(slide):
     #            ("C", c3.add(-150, -100), c3.add(-100, -10), c3.add(0, -100))], bg_color="#909090", color=None)#
 
     slide.path([("M", (650, 350)), ("L", (750, 350))], stroke_width=4, color="green")
-    slide.path([("M", (600, 450)), ("L", (700, 250)), ("L", (800, 450))], stroke_width=4, color="red")
-    slide.path([("M", (600, 450)), ("Q", (700, 250), (800, 450))], bg_color="blue", color=None)
+    slide.path(
+        [("M", (600, 450)), ("L", (700, 250)), ("L", (800, 450))],
+        stroke_width=4,
+        color="red",
+    )
+    slide.path(
+        [("M", (600, 450)), ("Q", (700, 250), (800, 450))], bg_color="blue", color=None
+    )
 
 
 # Chess board ##############################################
+
 
 @elsie.slide()
 def chessboard_demo(slide):
@@ -536,12 +678,11 @@ def chessboard_demo(slide):
     points = [
         tiles[(3, 4)].mid_point(),
         tiles[(3, 2)].mid_point(),
-        tiles[(4, 2)].mid_point()
+        tiles[(4, 2)].mid_point(),
     ]
 
     arrow = elsie.Arrow(30)
-    slide.box(show="1-3").line(
-        points, color="white", stroke_width=15, end_arrow=arrow)
+    slide.box(show="1-3").line(points, color="white", stroke_width=15, end_arrow=arrow)
 
     tiles[(3, 4)].box(show="1").text("♞", "black")
     tiles[(3, 3)].box(show="2").text("♞", "black")
@@ -550,6 +691,7 @@ def chessboard_demo(slide):
 
 
 # Size & Positioning demo #################################
+
 
 @elsie.slide()
 def position_demo(slide):
@@ -624,7 +766,9 @@ def position_demo(slide):
 @elsie.slide(view_box=(300, 200, 400, 400))
 def zoomed_position_demo(slide):
     position_demo(slide)
-    slide.box(x=390, y=200).rect(bg_color="black").fbox(padding=10).text("Zooming demo", {"color": "white"})
+    slide.box(x=390, y=200).rect(bg_color="black").fbox(padding=10).text(
+        "Zooming demo", {"color": "white"}
+    )
 
 
 @elsie.slide(debug_boxes=True)
@@ -632,7 +776,9 @@ def debugging_slides(slide):
     slide.new_style("header", size=35, color="white")
     slide.new_style("header2", size=25, color=COLOR1)
 
-    slide.box(p_bottom=120, width=300, height=200, name="debug title").text("Debugging layout")
+    slide.box(p_bottom=120, width=300, height=200, name="debug title").text(
+        "Debugging layout"
+    )
 
     title_box1 = slide.box(width="fill", height=120, name="title")
     title_box1.rect(bg_color=COLOR2)
@@ -640,18 +786,17 @@ def debugging_slides(slide):
     title_box2 = title_box1.fbox(p_y=10, name="header")
     title_box2.rect(bg_color=COLOR1)
 
-
     title_box2.text("Elsie: Slides in Python in Programmable Way", "header")
 
     slide.box(height=30, name="filler")
 
     # Subtitle box
     subtitle = slide.box(name="name")
-    subtitle.text("Stanislav Böhm\n~tt{https://github.com/spirali/elsie}",
-                  "header2")
+    subtitle.text("Stanislav Böhm\n~tt{https://github.com/spirali/elsie}", "header2")
 
 
 # The final slide #################################
+
 
 @elsie.slide()
 def final_slide(slide):

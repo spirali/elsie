@@ -7,7 +7,6 @@ from .textparser import normalize_tokens, NEWLINE_1
 
 
 class MyFormatter(Formatter):
-
     def __init__(self):
         super().__init__()
         self.stream = []

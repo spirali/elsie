@@ -87,7 +87,9 @@ def test_image_bitmap_no_size(test_env):
 
 
 def test_image_width(test_env):
-    test_env.slide.box(width=300).rect(bg_color="green").image(test_env.assets_path("test100x30.svg"))
+    test_env.slide.box(width=300).rect(bg_color="green").image(
+        test_env.assets_path("test100x30.svg")
+    )
     test_env.slide.box(width=50).image(test_env.assets_path("test100x30.svg"))
     test_env.slide.box(width=300).image(test_env.assets_path("test.png"))
     test_env.slide.box(width=300).image(test_env.assets_path("test100x30.svg"))
@@ -95,7 +97,9 @@ def test_image_width(test_env):
 
 
 def test_image_height(test_env):
-    test_env.slide.box(height=100).rect(bg_color="green").image(test_env.assets_path("test100x30.svg"))
+    test_env.slide.box(height=100).rect(bg_color="green").image(
+        test_env.assets_path("test100x30.svg")
+    )
     test_env.slide.box(height=10).image(test_env.assets_path("test100x30.svg"))
     test_env.slide.box(height=100).image(test_env.assets_path("test.png"))
     test_env.slide.box(height=200).image(test_env.assets_path("test100x30.svg"))
@@ -103,7 +107,9 @@ def test_image_height(test_env):
 
 
 def test_image_width_height(test_env):
-    test_env.slide.box(width=300, height=100).image(test_env.assets_path("test100x30.svg"))
+    test_env.slide.box(width=300, height=100).image(
+        test_env.assets_path("test100x30.svg")
+    )
     test_env.slide.box(width=300, height=100).image(test_env.assets_path("test.png"))
     test_env.check("image-width-height")
 

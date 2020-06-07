@@ -122,12 +122,11 @@ def test_chess(test_env):
     points = [
         tiles[(3, 4)].mid_point(),
         tiles[(3, 2)].mid_point(),
-        tiles[(4, 2)].mid_point()
+        tiles[(4, 2)].mid_point(),
     ]
 
     arrow = Arrow(30)
-    slide.box(show="1-3").line(
-        points, color="green", stroke_width=15, end_arrow=arrow)
+    slide.box(show="1-3").line(points, color="green", stroke_width=15, end_arrow=arrow)
 
     tiles[(3, 4)].box(show="1").text("♞", "black")
     tiles[(3, 3)].box(show="2").text("♞", "black")

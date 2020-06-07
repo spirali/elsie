@@ -14,6 +14,7 @@ sys.path.insert(0, ROOT_DIR)
 import elsie  # noqa
 import test_utils
 
+
 def prepare():
     """Prepare working directory
 
@@ -38,7 +39,6 @@ def prepare():
 
 
 class SlideTester:
-
     def __init__(self):
         self.slides = elsie.Slides()
         self._slide = None
@@ -63,7 +63,9 @@ class SlideTester:
         try:
             assert len(svgs) == expect_count
             for i, result in enumerate(svgs):
-                filename = self.data_path(os.path.join("checks", "{}-{}.svg".format(expected, i)))
+                filename = self.data_path(
+                    os.path.join("checks", "{}-{}.svg".format(expected, i))
+                )
                 with open(filename) as f:
                     expected_content = f.read()
                 print("Slide", i)

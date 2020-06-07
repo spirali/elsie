@@ -1,5 +1,4 @@
 class Xml:
-
     def __init__(self):
         self.chunks = []
         self.stack = []
@@ -36,8 +35,9 @@ class Xml:
     def close(self, text=None):
         assert self.stack, "At least one element has to be opened"
         if text is not None and self.stack[-1] != text:
-            raise Exception("Expects '{}' on stack but found '{}'"
-                            .format(text, self.stack[-1]))
+            raise Exception(
+                "Expects '{}' on stack but found '{}'".format(text, self.stack[-1])
+            )
         if self.is_open:
             self.is_open = False
             self.stack.pop()

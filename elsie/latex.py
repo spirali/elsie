@@ -9,19 +9,19 @@ from .svg import rename_ids
 
 
 def render_latex(text):
-    args = ("/usr/bin/pdflatex",
-            "-interaction=batchmode",
-            "content.tex")
+    args = ("/usr/bin/pdflatex", "-interaction=batchmode", "content.tex")
 
     with TemporaryDirectory(prefix="elphie-") as wdir:
         with open(os.path.join(wdir, "content.tex"), "w") as f:
             f.write(text)
 
-        p = subprocess.Popen(args,
-                             stdin=subprocess.PIPE,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,
-                             cwd=wdir)
+        p = subprocess.Popen(
+            args,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=wdir,
+        )
 
         _stdout, _stderr = p.communicate()
         if p.returncode != 0:
@@ -31,15 +31,15 @@ def render_latex(text):
 
         svg_name = os.path.join(wdir, "content.svg")
 
-        args = ("/usr/bin/pdf2svg",
-                os.path.join(wdir, "content.pdf"),
-                svg_name)
+        args = ("/usr/bin/pdf2svg", os.path.join(wdir, "content.pdf"), svg_name)
 
-        p = subprocess.Popen(args,
-                             stdin=subprocess.PIPE,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,
-                             cwd=wdir)
+        p = subprocess.Popen(
+            args,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=wdir,
+        )
 
         _stdout, stderr = p.communicate()
         if p.returncode != 0:

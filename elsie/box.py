@@ -10,8 +10,12 @@ from .geom import Rect
 from .highlight import highlight_code
 from .image import get_image_steps, create_image_data
 from .lazy import LazyValue, eval_value, LazyPoint, unpack_point, eval_pair
-from .path import (check_and_unpack_path_commands, eval_path_commands,
-                   path_points_for_end_arrow, path_update_end_point)
+from .path import (
+    check_and_unpack_path_commands,
+    eval_path_commands,
+    path_points_for_end_arrow,
+    path_update_end_point,
+)
 from .query import Query
 from .show import ShowInfo
 from .svg import svg_size_to_pixels
@@ -23,7 +27,6 @@ from .value import SizeValue, PosValue
 
 
 class Painter:
-
     def __init__(self, fn, rect, z_level):
         self.fn = fn
         self.z_level = z_level
@@ -73,27 +76,27 @@ def text_x_in_rect(rect, style):
     elif align == "right":
         return rect.x + rect.width
     else:
-        raise Exception(
-            "Invalid value of align: " + repr(align))
+        raise Exception("Invalid value of align: " + repr(align))
 
 
 class Box:
-
-    def __init__(self,
-                 slide,
-                 x,
-                 y,
-                 width,
-                 height,
-                 styles,
-                 show_info,
-                 p_left=0,
-                 p_right=0,
-                 p_top=0,
-                 p_bottom=0,
-                 horizontal=False,
-                 z_level=0,
-                 name=None):
+    def __init__(
+        self,
+        slide,
+        x,
+        y,
+        width,
+        height,
+        styles,
+        show_info,
+        p_left=0,
+        p_right=0,
+        p_top=0,
+        p_bottom=0,
+        horizontal=False,
+        z_level=0,
+        name=None,
+    ):
 
         if x is not None:
             self._x = PosValue.parse(x)
@@ -129,23 +132,25 @@ class Box:
         self.horizontal = horizontal
         self.z_level = z_level
 
-    def box(self,
-            x=None,
-            y=None,
-            width=None,
-            height=None,
-            show=None,
-            p_left=None,  # padding left
-            p_right=None,  # padding right
-            p_top=None,  # padding top
-            p_bottom=None,  # padding bottom
-            p_x=None,  # horizontal padding (sets p_left & p_right)
-            p_y=None,  # vertical padding (sets p_top & p_bottom)
-            padding=None,  # sets the same padding to all directions
-            horizontal=False,
-            z_level=None,
-            prepend=False,
-            name=None):
+    def box(
+        self,
+        x=None,
+        y=None,
+        width=None,
+        height=None,
+        show=None,
+        p_left=None,  # padding left
+        p_right=None,  # padding right
+        p_top=None,  # padding top
+        p_bottom=None,  # padding bottom
+        p_x=None,  # horizontal padding (sets p_left & p_right)
+        p_y=None,  # vertical padding (sets p_top & p_bottom)
+        padding=None,  # sets the same padding to all directions
+        horizontal=False,
+        z_level=None,
+        prepend=False,
+        name=None,
+    ):
         """ Create a new child box """
 
         def set_padding(a, b):
@@ -166,20 +171,22 @@ class Box:
         show = ShowInfo.parse(show, self.slide.max_step)
         self.slide.max_step = max(self.slide.max_step, show.max_step())
 
-        box = Box(self.slide,
-                  x,
-                  y,
-                  width,
-                  height,
-                  self._styles.copy(),
-                  show,
-                  p_left,
-                  p_right,
-                  p_top,
-                  p_bottom,
-                  horizontal,
-                  z_level,
-                  name)
+        box = Box(
+            self.slide,
+            x,
+            y,
+            width,
+            height,
+            self._styles.copy(),
+            show,
+            p_left,
+            p_right,
+            p_top,
+            p_bottom,
+            horizontal,
+            z_level,
+            name,
+        )
         self.add_child(box, prepend)
         return box
 
@@ -241,7 +248,9 @@ class Box:
                 count -= 1
                 if count == 0:
                     return self._text_box_helper(i, kwargs)
-        raise Exception("Style {}. occurence of style '{}' not found".format(n_th, style_name))
+        raise Exception(
+            "Style {}. occurence of style '{}' not found".format(n_th, style_name)
+        )
 
     def _text_box_helper(self, index, box_args):
         def on_query_x(x):
@@ -265,26 +274,46 @@ class Box:
 
         line, index_in_line = extract_line(self._parsed_text, index)
         xml = Xml()
-        draw_text(xml, 0, 0, line, self._text_style, self._styles,
-                  id="target", id_index=index_in_line)
+        draw_text(
+            xml,
+            0,
+            0,
+            line,
+            self._text_style,
+            self._styles,
+            id="target",
+            id_index=index_in_line,
+        )
         text = xml.to_string()
         del xml
 
         self._queries.append(Query(("inkscape-x", text), on_query_x))
         self._queries.append(Query(("inkscape", text), on_query_h))
 
-        box_args.setdefault("x", LazyValue(lambda: text_x_in_rect(
-            self._rect, self._text_style) + query_result[0] * self._text_scale))
+        box_args.setdefault(
+            "x",
+            LazyValue(
+                lambda: text_x_in_rect(self._rect, self._text_style)
+                + query_result[0] * self._text_scale
+            ),
+        )
         box_args.setdefault("y", LazyValue(compute_y))
-        box_args.setdefault("width", LazyValue(lambda: query_result[1] * self._text_scale))
+        box_args.setdefault(
+            "width", LazyValue(lambda: query_result[1] * self._text_scale)
+        )
         box_args.setdefault("height", LazyValue(compute_height))
 
         return self.box(**box_args)
 
-    def rect(self,
-             color=None, bg_color=None,
-             stroke_width=1, stroke_dasharray=None,
-             rx=None, ry=None):
+    def rect(
+        self,
+        color=None,
+        bg_color=None,
+        stroke_width=1,
+        stroke_dasharray=None,
+        rx=None,
+        ry=None,
+    ):
         """ Draw a rect around the box """
 
         def draw_rect(ctx, rect):
@@ -305,17 +334,20 @@ class Box:
 
         return self
 
-    def polygon(self,
-                points,
-                color=None, bg_color=None,
-                stroke_width=1, stroke_dasharray=None):
+    def polygon(
+        self, points, color=None, bg_color=None, stroke_width=1, stroke_dasharray=None
+    ):
         """ Draw a polygon """
 
         def draw_rect(ctx, rect):
             xml = ctx.xml
             xml.element("polygon")
-            xml.set("points", " ".join("{},{}".format(
-                eval_value(x), eval_value(y)) for x, y in points))
+            xml.set(
+                "points",
+                " ".join(
+                    "{},{}".format(eval_value(x), eval_value(y)) for x, y in points
+                ),
+            )
             set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
             xml.close("polygon")
 
@@ -324,8 +356,15 @@ class Box:
 
         return self
 
-    def path(self, commands, color="black", bg_color=None, stroke_width=1, stroke_dasharray=None,
-             end_arrow=None):
+    def path(
+        self,
+        commands,
+        color="black",
+        bg_color=None,
+        stroke_width=1,
+        stroke_dasharray=None,
+        end_arrow=None,
+    ):
         commands = check_and_unpack_path_commands(commands, self)
         if not commands:
             return
@@ -352,8 +391,15 @@ class Box:
 
         self.add_child(draw)
 
-    def line(self, points, color="black", stroke_width=1, stroke_dasharray=None,
-             start_arrow=None, end_arrow=None):
+    def line(
+        self,
+        points,
+        color="black",
+        stroke_width=1,
+        stroke_dasharray=None,
+        start_arrow=None,
+        end_arrow=None,
+    ):
         """ Draw a line """
 
         def draw_rect(ctx, rect):
@@ -431,7 +477,9 @@ class Box:
         else:
             image_width, image_height, mime, data = entry
 
-        self._set_image_size_request(image_width * (scale or 1), image_height * (scale or 1))
+        self._set_image_size_request(
+            image_width * (scale or 1), image_height * (scale or 1)
+        )
 
         def draw(ctx, rect):
             if scale is None:
@@ -440,7 +488,8 @@ class Box:
                     s = 0
                     logging.warning(
                         "Scale of image {} is 0, set scale explicitly or set at least one "
-                        "dimension for the parent box".format(filename))
+                        "dimension for the parent box".format(filename)
+                    )
             else:
                 s = scale
 
@@ -468,7 +517,9 @@ class Box:
         image_width = svg_size_to_pixels(root.get("width"))
         image_height = svg_size_to_pixels(root.get("height"))
 
-        self._set_image_size_request(image_width * (scale or 1), image_height * (scale or 1))
+        self._set_image_size_request(
+            image_width * (scale or 1), image_height * (scale or 1)
+        )
 
         if fragments:
             image_steps = get_image_steps(root)
@@ -498,7 +549,8 @@ class Box:
                     s = 0
                     logging.warning(
                         "Scale of image {} is 0, set scale explicitly or set at least one "
-                        "dimension for the parent box".format(filename))
+                        "dimension for the parent box".format(filename)
+                    )
             else:
                 s = scale
 
@@ -510,8 +562,18 @@ class Box:
 
         self.add_child(draw)
 
-    def code(self, language, text, *, tabsize=4, line_numbers=False, style="code",
-             use_styles=False, escape_char="~", scale_to_fit=False):
+    def code(
+        self,
+        language,
+        text,
+        *,
+        tabsize=4,
+        line_numbers=False,
+        style="code",
+        use_styles=False,
+        escape_char="~",
+        scale_to_fit=False
+    ):
         """ Draw a code with syntax highlighting """
 
         text = text.replace("\t", " " * tabsize)
@@ -536,7 +598,9 @@ class Box:
                 if start_newlines:
                     parsed_text.insert(0, ("newline", start_newlines))
         else:
-            parsed_text = parse_text(text, escape_char=escape_char if use_styles else None)
+            parsed_text = parse_text(
+                text, escape_char=escape_char if use_styles else None
+            )
 
         if line_numbers:
             parsed_text = add_line_numbers(parsed_text)
@@ -640,14 +704,12 @@ class Box:
     def x(self, value):
         """ Create position on x-axis relative to the box """
         value = PosValue.parse(value)
-        return LazyValue(
-            lambda: value.compute(self._rect.x, self._rect.width, 0))
+        return LazyValue(lambda: value.compute(self._rect.x, self._rect.width, 0))
 
     def y(self, value):
         """ Create position on y-axis relative to the box """
         value = PosValue.parse(value)
-        return LazyValue(
-            lambda: value.compute(self._rect.y, self._rect.height, 0))
+        return LazyValue(lambda: value.compute(self._rect.y, self._rect.height, 0))
 
     def p(self, x, y):
         """ Create a point realtive to the box """
@@ -671,11 +733,15 @@ class Box:
             return (0, 0)
         rqs = [c._compute_size_request() for c in managed_childs]
         if not self.horizontal:
-            return (max(rq[0].min_size for rq in rqs),
-                    sum(rq[1].min_size for rq in rqs))
+            return (
+                max(rq[0].min_size for rq in rqs),
+                sum(rq[1].min_size for rq in rqs),
+            )
         else:
-            return (sum(rq[0].min_size for rq in rqs),
-                    max(rq[1].min_size for rq in rqs))
+            return (
+                sum(rq[0].min_size for rq in rqs),
+                max(rq[1].min_size for rq in rqs),
+            )
 
     def _compute_size_request(self):
         minx, miny = self._min_child_size()
@@ -710,13 +776,25 @@ class Box:
         def draw(ctx, rect):
             scale = self._text_scale
             x = text_x_in_rect(rect, style)
-            y = rect.y + (rect.height - real_size[1] * scale) / 2 + style["size"] * scale
+            y = (
+                rect.y
+                + (rect.height - real_size[1] * scale) / 2
+                + style["size"] * scale
+            )
             if scale_to_fit:
                 transform = "scale({})".format(scale)
             else:
                 transform = None
             if scale > 0.00001:
-                draw_text(ctx.xml, x / scale, y / scale, parsed_text, style, self._styles, transform=transform)
+                draw_text(
+                    ctx.xml,
+                    x / scale,
+                    y / scale,
+                    parsed_text,
+                    style,
+                    self._styles,
+                    transform=transform,
+                )
 
         self._text_scale_to_fit = scale_to_fit
         self._parsed_text = parsed_text
@@ -728,8 +806,7 @@ class Box:
         self.add_child(draw)
 
     def _set_rect(self, rect):
-        rect = rect.shrink(
-            self.p_left, self.p_right, self.p_top, self.p_bottom)
+        rect = rect.shrink(self.p_left, self.p_right, self.p_top, self.p_bottom)
         self._rect = rect
 
         if self._text_scale_to_fit:
@@ -799,11 +876,17 @@ class Box:
     @property
     def _managed_childs(self):
         if not self.horizontal:
-            return [child for child in self.childs
-                    if isinstance(child, Box) and child._y is None]
+            return [
+                child
+                for child in self.childs
+                if isinstance(child, Box) and child._y is None
+            ]
         else:
-            return [child for child in self.childs
-                    if isinstance(child, Box) and child._x is None]
+            return [
+                child
+                for child in self.childs
+                if isinstance(child, Box) and child._x is None
+            ]
 
     @property
     def _box_childs(self):
@@ -823,7 +906,13 @@ class Box:
             else:
                 painters += child._get_painters(ctx, depth)
         if ctx.debug_boxes:
-            painters.append(Painter(lambda ctx, rect: self._debug_paint(ctx, rect, depth - 1), self._rect, self.z_level))
+            painters.append(
+                Painter(
+                    lambda ctx, rect: self._debug_paint(ctx, rect, depth - 1),
+                    self._rect,
+                    self.z_level,
+                )
+            )
         return painters
 
     def _debug_paint(self, ctx, rect, depth):
@@ -837,7 +926,9 @@ class Box:
         xml.close("rect")
 
         style = self._styles.get("debug_box_name")
-        text = " {}[{},{}]".format(self.name + " " if self.name else "", rect.width, rect.height)
+        text = " {}[{},{}]".format(
+            self.name + " " if self.name else "", rect.width, rect.height
+        )
         size = 14
         if depth % 2 == 1:
             text = "↖" + text
@@ -849,12 +940,14 @@ class Box:
         xml.element("text")
         xml.set("x", rect.x)
         xml.set("y", y)
-        xml.set("style", "fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;")
+        xml.set(
+            "style",
+            "fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;",
+        )
         xml.element("tspan")
         xml.text(text)
         xml.close("tspan")
         xml.close("text")
-
 
     def _traverse(self, fn):
         fn(self)

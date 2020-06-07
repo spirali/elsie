@@ -2,7 +2,6 @@ import subprocess
 
 
 class ExternalMerger:
-
     def __init__(self, command):
         self.command = command
         self.filenames = []
@@ -29,16 +28,16 @@ class ExternalMerger:
 
 
 class PyPdfMerger:
-
     def __init__(self):
         from PyPDF2 import PdfFileMerger
+
         self.inner = PdfFileMerger()
 
     def append(self, filename):
         self.inner.append(filename)
 
     def write(self, output, debug):
-        with open(output, 'wb') as f:
+        with open(output, "wb") as f:
             self.inner.write(f)
 
 

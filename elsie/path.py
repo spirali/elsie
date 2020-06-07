@@ -1,14 +1,14 @@
 from .lazy import eval_pair, unpack_point
 
-COMMAND_NARGS = {
-    "M": 1, "L": 1, "C": 3, "S": 2, "Q": 2, "T": 1
-}
+COMMAND_NARGS = {"M": 1, "L": 1, "C": 3, "S": 2, "Q": 2, "T": 1}
 
 
 def check_and_unpack_path_commands(commands, box):
     result = []
     for command in commands:
-        if (not isinstance(command, tuple) and not isinstance(command, list)) or not command:
+        if (
+            not isinstance(command, tuple) and not isinstance(command, list)
+        ) or not command:
             raise Exception("Invalid command: '{!r}'".format(command))
         name = command[0]
         nargs = COMMAND_NARGS.get(name)
@@ -16,7 +16,10 @@ def check_and_unpack_path_commands(commands, box):
             raise Exception("Invalid command name: '{}'".format(name))
         if (len(command) - 1) % nargs != 0:
             raise Exception(
-                "Invalid number of arguments for command '{}' (got {} arguments)".format(name, len(command) - 1))
+                "Invalid number of arguments for command '{}' (got {} arguments)".format(
+                    name, len(command) - 1
+                )
+            )
         unpacked = tuple(unpack_point(p, box) for p in command[1:])
         result.append((name, unpacked))
     return result
@@ -33,7 +36,10 @@ def path_points_for_end_arrow(commands):
     name, pairs = commands[-1]
     if name not in "CSQT":
         raise Exception(
-            "Current version supports path when last command is 'C', 'S', 'Q' ot 'T' (got '{}')".format(name))
+            "Current version supports path when last command is 'C', 'S', 'Q' ot 'T' (got '{}')".format(
+                name
+            )
+        )
     if len(pairs) >= 2:
         return pairs[-2], pairs[-1]
     if len(commands) >= 2:

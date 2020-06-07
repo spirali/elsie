@@ -1,5 +1,4 @@
 class LazyValue:
-
     def __init__(self, fn):
         self.fn = fn
 
@@ -14,7 +13,6 @@ class LazyValue:
 
 
 class LazyPoint:
-
     def __init__(self, x, y):
         assert isinstance(x, LazyValue)
         assert isinstance(y, LazyValue)
@@ -22,8 +20,7 @@ class LazyPoint:
         self.y = y
 
     def add(self, x, y):
-        return LazyPoint(self.x.map(lambda v: v + x),
-                         self.y.map(lambda v: v + y))
+        return LazyPoint(self.x.map(lambda v: v + x), self.y.map(lambda v: v + y))
 
     def eval(self):
         return (self.x.eval(), self.y.eval())
