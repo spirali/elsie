@@ -23,14 +23,14 @@ class LazyPoint:
         return LazyPoint(self.x.map(lambda v: v + x), self.y.map(lambda v: v + y))
 
     def eval(self):
-        return (self.x.eval(), self.y.eval())
+        return self.x.eval(), self.y.eval()
 
 
 def unpack_point(obj, box):
     if isinstance(obj, LazyPoint):
-        return (obj.x, obj.y)
+        return obj.x, obj.y
     if (isinstance(obj, tuple) or isinstance(obj, list)) and len(obj) == 2:
-        return (box.x(obj[0]), box.y(obj[1]))
+        return box.x(obj[0]), box.y(obj[1])
     raise Exception("Invalid point: {!r}".format(obj))
 
 

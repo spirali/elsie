@@ -46,14 +46,14 @@ def draw_text(
         if token_type == "text":
             xml.text(value)
         elif token_type == "newline":
-            for s in active_styles:
+            for _ in active_styles:
                 xml.close("tspan")  # tspan
-            for i, s in enumerate(active_styles):
+            for j, s in enumerate(active_styles):
                 if s is None:
                     continue
                 xml.element("tspan")
                 xml.set("xml:space", "preserve")
-                if i == 0:
+                if j == 0:
                     xml.set("x", x)
                     xml.set("dy", line_size * value)
                 set_font_from_style(xml, s)

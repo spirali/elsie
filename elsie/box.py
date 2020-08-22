@@ -712,7 +712,7 @@ class Box:
         return LazyValue(lambda: value.compute(self._rect.y, self._rect.height, 0))
 
     def p(self, x, y):
-        """ Create a point realtive to the box """
+        """ Create a point relative to the box """
         return LazyPoint(self.x(x), self.y(y))
 
     def mid_point(self):
@@ -730,7 +730,7 @@ class Box:
     def _min_child_size(self):
         managed_childs = self._managed_childs
         if not managed_childs:
-            return (0, 0)
+            return 0, 0
         rqs = [c._compute_size_request() for c in managed_childs]
         if not self.horizontal:
             return (
@@ -747,7 +747,7 @@ class Box:
         minx, miny = self._min_child_size()
         minx += self.p_left + self.p_right
         miny += self.p_top + self.p_bottom
-        return (self._width.ensure(minx), self._height.ensure(miny))
+        return self._width.ensure(minx), self._height.ensure(miny)
 
     def _ensure_width(self, width):
         self._width = self._width.ensure(width + self.p_left + self.p_right)
@@ -925,7 +925,6 @@ class Box:
         set_paint_style(xml, "#ff00ff", None, 2, [None, "4 2", "1 2"][depth % 3])
         xml.close("rect")
 
-        style = self._styles.get("debug_box_name")
         text = " {}[{},{}]".format(
             self.name + " " if self.name else "", rect.width, rect.height
         )

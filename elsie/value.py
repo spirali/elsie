@@ -23,9 +23,6 @@ class SizeValue:
         if isinstance(obj, LazyValue):
             return SizeValue(lazy_value=obj)
 
-        if isinstance(obj, int) or isinstance(obj, float):
-            return SizeValue(min_size=obj)
-
         if not isinstance(obj, str) or not str:
             raise Exception("{!r} cannot be used as as size value", obj)
 

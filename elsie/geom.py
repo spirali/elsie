@@ -18,11 +18,11 @@ class Rect:
 
     @property
     def size(self):
-        return (self.width, self.height)
+        return self.width, self.height
 
     @property
     def position(self):
-        return (self.x, self.y)
+        return self.x, self.y
 
     @property
     def mid_x(self):
@@ -63,7 +63,7 @@ class Rect:
 
 
 def segment_delta(p1, p2):
-    return (p2[0] - p1[0], p2[1] - p1[1])
+    return p2[0] - p1[0], p2[1] - p1[1]
 
 
 def segment_len(p1, p2):
@@ -75,4 +75,4 @@ def segment_resize(p1, p2, len_change):
     dx, dy = segment_delta(p1, p2)
     ln = segment_len(p1, p2)
     t = 1 + (len_change / ln)
-    return (p1[0] + dx * t, p1[1] + dy * t)
+    return p1[0] + dx * t, p1[1] + dy * t
