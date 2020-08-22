@@ -2,7 +2,7 @@ import lxml.etree as et
 import pytest
 import re
 
-numbers_split = re.compile("([\d\.]+)")
+numbers_split = re.compile("(-?[\d\.]+)")
 
 
 def string_check(s1, s2):
@@ -19,6 +19,8 @@ def string_check(s1, s2):
             tmp2 = float(a2)
             assert abs(tmp1 - tmp2) < 0.4
         except ValueError:
+            print(s1)
+            print(s2)
             # To show pytest error message
             assert a1 == a2
 
@@ -36,7 +38,7 @@ def element_check(e1, e2):
         print(e1.text)
         print(e1, e2)
         # To show pytest error message
-        assert e1.keys() == e2.keys()
+        assert frozenset(e1.keys()) == frozenset(e2.keys())
 
     for (name, v1) in e1.items():
         v2 = e2.get(name)

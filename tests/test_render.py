@@ -56,3 +56,11 @@ def test_debug_boxes(test_env):
     subtitle = slide.box(name="name")
     subtitle.text("Stanislav Böhm\n~tt{https://github.com/spirali/elsie}", "header2")
     test_env.check("debug_boxes", 1)
+
+
+def test_leaf_chaining(test_env):
+    slide = test_env.slides.new_slide()
+    slide.rect(bg_color="black").rect(color="white").text("Hello!").rect(color="green")
+    box = slide.box(width="50%", height="50%")
+    box.rect(bg_color="black").rect(color="white").text("Hello!").rect(color="green")
+    test_env.check("leaf_chaining", 1)

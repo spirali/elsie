@@ -5,6 +5,7 @@ import os.path
 
 from .box import Box
 from .geom import Rect
+from .layout import Layout
 from .rcontext import RenderingContext
 from .show import ShowInfo
 from .svg import svg_begin, svg_end, convert_to_pdf
@@ -20,8 +21,13 @@ class Slide:
         self.index = index
         self.view_box = view_box
         self.debug_boxes = debug_boxes
-        self._box = Box(self, 0, 0, width, height, styles, ShowInfo(), name=name)
-        self._box._styles = styles
+        self._box = Box(
+            self,
+            layout=Layout(x=0, y=0, width=width, height=height),
+            styles=styles,
+            show_info=ShowInfo(),
+            name=name,
+        )
         self.max_step = 1
         self.temp_cache = temp_cache
 
@@ -35,7 +41,7 @@ class Slide:
 
     def prepare(self):
         rect = Rect(0, 0, self.width, self.height)
-        self._box._set_rect(rect)
+        self._box.layout.set_rect(rect)
 
     def steps(self):
         shows = [1]
@@ -46,8 +52,8 @@ class Slide:
         xml = Xml()
         svg_begin(xml, self.width, self.height, self.view_box)
         ctx = RenderingContext(xml, step, self.debug_boxes)
-        painters = self._box._get_painters(ctx, 0)
-        painters.sort(key=lambda p: p.z_level)
+        painters = self._box.get_painters(ctx, 0)
+        painters.sort(key=lambda painter: painter.z_level)
         for p in painters:
             p.render(ctx)
         svg_end(xml)

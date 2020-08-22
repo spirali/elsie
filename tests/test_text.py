@@ -8,20 +8,14 @@ from elsie.textparser import (
 )
 
 
-def test_line_highlight(test_env):
+def test_line_highlight_1(test_env):
     slide = test_env.slide
 
     slide.box().text("Line Highlighting")
     slide.box(height="20%")
     b = slide.box(height="70%")
     b.rect(bg_color="#DEDEDE")
-    b.line_box(4, show="1-3").rect(bg_color="#D0D0FF")
-    b.line_box(5, show="2-3").rect(bg_color="#D0D0FF")
-    b.line_box(6, show="3").rect(bg_color="#D0D0FF")
-
-    b.line_box(4, lines=4, show="4").rect(color="blue")
-
-    b.code(
+    t = b.box().code(
         "c",
         """#include <stdio.h>
 
@@ -33,12 +27,17 @@ def test_line_highlight(test_env):
     }""",
     )
 
+    t.line_box(4, show="1-3", prepend=1).rect(bg_color="#D0D0FF")
+    t.line_box(5, show="2-3", below=t).rect(bg_color="#D0D0FF")
+    t.line_box(6, show="3", below=t).rect(bg_color="#D0D0FF")
+    t.line_box(4, n_lines=4, show="4", below=t).rect(color="blue")
+
     label = slide.box(100, 400, 200, 130, show="5+")
     label.update_style("default", color="white")
     label.rect(bg_color="green", rx=10, ry=10)
     label.text("Comment for\nline")
     label.polygon(
-        [label.p("99%", "40%"), label.p("99%", "60%"), b.line_box(4).p(0, "50%")],
+        [label.p("99%", "40%"), label.p("99%", "60%"), t.line_box(4).p(0, "50%")],
         bg_color="green",
     )
 
@@ -48,7 +47,7 @@ def test_line_highlight(test_env):
 def test_styles_and_highlight(test_env):
     slide = test_env.slide
     b = slide.box()
-    b.code(
+    t = b.code(
         "c",
         """#include <stdio.h>
 /* Hello world program */
@@ -60,7 +59,7 @@ int ~#A{main}() {
         use_styles=True,
     )
 
-    b.text_box("#A", z_level=-1).rect(bg_color="red")
+    t.inline_box("#A", below=t).rect(bg_color="red")
     test_env.check("styles-highlight")
 
 
@@ -262,16 +261,16 @@ def _test_text_box_slide(slide):
     )
 
     b = slide.box().text(text)
-    b.text_box("my_red").rect(color="red")
-    b.text_box("my_green").rect(color="green")
-    b.text_box("my_blue").rect(color="blue")
+    b.inline_box("my_red").rect(color="red")
+    b.inline_box("my_green").rect(color="green")
+    b.inline_box("my_blue").rect(color="blue")
 
     slide.box(height=70)
 
     b = slide.box().text(text, style={"size": 40})
-    b.text_box("my_red").rect(color="red")
-    b.text_box("my_green").rect(color="green")
-    b.text_box("my_blue").rect(color="blue")
+    b.inline_box("my_red").rect(color="red")
+    b.inline_box("my_green").rect(color="green")
+    b.inline_box("my_blue").rect(color="blue")
 
 
 def test_text_box_left(test_env):
@@ -298,7 +297,7 @@ def test_text_box_right(test_env):
 def test_text_dummy_style(test_env):
     slide = test_env.slide
     b = slide.box().text("~#ABC{This} ~#ABC{is} ~#ABC{a text}.")
-    b.text_box("#ABC", n_th=3).rect(color="black")
+    b.inline_box("#ABC", n_th=3).rect(color="black")
     test_env.check("dummy-style")
 
 
@@ -310,7 +309,7 @@ def test_code_dummy_style(test_env):
 ~#access{int v = array[mid];}""",
         use_styles=True,
     )
-    b.text_box("#access", show="next+").rect(bg_color="red")
+    b.inline_box("#access", show="next+").rect(bg_color="red")
     test_env.check("dummy-style-code", 2)
 
 
@@ -458,20 +457,20 @@ def test_text_scale_to_fit_b(test_env):
 
 def test_text_scale_to_fit_pointers1(test_env):
     slide = test_env.slide
-    slide.text("This is ~#A{full}\nslide\ntext!", scale_to_fit=True)
-    slide.line_box(2, z_level=-1).rect(bg_color="red")
-    slide.text_box("#A", z_level=-1).rect(bg_color="blue")
+    t = slide.text("This is ~#A{full}\nslide\ntext!", scale_to_fit=True)
+    t.line_box(2, z_level=-1).rect(bg_color="red")
+    t.inline_box("#A", z_level=-1).rect(bg_color="blue")
     test_env.check("text-fit-pointers1")
 
 
 def test_text_scale_to_fit_pointers2(test_env):
     slide = test_env.slide
-    slide.text(
+    t = slide.text(
         "This is full\nslide\ntext!\nvery long ~#A{long} long long long line",
         scale_to_fit=True,
     )
-    slide.line_box(2, z_level=-1).rect(bg_color="red")
-    slide.text_box("#A", z_level=-1).rect(bg_color="blue")
+    t.line_box(2, z_level=-1).rect(bg_color="red")
+    t.inline_box("#A", z_level=-1).rect(bg_color="blue")
     test_env.check("text-fit-pointers2")
 
 
@@ -525,3 +524,13 @@ def test_text_scale_to_fit_empty(test_env):
     slide = test_env.slide
     slide.box().text("", scale_to_fit=True)
     test_env.check("text-fit-empty")
+
+
+def test_text_above_below(test_env):
+    slide = test_env.slide
+    t = slide.text("Hello ~tt{world!}\nSecond line")
+    t.line_box(0, below=t).rect(bg_color="green")
+    t.inline_box("tt", below=t).rect(bg_color="orange")
+    t.inline_box("tt").rect(color="red", stroke_width=3)
+    t.line_box(0, above=t).rect(color="blue", stroke_width=6)
+    test_env.check("text-above-below")
