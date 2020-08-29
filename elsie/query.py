@@ -19,12 +19,6 @@ def compute_query(key):
         else:  # == inkscape-x
             return run_inkscape_get_x(xml.to_string())
     elif method == "latex":
-        try:
-            return render_latex(data)
-        except Exception as e:
-            print(e)
-            return """<svg height="30" width="200">
-                      <text x="0" y="15" fill="red">pdflatex failed</text>
-                      </svg>"""
+        return render_latex(data)
     else:
         raise Exception("Invalid method: " + repr(method))

@@ -187,8 +187,7 @@ def line_highlighting(slide):
     slide.box().text("Line Highlighting")
     slide.box(height=30)
 
-    code_box = slide.box()
-    code_box.code(
+    code = slide.box().code(
         "c",
         """#include <stdio.h>
 
@@ -203,13 +202,14 @@ int main() {
     # 'line_box' creates box around a specified line of a text (the 1st argument)
     # Lines are counter from 0
     # We are using z_level to put highlights behind the text
-    code_box.line_box(4, show="1-3", z_level=-1).rect(bg_color="#D0D0FF")
-    code_box.line_box(5, show="2-3", z_level=-1).rect(bg_color="#D0D0FF")
-    code_box.line_box(6, show="3", z_level=-1).rect(bg_color="#D0D0FF")
+    code.line_box(4, show="1-3", z_level=-1).rect(bg_color="#D0D0FF")
+    code.line_box(5, show="2-3", z_level=-1).rect(bg_color="#D0D0FF")
+    # Another way how to put box behind text is to 'below' parameter
+    code.line_box(6, show="3", below=code).rect(bg_color="#D0D0FF")
 
     # The same as previous three, but we are stroking border and
     # not filling the rectangle
-    code_box.line_box(4, lines=4, show="4").rect(color="blue")
+    code.line_box(4, n_lines=4, show="4").rect(color="blue")
 
     # Creating a "commenting label"
     label = slide.box(100, 400, 200, 130, show="5")
@@ -223,15 +223,15 @@ int main() {
         [
             label.p("99%", "40%"),
             label.p("99%", "60%"),
-            code_box.line_box(4).p(0, "50%"),
+            code.line_box(4).p(0, "50%"),
         ],
         bg_color="green",
     )
 
     # Now we are creating an arrow head for the orange line
     arrow = elsie.Arrow(10)
-    p1 = code_box.line_box(0).p("100%", "50%")
-    p2 = code_box.line_box(5).p("100%", "50%")
+    p1 = code.line_box(0).p("100%", "50%")
+    p2 = code.line_box(5).p("100%", "50%")
     slide.box(show="6").line(
         [p1, p1.add(40, 0), p2.add(40, 0), p2],
         stroke_width=3,
@@ -272,16 +272,16 @@ int main() {
 
 @elsie.slide()
 def text_box_demo(slide):
-    b = slide.box().text("~#A{Demo} for ~#B{highlighting} a part of a line")
+    text = slide.box().text("~#A{Demo} for ~#B{highlighting} a part of a line")
 
     # Now we select part of text accoring style
     # You can select any style (e.g. "emph")
     # But you can also use "dummy style" that starts with "#"
     # Such style does not have to be declared and it serves
     # only purpose of selecting part of the text
-    b.text_box("#A", z_level=-1, show="2").rect(bg_color=COLOR2)
+    text.inline_box("#A", z_level=-1, show="2").rect(bg_color=COLOR2)
 
-    b2 = b.text_box("#B", z_level=-1, show="3", padding=-3).rect(color=COLOR2)
+    b2 = text.inline_box("#B", z_level=-1, show="3", padding=-3).rect(color=COLOR2)
     arrow = elsie.Arrow(10)
     b2.line(
         [b2.p("50%", "160%"), b2.p("50%", "100%")],
@@ -294,7 +294,7 @@ def text_box_demo(slide):
 @elsie.slide()
 def text_box_in_code_demo(slide):
     slide.derive_style("default", "small", size=10)
-    b = slide.box().text("Words inside code block")
+    slide.box().text("Words inside code block")
     slide.box(height=80)
 
     c = slide.box().code(
@@ -310,9 +310,9 @@ def text_box_in_code_demo(slide):
         use_styles=True,
     )  # <--- use_styles=True is important to enable styling in code block
 
-    p2 = c.text_box("#RETURN_VALUE").p("50%", "100%")
+    p2 = c.inline_box("#RETURN_VALUE").p("50%", "100%")
 
-    c.text_box("#MAIN", z_level=-1, p_x=-2).rect(bg_color="#FBB", color="black")
+    c.inline_box("#MAIN", z_level=-1, p_x=-2).rect(bg_color="#FBB", color="black")
 
     arrow = elsie.Arrow(10)
     slide.line([p2.add(0, 40), p2], end_arrow=arrow, stroke_width=3)
@@ -348,34 +348,6 @@ def console_demo(slide):
         "Creating 'example.pdf'........ done\n",
         "shell",
         escape_char="!",
-    )
-
-
-# LaTeX demo ##############################################
-
-
-@elsie.slide()
-def latex_demo(slide):
-    slide.box().latex("\TeX{} demo", scale=5.0)
-    slide.box(height="50")
-    slide.box().latex(
-        """
-    $$
-        \\begin{bmatrix}
-            1 & \sqrt{x} & 0 \\\\
-            0 & 1 & -1
-        \\end{bmatrix}\\begin{bmatrix}
-            1  \\\\
-            \\frac{\\alpha}{x}  \\\\
-            1
-        \\end{bmatrix}
-        =\\begin{bmatrix}
-            1+\\frac{\\alpha}{\sqrt{x}}  \\\\
-            \\frac{\\alpha}{x}-1
-        \\end{bmatrix}
-    $$
-    """,
-        scale=3.0,
     )
 
 

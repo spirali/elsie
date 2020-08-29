@@ -452,8 +452,8 @@ class BoxMixin:
             svg_width = svg_size_to_pixels(root.get("width")) * scale
             svg_height = svg_size_to_pixels(root.get("height")) * scale
 
-            self._ensure_width(svg_width)
-            self._ensure_height(svg_height)
+            self._get_box().layout.ensure_width(svg_width)
+            self._get_box().layout.ensure_height(svg_height)
 
             container[0] = svg_width
             container[1] = svg_height

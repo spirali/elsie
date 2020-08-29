@@ -48,9 +48,6 @@ class TextBoxItem(BoxItem):
         y = rect.y + (rect.height - self._text_size[1]) / 2 + style["size"] * scale
 
         if self._scale_to_fit:
-            print("SCALE", scale, y, rect.y, rect.height, self._text_size)
-
-        if self._scale_to_fit:
             transform = "scale({})".format(scale)
         else:
             transform = None

@@ -24,3 +24,4 @@ t.line_box(...)
 t.inline_box(...)
 ```
 
+Argument `lines` in `line_box` is now renamed to `n_lines`
