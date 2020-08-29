@@ -6,6 +6,7 @@ import os.path
 from .box import Box
 from .geom import Rect
 from .layout import Layout
+from .query import Query
 from .rcontext import RenderingContext
 from .show import ShowInfo
 from .svg import svg_begin, svg_end, convert_to_pdf
@@ -30,14 +31,17 @@ class Slide:
         )
         self.max_step = 1
         self.temp_cache = temp_cache
+        self._queries = []
 
     def box(self):
         return self._box
 
-    def queries(self):
-        queries = []
-        self._box._traverse(lambda box: queries.extend(box._queries))
-        return queries
+    def add_query(self, method, args, callback):
+        query = Query((method, args), callback)
+        self._queries.append(query)
+
+    def get_queries(self):
+        return self._queries
 
     def prepare(self):
         rect = Rect(0, 0, self.width, self.height)

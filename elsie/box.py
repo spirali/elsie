@@ -1,4 +1,3 @@
-from .boxitem import BoxItem
 from .boxmixin import BoxMixin
 from .draw import set_paint_style
 from .textstyle import check_style
@@ -13,7 +12,6 @@ class Box(BoxMixin):
         self.layout = layout
         self.name = name
         self.children = []
-        self._queries = []
         self._styles = styles
         self._show_info = show_info
 
@@ -143,3 +141,6 @@ class Box(BoxMixin):
     def _ensure_steps(self, steps):
         self._show_info = self._show_info.ensure_steps(steps)
         self.slide.max_step = max(self.slide.max_step, steps)
+
+
+from .boxitem import BoxItem

@@ -465,8 +465,7 @@ class BoxMixin:
             x = rect.x + (rect.width - svg_width) / 2
             y = rect.y + (rect.height - svg_height) / 2
             self._render_svg(ctx, x, y, scale, data)
-
-        self._get_box()._queries.append(Query(("latex", tex_text), on_query))
+        self._get_box().slide.add_query("latex", tex_text, on_query)
         return self._create_simple_box_item(draw)
 
     def x(self, value):

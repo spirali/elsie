@@ -1,7 +1,6 @@
 from .boxitem import BoxItem
 from .draw import draw_text
 from .lazy import LazyValue
-from .query import Query
 from .sxml import Xml
 from .textparser import number_of_lines, extract_line
 
@@ -27,7 +26,7 @@ class TextBoxItem(BoxItem):
         self._style = style
         self._styles = styles
         self._parsed_text = parsed_text
-        box._queries.append(self._make_query())
+        self._make_query(box)
 
         if scale_to_fit:
 
@@ -66,7 +65,7 @@ class TextBoxItem(BoxItem):
                 transform=transform,
             )
 
-    def _make_query(self):
+    def _make_query(self, box):
         def on_query(width):
             layout = self._box.layout
             style = self._style
@@ -87,7 +86,7 @@ class TextBoxItem(BoxItem):
         draw_text(xml, 0, 0, self._parsed_text, self._style, self._styles, id="target")
         key = xml.to_string()
         del xml
-        return Query(("inkscape", key), on_query)
+        box.slide.add_query("inkscape", key, on_query)
 
     def line_box(self, index, n_lines=1, **kwargs):
         def compute_y():
@@ -156,8 +155,9 @@ class TextBoxItem(BoxItem):
         text = xml.to_string()
         del xml
 
-        self._box._queries.append(Query(("inkscape-x", text), on_query_x))
-        self._box._queries.append(Query(("inkscape", text), on_query_h))
+        slide = self._box.slide
+        slide.add_query("inkscape-x", text, on_query_x)
+        slide.add_query("inkscape", text, on_query_h)
 
         box_args.setdefault(
             "x",

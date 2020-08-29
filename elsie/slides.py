@@ -181,7 +181,7 @@ class Slides:
 
         cache_file = os.path.join(cache_dir, "queries3.cache")
         cache = self._load_query_cache(cache_file, inkscape_version)
-        queries = sum((s.queries() for s in self._slides), [])
+        queries = sum((s.get_queries() for s in self._slides), [])
 
         self._show_progress("Preprocessing", first=True)
         need_compute = list(set(q.key for q in queries if q.key not in cache))
