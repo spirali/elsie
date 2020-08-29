@@ -86,9 +86,7 @@ class BoxMixin:
         show = ShowInfo.parse(show, box.slide.max_step)
         box.slide.max_step = max(box.slide.max_step, show.max_step())
 
-        new_box = box.__class__(
-            box.slide, layout, box._styles.copy(), show, z_level, name
-        )
+        new_box = box.__class__(box.slide, layout, box._styles, show, z_level, name)
         box.add_child(new_box, prepend, above, below)
         return new_box
 
@@ -465,6 +463,7 @@ class BoxMixin:
             x = rect.x + (rect.width - svg_width) / 2
             y = rect.y + (rect.height - svg_height) / 2
             self._render_svg(ctx, x, y, scale, data)
+
         self._get_box().slide.add_query("latex", tex_text, on_query)
         return self._create_simple_box_item(draw)
 

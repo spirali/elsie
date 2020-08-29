@@ -1,3 +1,6 @@
+from elsie import TextStyle
+
+
 def test_drop_same_consecutive_slides(test_env):
     slide = test_env.slide
     slide.box().text("Drop")
@@ -39,8 +42,8 @@ def test_debug_boxes(test_env):
 
     slide = test_env.slides.new_slide(debug_boxes=True)
 
-    slide.new_style("header", size=35, color="white")
-    slide.new_style("header2", size=25, color=COLOR1)
+    slide.set_style("header", TextStyle(size=35, color="white"))
+    slide.set_style("header2", TextStyle(size=25, color=COLOR1))
 
     title_box1 = slide.box(width="fill", height=120)
     title_box1.rect(bg_color=COLOR2)

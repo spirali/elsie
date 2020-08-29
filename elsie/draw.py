@@ -1,15 +1,18 @@
+from .textstyle import TextStyle
+
+
 def set_font_from_style(xml, style):
-    if "font" in style:
-        xml.set("font-family", style["font"])
-    if "size" in style:
-        xml.set("font-size", style["size"])
+    if style.font is not None:
+        xml.set("font-family", style.font)
+    if style.size is not None:
+        xml.set("font-size", style.size)
 
     s = ""
-    if "color" in style:
-        s += "fill:{};".format(style["color"])
-    if style.get("bold", False):
+    if style.color is not None:
+        s += "fill:{};".format(style.color)
+    if style.bold:
         s += "font-weight: bold;"
-    if style.get("italic", False):
+    if style.italic:
         s += "font-style: italic;"
     if s:
         xml.set("style", s)
@@ -36,6 +39,7 @@ def set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray):
 def draw_text(
     xml, x, y, parsed_text, style, styles, id=None, id_index=None, transform=None
 ):
+    assert isinstance(style, TextStyle)
     xml.element("text")
 
     if id is not None and id_index is None:
@@ -49,16 +53,16 @@ def draw_text(
 
     anchor = {"left": "start", "middle": "middle", "right": "end"}
 
-    xml.set("text-anchor", anchor[style["align"]])
+    xml.set("text-anchor", anchor[style.align])
 
     set_font_from_style(xml, style)
 
-    line_size = style["size"] * style["line_spacing"]
+    line_size = style.size * style.line_spacing
     active_styles = [style]
 
     xml.element("tspan")
-    if "variant-numeric" in style:
-        xml.set("font-variant-numeric", style["variant-numeric"])
+    if style.variant_numeric:
+        xml.set("font-variant-numeric", style.variant_numeric)
 
     for i, (token_type, value) in enumerate(parsed_text):
         if token_type == "text":

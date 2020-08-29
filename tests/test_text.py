@@ -6,6 +6,8 @@ from elsie.textparser import (
     tokens_to_text_without_style,
     tokens_merge,
 )
+import elsie
+import pytest
 
 
 def test_line_highlight_1(test_env):
@@ -33,7 +35,7 @@ def test_line_highlight_1(test_env):
     t.line_box(4, n_lines=4, show="4", below=t).rect(color="blue")
 
     label = slide.box(100, 400, 200, 130, show="5+")
-    label.update_style("default", color="white")
+    label.update_style("default", elsie.TextStyle(color="white"))
     label.rect(bg_color="green", rx=10, ry=10)
     label.text("Comment for\nline")
     label.polygon(
@@ -144,9 +146,10 @@ float num4 = rand() / (float) RAND_MAX;"""
 
 def test_console(test_env):
     slide = test_env.slide
-    slide.derive_style("code", "shell", color="white")
-    slide.new_style("prompt", color="#aaaaff")
-    slide.new_style("cmd", color="yellow")
+
+    slide.set_style("shell", elsie.TextStyle(color="white"), base="code")
+    slide.set_style("prompt", elsie.TextStyle(color="#aaaaff"))
+    slide.set_style("cmd", elsie.TextStyle(color="yellow"))
 
     slide.box().text("Console demo")
     slide.box(height=30)
@@ -176,7 +179,7 @@ def test_list(test_env):
         return b.box(width="fill")
 
     main = slide.box()
-    main.update_style("default", align="left")
+    main.update_style("default", elsie.TextStyle(align="left"))
     list_item(main).text("This is LIST DEMO")
     list_item(main).text("This is multi\nline\nitem")
     list_item(main).text("Last item")
@@ -187,13 +190,13 @@ def test_list(test_env):
 def test_styles(test_env):
     slide = test_env.slide
 
-    slide.new_style("h1", size=60)
-    slide.new_style("h2", size=50)
-    slide.new_style("h3", size=40)
+    slide.set_style("h1", elsie.TextStyle(size=60))
+    slide.set_style("h2", elsie.TextStyle(size=50))
+    slide.set_style("h3", elsie.TextStyle(size=40))
 
-    slide.new_style("my_red", color="red")
-    slide.new_style("my_green", color="green")
-    slide.new_style("my_blue", color="blue")
+    slide.set_style("my_red", elsie.TextStyle(color="red"))
+    slide.set_style("my_green", elsie.TextStyle(color="green"))
+    slide.set_style("my_blue", elsie.TextStyle(color="blue"))
 
     slide.box().text("Header 1", "h1")
     slide.box().text("Header 2", "h2")
@@ -206,7 +209,7 @@ def test_styles(test_env):
     slide.box().text("~my_red{red} ~my_green{green} ~my_blue{blue}")
 
     # Inline style
-    slide.box().text("~my_red{red} gray ~my_blue{blue}", {"size": 7, "color": "gray"})
+    slide.box().text("~my_red{red} gray ~my_blue{blue}", elsie.TextStyle(size=7, color="gray"))
 
     test_env.check("styles")
 
@@ -251,9 +254,9 @@ def test_extract_line():
 
 
 def _test_text_box_slide(slide):
-    slide.new_style("my_red", color="red")
-    slide.new_style("my_green", color="green")
-    slide.new_style("my_blue", color="blue")
+    slide.set_style("my_red", elsie.TextStyle(color="red"))
+    slide.set_style("my_green", elsie.TextStyle(color="green"))
+    slide.set_style("my_blue", elsie.TextStyle(color="blue"))
 
     text = (
         "This is a long ~my_red{text}\n\nthat\n~my_green{has} a various\nproperties,"
@@ -267,7 +270,7 @@ def _test_text_box_slide(slide):
 
     slide.box(height=70)
 
-    b = slide.box().text(text, style={"size": 40})
+    b = slide.box().text(text, style=elsie.TextStyle(size=40))
     b.inline_box("my_red").rect(color="red")
     b.inline_box("my_green").rect(color="green")
     b.inline_box("my_blue").rect(color="blue")
@@ -275,21 +278,21 @@ def _test_text_box_slide(slide):
 
 def test_text_box_left(test_env):
     slide = test_env.slide
-    slide.update_style("default", align="left")
+    slide.update_style("default", elsie.TextStyle(align="left"))
     _test_text_box_slide(slide)
     test_env.check("text-box-left")
 
 
 def test_text_box_middle(test_env):
     slide = test_env.slide
-    slide.update_style("default", align="middle")
+    slide.update_style("default", elsie.TextStyle(align="middle"))
     _test_text_box_slide(slide)
     test_env.check("text-box-middle")
 
 
 def test_text_box_right(test_env):
     slide = test_env.slide
-    slide.update_style("default", align="right")
+    slide.update_style("default", elsie.TextStyle(align="right"))
     _test_text_box_slide(slide)
     test_env.check("text-box-right")
 
@@ -426,10 +429,10 @@ def test_text_scale_to_fit_a(test_env):
     )
 
     slide.box(x=50, y=400, width=300, height=300).rect(bg_color="#bbffbb").text(
-        "This is\ntext", {"size": 160}
+        "This is\ntext", elsie.TextStyle(size=160)
     )
     slide.box(x=650, y=400, width=300, height=300).rect(bg_color="#bbffbb").text(
-        "This is\ntext", {"size": 160}, scale_to_fit=True
+        "This is\ntext", elsie.TextStyle(size=160), scale_to_fit=True
     )
     test_env.check("text-fit-a")
 
@@ -447,10 +450,10 @@ def test_text_scale_to_fit_b(test_env):
     )
 
     slide.box(x=50, y=400, width=300, height=300).fbox().rect(bg_color="#bbffbb").text(
-        "This is\ntext", {"size": 160}
+        "This is\ntext", elsie.TextStyle(size=160)
     )
     slide.box(x=650, y=400, width=300, height=300).fbox().rect(bg_color="#bbffbb").text(
-        "This is\ntext", {"size": 160}, scale_to_fit=True
+        "This is\ntext", elsie.TextStyle(size=160), scale_to_fit=True
     )
     test_env.check("text-fit-b")
 
@@ -534,3 +537,47 @@ def test_text_above_below(test_env):
     t.inline_box("tt").rect(color="red", stroke_width=3)
     t.line_box(0, above=t).rect(color="blue", stroke_width=6)
     test_env.check("text-above-below")
+
+
+def test_text_style_create():
+    style = elsie.TextStyle()
+    assert style.size is None
+    assert style.font is None
+
+    style = elsie.TextStyle(font="X", size=10, align="left", line_spacing=1.2, color="black", bold=True, italic=False)
+    assert style.size == 10
+    assert style.font == "X"
+    assert style.bold is True
+    assert style.italic is False
+    assert style.color == "black"
+    assert style.line_spacing == 1.2
+    assert style.align == "left"
+
+    with pytest.raises(Exception, match="font"):
+        elsie.TextStyle(font=12)
+    with pytest.raises(Exception, match="size"):
+        elsie.TextStyle(size="zzz")
+    with pytest.raises(Exception, match="line_spacing"):
+        elsie.TextStyle(line_spacing="zzz")
+    with pytest.raises(Exception, match="color"):
+        elsie.TextStyle(color=123)
+    with pytest.raises(Exception, match="bold"):
+        elsie.TextStyle(bold=10)
+    with pytest.raises(Exception, match="italic"):
+        elsie.TextStyle(italic="a")
+    with pytest.raises(Exception, match="no attribute"):
+        style.unknown = 10
+
+
+def test_text_style_update():
+
+    style = elsie.TextStyle(font="Y", size=10)
+    style2 = elsie.TextStyle(size=20, align="left")
+    style.update(style2)
+
+    assert style2.font is None
+    assert style2.size == 20
+    assert style2.align == "left"
+    assert style.font == "Y"
+    assert style.size == 20
+    assert style.align == "left"

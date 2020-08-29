@@ -4,6 +4,7 @@ from pygments.lexers import get_lexer_by_name
 from pygments.styles import get_style_by_name
 
 from .textparser import normalize_tokens, NEWLINE_1
+from .textstyle import TextStyle
 
 
 class MyFormatter(Formatter):
@@ -39,12 +40,12 @@ def highlight_code(code, language):
 def make_highlight_styles(pygments_style):
     results = {}
     for token, s in get_style_by_name(pygments_style):
-        style = {}
+        style = TextStyle()
         if s["color"]:
-            style["color"] = "#" + s["color"]
+            style.color = "#" + s["color"]
         if s["bold"]:
-            style["blod"] = True
+            style.bold = True
         if s["italic"]:
-            style["italic"] = True
+            style.italic = True
         results["pygments-" + str(token)] = style
     return results

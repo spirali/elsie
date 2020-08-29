@@ -1,10 +1,10 @@
-from elsie import Arrow
+from elsie import Arrow, TextStyle
 
 
 def test_header(test_env):
     slide = test_env.slide
-    slide.new_style("header", color="white", align="right")
-    slide.new_style("footer", color="white", size=15)
+    slide.set_style("header", TextStyle(color="white", align="right"))
+    slide.set_style("footer", TextStyle(color="white", size=15))
     header = slide.box(width="fill", height="10%")
     header.rect(bg_color="#5F8DD3")
     header.box(width="fill", p_right=20).text("Demo of Header", "header")
@@ -107,7 +107,7 @@ def test_columns(test_env):
 def test_chess(test_env):
     slide = test_env.slide
     board = slide.box(width=500, height=500)
-    board.new_style("black", color="black", size=50)
+    board.set_style("black", TextStyle(color="black", size=50))
 
     colors = ["#e0e0ff", "#A0A0ff"]
     tiles = {}
@@ -141,7 +141,7 @@ def test_size_and_pos(test_env):
     slide.box().text("Position demo")
     slide.box(height=30)
 
-    slide.new_style("inner", color="white", size=15)
+    slide.set_style("inner", TextStyle(color="white", size=15))
 
     b = slide.box(width="70%", height=40)
     b.rect(color="black")

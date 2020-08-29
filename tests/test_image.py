@@ -1,3 +1,6 @@
+import elsie
+
+
 def test_line_highlight_fragments(test_env):
     slide = test_env.slide
 
@@ -7,7 +10,7 @@ def test_line_highlight_fragments(test_env):
     b = slide.box(x="[90%]", y="[30%]", width="30%", height="30%", show="4+")
     b.rect("black", bg_color="white")
     b2 = b.box(width="fill")
-    b2.update_style("default", size=15, color="white")
+    b2.update_style("default", elsie.TextStyle(size=15, color="white"))
     b2.rect(bg_color="black")
     b2.box(padding=10).text("Scaling and placing images")
     b.fbox().image(img, show_begin=4)
@@ -24,7 +27,7 @@ def test_line_highlight_no_fragments(test_env):
     b = slide.box(x="[90%]", y="[30%]", width="30%", height="30%")
     b.rect("black", bg_color="white")
     b2 = b.box(width="fill")
-    b2.update_style("default", size=15, color="white")
+    b2.update_style("default", elsie.TextStyle(size=15, color="white"))
     b2.rect(bg_color="black")
     b2.box(padding=10).text("Scaling and placing images")
     b.fbox().image(img, fragments=False)

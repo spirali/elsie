@@ -3,7 +3,20 @@
 
 == BREAKING CHANGE
 
-`line_box` and `inline_box` (previosly `text_box`) has to be now called on
+=== TextStyles
+
+Text styles are not dictionaries any more but instances of `elsie.TextStyle`
+
+New methods for working with styles:
+
+```
+box.set_style("new-style", elsie.TextStyle(size=10))
+box.update_style("new-style", elsie.TextStyle(bold=True))
+```
+
+=== Line box and Inline box
+
+`line_box` and `inline_box` (previously `text_box`) has to be now called on
 object returned by .text(...)
 
 Before:

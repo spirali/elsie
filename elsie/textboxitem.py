@@ -6,7 +6,7 @@ from .textparser import number_of_lines, extract_line
 
 
 def text_x_in_rect(rect, style):
-    align = style["align"]
+    align = style.align
     if align == "left":
         return rect.x
     elif align == "middle":
@@ -45,7 +45,7 @@ class TextBoxItem(BoxItem):
         style = self._style
         x = text_x_in_rect(rect, style)
 
-        y = rect.y + (rect.height - self._text_size[1]) / 2 + style["size"] * scale
+        y = rect.y + (rect.height - self._text_size[1]) / 2 + style.size * scale
 
         if self._scale_to_fit:
             transform = "scale({})".format(scale)
@@ -66,7 +66,7 @@ class TextBoxItem(BoxItem):
         def on_query(width):
             layout = self._box.layout
             style = self._style
-            line_height = style["size"] * style["line_spacing"]
+            line_height = style.size * style.line_spacing
             height = number_of_lines(self._parsed_text) * line_height
 
             if not self._scale_to_fit:

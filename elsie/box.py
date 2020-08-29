@@ -1,6 +1,6 @@
 from .boxmixin import BoxMixin
 from .draw import set_paint_style
-from .textstyle import check_style
+from .textstyle import TextStyle, compose_style
 
 
 class Box(BoxMixin):
@@ -61,43 +61,25 @@ class Box(BoxMixin):
             )
         return painters
 
-    def new_style(self, name, **kwargs):
-        """ Define a new style, it is an error if it already exists. """
-        if name in self._styles:
-            raise Exception("Style already exists")
-        check_style(kwargs)
-        self._styles[name] = kwargs
+    def update_style(self, style_name, style):
+        assert isinstance(style_name, str)
+        old_style = self.get_style(style_name, full_style=False)
+        old_style.update(style)
+        self._styles = self._styles.copy()
+        self._styles[style_name] = old_style
 
-    def update_style(self, name, **kwargs):
-        """ Update a style, it is an error if style does not exists. """
-        check_style(kwargs)
-        new_style = self._styles[name].copy()
-        new_style.update(kwargs)
-        self._styles[name] = new_style
+    def set_style(self, style_name, style, base="default"):
+        assert isinstance(style_name, str)
+        assert isinstance(style, TextStyle)
+        if base != "default":
+            base_style = self.get_style(base)
+            base_style.update(style)
+            style = base_style
+        self._styles = self._styles.copy()
+        self._styles[style_name] = style
 
-    def derive_style(self, old_style_name, new_style_name, **kwargs):
-        """ Copy an existing style under a new name and modify it. """
-        check_style(kwargs)
-        new_style = self._styles[old_style_name].copy()
-        new_style.update(kwargs)
-        self._styles[new_style_name] = new_style
-
-    def get_style(self, style):
-        result_style = self._styles["default"]
-        if style == "default":
-            return result_style
-        elif isinstance(style, str):
-            style_name = style
-            style = self._styles.get(style_name)
-            if style is None:
-                raise Exception("Style '{}' not found".format(style_name))
-        elif isinstance(style, dict):
-            check_style(style)
-        else:
-            raise Exception("Invalid type used as style")
-        result_style = result_style.copy()
-        result_style.update(style)
-        return result_style
+    def get_style(self, style, full_style=True):
+        return compose_style(self._styles, style, full_style)
 
     def _debug_paint(self, ctx, depth):
         rect = self.layout.rect

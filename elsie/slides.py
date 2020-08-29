@@ -9,7 +9,7 @@ from .pdfmerge import get_pdf_merger_by_name
 from .query import compute_query
 from .slidecls import Slide, DummyPdfSlide
 from .svg import get_inkscape_version
-from .textstyle import check_style
+from .textstyle import TextStyle, compose_style
 from .version import VERSION
 
 
@@ -29,47 +29,46 @@ class Slides:
         self.bg_color = bg_color
         self._slides = []
         self._styles = {
-            "default": {
-                "font": "Ubuntu",
-                "color": "black",
-                "size": 28,
-                "line_spacing": 1.20,
-                "align": "middle",
-                "variant-numeric": "lining-nums",
-            },
-            "tt": {"font": "Ubuntu mono",},
-            "emph": {"italic": True,},
-            "alert": {"bold": True, "color": "red",},
-            "code": {
-                "font": "Ubuntu Mono",
-                "align": "left",
-                "color": "#222",
-                "line_spacing": 1.20,
-                "size": 20,
-            },
-            "code_lineno": {"color": "gray"},
+            "default": TextStyle(
+                font="Ubuntu",
+                color="black",
+                size=28,
+                line_spacing=1.20,
+                align="middle",
+                variant_numeric="lining-nums",
+            ),
+            "tt": TextStyle(font="Ubuntu mono"),
+            "emph": TextStyle(italic=True),
+            "alert": TextStyle(bold=True, color="red"),
+            "code": TextStyle(
+                font="Ubuntu Mono",
+                align="left",
+                color="#222",
+                line_spacing=1.20,
+                size=20,
+            ),
+            "code_lineno": TextStyle(color="gray"),
         }
         self.temp_cache = {}
         self._styles.update(make_highlight_styles(pygments_theme))
 
-    def new_style(self, name, **kwargs):
-        if name in self._styles:
-            raise Exception("Style already exists")
-        check_style(kwargs)
-        self._styles[name] = kwargs
+    def update_style(self, style_name, style):
+        assert isinstance(style_name, str)
+        old_style = self.get_style(style_name, full_style=False)
+        old_style.update(style)
+        self._styles = self._styles.copy()
+        self._styles[style_name] = old_style
 
-    def update_style(self, name, **kwargs):
-        check_style(kwargs)
-        new_style = self._styles[name].copy()
-        new_style.update(kwargs)
-        self._styles[name] = new_style
+    def set_style(self, style_name, style, base="default"):
+        assert isinstance(style_name, str)
+        assert isinstance(style, TextStyle)
+        if base != "default":
+            style = self.get_style(base).update(style)
+        self._styles = self._styles.copy()
+        self._styles[style_name] = style
 
-    def derive_style(self, old_style_name, new_style_name, **kwargs):
-        """ Copy an existing style under a new name and modify it. """
-        check_style(kwargs)
-        new_style = self._styles[old_style_name].copy()
-        new_style.update(kwargs)
-        self._styles[new_style_name] = new_style
+    def get_style(self, style, full_style=True):
+        return compose_style(self._styles, style, full_style)
 
     def new_slide(self, bg_color=None, *, view_box=None, name=None, debug_boxes=False):
         if view_box is not None and not (
@@ -254,19 +253,19 @@ def get_global_slides():
     return _global_slides
 
 
-def update_style(name, **kwargs):
+def update_style(style_name, style):
     """Call update_style method on global slides"""
-    get_global_slides().update_style(name, **kwargs)
+    get_global_slides().update_style(style_name, style)
 
 
-def new_style(name, **kwargs):
-    """Call new_style method on global slides"""
-    get_global_slides().new_style(name, **kwargs)
+def get_style(style, full_style=True):
+    """Get style from global slides"""
+    return get_global_slides().get_style(style, full_style)
 
 
-def derive_style(old_style_name, new_style_name, **kwargs):
-    """Call derive_style method on global slides"""
-    get_global_slides().derive_style(old_style_name, new_style_name, **kwargs)
+def set_style(style_name, style, base=None):
+    """Call set_style method on global slides"""
+    get_global_slides().set_style(style_name, style, base)
 
 
 # Decorator
