@@ -8,8 +8,8 @@ COLOR2 = "#d9b310"
 # You can instantiate separate instances of slides,
 # and work with them separately, but usually it is convenient
 # just to use global instance of slides
-elsie.update_style("default", color=COLOR1)  # Default font
-elsie.update_style("emph", color=COLOR2)  # Emphasis
+elsie.update_style("default", elsie.TextStyle(color=COLOR1))  # Default font
+elsie.update_style("emph", elsie.TextStyle(color=COLOR2))  # Emphasis
 
 
 # First slide #############################################
@@ -17,12 +17,6 @@ elsie.update_style("emph", color=COLOR2)  # Emphasis
 
 @elsie.slide()
 def first_slide(slide):
-    # Create text styles that are local for this slide
-    # Actually, any Box can have own styles that are inherited
-    # to any sub-boxes.
-    slide.new_style("header", size=35, color="white")
-    slide.new_style("header2", size=25, color=COLOR1)
-
     # Create a box that fill the whole slide horizontaly
     title_box1 = slide.box(width="fill", height=120)
     title_box1.rect(bg_color=COLOR2)  # Draw a filled rectangle
@@ -35,14 +29,20 @@ def first_slide(slide):
     title_box2.rect(bg_color=COLOR1)
 
     # Put text into a box with style "header"
-    title_box2.text("Elsie: Slides in Python in Programmable Way", "header")
+    title_box2.text(
+        "Elsie: Slides in Python in Programmable Way",
+        elsie.TextStyle(size=35, color="white"),
+    )
 
     # Create a box that just serves as space filler
     slide.box(height=30)
 
     # Subtitle box
     subtitle = slide.box()
-    subtitle.text("Stanislav Böhm\n~tt{https://github.com/spirali/elsie}", "header2")
+    subtitle.text(
+        "Stanislav Böhm\n~tt{https://github.com/spirali/elsie}",
+        elsie.TextStyle(size=25, color=COLOR1),
+    )
 
 
 # Slide with brief description ############################
@@ -118,9 +118,10 @@ def svg_demo(slide):
 
     # Title of the window
     title = window.box(width="fill")
-    title.update_style("default", size=15, color="white")
     title.rect(bg_color="black")
-    title.box(padding=10).text("Scaling and placing images")
+    title.box(padding=10).text(
+        "Scaling and placing images", elsie.TextStyle(size=15, color="white")
+    )
 
     # Placing a image into window. Note that we are using fbox
     # (i.e. width="fill", height="fill")
@@ -135,8 +136,8 @@ def svg_demo(slide):
 
 @elsie.slide()
 def header_footer(slide):
-    slide.new_style("header", color="white", align="right")
-    slide.new_style("footer", color="white", size=15)
+    slide.set_style("header", elsie.TextStyle(color="white", align="right"))
+    slide.set_style("footer", elsie.TextStyle(color="white", size=15))
 
     header = slide.box(width="fill", height="10%")
     header.rect(bg_color="#5F8DD3")
@@ -213,18 +214,13 @@ int main() {
 
     # Creating a "commenting label"
     label = slide.box(100, 400, 200, 130, show="5")
-    label.update_style("default", color="white")
     label.rect(bg_color="green", rx=10, ry=10)
-    label.text("Comment for\na line")
+    label.text("Comment for\na line", elsie.TextStyle(color="white"))
 
     # Here we creates the triangle heading to a line,
     # method 'p' returns a position relatively to the box
     label.polygon(
-        [
-            label.p("99%", "40%"),
-            label.p("99%", "60%"),
-            code.line_box(4).p(0, "50%"),
-        ],
+        [label.p("99%", "40%"), label.p("99%", "60%"), code.line_box(4).p(0, "50%"),],
         bg_color="green",
     )
 
@@ -293,7 +289,7 @@ def text_box_demo(slide):
 
 @elsie.slide()
 def text_box_in_code_demo(slide):
-    slide.derive_style("default", "small", size=10)
+    slide.set_style("small", elsie.TextStyle(size=10))
     slide.box().text("Words inside code block")
     slide.box(height=80)
 
@@ -327,9 +323,9 @@ def text_box_in_code_demo(slide):
 
 @elsie.slide()
 def console_demo(slide):
-    slide.derive_style("code", "shell", color="white")
-    slide.new_style("prompt", color="#aaaaff")
-    slide.new_style("cmd", color="yellow")
+    slide.set_style("shell", elsie.TextStyle(color="white"), base="code")
+    slide.set_style("prompt", elsie.TextStyle(color="#aaaaff"))
+    slide.set_style("cmd", elsie.TextStyle(color="yellow"))
 
     slide.box().text("Console demo")
     slide.box(height=30)
@@ -357,13 +353,13 @@ def console_demo(slide):
 @elsie.slide()
 def text_demo(slide):
     # New created styles
-    slide.new_style("h1", size=60)
-    slide.new_style("h2", size=50)
-    slide.new_style("h3", size=40)
+    slide.set_style("h1", elsie.TextStyle(size=60))
+    slide.set_style("h2", elsie.TextStyle(size=50))
+    slide.set_style("h3", elsie.TextStyle(size=40))
 
-    slide.new_style("my_red", color="red")
-    slide.new_style("my_green", color="green")
-    slide.new_style("my_blue", color="blue")
+    slide.set_style("my_red", elsie.TextStyle(color="red"))
+    slide.set_style("my_green", elsie.TextStyle(color="green"))
+    slide.set_style("my_blue", elsie.TextStyle(color="blue"))
 
     slide.box().text("Header 1", "h1")
     slide.box().text("Header 2", "h2")
@@ -387,7 +383,7 @@ def list_item(parent):
 @elsie.slide()
 def list_demo(slide):
     main = slide.box()
-    main.update_style("default", align="left")
+    main.update_style("default", elsie.TextStyle(align="left"))
 
     list_item(main).text("This is LIST DEMO")
     list_item(main).text("This is\nmulti-line\nitem")
@@ -634,7 +630,7 @@ def chessboard_demo(slide):
     # Create a chess board
 
     board = slide.box(width=500, height=500)
-    board.new_style("black", color="black", size=50)
+    board.set_style("black", elsie.TextStyle(color="black", size=50))
 
     colors = [COLOR1, COLOR2]
     tiles = {}
@@ -670,7 +666,7 @@ def position_demo(slide):
     slide.box().text("Position demo")
     slide.box(height=15)
 
-    slide.new_style("inner", color="white", size=15)
+    slide.set_style("inner", elsie.TextStyle(color="white", size=15))
 
     b = slide.box(width="70%", height=40)
     b.rect(color=COLOR1)
@@ -739,15 +735,12 @@ def position_demo(slide):
 def zoomed_position_demo(slide):
     position_demo(slide)
     slide.box(x=390, y=200).rect(bg_color="black").fbox(padding=10).text(
-        "Zooming demo", {"color": "white"}
+        "Zooming demo", elsie.TextStyle(color="white")
     )
 
 
 @elsie.slide(debug_boxes=True)
 def debugging_slides(slide):
-    slide.new_style("header", size=35, color="white")
-    slide.new_style("header2", size=25, color=COLOR1)
-
     slide.box(p_bottom=120, width=300, height=200, name="debug title").text(
         "Debugging layout"
     )
@@ -758,13 +751,19 @@ def debugging_slides(slide):
     title_box2 = title_box1.fbox(p_y=10, name="header")
     title_box2.rect(bg_color=COLOR1)
 
-    title_box2.text("Elsie: Slides in Python in Programmable Way", "header")
+    title_box2.text(
+        "Elsie: Slides in Python in Programmable Way",
+        elsie.TextStyle(size=35, color="white"),
+    )
 
     slide.box(height=30, name="filler")
 
     # Subtitle box
     subtitle = slide.box(name="name")
-    subtitle.text("Stanislav Böhm\n~tt{https://github.com/spirali/elsie}", "header2")
+    subtitle.text(
+        "Stanislav Böhm\n~tt{https://github.com/spirali/elsie}",
+        elsie.TextStyle(size=25, color=COLOR1),
+    )
 
 
 # The final slide #################################
@@ -772,10 +771,7 @@ def debugging_slides(slide):
 
 @elsie.slide()
 def final_slide(slide):
-    # Demonstration of inline style
-    # we do not provide style name, but directly create
-    # style in place
-    slide.text("Have a nice day!", {"size": 60})
+    slide.text("Have a nice day!", elsie.TextStyle(size=60))
 
 
 # RENDER THE SLIDES NOW!

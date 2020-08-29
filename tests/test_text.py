@@ -209,7 +209,9 @@ def test_styles(test_env):
     slide.box().text("~my_red{red} ~my_green{green} ~my_blue{blue}")
 
     # Inline style
-    slide.box().text("~my_red{red} gray ~my_blue{blue}", elsie.TextStyle(size=7, color="gray"))
+    slide.box().text(
+        "~my_red{red} gray ~my_blue{blue}", elsie.TextStyle(size=7, color="gray")
+    )
 
     test_env.check("styles")
 
@@ -544,7 +546,15 @@ def test_text_style_create():
     assert style.size is None
     assert style.font is None
 
-    style = elsie.TextStyle(font="X", size=10, align="left", line_spacing=1.2, color="black", bold=True, italic=False)
+    style = elsie.TextStyle(
+        font="X",
+        size=10,
+        align="left",
+        line_spacing=1.2,
+        color="black",
+        bold=True,
+        italic=False,
+    )
     assert style.size == 10
     assert style.font == "X"
     assert style.bold is True

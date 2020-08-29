@@ -5,7 +5,7 @@
 
 === TextStyles
 
-Text styles are not dictionaries any more but instances of `elsie.TextStyle`
+Text styles are not dictionaries any more but instances of `elsie.TextStyle`.
 
 New methods for working with styles:
 
@@ -13,6 +13,8 @@ New methods for working with styles:
 box.set_style("new-style", elsie.TextStyle(size=10))
 box.update_style("new-style", elsie.TextStyle(bold=True))
 ```
+
+Methods: `new_style` and `derive_style` were removed.
 
 === Line box and Inline box
 
