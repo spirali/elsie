@@ -123,3 +123,24 @@ def test_image_show_next(test_env):
     slide.box(width=100, height=100).image(img, show_begin=2)
     slide.box(width=30, height=30, show="next").rect(bg_color="black")
     test_env.check("image-show-next", 5)
+
+
+def test_ora_no_fragments(test_env):
+    slide = test_env.slide
+    img = test_env.assets_path("oratest.ora")
+    slide.image(img, fragments=False)
+    test_env.check("ora-nofrag")
+
+
+def test_ora_fragments_1(test_env):
+    slide = test_env.slide
+    img = test_env.assets_path("oratest.ora")
+    slide.image(img)
+    test_env.check("ora-frag", 4)
+
+
+def test_ora_fragments_showbegin(test_env):
+    slide = test_env.slide
+    img = test_env.assets_path("oratest.ora")
+    slide.image(img, show_begin=3)
+    test_env.check("ora-frag-sb", 6)

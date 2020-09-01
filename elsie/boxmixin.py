@@ -16,11 +16,12 @@ from .path import (
     path_points_for_end_arrow,
     path_update_end_point,
 )
-from .query import Query
+
 from .show import ShowInfo
 from .svg import svg_size_to_pixels
 from .textparser import parse_text, add_line_numbers
 from .textparser import tokens_merge, tokens_to_text_without_style
+from .ora import OpenRaster
 
 
 def scaler(rect, image_width, image_height):
@@ -249,8 +250,10 @@ class BoxMixin:
 
     def image(self, filename, scale=None, fragments=True, show_begin=1):
         """ Draw an svg/png/jpeg image, detect by extension """
-        if filename.endswith("svg"):
+        if filename.endswith(".svg"):
             return self._image_svg(filename, scale, fragments, show_begin)
+        elif filename.endswith(".ora"):
+            return self._image_ora(filename, scale, fragments, show_begin)
         elif any(filename.endswith(ext) for ext in [".png", ".jpeg", ".jpg"]):
             return self._image_bitmap(filename, scale)
         else:
@@ -301,6 +304,56 @@ class BoxMixin:
             x = rect.x + (rect.width - w) / 2
             y = rect.y + (rect.height - h) / 2
             draw_bitmap(ctx.xml, x, y, w, h, mime, data)
+
+        return self._create_simple_box_item(draw)
+
+    def _image_ora(self, filename, scale, fragments, show_begin):
+        key = (filename, "ora")
+        ora = self._get_box().slide.temp_cache.get(key)
+
+        if ora is None:
+            ora = OpenRaster(filename)
+            self._get_box().slide.temp_cache[key] = ora
+
+        image_width, image_height = ora.size
+        self._get_box().layout.set_image_size_request(
+            image_width * (scale or 1), image_height * (scale or 1)
+        )
+
+        if fragments:
+            image_steps = ora.get_steps()
+        else:
+            image_steps = 1
+
+        self._get_box()._ensure_steps(show_begin - 1 + image_steps)
+
+        def draw(ctx):
+            rect = self._get_box().layout.rect
+            if scale is None:
+                s = scaler(rect, image_width, image_height)
+                if s is None:
+                    s = 0
+                    logging.warning(
+                        "Scale of image {} is 0, set scale explicitly or set at least one "
+                        "dimension for the parent box".format(filename)
+                    )
+            else:
+                s = scale
+
+            w = image_width * s
+            h = image_height * s
+            x = rect.x + (rect.width - w) / 2
+            y = rect.y + (rect.height - h) / 2
+            step = ctx.step - show_begin + 1
+            if step < 1:
+                return
+            image = ora.render(fragments, step)
+            if image is None:
+                return
+            data = io.BytesIO()
+            image.save(data, format="png")
+            data = base64.b64encode(data.getvalue()).decode("ascii")
+            draw_bitmap(ctx.xml, x, y, w, h, "image/png", data)
 
         return self._create_simple_box_item(draw)
 

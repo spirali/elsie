@@ -32,6 +32,13 @@ class ShowInfo:
             self._min_steps = self.max_step()
 
     @classmethod
+    def from_label(cls, label):
+        if label is None or "**" not in label:
+            return None
+        show = label.split("**", 2)[1]
+        return cls.parse(show)
+
+    @classmethod
     def parse(cls, obj, current_max=None):
         if obj is None:
             return ShowInfo()
