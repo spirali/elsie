@@ -5,7 +5,13 @@ from .textstyle import TextStyle, compose_style
 
 class Box(BoxMixin):
     def __init__(
-        self, slide, layout, styles, show_info, z_level=0, name=None,
+        self,
+        slide,
+        layout,
+        styles,
+        show_info,
+        z_level=0,
+        name=None,
     ):
 
         self.slide = slide

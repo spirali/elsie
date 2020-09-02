@@ -1,9 +1,12 @@
 import subprocess
 
 
-def svg_begin(xml, width=None, height=None, view_box=None):
+def svg_begin(xml, width=None, height=None, view_box=None, inkscape_namespace=False):
     xml.element("svg")
     xml.set("xmlns", "http://www.w3.org/2000/svg")
+    xml.set("xmlns:xlink", "http://www.w3.org/1999/xlink")
+    if inkscape_namespace:
+        xml.set("xmlns:inkscape", "http://www.inkscape.org/namespaces/inkscape")
     if width is not None:
         xml.set("width", width)
     if height is not None:

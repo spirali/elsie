@@ -26,6 +26,9 @@ def string_check(s1, s2):
 
 
 def element_check(e1, e2):
+    if e1.tag != e2.tag:
+        raise Exception("Different tags: {} vs {}".format(e1.tag, e2.tag))
+
     c1 = list(e1)
     c2 = list(e2)
 

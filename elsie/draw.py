@@ -103,11 +103,16 @@ def draw_text(
     xml.close("text")
 
 
-def draw_bitmap(xml, x, y, width, height, mime, data):
+def draw_bitmap(xml, x, y, width, height, mime, data, extra_args=None):
     xml.element("image")
     xml.set("x", x)
     xml.set("y", y)
-    xml.set("width", width)
-    xml.set("height", height)
+    if width is not None:
+        xml.set("width", width)
+    if height is not None:
+        xml.set("height", height)
+    if extra_args is not None:
+        for k, v in extra_args:
+            xml.set(k, v)
     xml.set("xlink:href", "data:{};base64,{}".format(mime, data), escape=False)
     xml.close("image")

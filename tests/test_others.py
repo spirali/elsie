@@ -16,10 +16,12 @@ def test_cache(test_env):
     assert not glob.glob("{}/*".format(cache_dir))
     slides.render(output="test.pdf", cache_dir=cache_dir)
 
+    print(glob.glob("{}/*".format(cache_dir)))
+
     assert set(os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir))) == {
-        "1b4b2f663298abc291a730021e0cea8aef08d4e2.pdf",
-        "266c6ab63434f5975a5c55583d5745105991b2a8.pdf",
-        "d44aa3abda66c75b9749cd0d6b5064303d0f7be3.pdf",
+        "2800c8e52864d0c62c981a4f81c871267a30fa66.pdf",
+        "05bf89d40d73eb84d537be6de6cb5ddd1dc0d82a.pdf",
+        "b687b113b3353a349b33df8767a2becd47a424d1.pdf",
         "queries3.cache",
     }
 
@@ -33,9 +35,9 @@ def test_cache(test_env):
     slides.render(output="test.pdf", cache_dir=cache_dir)
 
     assert set(os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir))) == {
-        "1b4b2f663298abc291a730021e0cea8aef08d4e2.pdf",
-        "266c6ab63434f5975a5c55583d5745105991b2a8.pdf",
-        "d44aa3abda66c75b9749cd0d6b5064303d0f7be3.pdf",
+        "2800c8e52864d0c62c981a4f81c871267a30fa66.pdf",
+        "05bf89d40d73eb84d537be6de6cb5ddd1dc0d82a.pdf",
+        "b687b113b3353a349b33df8767a2becd47a424d1.pdf",
         "queries3.cache",
     }
 
@@ -49,9 +51,9 @@ def test_cache(test_env):
     slides.render(output="test.pdf", cache_dir=cache_dir)
 
     assert set(os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir))) == {
-        "0b85d0f51458a11b8d86f7956847e8783dc7d3e3.pdf",
-        "266c6ab63434f5975a5c55583d5745105991b2a8.pdf",
-        "d44aa3abda66c75b9749cd0d6b5064303d0f7be3.pdf",
+        "a002ab322e755851724c9a70b0afbae0f651b709.pdf",
+        "05bf89d40d73eb84d537be6de6cb5ddd1dc0d82a.pdf",
+        "b687b113b3353a349b33df8767a2becd47a424d1.pdf",
         "queries3.cache",
     }
 

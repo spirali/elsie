@@ -1,95 +1,86 @@
-
-
 import zipfile
 import lxml.etree as et
 from PIL import Image
 import io
-from .show import ShowInfo
+import base64
+from .sxml import Xml
+from .svg import svg_begin, svg_end
+from .draw import draw_bitmap
 
 
-class OpenRaster:
+def convert_ora_to_svg(filename):
+    with zipfile.ZipFile(filename, "r") as archive:
+        with archive.open("mimetype") as f:
+            mimetype = f.read().rstrip()
+            if mimetype != b"image/openraster":
+                raise Exception("Invalid mime type, found: {}".format(mimetype))
+        with archive.open("stack.xml") as f:
+            root = et.fromstring(f.read())
 
-    def __init__(self, filename):
-        with zipfile.ZipFile(filename, "r") as archive:
-            with archive.open("mimetype") as f:
-                mimetype = f.read().rstrip()
-                if mimetype != b"image/openraster":
-                    raise Exception("Invalid mime type, found: {}".format(mimetype))
-            with archive.open("stack.xml") as f:
-                root = et.fromstring(f.read())
+        sources = {}
+        for element in root.getiterator():
+            src = element.get("src")
+            if src is not None and src not in sources:
+                with archive.open(src) as f:
+                    data = f.read()
+                    img = Image.open(io.BytesIO(data))
+                    image_width, image_height = img.size
+                    sources[src] = (
+                        base64.b64encode(data).decode("ascii"),
+                        image_width,
+                        image_height,
+                    )
 
-            sources = {}
-            for element in root.getiterator():
-                src = element.get("src")
-                if src is not None and src not in sources:
-                    with archive.open(src) as f:
-                        image = Image.open(io.BytesIO(f.read()))
-                    sources[src] = image
+    width, height = root.get("w"), root.get("h")
+    xml = Xml()
+    svg_begin(xml, width, height, inkscape_namespace=True)
+    _children_to_svg(root, xml, sources)
+    svg_end(xml)
+    return xml.to_string()
 
-        self.root = root
-        self.size = (int(self.root.get("w")), int(self.root.get("h")))
-        self.sources = sources
 
-    def get_steps(self):
-        steps = 1
-        for element in self.root.iter():
-            show_info = ShowInfo.from_label(element.get("name"))
-            if show_info is not None:
-                steps = max(steps, show_info.min_steps())
-        return steps
+def _check_visibility(element):
+    return element.get("visibility") == "visible"
 
-    def render(self, fragments, step):
 
-        def _check_visibility(element):
-            if element.get("visibility") != "visible":
-                return False
-            if fragments:
-                show_info = ShowInfo.from_label(element.get("name"))
-                if show_info is not None and not show_info.is_visible(step):
-                    return False
-            return True
+def _stack_to_svg(element, xml, sources):
+    if not _check_visibility(element):
+        return
+    xml.element("g")
+    x, y = element.get("x"), element.get("y")
+    if x != "0" or y != "0":
+        xml.set("transform", "translate({}, {})".format(x, y))
+    opacity = float(element.get("opacity"))
+    if opacity < 0.9999:
+        xml.set("opacity", opacity)
+    xml.set("inkscape:label", element.get("name"))
+    _children_to_svg(element, xml, sources)
+    xml.close("g")
 
-        def _render_layout(element):
-            if not _check_visibility(element):
-                return None
-            result = self.sources[element.get("src")]
-            return result
 
-        def _merge(prev_image, new_image, offset, opacity):
-            if prev_image is None:
-                return new_image
-            if new_image is None:
-                return prev_image
-            #prev_image.paste(new_image, offset, mask=new_image)
-            return Image.alpha_composite(prev_image, new_image)
+def _layer_to_svg(element, xml, sources):
+    if not _check_visibility(element):
+        return
+    data, image_width, image_height = sources[element.get("src")]
+    extra_args = [("inkscape:label", element.get("name"))]
+    opacity = float(element.get("opacity"))
+    if opacity is not None and opacity < 0.9999:
+        extra_args.append(("opacity", opacity))
+    draw_bitmap(
+        xml,
+        element.get("x"),
+        element.get("y"),
+        image_width,
+        image_height,
+        "image/png",
+        data,
+        extra_args,
+    )
 
-            #return prev_image
 
-        def _render_stack(stack):
-            if not _check_visibility(stack):
-                return None
-            return _process_stack_children(stack)
-
-        def _process_stack_children(stack):
-            result = None
-            for element in reversed(stack):
-                if element.tag == "stack":
-                    r = _render_stack(element)
-                elif element.tag == "layer":
-                    r = _render_layout(element)
-                else:
-                    continue
-                x = int(element.get("x", "0"))
-                y = int(element.get("y", "0"))
-                opacity = float(element.get("opacity", "1"))
-
-                if opacity < 0.999:
-                    raise Exception("Opacity is not yet supported")
-
-                if x != 0 or y != 0:
-                    raise Exception("Offsets are not supported")
-
-                result = _merge(result, r, (x, y), opacity)
-            return result
-
-        return _process_stack_children(self.root)
+def _children_to_svg(element, xml, sources):
+    for e in reversed(element):
+        if e.tag == "stack":
+            _stack_to_svg(e, xml, sources)
+        elif e.tag == "layer":
+            _layer_to_svg(e, xml, sources)
