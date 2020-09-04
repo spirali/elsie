@@ -22,13 +22,26 @@ def convert_ora_to_svg(filename):
             src = element.get("src")
             if src is not None and src not in sources:
                 with archive.open(src) as f:
-                    data = f.read()
-                    img = Image.open(io.BytesIO(data))
-                    image_width, image_height = img.size
+                    img = Image.open(f)
+                    box = img.getbbox()
+                    img = img.crop(box)
+                    temp = io.BytesIO()
+                    img.save(temp, "png")
+                    mime = "image/png"
+
+                    data = temp.getvalue()
+                    data = base64.b64encode(data).decode("ascii")
+
+                    if len(data) > 10_0000_000:
+                        raise Exception("Layer in ORA is file too big, consider rescaling image")
+
                     sources[src] = (
-                        base64.b64encode(data).decode("ascii"),
-                        image_width,
-                        image_height,
+                        data,
+                        mime,
+                        box[0],
+                        box[1],
+                        box[2] - box[0],
+                        box[3] - box[1],
                     )
 
     width, height = root.get("w"), root.get("h")
@@ -61,18 +74,18 @@ def _stack_to_svg(element, xml, sources):
 def _layer_to_svg(element, xml, sources):
     if not _check_visibility(element):
         return
-    data, image_width, image_height = sources[element.get("src")]
+    data, mime, x, y, image_width, image_height = sources[element.get("src")]
     extra_args = [("inkscape:label", element.get("name"))]
     opacity = float(element.get("opacity"))
     if opacity is not None and opacity < 0.9999:
         extra_args.append(("opacity", opacity))
     draw_bitmap(
         xml,
-        element.get("x"),
-        element.get("y"),
+        float(element.get("x")) + x,
+        float(element.get("y")) + y,
         image_width,
         image_height,
-        "image/png",
+        mime,
         data,
         extra_args,
     )
