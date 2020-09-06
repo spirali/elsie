@@ -4,7 +4,8 @@ import os
 from elsie import Slides
 
 
-def test_cache(test_env):
+# test_env has to be there to switch to work directory
+def test_cache1(test_env):
     cache_dir = "elsie-cache"
     slides = Slides()
 
@@ -14,16 +15,13 @@ def test_cache(test_env):
     slide.box(show="next+").text("3")
 
     assert not glob.glob("{}/*".format(cache_dir))
-    slides.render(output="test.pdf", cache_dir=cache_dir)
+    slides.render(output="test.pdf")
 
     print(glob.glob("{}/*".format(cache_dir)))
 
-    assert set(os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir))) == {
-        "2800c8e52864d0c62c981a4f81c871267a30fa66.pdf",
-        "05bf89d40d73eb84d537be6de6cb5ddd1dc0d82a.pdf",
-        "b687b113b3353a349b33df8767a2becd47a424d1.pdf",
-        "queries3.cache",
-    }
+    fs = set(os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir)))
+    assert "queries3.cache" in fs
+    assert len(fs) == 4
 
     slides = Slides()
 
@@ -32,14 +30,10 @@ def test_cache(test_env):
     slide.box(show="next+").text("2")
     slide.box(show="next+").text("3")
 
-    slides.render(output="test.pdf", cache_dir=cache_dir)
+    slides.render(output="test.pdf")
 
-    assert set(os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir))) == {
-        "2800c8e52864d0c62c981a4f81c871267a30fa66.pdf",
-        "05bf89d40d73eb84d537be6de6cb5ddd1dc0d82a.pdf",
-        "b687b113b3353a349b33df8767a2becd47a424d1.pdf",
-        "queries3.cache",
-    }
+    fs2 = set(os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir)))
+    assert fs2 == fs
 
     slides = Slides()
 
@@ -48,14 +42,39 @@ def test_cache(test_env):
     slide.box(show="next+").text("2")
     slide.box(show="next+").text("4")
 
-    slides.render(output="test.pdf", cache_dir=cache_dir)
+    slides.render(output="test.pdf")
 
-    assert set(os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir))) == {
-        "a002ab322e755851724c9a70b0afbae0f651b709.pdf",
-        "05bf89d40d73eb84d537be6de6cb5ddd1dc0d82a.pdf",
-        "b687b113b3353a349b33df8767a2becd47a424d1.pdf",
-        "queries3.cache",
-    }
+    print(fs2)
+    fs3 = set(os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir)))
+    assert "queries3.cache" in fs3
+    assert len(fs3.difference(fs)) == 1
+
+
+# test_env has to be there to switch to work directory
+def test_cache2(test_env):
+    cache_dir = "elsie-cache"
+
+    slides = Slides()
+    for i in range(10):
+        slide = slides.new_slide()
+        slide.box(width=100, height=100).rect(bg_color="blue")
+
+    assert not glob.glob("{}/*".format(cache_dir))
+    slides.render(output="test.pdf")
+
+    files = set([os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir))])
+    assert 2 == len(files)
+
+    slides = Slides()
+    for i in range(10):
+        slide = slides.new_slide()
+        slide.box(width=100, height=100).rect(bg_color="green")
+
+    slides.render(output="test.pdf")
+
+    files2 = set([os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir))])
+    assert 2 == len(files2)
+    assert files != files2
 
 
 def test_viewbox(test_env):

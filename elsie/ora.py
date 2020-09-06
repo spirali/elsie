@@ -24,6 +24,11 @@ def convert_ora_to_svg(filename):
                 with archive.open(src) as f:
                     img = Image.open(f)
                     box = img.getbbox()
+
+                    if box is None:
+                        sources[src] = None
+                        continue
+
                     img = img.crop(box)
                     temp = io.BytesIO()
                     img.save(temp, "png")
@@ -76,7 +81,10 @@ def _stack_to_svg(element, xml, sources):
 def _layer_to_svg(element, xml, sources):
     if not _check_visibility(element):
         return
-    data, mime, x, y, image_width, image_height = sources[element.get("src")]
+    source = sources[element.get("src")]
+    if source is None:
+        return
+    data, mime, x, y, image_width, image_height = source
     extra_args = [("inkscape:label", element.get("name"))]
     opacity = float(element.get("opacity"))
     if opacity is not None and opacity < 0.9999:

@@ -11,6 +11,7 @@ from .slidecls import Slide, DummyPdfSlide
 from .svg import get_inkscape_version
 from .textstyle import TextStyle, compose_style
 from .version import VERSION
+from .cache import FsCache
 
 
 class Slides:
@@ -21,7 +22,14 @@ class Slides:
         debug=False,
         pygments_theme="default",
         bg_color=None,
+        cache_dir="./elsie-cache",
     ):
+        self.inkscape_version = get_inkscape_version()
+        self.cache_dir = cache_dir
+
+        if not os.path.isdir(cache_dir):
+            print("Creating cache directory:", cache_dir)
+            os.makedirs(cache_dir)
 
         self.width = width
         self.height = height
@@ -51,6 +59,7 @@ class Slides:
         }
         self.temp_cache = {}
         self._styles.update(make_highlight_styles(pygments_theme))
+        self.fs_cache = FsCache(cache_dir, VERSION, self.inkscape_version)
 
     def update_style(self, style_name, style):
         assert isinstance(style_name, str)
@@ -84,6 +93,7 @@ class Slides:
             self.width,
             self.height,
             self._styles.copy(),
+            self.fs_cache,
             self.temp_cache,
             view_box,
             name,
@@ -103,14 +113,14 @@ class Slides:
         """ Just add pdf without touches into resulting slides """
         self._slides.append(DummyPdfSlide(filename))
 
-    def _load_query_cache(self, cache_file, inkscape_version):
+    def _load_query_cache(self, cache_file):
         if os.path.isfile(cache_file):
             with open(cache_file) as f:
                 cache_config = json.load(f)
             if cache_config.get("version") != VERSION:
                 print("Elsie version changed; cache dropped")
                 return {}
-            if cache_config.get("inkscape") != inkscape_version:
+            if cache_config.get("inkscape") != self.inkscape_version:
                 print("Inkscape version changed; cache dropped")
                 return {}
             return dict(
@@ -119,10 +129,10 @@ class Slides:
         else:
             return {}
 
-    def _save_query_cache(self, cache, cache_file, inkscape_version):
+    def _save_query_cache(self, cache, cache_file):
         cache_config = {
             "version": VERSION,
-            "inkscape": inkscape_version,
+            "inkscape": self.inkscape_version,
             "queries": list(cache.items()),
         }
         with open(cache_file, "w") as f:
@@ -152,34 +162,24 @@ class Slides:
     def render(
         self,
         output,
-        cache_dir="./elsie-cache",
         threads=None,
         return_svg=False,
         pdf_merger="pypdf",
         drop_duplicates=False,
         slide_postprocessing=None,
     ):
-        inkscape_version = get_inkscape_version()
-        if not os.path.isdir(cache_dir):
-            print("Creating cache directory:", cache_dir)
-            os.makedirs(cache_dir)
-
         if not self._slides:
             raise Exception("No slides to render")
 
         if slide_postprocessing:
             slide_postprocessing([slide.box() for slide in self._slides])
 
-        pdfs_in_dir = set(
-            name for name in os.listdir(cache_dir) if name.endswith(".pdf")
-        )
-
         if threads is None:
             threads = os.cpu_count() or 1
         pool = ThreadPoolExecutor(threads)
 
-        cache_file = os.path.join(cache_dir, "queries3.cache")
-        cache = self._load_query_cache(cache_file, inkscape_version)
+        cache_file = os.path.join(self.cache_dir, "queries3.cache")
+        cache = self._load_query_cache(cache_file)
         queries = sum((s.get_queries() for s in self._slides), [])
 
         self._show_progress("Preprocessing", first=True)
@@ -196,7 +196,7 @@ class Slides:
         for q in queries:
             q.callback(new_cache[q.key])
 
-        self._save_query_cache(new_cache, cache_file, inkscape_version)
+        self._save_query_cache(new_cache, cache_file)
 
         renders = []
         for slide in self._slides:
@@ -214,12 +214,10 @@ class Slides:
         computed_pdfs = set()
         prev_pdf = None
         for i, pdf in enumerate(
-            pool.map(
-                lambda x: x[0].render(x[1], cache_dir, pdfs_in_dir, self.debug), renders
-            )
+            pool.map(lambda x: x[0].render(x[1], self.debug), renders)
         ):
             if not drop_duplicates or prev_pdf != pdf:
-                merger.append(os.path.join(cache_dir, pdf))
+                merger.append(pdf)
                 computed_pdfs.add(pdf)
                 prev_pdf = pdf
             self._show_progress("Building", i, len(renders))
@@ -228,8 +226,7 @@ class Slides:
         merger.write(output, self.debug)
         print("Slides written into '{}'".format(output))
 
-        for pdf in pdfs_in_dir.difference(computed_pdfs):
-            os.remove(os.path.join(cache_dir, pdf))
+        self.fs_cache.remove_unused()
 
 
 _global_slides = None
@@ -288,7 +285,6 @@ def slide(*, bg_color=None, view_box=None, name=None, debug_boxes=False):
 
 def render(
     output="output.pdf",
-    cache_dir="./elsie-cache",
     threads=None,
     return_svg=False,
     pdf_merger="pypdf",
@@ -300,7 +296,6 @@ def render(
         raise Exception("No slides to render")
     return _global_slides.render(
         output,
-        cache_dir,
         threads,
         return_svg,
         pdf_merger,

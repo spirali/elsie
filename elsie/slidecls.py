@@ -15,7 +15,16 @@ from .sxml import Xml
 
 class Slide:
     def __init__(
-        self, index, width, height, styles, temp_cache, view_box, name, debug_boxes
+        self,
+        index,
+        width,
+        height,
+        styles,
+        fs_cache,
+        temp_cache,
+        view_box,
+        name,
+        debug_boxes,
     ):
         self.width = width
         self.height = height
@@ -31,6 +40,7 @@ class Slide:
         )
         self.max_step = 1
         self.temp_cache = temp_cache
+        self.fs_cache = fs_cache
         self._queries = []
 
     def box(self):
@@ -63,24 +73,19 @@ class Slide:
         svg_end(xml)
         return xml.to_string()
 
-    def render(self, step, cache_dir, pdfs_in_dir, debug):
+    def render(self, step, debug):
         svg = self.make_svg(step)
 
-        h = hashlib.sha1()
-        h.update(svg.encode())
-        pdf_name = h.hexdigest() + ".pdf"
-
-        if pdf_name in pdfs_in_dir:
-            return pdf_name
-
         if debug:
-            svg_file = os.path.join(cache_dir, "{}-{}.svg".format(self.index, step))
+            svg_file = os.path.join(
+                self.fs_cache.cache_dir, "{}-{}.svg".format(self.index, step)
+            )
             with open(svg_file, "w") as f:
                 f.write(svg)
 
-        full_name = os.path.join(cache_dir, pdf_name)
-        convert_to_pdf(svg, full_name)
-        return pdf_name
+        return self.fs_cache.ensure(
+            svg.encode(), "pdf", convert_to_pdf, wait_on_collision=False
+        )
 
 
 class DummyPdfSlide:

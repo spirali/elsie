@@ -28,7 +28,9 @@ def run_inkscape(extra_args, filename=None, stdin=None):
         p = subprocess.Popen(
             args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=devnull
         )
-        stdout, stderr = p.communicate(stdin.encode("utf-8"))
+        if isinstance(stdin, str):
+            stdin = stdin.encode("utf-8")
+        stdout, stderr = p.communicate(stdin)
         return stdout
 
 
