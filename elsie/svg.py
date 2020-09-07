@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 
 def svg_begin(xml, width=None, height=None, view_box=None, inkscape_namespace=False):
@@ -38,16 +39,35 @@ def get_inkscape_version():
     return stdout.decode().strip()
 
 
+def _run_inkscape_get_float(args, svg):
+    value = run_inkscape(args, None, svg)
+    try:
+        return float(value)
+    except ValueError as e:
+        raise Exception(
+            "Inkscape executed with args {} and should return float but returned {}",
+            args,
+            repr(value),
+        )
+
+
 def run_inkscape_get_width(svg):
-    return float(run_inkscape(("--query-id=target", "-W"), None, svg))
+    return _run_inkscape_get_float(("--query-id=target", "-W"), svg)
 
 
 def run_inkscape_get_x(svg):
-    return float(run_inkscape(("--query-id=target", "-X"), None, svg))
+    return _run_inkscape_get_float(("--query-id=target", "-X"), svg)
 
 
 def convert_to_pdf(source, target):
-    run_inkscape(("--export-pdf", target, "--export-area-page"), stdin=source)
+    run_inkscape(
+        ("--export-type", "pdf", "--export-filename", target, "--export-area-page"),
+        stdin=source,
+    )
+    if not os.path.isfile(target):
+        raise Exception(
+            "Inkscape should produced file '{}' but it is not found".format(target)
+        )
 
 
 def svg_size_to_pixels(text):

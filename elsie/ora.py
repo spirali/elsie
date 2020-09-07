@@ -33,7 +33,9 @@ def convert_ora_to_svg(filename):
                     data = base64.b64encode(data).decode("ascii")
 
                     if len(data) > 10_0000_000:
-                        raise Exception("Layer in ORA is file too big, consider rescaling image")
+                        raise Exception(
+                            "Layer in ORA is file too big, consider rescaling image"
+                        )
 
                     sources[src] = (
                         data,
