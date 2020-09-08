@@ -591,3 +591,16 @@ def test_text_style_update():
     assert style.font == "Y"
     assert style.size == 20
     assert style.align == "left"
+
+
+def test_text_style_compose():
+
+    style = elsie.TextStyle(font="Y", size=10)
+    style2 = style.compose(elsie.TextStyle(size=20, align="left"))
+
+    assert style2.font is "Y"
+    assert style2.size == 20
+    assert style2.align == "left"
+    assert style.font == "Y"
+    assert style.size == 10
+    assert style.align is None
