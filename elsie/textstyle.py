@@ -169,6 +169,11 @@ class TextStyle:
             if value is not None:
                 setattr(self, slot, value)
 
+    def compose(self, style: "TextStyle") -> "TextStyle":
+        copy = self.copy()
+        copy.update(style)
+        return copy
+
 
 def compose_style(styles, style, full_style=True):
     if isinstance(style, str):
@@ -184,7 +189,4 @@ def compose_style(styles, style, full_style=True):
     if not full_style:
         return style.copy()
 
-    result_style = styles["default"]
-    result_style = result_style.copy()
-    result_style.update(style)
-    return result_style
+    return styles["default"].compose(style)
