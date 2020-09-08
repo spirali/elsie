@@ -248,12 +248,14 @@ class BoxMixin:
         ctx.xml.raw_text(data)
         ctx.xml.close()
 
-    def image(self, filename, scale=None, fragments=True, show_begin=1):
+    def image(
+        self, filename, scale=None, fragments=True, show_begin=1, select_steps=None
+    ):
         """ Draw an svg/png/jpeg image, detect by extension """
         if filename.endswith(".svg"):
-            return self._image_svg(filename, scale, fragments, show_begin)
+            return self._image_svg(filename, scale, fragments, show_begin, select_steps)
         elif filename.endswith(".ora"):
-            return self._image_ora(filename, scale, fragments, show_begin)
+            return self._image_ora(filename, scale, fragments, show_begin, select_steps)
         elif any(filename.endswith(ext) for ext in [".png", ".jpeg", ".jpg"]):
             return self._image_bitmap(filename, scale)
         else:
@@ -307,14 +309,16 @@ class BoxMixin:
 
         return self._create_simple_box_item(draw)
 
-    def _image_ora(self, filename, scale, fragments, show_begin):
+    def _image_ora(self, filename, scale, fragments, show_begin, select_steps):
         key = (filename, "svg")
         if key not in self._get_box().slide.temp_cache:
             svg = convert_ora_to_svg(filename)
             self._get_box().slide.temp_cache[key] = et.fromstring(svg)
-        return self._image_svg(filename, scale, fragments, show_begin)
+        return self._image_svg(filename, scale, fragments, show_begin, select_steps)
 
-    def _image_svg(self, filename, scale=None, fragments=True, show_begin=1):
+    def _image_svg(
+        self, filename, scale=None, fragments=True, show_begin=1, select_steps=None
+    ):
         """ Draw an svg image """
 
         key = (filename, "svg")
@@ -330,15 +334,19 @@ class BoxMixin:
             image_width * (scale or 1), image_height * (scale or 1)
         )
 
-        if fragments:
-            image_steps = get_image_steps(root)
+        if select_steps is not None:
+            image_steps = len(select_steps)
         else:
-            image_steps = 1
+            if fragments:
+                image_steps = get_image_steps(root)
+            else:
+                image_steps = 1
 
         self._get_box()._ensure_steps(show_begin - 1 + image_steps)
 
         image_data = None
-        if image_steps == 1:
+
+        if image_steps == 1 and not select_steps:
             image_data = et.tostring(root).decode()
 
         def draw(ctx):
@@ -346,9 +354,16 @@ class BoxMixin:
 
             if image_data is None:
                 step = ctx.step - show_begin + 1
+                if select_steps is not None:
+                    if 0 < step <= len(select_steps):
+                        step = select_steps[step - 1]
+                    else:
+                        return
+                    if step is None:
+                        return
                 if step < 1:
                     return
-                data = create_image_data(root, ctx.step - show_begin + 1)
+                data = create_image_data(root, step)
             else:
                 if ctx.step < show_begin:
                     return
