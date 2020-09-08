@@ -5,7 +5,7 @@ import re
 numbers_split = re.compile("(-?[\d\.]+)")
 
 
-def string_check(s1, s2):
+def string_check(s1, s2, name):
     lst1 = numbers_split.split(s1)
     lst2 = numbers_split.split(s2)
     assert len(lst1) == len(lst2)
@@ -17,7 +17,7 @@ def string_check(s1, s2):
         try:
             tmp1 = float(a1)
             tmp2 = float(a2)
-            assert abs(tmp1 - tmp2) < 0.4
+            assert abs(tmp1 - tmp2) < 0.4, name
         except ValueError:
             print(s1)
             print(s2)
@@ -33,7 +33,7 @@ def element_check(e1, e2):
     c2 = list(e2)
 
     if e1.text != e2.text:
-        string_check(e1.text, e2.text)
+        string_check(e1.text, e2.text, "element's text")
 
     if frozenset(e1.keys()) != frozenset(e2.keys()):
         print(e1.items())
@@ -46,7 +46,7 @@ def element_check(e1, e2):
     for (name, v1) in e1.items():
         v2 = e2.get(name)
         if v1 != v2:
-            string_check(v1, v2)
+            string_check(v1, v2, "{}/{}".format(e1.tag, name))
 
     if len(c1) != len(c2):
         raise Exception("Different number of children for: {} {}".format(e1, e2))
