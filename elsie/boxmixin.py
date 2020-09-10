@@ -311,9 +311,16 @@ class BoxMixin:
 
     def _image_ora(self, filename, scale, fragments, show_begin, select_steps):
         key = (filename, "svg")
-        if key not in self._get_box().slide.temp_cache:
-            svg = convert_ora_to_svg(filename)
-            self._get_box().slide.temp_cache[key] = et.fromstring(svg)
+        slide = self._get_box().slide
+        if key not in slide.temp_cache:
+
+            def constructor(_content, output):
+                svg = convert_ora_to_svg(filename)
+                with open(output, "w") as f:
+                    f.write(svg)
+
+            cache_file = slide.fs_cache.ensure_by_file(filename, "svg", constructor)
+            self._get_box().slide.temp_cache[key] = et.parse(cache_file).getroot()
         return self._image_svg(filename, scale, fragments, show_begin, select_steps)
 
     def _image_svg(

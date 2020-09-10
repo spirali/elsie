@@ -5,7 +5,7 @@ import threading
 
 class FsCache:
     def __init__(self, cache_dir, version, inkscape_version):
-        start = (str(version) + "/" + str(inkscape_version)).encode()
+        start = ("elsie-{}/{}/".format(version, str(inkscape_version))).encode()
         self.hasher = hashlib.sha1()
         self.hasher.update(start)
         self.inkscape_version = inkscape_version
@@ -26,6 +26,13 @@ class FsCache:
 
     def _full_path(self, filename):
         return os.path.join(self.cache_dir, filename)
+
+    def ensure_by_file(self, filename, data_type, constructor, wait_on_collision=True):
+        with open(filename, "rb") as f:
+            data = f.read()
+        return self.ensure(
+            data, data_type, constructor, wait_on_collision=wait_on_collision
+        )
 
     def ensure(self, input_data, data_type, constructor, wait_on_collision=True):
         cache_file = self._get_filename(input_data, data_type)
