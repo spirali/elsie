@@ -83,9 +83,7 @@ class Slide:
             with open(svg_file, "w") as f:
                 f.write(svg)
 
-        return self.fs_cache.ensure(
-            svg.encode(), "pdf", convert_to_pdf, wait_on_collision=False
-        )
+        return self.fs_cache.ensure(svg.encode(), "pdf", convert_to_pdf)
 
 
 class DummyPdfSlide:

@@ -211,14 +211,12 @@ class Slides:
 
         merger = get_pdf_merger_by_name(pdf_merger)
         self._show_progress("Building", first=True)
-        computed_pdfs = set()
         prev_pdf = None
         for i, pdf in enumerate(
             pool.map(lambda x: x[0].render(x[1], self.debug), renders)
         ):
             if not drop_duplicates or prev_pdf != pdf:
                 merger.append(pdf)
-                computed_pdfs.add(pdf)
                 prev_pdf = pdf
             self._show_progress("Building", i, len(renders))
         self._show_progress("Building", len(renders), len(renders), last=True)
