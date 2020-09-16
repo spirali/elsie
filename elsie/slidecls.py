@@ -90,7 +90,7 @@ class DummyPdfSlide:
     def __init__(self, filename):
         self.filename = os.path.abspath(filename)
 
-    def queries(self):
+    def get_queries(self):
         return []
 
     def prepare(self):
@@ -102,5 +102,5 @@ class DummyPdfSlide:
     def make_svg(self):
         return None
 
-    def render(self, step, cache_dir, pdfs_in_dir, debug):
+    def render(self, step, debug):
         return self.filename
