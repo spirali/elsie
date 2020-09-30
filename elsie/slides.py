@@ -258,7 +258,7 @@ def get_style(style, full_style=True):
     return get_global_slides().get_style(style, full_style)
 
 
-def set_style(style_name, style, base=None):
+def set_style(style_name, style, base="default"):
     """Call set_style method on global slides"""
     get_global_slides().set_style(style_name, style, base)
 
