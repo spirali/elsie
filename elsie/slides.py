@@ -72,7 +72,9 @@ class Slides:
         assert isinstance(style_name, str)
         assert isinstance(style, TextStyle)
         if base != "default":
-            style = self.get_style(base).update(style)
+            base_style = self.get_style(base)
+            base_style.update(style)
+            style = base_style
         self._styles = self._styles.copy()
         self._styles[style_name] = style
 
