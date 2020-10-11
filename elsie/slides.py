@@ -206,9 +206,7 @@ class Slides:
             renders += [(slide, step) for step in range(1, slide.steps() + 1)]
 
         if return_svg:
-            svgs = [slide.make_svg(step) for slide, step in renders]
-            if drop_duplicates:
-                return [x[0] for x in itertools.groupby(svgs)]
+            svgs = [(slide, step, slide.make_svg(step)) for slide, step in renders]
             return svgs
 
         merger = get_pdf_merger_by_name(pdf_merger)
