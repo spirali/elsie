@@ -747,7 +747,10 @@ that takes the following attributes:
 * ``size`` - The size of the arrow head
 * ``angle`` - The main angle of arrow head
 * ``stroke_width`` - If ``None`` then the arrow head is filled area, otherwise it defines the thickness of the line that is used to draw the arrow head.
-* ``diamond_size`` - If non-zero then it creates an diamond-like arrow head. The value controls how far in the line is the 4th point of the diamond.
+* ``inner`` - How the inner point of the arrow is moved. Value 1.0 has no
+  effect, value bigger than 1.0 produce a diamond shape, value smaller than 1.0
+  produce a more sharp arrow. See the effect in the picture below. The move of
+  the point is the proportional to the size of the arrow.
 
 <img src="imgs/arrows.png"/>
 
