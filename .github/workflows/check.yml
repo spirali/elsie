@@ -1,0 +1,30 @@
+name: Check
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        sudo add-apt-repository ppa:inkscape.dev/stable
+        sudo apt update
+        sudo apt-get install -y --no-install-recommends inkscape=1.0.1+r73~ubuntu18.04.1
+        python -m pip install --upgrade pip wheel setuptools
+        python -m pip install -r requirements-dev.txt
+        python -m pip install .
+    - name: Test
+      run: pytest tests
+    - name: Lint
+      run: flake8 elsie tests
+    - name: Format
+      run: black --check elsie tests
