@@ -2,7 +2,7 @@ import lxml.etree as et
 import pytest
 import re
 
-numbers_split = re.compile("(-?[\d\.]+)")
+numbers_split = re.compile(r"(-?[\d.]+)")
 
 
 VALUE_TOLERANCE = 0.85

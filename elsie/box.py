@@ -114,7 +114,8 @@ class Box(BoxMixin):
         xml.set("y", y)
         xml.set(
             "style",
-            "fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;",
+            "fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt"
+            ";stroke-linejoin:miter;stroke-opacity:1;",
         )
         xml.element("tspan")
         xml.text(text)
@@ -131,4 +132,4 @@ class Box(BoxMixin):
         self.slide.max_step = max(self.slide.max_step, steps)
 
 
-from .boxitem import BoxItem
+from .boxitem import BoxItem  # noqa

@@ -213,11 +213,6 @@ def test_path(test_env):
         color=COLOR1,
     )
 
-    # c3 = child2.p("50%", "50%")
-    # slide.path([("M", c3.add(0, -100)),
-    #            ("C", c3.add(100, -100), c3.add(100, -0), c3.add(0, 100)),
-    #            ("C", c3.add(-150, -100), c3.add(-100, -10), c3.add(0, -100))], bg_color="#909090", color=None)#
-
     slide.path([("M", (650, 350)), ("L", (750, 350))], stroke_width=4, color="green")
     slide.path(
         [("M", (600, 450)), ("L", (700, 250)), ("L", (800, 450))],

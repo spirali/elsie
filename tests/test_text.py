@@ -114,7 +114,7 @@ strcpy(buffer, "these");    // copy "these" to buffer
 strcat(buffer, "strings");     // append "strings" to buffer"""
 
     slide = test_env.slide
-    box = slide.box().code("c", text)
+    slide.box().code("c", text)
     test_env.check("highlight-bug-2")
 
 
@@ -424,10 +424,8 @@ def test_text_scale_to_fit_a(test_env):
     slide.box(x=50, y=50, width=300, height=300).rect(bg_color="#bbffbb").text(
         "This is\ntext"
     )
-    b = (
-        slide.box(x=650, y=50, width=300, height=300)
-        .rect(bg_color="#bbffbb")
-        .text("This is\ntext", scale_to_fit=True)
+    slide.box(x=650, y=50, width=300, height=300).rect(bg_color="#bbffbb").text(
+        "This is\ntext", scale_to_fit=True
     )
 
     slide.box(x=50, y=400, width=300, height=300).rect(bg_color="#bbffbb").text(
@@ -444,11 +442,8 @@ def test_text_scale_to_fit_b(test_env):
     slide.box(x=50, y=50, width=300, height=300).fbox().rect(bg_color="#bbffbb").text(
         "This is\ntext"
     )
-    b = (
-        slide.box(x=650, y=50, width=300, height=300)
-        .fbox()
-        .rect(bg_color="#bbffbb")
-        .text("This is\ntext", scale_to_fit=True)
+    slide.box(x=650, y=50, width=300, height=300).fbox().rect(bg_color="#bbffbb").text(
+        "This is\ntext", scale_to_fit=True
     )
 
     slide.box(x=50, y=400, width=300, height=300).fbox().rect(bg_color="#bbffbb").text(
@@ -598,7 +593,7 @@ def test_text_style_compose():
     style = elsie.TextStyle(font="Y", size=10)
     style2 = style.compose(elsie.TextStyle(size=20, align="left"))
 
-    assert style2.font is "Y"
+    assert style2.font == "Y"
     assert style2.size == 20
     assert style2.align == "left"
     assert style.font == "Y"
