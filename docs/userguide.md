@@ -1,23 +1,20 @@
 # Elsie: User Guide
-
-Elsie is a framework for making slides in Python.
-It uses a Inkscape in background to render slides.
+Elsie is a framework for making slides using Python.
+Its API allows you to build SVG slides programmatically.
+Inkscape is then used in the background to render SVG into PDF slides.
 
 Full demonstration:
   * Result: [example.pdf](../examples/bigdemo/example.pdf)
   * Source code: [example.py](../examples/bigdemo/example.py)
 
-
 ## About this text
-
 The main purpose of this text is to create a complete reference for Elsie, where
-you can find all options that Elsie offers. While this text prioritizes
-completeness, the text tries to be accessible as much as possible. If you find
+you can find all the various features that Elsie offers. While this text prioritizes
+completeness, it tries to be accessible as much as possible. If you find
 something that you do not understand, please let me know.
 
-If you are looking for a more tutorial-like material, try to look on the example
+If you are looking for a more tutorial-like material, try to look at the example
 above.
-
 
 ## Installation
 
@@ -27,19 +24,14 @@ above.
 * Inkscape 0.92+ (version 1.0+ recommended)
 * (Optional for LaTeX support): pdflatex, pdf2svg
 
-
 ### Installation of Elsie
 
 `$ pip3 install elsie`
 
-
 ### Installation of Inkscape
-
-Install manually Inkscape (e.g. `$ apt install inkscape` in Ubuntu)
-
+Install manually Inkscape (e.g. `$ apt install inkscape` in Ubuntu).
 
 ## Hello world example
-
 The minimal slide in Elsie can be created in the following way:
 
 ```python
@@ -58,13 +50,11 @@ The following code creates a pdf file with the following slide:
 
 
 ## Global slides
-
-
-Functions like ``elsie.slide()`` or ``elsie.render()`` operates on a a global
-implicit instance of slides. The way "one python program" = "one slide deck" is
-most common use of Elsie and it will be used mostly in this text. How to create
-more independent slides in one Python program is shown in [More instances of
-slides](#more+instances+of+slides)
+Functions like ``elsie.slide()`` or ``elsie.render()`` operate on a global
+implicit instance of slides. It is common to build a single presentation inside a single
+Python program, and using a global slides variable makes that easier. It will be be mostly used in
+this text. You can find out how to create slides independently in [More instances of
+slides](#more-instances-of-slides)
 
 
 ### Configuring global slides
