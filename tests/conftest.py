@@ -39,7 +39,7 @@ class SlideTester:
         svgs = self.slides.render(output=None, return_svg=True, **render_args)
         try:
             assert len(svgs) == expect_count
-            for i, result in enumerate(svgs):
+            for i, (_slide, _step, result) in enumerate(svgs):
                 filename = self.data_path(
                     os.path.join("checks", "{}-{}.svg".format(expected, i))
                 )
@@ -51,7 +51,7 @@ class SlideTester:
             done = True
         finally:
             if not done:
-                for i, svg in enumerate(svgs):
+                for i, (_slide, _step, svg) in enumerate(svgs):
                     with open("{}-{}.svg".format(expected, i), "w") as f:
                         f.write(svg)
 
