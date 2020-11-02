@@ -12,7 +12,7 @@ DATA_DIR = os.path.join(PYTEST_DIR, "data")
 sys.path.insert(0, ROOT_DIR)
 
 import elsie  # noqa
-import test_utils
+import test_utils  # noqa
 
 
 class SlideTester:

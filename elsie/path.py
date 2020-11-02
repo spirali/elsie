@@ -36,9 +36,8 @@ def path_points_for_end_arrow(commands):
     name, pairs = commands[-1]
     if name not in "CSQT":
         raise Exception(
-            "Current version supports path when last command is 'C', 'S', 'Q' ot 'T' (got '{}')".format(
-                name
-            )
+            "Current version supports path when last command is 'C', 'S', 'Q' ot 'T' "
+            "(got '{}')".format(name)
         )
     if len(pairs) >= 2:
         return pairs[-2], pairs[-1]

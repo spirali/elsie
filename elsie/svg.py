@@ -45,7 +45,7 @@ def _run_inkscape_get_float(args, svg):
     value = run_inkscape(args, None, svg)
     try:
         return float(value)
-    except ValueError as e:
+    except ValueError:
         raise Exception(
             "Inkscape executed with args {} and should return float but returned {}",
             args,

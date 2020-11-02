@@ -516,5 +516,5 @@ class BoxMixin:
         return self.p("50%", "50%")
 
 
-from .boxitem import SimpleBoxItem
-from .textboxitem import TextBoxItem
+from .boxitem import SimpleBoxItem  # noqa
+from .textboxitem import TextBoxItem  # noqa

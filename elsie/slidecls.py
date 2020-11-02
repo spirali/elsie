@@ -1,6 +1,5 @@
 # The file is not named "slide.py" because of class of "slide" import in __init__.py
 
-import hashlib
 import os.path
 
 from .box import Box
