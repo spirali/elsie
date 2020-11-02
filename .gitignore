@@ -1,7 +1,7 @@
 __pycache__
-.*
 tests/work
-*-cache
+*cache
 /build
 /dist
+docs/site
 examples/**/*.pdf
