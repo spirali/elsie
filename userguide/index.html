@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Elsie: User Guide - Elsie</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Elsie: User Guide";
+    var mkdocs_page_input_path = "userguide.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Elsie</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Getting started</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Elsie</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Elsie: User Guide</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="elsie-user-guide">Elsie: User Guide</h1>
+<p>Elsie is a framework for making slides using Python.
+Its API allows you to build SVG slides programmatically.
+Inkscape is then used in the background to render SVG into PDF slides.</p>
+<p>Full demonstration:
+  * Result: <a href="../examples/bigdemo/example.pdf">example.pdf</a>
+  * Source code: <a href="../examples/bigdemo/example.py">example.py</a></p>
+<h2 id="about-this-text">About this text</h2>
+<p>The main purpose of this text is to create a complete reference for Elsie, where
+you can find all the various features that Elsie offers. While this text prioritizes
+completeness, it tries to be accessible as much as possible. If you find
+something that you do not understand, please let me know.</p>
+<p>If you are looking for a more tutorial-like material, try to look at the example
+above.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="requirements">Requirements</h3>
+<ul>
+<li>Python 3.6+</li>
+<li>Inkscape 0.92+ (version 1.0+ recommended)</li>
+<li>(Optional for LaTeX support): pdflatex, pdf2svg</li>
+</ul>
+<h3 id="installation-of-elsie">Installation of Elsie</h3>
+<p><code>$ pip3 install elsie</code></p>
+<h3 id="installation-of-inkscape">Installation of Inkscape</h3>
+<p>Install manually Inkscape (e.g. <code>$ apt install inkscape</code> in Ubuntu).</p>
+<h2 id="hello-world-example">Hello world example</h2>
+<p>The minimal slide in Elsie can be created in the following way:</p>
+<pre><code class="language-python">import elsie
+
+@elsie.slide()
+def hello(slide):
+    slide.text(&quot;Hello world!&quot;)
+
+elsie.render()  # Creates file 'slides.pdf'
+</code></pre>
+<p>The following code creates a pdf file with the following slide:</p>
+<p><img width="512px" height="384px" src="slide_imgs/hello.png"></p>
+<h2 id="global-slides">Global slides</h2>
+<p>Functions like <code>elsie.slide()</code> or <code>elsie.render()</code> operate on a global
+implicit instance of slides. It is common to build a single presentation inside a single
+Python program, and using a global slides variable makes that easier. It will be be mostly used in
+this text. You can find out how to create slides independently in <a href="#more-instances-of-slides">More instances of
+slides</a></p>
+<h3 id="configuring-global-slides">Configuring global slides</h3>
+<p>By default, slides are created with ratio 4:3. More precisly, canvas 1024x768px
+canvas is used as the default. However, as long everything is processed as
+vector graphics, the exact numbers only influences numeric values of
+coordinates, not the resulting resolution.</p>
+<p>You can change this by the following code:</p>
+<pre><code class="language-python"># Setup slide size as 192x1035, i.e. 16:9
+
+import elsie
+
+slides = elsie.Slides(width=1920, height=1035)
+elsie.set_global_slides(slides)
+</code></pre>
+<p>Another usefull argument is <code>Slides</code> is <code>bg_color</code> that allows to change default
+background of the slides. The default color is white.</p>
+<p>Note that configuration of global slides has to be done before creating the first slide.</p>
+<h2 id="creating-slides">Creating slides</h2>
+<p>Slides are created in Elsie by creating a function and decorating it by
+decorator <code>@elsie.slide()</code>. It will create a slides in the same order as the
+functions were defined. The decorated function should take a single parameter
+that is the root box (see below) that represents the whole are of the slide.</p>
+<pre><code class="language-python">import elsie
+
+@elsie.slide()
+def slide1(slide):
+    slide.text(&quot;First slide&quot;)
+
+@elsie.slide()
+def slide2(slide):
+    slide.text(&quot;Second slide&quot;)
+
+elsie.render()  # Creates two slide presentation.
+</code></pre>
+<h2 id="boxes">Boxes</h2>
+<p>The most prominent objects in Elsie are boxes. They serve as a layout mechanism
+and the way how to put a content into a slide.</p>
+<h3 id="creating-boxes">Creating boxes</h3>
+<p>Let us create the following example, where 3 boxes are created from the
+top-level box. The new box is created by calling <code>.box(...)</code> on an existing box.
+The parameter <code>slide</code> passed into the slide function is also a box.</p>
+<pre><code class="language-python">@elsie.slide()
+def boxdemo1(slide):
+    slide.box().text(&quot;Box 1&quot;)
+    slide.box().text(&quot;Box 2&quot;)
+    slide.box().text(&quot;Box 3&quot;)
+</code></pre>
+<p>The code will create the following slide:</p>
+<p><img width="512px" height="384px" src="slide_imgs/boxdemo0.png"></p>
+<p>Boxes do not produce any visible content but it influence positions of other
+elements. To see where the boxes are, we can switch on the box debug mode:</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def boxdemo1(slide):
+    slide.box().text(&quot;Box 1&quot;)
+    slide.box().text(&quot;Box 2&quot;)
+    slide.box().text(&quot;Box 3&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/boxdemo1.png"></p>
+<p>Here we see the four boxes, the top-level box representing the whole slide and
+three inner boxes.</p>
+<p>Newly created boxes have the following behavior as default:
+- It occupies as less space as possible (in our case is only as big as it could
+  contain the text)
+- Boxes are put verticaly in the order as they were defined
+- They are centered vertically and horizontally.</p>
+<p>In the text below, we will see how these default positioning and sizes can be changed.</p>
+<p>Boxes can be hierarchically composed (parameter <code>padding</code> creates a padding in
+all directions, it will be explained later).</p>
+<pre><code class="language-python">slide.box(padding=40).box(padding=40).box(padding=40).text(&quot;Box 1&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/composition.png"></p>
+<h3 id="tree-of-boxes">Tree of boxes</h3>
+<p>Boxes creates a tree of <em>boxes</em> and <em>box items</em>. Boxes creates layout and box items
+represents paitable contant as text, pictures, etc.
+Box items are always leaves of the tree and does not contain child boxes.</p>
+<p>When a slide is rendered, the box tree is traversed in depth-first way and each child is visited in the order in which it was defined.</p>
+<p>This can be modified by parameters <code>above</code>, <code>below</code> and z-level, see <a href="#modifying-painting-order">Modifying painting order</a>.</p>
+<p>Allmost all methods on box creates a new boxes (e.g. <code>box</code>) or box items (e.g. <code>text</code> or <code>rect</code>). Actually all these methods are also provided by box items; however as box items cannot directly contain its own child elements, they are created in the parent box of the box item. Therefore the following two slides creates the equivalent slides:</p>
+<pre><code class="language-python">@elsie.slide()
+def textrect_v1(slide):
+    box = slide.box()
+    box.rect(bg_color=&quot;#aaf&quot;)
+    box.text(&quot;Hello!&quot;)
+
+@elsie.slide()
+def textrect_v2(slide):
+    slide.box().rect(bg_color=&quot;#aaf&quot;).text(&quot;Hello!&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/textrect.png"></p>
+<h3 id="box-naming">Box naming</h3>
+<p>Box can be named by calling <code>.box(name="Box name")</code>. It has no impact on
+normal rendering of the slide. The name of slide is shown when
+argument <code>debug_boxes=True</code> is used.</p>
+<p>The name of the top-level slide is name of the slide function when the decorator
+<code>@elsie.slide()</code> is used to create the slide.</p>
+<h3 id="width-and-height">Width and Height</h3>
+<p>Width and height of a box can be changed by setting <code>width</code> and <code>height</code> arguments when calling <code>.box(...)</code> method.</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def sizedemo1(slide):
+    slide.box().text(&quot;Box 1&quot;)
+    slide.box(width=300, height=100).text(&quot;Box 2&quot;)
+    slide.box(width=&quot;100%&quot;).text(&quot;Box 3&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/sizedemo1.png"></p>
+<p>These paramters define <strong>minimal</strong> size of the box. This mean that when its
+content (child boxes, texts, etc.) request a bigger size, the box will use the
+requested size of the content.</p>
+<p>The value should be one of the following:</p>
+<ul>
+<li><code>None</code> (default): No minimal size request</li>
+<li><code>int</code>, <code>float</code>, or a string containg only digits: Size defined in pixels</li>
+<li>String in format <code>"XX%"</code> where XX is a number (e.g. <code>"50%"</code>): Size defined
+  in percentage of the parent box size.</li>
+<li>String <code>"fill"</code> or <code>"fill(XX)"</code> where XX is a number. The box fills all
+  available space of the parent box. If more boxes on the same level use filling
+  value then the size is distributed respecting the ratio of parameters. For
+  example, when one box has argument <code>fill(2)</code> and second one <code>fill(3)</code>,
+  remaining size will be divided in ratio 2:3. Value <code>"fill"</code> is shortcut for
+  <code>"fill(1)"</code>.</li>
+</ul>
+<p>The following code shows example of "fill" usage:</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def filldemo1(slide):
+    slide.box().text(&quot;Box 1&quot;)
+    slide.box(width=300, height=100).text(&quot;Box 2&quot;)
+    slide.box(height=&quot;fill&quot;).text(&quot;Box 3&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/filldemo1.png"></p>
+<h3 id="box-aliases">Box aliases</h3>
+<p>New box can be created also by calling methods <code>fbox</code>, <code>sbox</code>, and <code>overlay</code>.</p>
+<ul>
+<li>Method <code>fbox(...)</code> (fill-box) is a shortcut for calling <code>box(width="fill", height="fill", ...)</code>.</li>
+<li>Method <code>sbox(...)</code> (stretch-box) is a shortcut for
+calling <code>box(width="fill", ...)</code> if the parent box is vertical and
+<code>box(width="fill", ...)</code> if the parent box is horizontal.
+In other words, it fills the box in the unmanaged direction.</li>
+<li>Method <code>overlay(..)</code> is a shortcut for <code>box(x=0, y=0, width="100%", height="100%)</code>.</li>
+</ul>
+<h3 id="padding">Padding</h3>
+<p>By default, box gives all its space to its children. This can be controlled by
+padding. There are four padding values: left, right, top, and bottom. There are
+controlled by parameters <code>p_left</code>, <code>p_right</code>, <code>p_top</code>, and <code>p_bottom</code>.
+After the layout of parent box is computed and the final size and position is
+given to a box, padding shrinks its size in the specified directions.</p>
+<p>Padding can also be set through the following parameters:
+* <code>p_x</code> that sets <code>p_left</code> and <code>p_right</code>
+* <code>p_y</code> that sets <code>p_top</code> and <code>p_bottom</code>
+* <code>padding</code> that sets all four paddings.</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def padding_demo(slide):
+    slide.box(width=200, height=200, p_left=100, name=&quot;Top box&quot;)
+    slide.box(width=200, height=&quot;fill&quot;, p_y=100, name=&quot;Bottom box&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/padding_demo.png"></p>
+<h3 id="box-position">Box Position</h3>
+<p>Position of box can be set by arguments <code>x</code> and <code>y</code>. The allowed values are:</p>
+<ul>
+<li><code>None</code> (default) -- see below.</li>
+<li><code>int</code>, <code>float</code>, or string containing only digits -- absolute position of
+  in pixels. Coordinates are relative to top-left corner of the parent box.</li>
+<li>string <code>"XX%</code> where XX is a number -- position in the parent box where 0% is left (for <code>x</code>) or top (for <code>y</code>) edge of the box and 100% is right (for <code>x</code>) or bottom (for <code>y</code>) edge of the box.</li>
+<li>string <code>"[XX%]</code> where XX is a number -- aligning box in the parent box. <code>"[0%]"</code> is left (resp. top), <code>"[50%]</code> is a middle, and <code>"[100%]"</code> is right (resp. bottom).</li>
+<li>Dynamically defined position -- see below.</li>
+</ul>
+<h3 id="default-position">Default position</h3>
+<p>The default position is influenced by configuration of the parent box.
+When the parent box is vertical (default behavior),
+the value for x-axis equivalent to <code>"[50%]"</code>, i.e. centering horizontally.</p>
+<p>Fox y-axis, the behavior is a more complex. When a box have <code>y</code> attribtue set
+to <code>None</code> then we call such a box as <em>managed box</em>. A box takes its all
+children boxes that are managed and stack them one-by-one while centering the
+resulting composite object. The behavior can be observed in the <code>boxdemo1</code> at
+the beginning of the user guide.</p>
+<p><img width="512px" height="384px" src="slide_imgs/boxdemo1.png"></p>
+<p>The vertical stacking can be switched
+to horizontal by <code>horizontal=True</code> in box construction.
+In such case, children boxes are stacked by x-axis and <code>"[50%]"</code> is default for y-axis.</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def horizontal(slide):
+    parent = slide.box(width=&quot;100%&quot;, height=&quot;100%&quot;, horizontal=True)
+    parent.box().text(&quot;Box 1&quot;)
+    parent.box().text(&quot;Box 2&quot;)
+    parent.box().text(&quot;Box 3&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/horizontal.png"></p>
+<h3 id="dynamic-positions">Dynamic positions</h3>
+<p>Box position can be defined dynamically with respect to other boxes. Calling
+method <code>x</code> (resp. <code>y</code>) on a box returns a proxy object that returns real
+position when the layout is computed. The reference point is the left top corner
+of the box.</p>
+<p>Arguments can be:</p>
+<ul>
+<li>an integer or float -- the constant added to the reference point</li>
+<li>a string in form <code>"XX%"</code> where XX is an integer -- the ratio of the size of the box added to the reference point</li>
+</ul>
+<p>For example:</p>
+<ul>
+<li>.x("0%") returns the most left coordinate of the box.</li>
+<li>.x("50%") returns "x" coordinate of the middle of the box.</li>
+<li>.x("100%") return the most right coordinate of the box.</li>
+<li>.x(10) returns the most left edge of th box + 10.</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def horizontal(slide):
+    b = slide.box(width=100, height=100, name=&quot;First&quot;)
+    slide.box(x=b.x(&quot;50%&quot;), y=b.y(&quot;50%&quot;), width=100, height=100, name=&quot;Second&quot;)
+    slide.box(x=0, y=b.y(&quot;100%&quot;), width=&quot;100%&quot;, height=200, name=&quot;Third&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/xy.png"></p>
+<h3 id="modifying-painting-order">Modifying painting order</h3>
+<p>By default, boxes are painted by the depth-first walk through the box tree.
+Each child is visited in the order in which it was defined.</p>
+<p>In the following example, the blue box is painted over all previous boxes as it is defined the last.</p>
+<pre><code class="language-python">@elsie.slide()
+def paiting1(slide):
+    slide.box(x=&quot;[40%]&quot;, y=&quot;[40%]&quot;, width=300, height=300).rect(bg_color=&quot;red&quot;)
+    slide.box(x=&quot;[60%]&quot;, y=&quot;[50%]&quot;, width=300, height=300).rect(bg_color=&quot;green&quot;)
+    slide.box(x=&quot;[30%]&quot;, y=&quot;[60%]&quot;, width=300, height=300).rect(bg_color=&quot;blue&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/paiting1.png"></p>
+<p>The order in inside box can be defined by attributes <code>below</code> and <code>above</code> that takes another child in the box (box or box item) and creates new directly below or above given object.</p>
+<p><img width="512px" height="384px" src="slide_imgs/paiting2.png"></p>
+<pre><code class="language-python">@elsie.slide()
+def paiting2(slide):
+    red = slide.box(x=&quot;[40%]&quot;, y=&quot;[40%]&quot;, width=300, height=300)
+    red.rect(bg_color=&quot;red&quot;)
+    slide.box(x=&quot;[60%]&quot;, y=&quot;[50%]&quot;, width=300, height=300).rect(bg_color=&quot;green&quot;)
+    slide.box(below=red, x=&quot;[30%]&quot;, y=&quot;[60%]&quot;, width=300, height=300).rect(bg_color=&quot;blue&quot;)
+</code></pre>
+<p>To modify drawing order even across boxes can be modified by <code>z_level</code>. Before
+final drawing, all drawing elements is stable sorted by <code>z_level</code>. It causes
+that an element with a higher <code>z_level</code> is drawn <em>after</em> an element with a
+lower <code>z_level</code>. If <code>z_level</code> is not specified, it is inherited from a
+parent box. The top-level box has <code>z_level</code> set to 0.</p>
+<pre><code class="language-python">@elsie.slide()
+def paiting3(slide):
+    slide.box(x=&quot;[40%]&quot;, y=&quot;[40%]&quot;, width=300, height=300).rect(bg_color=&quot;red&quot;)
+    slide.box(z_level=1, x=&quot;[60%]&quot;, y=&quot;[50%]&quot;, width=300, height=300).rect(bg_color=&quot;green&quot;)
+    slide.box(x=&quot;[30%]&quot;, y=&quot;[60%]&quot;, width=300, height=300).rect(bg_color=&quot;blue&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/paiting3.png"></p>
+<h2 id="fragments">Fragments</h2>
+<p>Fragments allow to reveal parts of a slide gradually in several steps. It is
+controlled by parameter <code>show</code> that defines in which steps the box content
+should be drawn. Note that <code>show</code> influences only drawing not the layout, i.e.
+space for a box is allocated in every step even the box is not shown in this
+step. Steps are counted from 1. Every slide (even empty) generates at least one
+step.</p>
+<p>The possible values are the following. Value <code>last</code> returns the current maximal step, <code>next</code> takes the the current maximal step and adds 1.</p>
+<ul>
+<li><code>None</code> (default) - Box is shown in all steps (it is equivalent to value <code>"1+"</code>)</li>
+<li>positive integer / <code>"next"</code> / <code>"last"</code> -- Box is shown only in step specified by the value</li>
+<li><code>"XX+"</code> where XX is a positive integer or <code>next</code> or <code>last</code> - Box is shown in the step specified by the value and in all folllowing steps.</li>
+<li><code>"XX-YY"</code> where XX and YY are positive integers or <code>next</code> or <code>last</code> -
+Box shown only in the range of steps speficified by values.
+It is inclusive range from both sides.</li>
+</ul>
+<pre><code class="language-python">@elsie.slide()
+def steps(slide):
+    slide.box().text(&quot;Box 1&quot;)
+    slide.box(show=&quot;2+&quot;).text(&quot;Box 2&quot;)
+    slide.box(show=&quot;3+&quot;).text(&quot;Box 3&quot;)
+</code></pre>
+<p>This creates the following three slides:</p>
+<p><img width="512px" height="384px" src="slide_imgs/steps.png">
+<img width="512px" height="384px" src="slide_imgs/steps-2.png">
+<img width="512px" height="384px" src="slide_imgs/steps-3.png"></p>
+<p>The same result can be also achieved by this code:</p>
+<pre><code class="language-python">@elsie.slide()
+def steps(slide):
+    slide.box().text(&quot;Box 1&quot;)
+    slide.box(show=&quot;next+&quot;).text(&quot;Box 2&quot;)
+    slide.box(show=&quot;next+&quot;).text(&quot;Box 3&quot;)
+</code></pre>
+<h2 id="colors">Colors</h2>
+<p>In some places, a color can be defined (e.g. color of a text, or a line color).
+In all such places, it is expected a string that contains any valid SVG color definition, i.e.:</p>
+<ul>
+<li>Color name - e.g. <code>green</code>, <code>blue</code>; https://commons.wikimedia.org/wiki/File:SVG_Recognized_color_keyword_names.svg</li>
+<li>Hex color value: e.g. <code>#fff</code>, <code>#a0a0a0</code></li>
+<li>RGB values: e.g. <code>rgb(34, 12, 64, 0.6)</code></li>
+<li>HSL values: e.g. <code>hsl(30, 100%, 50%, 0.6)</code></li>
+</ul>
+<h2 id="text">Text</h2>
+<p>Text can be created by calling <code>.text(..)</code> method on a box. It creates a box
+item that draws a text in the middle of the box.</p>
+<h3 id="defining-text-styles">Defining text styles</h3>
+<p>Text styles (size, color, font, ...) are defined by <code>TextStyle</code> instances. The constructor takes the following parameters:</p>
+<ul>
+<li><code>font</code> - name of the font</li>
+<li><code>size</code> - size of the font</li>
+<li><code>align</code> - align of the text, possible values: <code>"left"</code>, <code>"middle"</code>, <code>"right"</code>.</li>
+<li><code>line_spacing</code> - Spacing between lines, specified relatively to <code>size</code> argument.</li>
+<li><code>color</code> - a string defining the color name</li>
+<li><code>bold</code> - a boolean value if text is bold</li>
+<li><code>itelic</code> - a boolean value if text is italic</li>
+<li><code>variant_numeric</code> - allowed values: <code>"normal"</code>,
+        <code>"ordinal"</code>,
+        <code>"slashed-zero"</code>,
+        <code>"lining-nums"</code>,
+        <code>"oldstyle-nums"</code>,
+        <code>"proportinal-nums"</code>,
+        <code>"tabular-nums"</code>,
+        <code>"diagonal-fractions"</code>,
+        <code>"stacked-fractions"</code>. For meaning see SVG standard.</li>
+</ul>
+<p>Each parameter may also be <code>None</code> (default value) that
+means that the value should be inherited from the parent style.</p>
+<p>The simplest use cases, is passing style directly as the second argument of <code>tex</code> method:</p>
+<pre><code class="language-python">@elsie.slide()
+def text1(slide):
+    slide.text(&quot;Hello world!&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/text1.png"></p>
+<p>Each box also inherits from its parent a list of named styles. A style can be named and then referred by its name. The two following examples produce the same slide as the example above:</p>
+<pre><code class="language-python"># Setting style globally
+elsie.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
+
+@elsie.slide()
+def text1(slide):
+    slide.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
+</code></pre>
+<pre><code class="language-python">@elsie.slide()
+def text1(slide):
+    box = slide.box()
+
+    # Setting style locally for a box
+    box.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
+
+    box.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
+</code></pre>
+<p>There are several predifined global styles.</p>
+<ul>
+<li><em>"default"</em> - <code>TextStyle(font="Ubuntu", color="black", size=28, line_spacing=1.20, align="middle", variant_numeric="lining-nums")</code></li>
+<li><em>"tt"</em> - <code>TextStyle(font="Ubuntu mono")</code></li>
+<li><em>"emph"</em> - <code>TextStyle(italic=True)</code></li>
+<li><em>"alert"</em> - <code>TextStyle(bold=True, color="red")</code></li>
+<li><em>"code"</em> - <code>TextStyle(font="Ubuntu Mono", align="left", color="#222" line_spacing=1.20, size=20)</code></li>
+<li><em>"code_lineno"</em> - <code>TextStyle(color="gray")</code></li>
+</ul>
+<p>The "default" style is special and it serves as a base text style for all text operations. In other words, if a property is not specified in the current text style, it is inherited from the "default" text style.
+Therefore modification of "default" style to globally change default text style.</p>
+<p>For example, color of default text can be globally changed as follows:</p>
+<pre><code class="language-python">default_style = elsie.get_style(&quot;default&quot;)
+default_style.color = &quot;orange&quot;
+elsie.set_style(&quot;default&quot;, default_style)
+
+@elsie.slide()
+def text2(slide):
+    slide.text(&quot;Hello world!&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/text2.png"></p>
+<p>Getting a style and updating it is a common pattern; therefore, there is a shortcut method for this: <code>update_style</code>. It can also called globally (as function in <code>elsie</code> package) or locally as a method of a box.</p>
+<pre><code class="language-python">elsie.update_style(&quot;default&quot;, elsie.TextStyl(color=&quot;orange&quot;))
+
+@elsie.slide()
+def text2(slide):
+    slide.text(&quot;Hello world!&quot;)
+</code></pre>
+<p>This produce the same result as the example above.</p>
+<h3 id="inline-text-styles">Inline text styles</h3>
+<p>Styles can be changed in the text by the following syntax: ~STYLE{TEXT} where STYLE is a named style and TEXT a text that will be drawn.</p>
+<pre><code class="language-python">@elsie.slide()
+def inline_styles(slide):
+    slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
+    slide.text(&quot;Normal text ~red{red text} ~tt{Typewriter text}&quot;)
+</code></pre>
+<p>Styles can be applied hierarchically without limitation. The escape charater "~"
+can be changed to any other character by parameter <code>escape_character</code> of
+<code>.text()</code> method. To write an escape character in the text, repeat it (i.e.
+"~~" for default escape character).</p>
+<p><img width="512px" height="384px" src="slide_imgs/inline_styles.png"></p>
+<h3 id="scaling-to-fit-the-box">Scaling to fit the box</h3>
+<p>By default, the size of text is influenced by the size defined in the text
+style. This can be changed by parameter <code>scale_to_fit</code> that scales the text to size that fits inside its parent box.</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def scale_to_fit(slide):
+    slide.box(width=300, height=80).text(&quot;Hello world!&quot;, scale_to_fit=True)
+    slide.box(width=80, height=300).text(&quot;Hello world!&quot;, scale_to_fit=True)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/scale_to_fit.png"></p>
+<h3 id="code">Code</h3>
+<p>Method <code>.code(..)</code> is an extension of <code>.text(..)</code> that serves for rendering
+a text with syntax highlighting. The first parameter is the name of the
+programming language, the second parameter is the code. Elsie uses Pygments
+internally, hence you can use any supported language:
+https://pygments.org/languages/.</p>
+<p>The example of usage:</p>
+<pre><code class="language-python">@elsie.slide()
+def code(slide):
+    slide.box().code(&quot;python&quot;, &quot;&quot;&quot;
+        x = &quot;Elsie&quot;
+        print(&quot;Hello&quot;, x)
+    &quot;&quot;&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/code.png"></p>
+<p><code>.code(..)</code> behaves basically as <code>.text(..)</code> method with two exceptions:</p>
+<ul>
+<li><code>.code()</code> method uses text style "code" as base style (not "default")</li>
+<li>For using inline styles, you have to explicitly enable them by parameter <code>use_styles=True</code>.</li>
+</ul>
+<p><code>.code()</code> also supports line numbering that can be enabled by parameter <code>line_numbering=True</code>. The style of numbers can be modified by changing style "code_lineno".</p>
+<h3 id="line-inline-boxes">Line &amp; Inline boxes</h3>
+<p>The box item created by calling <code>.text(..)</code> or <code>.code(..)</code> allows to call two extra methods:</p>
+<p><code>.line_box(line_number, ...)</code> creates a box around a specified line counted
+from 0. Other arguments are forwarded to box creation.</p>
+<p><code>.inline_box(style_name, nth=1, ...)</code> creates a box around a part of a text
+with a given style. If there are more occurences of the specified inline style,
+you can specify which you want by <code>nth</code> argument. In <code>style_name</code> you can
+use any existing style name or dummy style that starts with "#" character. Dummy
+styles do not have to be defined and they do not have any visual effect and
+serves only for defining inline boxes.</p>
+<pre><code class="language-python">@elsie.slide()
+def textboxes(slide):
+    text_item = slide.box().text(&quot;&quot;&quot;This is a long
+    text ~#A{that} takes
+    3 lines.
+    &quot;&quot;&quot;)
+
+    text_item.line_box(2, z_level=-1).rect(bg_color=&quot;red&quot;)
+    text_item.inline_box(&quot;#A&quot;, z_level=-1).rect(bg_color=&quot;green&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/textboxes.png"></p>
+<p>Note that by definition, line_box and inline_box is always created after the box item with text. To draw it under the text, you may use <code>z_level</code> and <code>below</code> arguments.</p>
+<h2 id="images">Images</h2>
+<p>Elsie supports following image formats: SVG, PNG, JPEG, and ORA (Open Raster
+Format). Image can be inserted into slide by calling <code>.image(..)</code> on a box.
+The first argument is the path to image.</p>
+<pre><code class="language-python">@elsie.slide()
+def image(slide):
+    slide.image(&quot;/path/to/image.svg&quot;)
+</code></pre>
+<p>By default, the image tries to maximally fit into a given box without changing
+the width/height ratio. The scale can be explicitly forced by <code>scale</code>
+parameter.</p>
+<h2 id="fragments-in-images">Fragments in images</h2>
+<p>In case of formats SVG and ORA, an image may define fragments of image parts.
+When a layer (SVG and ORA) or a label of an element (SVG) is named in way that <em>suffix</em> has format <code>**XX</code> where XX is a string allowed in <code>show</code> parameter of a box; except the special values "next" and "last" are not allowed.</p>
+<p>Examples:
+* "Layer 1 <strong>2+" specifies show parameter "2+" (from the second slide and later)
+* "Something </strong>3-5 specifies show parameter "3-5" (show only in given range)</p>
+<p>An element and all of its children with such formated name is then shown only the defined steps.
+All elements without "**" suffixed name is visible in all steps.</p>
+<p>Fragments can be controlled by the following parameters of <code>image</code> method:</p>
+<ul>
+<li><code>fragments=False</code> - Fragment annotations is ignored</li>
+<li><code>show_begin=X</code> - Image is first shown in step <code>X</code> and all constants in annotations are shifted by <code>X</code>.</li>
+<li><code>select_steps=LIST</code> where LIST is a list of integers or <code>None</code>s. This allows to completely rearrange steps. Eg. <code>[3, 7, None, 3]</code> means that</li>
+<li>in the 1st slide step: the 3rd image step is shown</li>
+<li>in the 2nd slide step: the 7th image step is shown</li>
+<li>in the 3rd slide step: no image step is shown</li>
+<li>in the 4rd slide step: again the third image step is shown</li>
+</ul>
+<h3 id="rectangles">Rectangles</h3>
+<p>The simplest box items are rectangles, they are created by calling <code>.rect(..)</code>
+method on a box. The position and size of a rectangle is taken from the box. A
+<code>rectangle</code> method takes the following parameters:</p>
+<ul>
+<li><code>color</code> (<code>str</code> or <code>None</code>) -- Defines a color that is used to draw a rectangle. If <code>None</code> no rectangle is drawn. (Default <code>None</code>)</li>
+<li><code>stroke_width</code> (a number) -- Defines thickness of the drawn rectangle</li>
+<li><code>stroke_dasharray</code> (<code>str</code> or <code>None</code>) -- Defines pattern of dashes and gaps to paint a rectangle. More information: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray</li>
+<li><code>bg_color</code> (<code>str</code> or <code>None</code>) -- Defines a color that is used to fill the rectangle.</li>
+<li><code>rx</code> and <code>ry</code> -- Defines a radius of round corners of the rectangle. See https://developer.mozilla.org/en-US/docs/Web/SVG/Element/rect.</li>
+</ul>
+<pre><code class="language-python">@elsie.slide()
+def rectangle(slide):
+    box = slide.box(x=&quot;[50%]&quot;, y=&quot;[50%]&quot;, width=&quot;80%&quot;, height=300)
+    box.rect(bg_color=&quot;green&quot;, color=&quot;red&quot;, stroke_width=10, stroke_dasharray=&quot;10 4&quot;, rx=20, ry=20)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/rectangle.png"></p>
+<h3 id="geometrical-shapes">Geometrical shapes</h3>
+<p>Elsie allows to draw additional shapes: (poly)line, polygon, and a generic path.
+On top of that, Elsie offers an abstraction for arrow heads that can be placed
+on the ends of a line or a path.</p>
+<h2 id="line-and-polygon">Line and Polygon</h2>
+<p>Both polygon and line takes a list of points as the first argument.
+A point can be defines as:</p>
+<ul>
+<li>A 2-tuple <code>(x_value, y_value)</code> where <code>x_value</code> (resp <code>y_value</code>) that are passed to method <code>.x(..)</code> (resp <code>.y(..)</code>) of the box holding the line/polygon.</li>
+<li>A dynamic point obtained by calling <code>.p(x_value, y_value)</code> of any box.</li>
+</ul>
+<p>TODO</p>
+<h2 id="arrow-head">Arrow head</h2>
+<p>An arrow head is be defined by instantiating class <code>elsie.Arrow</code>
+that takes the following attributes:</p>
+<ul>
+<li><code>size</code> - The size of the arrow head</li>
+<li><code>angle</code> - The main angle of arrow head</li>
+<li><code>stroke_width</code> - If <code>None</code> then the arrow head is filled area, otherwise it defines the thickness of the line that is used to draw the arrow head.</li>
+<li><code>inner</code> - How the inner point of the arrow is moved. Value 1.0 has no
+  effect, value bigger than 1.0 produce a diamond shape, value smaller than 1.0
+  produce a more sharp arrow. See the effect in the picture below. The move of
+  the point is the proportional to the size of the arrow.</li>
+</ul>
+<p><img src="imgs/arrows.png"/></p>
+<p>Note: That the head defines only the shape, not the color. The color is taken from the line where the arrow head is attached.</p>
+<h2 id="path">Path</h2>
+<p>TODO</p>
+<h2 id="chaining-box-items">Chaining box items</h2>
+<p>TODO</p>
+<h2 id="modificataion-of-lazypoints">Modificataion of LazyPoints</h2>
+<p>TODO</p>
+<h2 id="more-instances-of-slides">More instances of slides</h2>
+<p>TODO</p>
+<h2 id="slide-post-processing">Slide post-processing</h2>
+<h3 id="slide-numbering">Slide numbering</h3>
+<p>TODO</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
