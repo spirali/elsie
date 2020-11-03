@@ -15,18 +15,21 @@ with open("elsie/version.py") as f:
 if VERSION is None:
     raise Exception("version.py executed but VERSION was not set")
 
+with open("requirements.txt") as f:
+    dependencies = [line.strip() for line in f.readlines()]
+
 setup(
     name="elsie",
     version=VERSION,
     description="Framework for making slides",
     long_description="""
 Elsie is a Framework for making slides in Python,
-see http://github.com/spirali/elsie for an example.
+Check out its documentation at https://spirali.github.io/elsie.
       """,
     author="Stanislav Bohm",
-    url="http://github.com/spirali/elsie",
+    url="https://github.com/spirali/elsie",
     packages=["elsie"],
-    install_requires=["pillow", "pypdf2", "pygments", "lxml"],
+    install_requires=dependencies,
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
