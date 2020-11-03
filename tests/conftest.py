@@ -1,12 +1,11 @@
 import os
-import shutil
 import sys
 
 import pytest
 
 PYTEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(PYTEST_DIR)
-#WORK_DIR = os.path.join(PYTEST_DIR, "work")
+# WORK_DIR = os.path.join(PYTEST_DIR, "work")
 DATA_DIR = os.path.join(PYTEST_DIR, "data")
 
 sys.path.insert(0, ROOT_DIR)
