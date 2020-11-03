@@ -5,3 +5,6 @@ tests/work
 /dist
 site
 examples/**/*.pdf
+apidoc
+docs/apidoc/*
+!docs/apidoc/.gitkeep

@@ -19,11 +19,9 @@ class ExternalMerger:
             else:
                 args.append(c)
         if not debug:
-            stdout = open("/dev/null", "wb")
-            stderr = open("/dev/null", "wb")
+            stdout = stderr = subprocess.DEVNULL
         else:
-            stdout = None
-            stderr = None
+            stdout = stderr = None
         subprocess.check_call(args, stdout=stdout, stderr=stderr)
 
 
