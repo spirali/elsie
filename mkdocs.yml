@@ -1,4 +1,26 @@
 site_name: Elsie
+
+site_url: https://spirali.github.io/elsie/
+repo_url: https://github.com/spirali/elsie
+edit_uri: blob/master/docs/
+
+site_description: Documentation of the elsie Python library.
+site_author: Stanislav Böhm
+
+google_analytics: ['G-V9H5Q6FZ6D', 'https://spirali.github.io/elsie/']
+
 nav:
-  - index.md
+  - Overview: README.md
+  - installation.md
+  - getting_started.md
+  - examples.md
+  - User guide:
+    - userguide/boxes.md
+  - API reference:
+    - API documentation: apidoc
+
 theme: readthedocs
+
+markdown_extensions:
+  - toc:
+      permalink: "#"
