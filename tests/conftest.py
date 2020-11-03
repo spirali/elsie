@@ -6,36 +6,13 @@ import pytest
 
 PYTEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(PYTEST_DIR)
-WORK_DIR = os.path.join(PYTEST_DIR, "work")
+#WORK_DIR = os.path.join(PYTEST_DIR, "work")
 DATA_DIR = os.path.join(PYTEST_DIR, "data")
 
 sys.path.insert(0, ROOT_DIR)
 
 import elsie  # noqa
 import test_utils
-
-
-def prepare():
-    """Prepare working directory
-
-    If directory exists then it is cleaned;
-    If it does not exists then it is created.
-    """
-    if os.path.isdir(WORK_DIR):
-        for root, dirs, files in os.walk(WORK_DIR):
-            for d in dirs:
-                os.chmod(os.path.join(root, d), 0o700)
-            for f in files:
-                os.chmod(os.path.join(root, f), 0o700)
-        for item in os.listdir(WORK_DIR):
-            path = os.path.join(WORK_DIR, item)
-            if os.path.isfile(path):
-                os.unlink(path)
-            else:
-                shutil.rmtree(path)
-    else:
-        os.makedirs(WORK_DIR)
-    os.chdir(WORK_DIR)
 
 
 class SlideTester:
@@ -80,8 +57,11 @@ class SlideTester:
 
 
 @pytest.yield_fixture(autouse=True, scope="function")
-def test_env():
-    prepare()
-    os.chdir(WORK_DIR)
+def test_env(tmp_path):
+    cwd = os.getcwd()
+    os.chdir(tmp_path)
     tester = SlideTester()
-    yield tester
+    try:
+        yield tester
+    finally:
+        os.chdir(cwd)
