@@ -38,18 +38,18 @@ class Slides:
         self._slides = []
         self._styles = {
             "default": TextStyle(
-                font="Ubuntu",
+                font="sans-serif",
                 color="black",
                 size=28,
                 line_spacing=1.20,
                 align="middle",
                 variant_numeric="lining-nums",
             ),
-            "tt": TextStyle(font="Ubuntu mono"),
+            "tt": TextStyle(font="monospace"),
             "emph": TextStyle(italic=True),
             "alert": TextStyle(bold=True, color="red"),
             "code": TextStyle(
-                font="Ubuntu Mono",
+                font="monospace",
                 align="left",
                 color="#222",
                 line_spacing=1.20,
