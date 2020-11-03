@@ -1,0 +1,102 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.highlight</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 1.0 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.arrow.html>&#9656; arrow</a> </li><li><a href=elsie.box.html>&#9656; box</a> </li><li><a href=elsie.boxitem.html>&#9656; boxitem</a> </li><li><a href=elsie.boxmixin.html>&#9656; boxmixin</a> </li><li><a href=elsie.cache.html>&#9656; cache</a> </li><li><a href=elsie.draw.html>&#9656; draw</a> </li><li><a href=elsie.geom.html>&#9656; geom</a> </li><li><div class=select><a href=elsie.highlight.html>&#9662; highlight</a> </div></li><li><ul><li><a href=elsie.highlight.MyFormatter.html> <i>class</i> MyFormatter</a> </li></ul></li><li><a href=elsie.image.html>&#9656; image</a> </li><li><a href=elsie.latex.html>&#9656; latex</a> </li><li><a href=elsie.layout.html>&#9656; layout</a> </li><li><a href=elsie.lazy.html>&#9656; lazy</a> </li><li><a href=elsie.ora.html>&#9656; ora</a> </li><li><a href=elsie.path.html>&#9656; path</a> </li><li><a href=elsie.pdfmerge.html>&#9656; pdfmerge</a> </li><li><a href=elsie.query.html>&#9656; query</a> </li><li><a href=elsie.rcontext.html>&#9656; rcontext</a> </li><li><a href=elsie.show.html>&#9656; show</a> </li><li><a href=elsie.slidecls.html>&#9656; slidecls</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.svg.html>&#9656; svg</a> </li><li><a href=elsie.sxml.html>&#9656; sxml</a> </li><li><a href=elsie.textboxitem.html>&#9656; textboxitem</a> </li><li><a href=elsie.textparser.html>&#9656; textparser</a> </li><li><a href=elsie.textstyle.html>&#9656; textstyle</a> </li><li><a href=elsie.value.html>&#9656; value</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/highlight.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.highlight.html>highlight</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>from</span> <span class=nn>pygments</span> <span class=kn>import</span> <span class=n>highlight</span>
+<a name=line-2></a><span class=kn>from</span> <span class=nn>pygments.formatter</span> <span class=kn>import</span> <span class=n>Formatter</span>
+<a name=line-3></a><span class=kn>from</span> <span class=nn>pygments.lexers</span> <span class=kn>import</span> <span class=n>get_lexer_by_name</span>
+<a name=line-4></a><span class=kn>from</span> <span class=nn>pygments.styles</span> <span class=kn>import</span> <span class=n>get_style_by_name</span>
+<a name=line-5></a>
+<a name=line-6></a><span class=kn>from</span> <span class=nn>.textparser</span> <span class=kn>import</span> <span class=n>normalize_tokens</span><span class=p>,</span> <span class=n>NEWLINE_1</span>
+<a name=line-7></a><span class=kn>from</span> <span class=nn>.textstyle</span> <span class=kn>import</span> <span class=n>TextStyle</span>
+<a name=line-8></a>
+<a name=line-9></a>
+<a name=line-10></a><span class=k>class</span> <span class=nc>MyFormatter</span><span class=p>(</span><span class=n>Formatter</span><span class=p>):</span>
+<a name=line-11></a>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+<a name=line-12></a>        <span class=nb>super</span><span class=p>()</span><span class=o>.</span><span class=fm>__init__</span><span class=p>()</span>
+<a name=line-13></a>        <span class=bp>self</span><span class=o>.</span><span class=n>stream</span> <span class=o>=</span> <span class=p>[]</span>
+<a name=line-14></a>
+<a name=line-15></a>    <span class=k>def</span> <span class=nf>format</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>tokensource</span><span class=p>,</span> <span class=n>outfile</span><span class=p>):</span>
+<a name=line-16></a>        <span class=n>stream</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>stream</span>
+<a name=line-17></a>        <span class=k>for</span> <span class=n>ttype</span><span class=p>,</span> <span class=n>value</span> <span class=ow>in</span> <span class=n>tokensource</span><span class=p>:</span>
+<a name=line-18></a>            <span class=k>if</span> <span class=n>value</span> <span class=o>==</span> <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span><span class=p>:</span>
+<a name=line-19></a>                <span class=n>stream</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>NEWLINE_1</span><span class=p>)</span>
+<a name=line-20></a>            <span class=k>else</span><span class=p>:</span>
+<a name=line-21></a>                <span class=n>stream</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=s2>&quot;begin&quot;</span><span class=p>,</span> <span class=s2>&quot;pygments-&quot;</span> <span class=o>+</span> <span class=nb>str</span><span class=p>(</span><span class=n>ttype</span><span class=p>)))</span>
+<a name=line-22></a>                <span class=k>if</span> <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span> <span class=ow>in</span> <span class=n>value</span><span class=p>:</span>
+<a name=line-23></a>                    <span class=k>for</span> <span class=n>t</span> <span class=ow>in</span> <span class=n>value</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span><span class=p>):</span>
+<a name=line-24></a>                        <span class=k>if</span> <span class=n>t</span><span class=p>:</span>
+<a name=line-25></a>                            <span class=n>stream</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=s2>&quot;text&quot;</span><span class=p>,</span> <span class=n>t</span><span class=p>))</span>
+<a name=line-26></a>                        <span class=n>stream</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>NEWLINE_1</span><span class=p>)</span>
+<a name=line-27></a>                    <span class=n>stream</span><span class=o>.</span><span class=n>pop</span><span class=p>()</span>
+<a name=line-28></a>                <span class=k>else</span><span class=p>:</span>
+<a name=line-29></a>                    <span class=n>stream</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=s2>&quot;text&quot;</span><span class=p>,</span> <span class=n>value</span><span class=p>))</span>
+<a name=line-30></a>                <span class=n>stream</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=s2>&quot;end&quot;</span><span class=p>,</span> <span class=kc>None</span><span class=p>))</span>
+<a name=line-31></a>
+<a name=line-32></a>
+<a name=line-33></a><span class=k>def</span> <span class=nf>highlight_code</span><span class=p>(</span><span class=n>code</span><span class=p>,</span> <span class=n>language</span><span class=p>):</span>
+<a name=line-34></a>    <span class=n>lexer</span> <span class=o>=</span> <span class=n>get_lexer_by_name</span><span class=p>(</span><span class=n>language</span><span class=p>)</span>
+<a name=line-35></a>    <span class=n>formatter</span> <span class=o>=</span> <span class=n>MyFormatter</span><span class=p>()</span>
+<a name=line-36></a>    <span class=n>highlight</span><span class=p>(</span><span class=n>code</span><span class=p>,</span> <span class=n>lexer</span><span class=p>,</span> <span class=n>formatter</span><span class=p>)</span>
+<a name=line-37></a>    <span class=k>return</span> <span class=n>normalize_tokens</span><span class=p>(</span><span class=n>formatter</span><span class=o>.</span><span class=n>stream</span><span class=p>)</span>
+<a name=line-38></a>
+<a name=line-39></a>
+<a name=line-40></a><span class=k>def</span> <span class=nf>make_highlight_styles</span><span class=p>(</span><span class=n>pygments_style</span><span class=p>):</span>
+<a name=line-41></a>    <span class=n>results</span> <span class=o>=</span> <span class=p>{}</span>
+<a name=line-42></a>    <span class=k>for</span> <span class=n>token</span><span class=p>,</span> <span class=n>s</span> <span class=ow>in</span> <span class=n>get_style_by_name</span><span class=p>(</span><span class=n>pygments_style</span><span class=p>):</span>
+<a name=line-43></a>        <span class=n>style</span> <span class=o>=</span> <span class=n>TextStyle</span><span class=p>()</span>
+<a name=line-44></a>        <span class=k>if</span> <span class=n>s</span><span class=p>[</span><span class=s2>&quot;color&quot;</span><span class=p>]:</span>
+<a name=line-45></a>            <span class=n>style</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=s2>&quot;#&quot;</span> <span class=o>+</span> <span class=n>s</span><span class=p>[</span><span class=s2>&quot;color&quot;</span><span class=p>]</span>
+<a name=line-46></a>        <span class=k>if</span> <span class=n>s</span><span class=p>[</span><span class=s2>&quot;bold&quot;</span><span class=p>]:</span>
+<a name=line-47></a>            <span class=n>style</span><span class=o>.</span><span class=n>bold</span> <span class=o>=</span> <span class=kc>True</span>
+<a name=line-48></a>        <span class=k>if</span> <span class=n>s</span><span class=p>[</span><span class=s2>&quot;italic&quot;</span><span class=p>]:</span>
+<a name=line-49></a>            <span class=n>style</span><span class=o>.</span><span class=n>italic</span> <span class=o>=</span> <span class=kc>True</span>
+<a name=line-50></a>        <span class=n>results</span><span class=p>[</span><span class=s2>&quot;pygments-&quot;</span> <span class=o>+</span> <span class=nb>str</span><span class=p>(</span><span class=n>token</span><span class=p>)]</span> <span class=o>=</span> <span class=n>style</span>
+<a name=line-51></a>    <span class=k>return</span> <span class=n>results</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.6 at 2020-11-03 17:08 </p></div></div></body></html>

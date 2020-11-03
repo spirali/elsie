@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="None">
-  
-  
+  <meta name="description" content="Documentation of the elsie Python library.">
+  <meta name="author" content="Stanislav Böhm">
+  <link rel="canonical" href="https://spirali.github.io/elsie/">
   <link rel="shortcut icon" href="img/favicon.ico">
   <title>Elsie</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
@@ -18,15 +18,25 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Getting started";
-    var mkdocs_page_input_path = "index.md";
-    var mkdocs_page_url = null;
+    var mkdocs_page_name = "Overview";
+    var mkdocs_page_input_path = "README.md";
+    var mkdocs_page_url = "/elsie/";
   </script>
   
   <script src="js/jquery-2.1.1.min.js" defer></script>
   <script src="js/modernizr-2.8.3.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-V9H5Q6FZ6D', 'https://spirali.github.io/elsie/');
+      ga('send', 'pageview');
+  </script>
   
 </head>
 
@@ -48,13 +58,37 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href=".">Getting started</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href=".">Overview</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a>
+    <li class="toctree-l2"><a class="reference internal" href="#hello-world">Hello world</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#project-layout">Project layout</a>
+    <li class="toctree-l2"><a class="reference internal" href="#features">Features</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#how-does-it-work">How does it work?</a>
     </li>
     </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="installation/">Installation</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="getting_started/">Getting started</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="examples/">Examples</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">User guide</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="userguide/boxes/">Boxes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">API reference</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="apidoc">API documentation</a>
                     </li>
                 </ul>
       </div>
@@ -78,8 +112,11 @@
     
       
     
-    <li>Getting started</li>
+    <li>Overview</li>
     <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/spirali/elsie/blob/master/docs/README.md"
+          class="icon icon-github"> Edit on GitHub</a>
       
     </li>
   </ul>
@@ -89,25 +126,69 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="getting-started">Getting started</h1>
-<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
-<h2 id="commands">Commands</h2>
-<ul>
-<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
-<li><code>mkdocs serve</code> - Start the live-reloading docs server.</li>
-<li><code>mkdocs build</code> - Build the documentation site.</li>
-<li><code>mkdocs -h</code> - Print help message and exit.</li>
-</ul>
-<h2 id="project-layout">Project layout</h2>
-<pre><code>mkdocs.yml    # The configuration file.
-docs/
-    index.md  # The documentation homepage.
-    ...       # Other markdown pages, images and other files.
+                <h1 id="elsie">Elsie<a class="headerlink" href="#elsie" title="Permanent link">#</a></h1>
+<p><strong>Elsie</strong> allows you to <strong>create slides programmatically</strong> using Python.</p>
+<p>Elsie is a Python library that lets you build
+<a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> slides in a composable way and
+then render them to PDF. There is no DSL or GUI – presentations created with <em>elsie</em>
+are fully programmed with Python!</p>
+<h2 id="hello-world">Hello world<a class="headerlink" href="#hello-world" title="Permanent link">#</a></h2>
+<pre><code class="language-python">import elsie, getpass
+
+@elsie.slide()
+def hello_world(slide):
+    slide.text(f&quot;Hello world from {getpass.getuser()}!&quot;)
+
+elsie.render(&quot;slides.pdf&quot;)
 </code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/hello.png"></p>
+<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">#</a></h2>
+<ul>
+<li><strong>Fully programmable presentations!</strong> No more annoying clicking or manually going through hundreds
+of slides just to change the font – change a single line of code and regenerate your whole presentation
+with a single command. Noticed a typo that spans all slides a moment before your big talk begins?
+Just fix it and recreate the whole presentation within seconds! Experience the power of Turing-complete
+presentations.</li>
+<li><strong>Automatic layout</strong> <em>Elsie</em> provides a simple yet powerful layout model that can automatically
+layout anything. Need rows? Columns? Grids? Padding? Aligned text? Relative positioning? Automatic
+scaling? We got you covered. Oh, you want to draw a <code>64x32</code> image at the coordinates <code>(x=105, y=42)</code>?
+You can do that too!</li>
+<li><strong>Animations and fragments</strong> Reveal your slides gradually using fragments or create custom
+step-by-step animations using Python code. Or draw a fine-tuned SVG image by hand in <code>Inkscape</code>
+and let <em>Elsie</em> turn it into an animation using a handy <a href="TODO">layer-naming convention</a>.</li>
+<li><strong>Source code highlighting</strong> Enjoy automatic <a href="TODO">source code highlighting</a>. Create code walkthroughs
+using individual line highlighting or arrows pointing to specific code elements.</li>
+<li><strong>Batteries included</strong> Leverage familiar SVG features - fonts, colors, dashed line borders,
+you name it. Include <code>PNG/JPG/SVG</code> images directly into your slides. Render <a href="TODO">LaTex</a> into your
+slides. Debug your slides interactively in <a href="TODO">Jupyter notebooks</a>.</li>
+<li><strong>Familiarity</strong> At its heart, <em>Elsie</em> is an API for creating SVG images, optimized for making slides.
+If you know basics of Python and SVG, you'll be right at home.</li>
+</ul>
+<p>Every tool has its disadvantages though.</p>
+<ul>
+<li><em>Elsie</em> provides a rather low level API. While that means that you can create a slide in any way
+you like, on the other hand you also sometimes have to do some extra work to achieve results that
+are trivial in e.g. Powerpoint. TODO: lists</li>
+<li><em>Elsie</em> produces PDF slides, so it can only create animations with a single frame per slide. If you
+need 60 FPS animations or GIFs, you will be better off with e.g. PowerPoint.</li>
+<li>Currently, <em>Elsie</em> renders SVG slides to PDF using <code>Inkscape</code>. Therefore you must have it installed
+on your system for it to work. We provide a <a href="installation/#docker-installation">Docker image</a> with
+<code>Inkscape</code> for convenience.</li>
+<li>It will probably only work on Linux.</li>
+</ul>
+<h2 id="how-does-it-work">How does it work?<a class="headerlink" href="#how-does-it-work" title="Permanent link">#</a></h2>
+<p>TOOD: Inkscape, queries, pillow, etc.</p>
               
             </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation/" class="btn btn-neutral float-right" title="Installation">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+    </div>
   
 
   <hr/>
@@ -130,7 +211,11 @@ docs/
   <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
+          <a href="https://github.com/spirali/elsie/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
+      
+      
+        <span style="margin-left: 15px"><a href="installation/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
@@ -148,5 +233,5 @@ docs/
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2020-11-02 20:28:07.776946+00:00
+Build Date UTC : 2020-11-03 17:08:32.760466+00:00
 -->
