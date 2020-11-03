@@ -61,9 +61,15 @@ def run_inkscape_get_x(svg):
     return _run_inkscape_get_float(("--query-id=target", "-X"), svg)
 
 
-def convert_to_pdf(source, target):
+def export_by_inkscape(source, target, export_type):
     run_inkscape(
-        ("--export-type", "pdf", "--export-filename", target, "--export-area-page"),
+        (
+            "--export-type",
+            export_type,
+            "--export-filename",
+            target,
+            "--export-area-page",
+        ),
         stdin=source,
     )
     if not os.path.isfile(target):

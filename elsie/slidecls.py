@@ -8,7 +8,7 @@ from .layout import Layout
 from .query import Query
 from .rcontext import RenderingContext
 from .show import ShowInfo
-from .svg import svg_begin, svg_end, convert_to_pdf
+from .svg import svg_begin, svg_end, export_by_inkscape
 from .sxml import Xml
 
 
@@ -72,7 +72,7 @@ class Slide:
         svg_end(xml)
         return xml.to_string()
 
-    def render(self, step, debug):
+    def render(self, step, debug, export_type):
         svg = self.make_svg(step)
 
         if debug:
@@ -82,7 +82,7 @@ class Slide:
             with open(svg_file, "w") as f:
                 f.write(svg)
 
-        return self.fs_cache.ensure(svg.encode(), "pdf", convert_to_pdf)
+        return self.fs_cache.ensure(svg.encode(), export_type, export_by_inkscape)
 
 
 class DummyPdfSlide:

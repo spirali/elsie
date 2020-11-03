@@ -50,7 +50,7 @@ class FsCache:
 
         condition = threading.Condition(self.lock)
         self.in_progress[cache_file] = condition
-        constructor(input_data, full_path)
+        constructor(input_data, full_path, data_type)
         with self.lock:
             self.cache_files.add(cache_file)
             del self.in_progress[cache_file]
