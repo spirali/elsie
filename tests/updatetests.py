@@ -100,6 +100,7 @@ def run_update(differences, test_svg_paths):
 @click.argument("testpath")
 @click.option("--do-update/--do-not-update", default=False)
 def test_path(testpath, do_update):
+    testpath = os.path.abspath(testpath)
     check_names = set(path.name for path in Path(CHECKS).rglob("*.svg"))
     test_svg_paths = {
         os.path.basename(path): path
