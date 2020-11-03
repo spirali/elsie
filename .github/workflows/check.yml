@@ -30,6 +30,12 @@ jobs:
         python -m pip install .
     - name: Test
       run: pytest tests
+    - name: Archive test artifacts
+      uses: actions/upload-artifact@v2
+      if: ${{ failure() }}
+      with:
+        name: pytest results
+        path: /tmp/pytest-*
     - name: Lint
       run: flake8 elsie tests
     - name: Format
