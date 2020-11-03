@@ -314,7 +314,7 @@ class BoxMixin:
         slide = self._get_box().slide
         if key not in slide.temp_cache:
 
-            def constructor(_content, output):
+            def constructor(_content, output, _data_type):
                 svg = convert_ora_to_svg(filename)
                 with open(output, "w") as f:
                     f.write(svg)

@@ -101,5 +101,5 @@ class DummyPdfSlide:
     def make_svg(self):
         return None
 
-    def render(self, step, debug):
+    def render(self, step, debug, export_type):
         return self.filename
