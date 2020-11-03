@@ -3,5 +3,5 @@ tests/work
 *cache
 /build
 /dist
-docs/site
+site
 examples/**/*.pdf
