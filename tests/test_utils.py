@@ -5,6 +5,9 @@ import re
 numbers_split = re.compile("(-?[\d\.]+)")
 
 
+VALUE_TOLERANCE = 0.85
+
+
 def string_check(s1, s2, name):
     lst1 = numbers_split.split(s1)
     lst2 = numbers_split.split(s2)
@@ -17,7 +20,7 @@ def string_check(s1, s2, name):
         try:
             tmp1 = float(a1)
             tmp2 = float(a2)
-            assert abs(tmp1 - tmp2) < 0.4, name
+            assert abs(tmp1 - tmp2) < VALUE_TOLERANCE, name
         except ValueError:
             print(s1)
             print(s2)
@@ -78,7 +81,7 @@ def test_svg_compare():
 
     svg_check("<x><y a='0.0001'/></x>", "<x><y a='0'/></x>")
     with pytest.raises(AssertionError):
-        svg_check("<x><y a='0.7'/></x>", "<x><y a='0'/></x>")
+        svg_check("<x><y a='0.99'/></x>", "<x><y a='0'/></x>")
 
     svg_check("<x><y a='1.0001, 3.02'/></x>", "<x><y a='0.999, 3.01'/></x>")
     with pytest.raises(AssertionError):
@@ -86,6 +89,6 @@ def test_svg_compare():
 
     svg_check("<x><y a='scale(10.1)'/></x>", "<x><y a='scale(10.2)'/></x>")
     with pytest.raises(AssertionError):
-        svg_check("<x><y a='scale(10.1)'/></x>", "<x><y a='scale(10.9)'/></x>")
+        svg_check("<x><y a='scale(11.1)'/></x>", "<x><y a='scale(10.0)'/></x>")
     with pytest.raises(AssertionError):
-        svg_check("<x><y a='scale(10.1)'/></x>", "<x><y a='scalex(10.1)'/></x>")
+        svg_check("<x><y a='scale(11.1)'/></x>", "<x><y a='scalex(10.0)'/></x>")
