@@ -1,19 +1,21 @@
 import elsie
 
+slides = elsie.Slides()
 
-@elsie.slide()
+
+@slides.slide()
 def slide1(slide):
     slide.text("Page numbering demo")
 
 
-@elsie.slide()
+@slides.slide()
 def slide2(slide):
     slide.box().text("Hello world!")
     slide.box(show="next+").text("Hello world!")
     slide.box(show="next+").text("Hello world!")
 
 
-@elsie.slide()
+@slides.slide()
 def slide3(slide):
     slide.box().text("Last slide")
 
@@ -25,4 +27,4 @@ def page_numbering(slides):
         ).text("{}/{}".format(i + 1, len(slides)))
 
 
-elsie.render(slide_postprocessing=page_numbering)
+slides.render(slide_postprocessing=page_numbering)

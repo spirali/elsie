@@ -1,9 +1,11 @@
 import elsie
 
+slides = elsie.Slides()
 
-@elsie.slide()
+
+@slides.slide()
 def hello(slide):
     slide.text("Hello world!")
 
 
-elsie.render()
+slides.render()

@@ -4,18 +4,17 @@ import elsie
 COLOR1 = "#328cc1"
 COLOR2 = "#d9b310"
 
-# Modyfy global text styles
-# You can instantiate separate instances of slides,
-# and work with them separately, but usually it is convenient
-# just to use global instance of slides
-elsie.update_style("default", elsie.TextStyle(color=COLOR1))  # Default font
-elsie.update_style("emph", elsie.TextStyle(color=COLOR2))  # Emphasis
+slides = elsie.Slides()
+
+# Modify text styles
+slides.update_style("default", elsie.TextStyle(color=COLOR1))  # Default font
+slides.update_style("emph", elsie.TextStyle(color=COLOR2))  # Emphasis
 
 
 # First slide #############################################
 
 
-@elsie.slide()
+@slides.slide()
 def first_slide(slide):
     # Create a box that fill the whole slide horizontaly
     title_box1 = slide.box(width="fill", height=120)
@@ -48,7 +47,7 @@ def first_slide(slide):
 # Slide with brief description ############################
 
 
-@elsie.slide()
+@slides.slide()
 def brief_description(slide):
     # Usage of inline styles; Syntax is ~ABC{Text}, it applies style ABC on Text.
     slide.text("~emph{Elsie} is a slide framework based on ~emph{Python}\n")
@@ -57,7 +56,7 @@ def brief_description(slide):
 # Hello world example #####################################
 
 
-@elsie.slide()
+@slides.slide()
 def hello_world(slide):
     slide.box().text("~emph{Hello World} example:")
 
@@ -74,7 +73,7 @@ def hello_world(slide):
         """
     import elsie
 
-    @elsie.slide()
+    @slides.slide()
     def hello(slide):
         slide.text("Hello world!")
 
@@ -85,7 +84,7 @@ def hello_world(slide):
 # Text fragments ##########################################
 
 
-@elsie.slide()
+@slides.slide()
 def fragments(slide):
     slide.box().text("Elsie supports ...")
 
@@ -105,7 +104,7 @@ def fragments(slide):
 # SVG image demo ##########################################
 
 
-@elsie.slide()
+@slides.slide()
 def svg_demo(slide):
     # Include SVG image into slide, it automatically fills the box.
     slide.image("testimage.svg")
@@ -134,7 +133,7 @@ def svg_demo(slide):
 # Header/Footer demo ##########################################
 
 
-@elsie.slide()
+@slides.slide()
 def header_footer(slide):
     slide.set_style("header", elsie.TextStyle(color="white", align="right"))
     slide.set_style("footer", elsie.TextStyle(color="white", size=15))
@@ -163,7 +162,7 @@ def header_footer(slide):
 # Syntax highlighting ##########################################
 
 
-@elsie.slide()
+@slides.slide()
 def syntax_highlighting(slide):
     slide.box().text("Syntax Highlighting")
     slide.box(height=30)
@@ -183,7 +182,7 @@ int main() {
 # Line highlighting #######################################
 
 
-@elsie.slide()
+@slides.slide()
 def line_highlighting(slide):
     slide.box().text("Line Highlighting")
     slide.box(height=30)
@@ -239,7 +238,7 @@ int main() {
 # Scaling into box #######################################
 
 
-@elsie.slide()
+@slides.slide()
 def text_scaling(slide):
     slide.box().text("Scaling text into a box")
     slide.box(height=120)
@@ -266,7 +265,7 @@ int main() {
 # Text box demo ###############################################
 
 
-@elsie.slide()
+@slides.slide()
 def text_box_demo(slide):
     text = slide.box().text("~#A{Demo} for ~#B{highlighting} a part of a line")
 
@@ -287,7 +286,7 @@ def text_box_demo(slide):
     )
 
 
-@elsie.slide()
+@slides.slide()
 def text_box_in_code_demo(slide):
     slide.set_style("small", elsie.TextStyle(size=10))
     slide.box().text("Words inside code block")
@@ -321,7 +320,7 @@ def text_box_in_code_demo(slide):
 # Console demo ############################################
 
 
-@elsie.slide()
+@slides.slide()
 def console_demo(slide):
     slide.set_style("shell", elsie.TextStyle(color="white"), base="code")
     slide.set_style("prompt", elsie.TextStyle(color="#aaaaff"))
@@ -350,7 +349,7 @@ def console_demo(slide):
 # Text demo ###############################################
 
 
-@elsie.slide()
+@slides.slide()
 def text_demo(slide):
     # New created styles
     slide.set_style("h1", elsie.TextStyle(size=60))
@@ -380,7 +379,7 @@ def list_item(parent):
     return b.box(width="fill")
 
 
-@elsie.slide()
+@slides.slide()
 def list_demo(slide):
     main = slide.box()
     main.update_style("default", elsie.TextStyle(align="left"))
@@ -393,7 +392,7 @@ def list_demo(slide):
 # Columns demo ############################################
 
 
-@elsie.slide()
+@slides.slide()
 def columns_demo(slide):
     slide.box(padding=40).text("Columns demo")
     columns = slide.box(width="80%", horizontal=True)
@@ -412,7 +411,7 @@ def columns_demo(slide):
 # Shape demo ##############################################
 
 
-@elsie.slide()
+@slides.slide()
 def shape_demo(slide):
     slide.box(100, 100, 200, 200).rect(color="green")
     slide.box(120, 120, 160, 160).rect(bg_color="green")
@@ -551,7 +550,7 @@ def shape_demo(slide):
 # Path demo ##############################################
 
 
-@elsie.slide()
+@slides.slide()
 def path_demo(slide):
     slide.box(x=150, y=150).text("Path demo")
 
@@ -625,7 +624,7 @@ def path_demo(slide):
 # Chess board ##############################################
 
 
-@elsie.slide()
+@slides.slide()
 def chessboard_demo(slide):
     # Create a chess board
 
@@ -661,7 +660,7 @@ def chessboard_demo(slide):
 # Size & Positioning demo #################################
 
 
-@elsie.slide()
+@slides.slide()
 def position_demo(slide):
     slide.box().text("Position demo")
     slide.box(height=15)
@@ -731,7 +730,7 @@ def position_demo(slide):
 
 
 # Zoom to rectanle at position 300, 200 with size 400, 400
-@elsie.slide(view_box=(300, 200, 400, 400))
+@slides.slide(view_box=(300, 200, 400, 400))
 def zoomed_position_demo(slide):
     position_demo(slide)
     slide.box(x=390, y=200).rect(bg_color="black").fbox(padding=10).text(
@@ -739,7 +738,7 @@ def zoomed_position_demo(slide):
     )
 
 
-@elsie.slide(debug_boxes=True)
+@slides.slide(debug_boxes=True)
 def debugging_slides(slide):
     slide.box(p_bottom=120, width=300, height=200, name="debug title").text(
         "Debugging layout"
@@ -769,7 +768,7 @@ def debugging_slides(slide):
 # The final slide #################################
 
 
-@elsie.slide()
+@slides.slide()
 def final_slide(slide):
     slide.text("Have a nice day!", elsie.TextStyle(size=60))
 
@@ -777,4 +776,4 @@ def final_slide(slide):
 # RENDER THE SLIDES NOW!
 
 
-elsie.render("example.pdf")
+slides.render("example.pdf")
