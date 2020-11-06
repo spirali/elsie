@@ -7,7 +7,7 @@ from .sxml import Xml
 Query = namedtuple("Query", ["key", "callback"])
 
 
-def compute_query(key):
+def compute_query(inkscape_bin, key):
     method, data = key
     if method == "inkscape" or method == "inkscape-x":
         xml = Xml()
@@ -15,9 +15,9 @@ def compute_query(key):
         xml.raw_text(data)
         svg_end(xml)
         if method == "inkscape":
-            return run_inkscape_get_width(xml.to_string())
+            return run_inkscape_get_width(inkscape_bin, xml.to_string())
         else:  # == inkscape-x
-            return run_inkscape_get_x(xml.to_string())
+            return run_inkscape_get_x(inkscape_bin, xml.to_string())
     elif method == "latex":
         return render_latex(data)
     else:

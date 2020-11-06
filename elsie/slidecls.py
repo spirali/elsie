@@ -72,7 +72,7 @@ class Slide:
         svg_end(xml)
         return xml.to_string()
 
-    def render(self, step, debug, export_type):
+    def render(self, step, debug, export_type, inkscape_bin):
         svg = self.make_svg(step)
 
         if debug:
@@ -82,7 +82,7 @@ class Slide:
             with open(svg_file, "w") as f:
                 f.write(svg)
 
-        return self.fs_cache.ensure(svg.encode(), export_type, export_by_inkscape)
+        return self.fs_cache.ensure(svg.encode(), export_type, lambda source, target, export_type: export_by_inkscape(inkscape_bin, source, target, export_type))
 
 
 class DummyPdfSlide:
@@ -101,5 +101,5 @@ class DummyPdfSlide:
     def make_svg(self):
         return None
 
-    def render(self, step, debug, export_type):
+    def render(self, step, debug, export_type, inkscape_bin):
         return self.filename

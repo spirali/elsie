@@ -20,11 +20,11 @@ def svg_end(xml):
     xml.close("svg")
 
 
-def run_inkscape(extra_args, filename=None, stdin=None):
+def run_inkscape(inkscape_bin, extra_args, filename=None, stdin=None):
     if filename is None:
         filename = "/dev/stdin"
     with open("/dev/null", "w") as devnull:
-        args = ("/usr/bin/inkscape", "--without-gui") + extra_args + (filename,)
+        args = (inkscape_bin, "--without-gui") + extra_args + (filename,)
         p = subprocess.Popen(
             args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=devnull
         )
@@ -34,15 +34,15 @@ def run_inkscape(extra_args, filename=None, stdin=None):
         return stdout
 
 
-def get_inkscape_version():
-    args = ("/usr/bin/inkscape", "--version")
+def get_inkscape_version(inkscape_bin):
+    args = (inkscape_bin, "--version")
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = p.communicate()
     return stdout.decode().strip()
 
 
-def _run_inkscape_get_float(args, svg):
-    value = run_inkscape(args, None, svg)
+def _run_inkscape_get_float(inkscape_bin, args, svg):
+    value = run_inkscape(inkscape_bin, args, None, svg)
     try:
         return float(value)
     except ValueError:
@@ -53,16 +53,17 @@ def _run_inkscape_get_float(args, svg):
         )
 
 
-def run_inkscape_get_width(svg):
-    return _run_inkscape_get_float(("--query-id=target", "-W"), svg)
+def run_inkscape_get_width(inkscape_bin, svg):
+    return _run_inkscape_get_float(inkscape_bin, ("--query-id=target", "-W"), svg)
 
 
-def run_inkscape_get_x(svg):
-    return _run_inkscape_get_float(("--query-id=target", "-X"), svg)
+def run_inkscape_get_x(inkscape_bin, svg):
+    return _run_inkscape_get_float(inkscape_bin, ("--query-id=target", "-X"), svg)
 
 
-def export_by_inkscape(source, target, export_type):
+def export_by_inkscape(inkscape_bin, source, target, export_type):
     run_inkscape(
+        inkscape_bin,
         (
             "--export-type",
             export_type,
