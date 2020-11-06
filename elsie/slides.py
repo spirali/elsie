@@ -111,6 +111,23 @@ class Slides:
             )
         return box
 
+    def slide(self, bg_color=None, view_box=None, name=None, debug_boxes=False):
+        def _helper(fn):
+            if name is None:
+                _name = fn.__name__
+            else:
+                _name = name
+            slide = self.new_slide(
+                bg_color=bg_color,
+                view_box=view_box,
+                name=_name,
+                debug_boxes=debug_boxes,
+            )
+            fn(slide)
+            return slide.slide
+
+        return _helper
+
     def add_pdf(self, filename):
         """ Just add pdf without touches into resulting slides """
         self._slides.append(DummyPdfSlide(filename))
@@ -191,7 +208,7 @@ class Slides:
 
     def render(
         self,
-        output,
+        output="slides.pdf",
         threads=None,
         return_svg=False,
         export_type="pdf",
@@ -251,78 +268,3 @@ class Slides:
                 return merger
         finally:
             pool.shutdown()
-
-
-_global_slides = None
-
-
-def set_global_slides(slides):
-    """Set global slides (used in @slide decorator)"""
-    assert isinstance(slides, Slides)
-    global _global_slides
-    _global_slides = slides
-
-
-def get_global_slides():
-    """Get global slides
-
-    If not exists, default slides is created
-    """
-    global _global_slides
-    if _global_slides is None:
-        _global_slides = Slides()
-    return _global_slides
-
-
-def update_style(style_name, style):
-    """Call update_style method on global slides"""
-    get_global_slides().update_style(style_name, style)
-
-
-def get_style(style, full_style=True):
-    """Get style from global slides"""
-    return get_global_slides().get_style(style, full_style)
-
-
-def set_style(style_name, style, base="default"):
-    """Call set_style method on global slides"""
-    get_global_slides().set_style(style_name, style, base)
-
-
-# Decorator
-def slide(*, bg_color=None, view_box=None, name=None, debug_boxes=False):
-    slides = get_global_slides()
-
-    def _helper(fn):
-        if name is None:
-            _name = fn.__name__
-        else:
-            _name = name
-        slide = slides.new_slide(
-            bg_color=bg_color, view_box=view_box, name=_name, debug_boxes=debug_boxes
-        )
-        fn(slide)
-        return slide.slide
-
-    return _helper
-
-
-def render(
-    output="output.pdf",
-    threads=None,
-    return_svg=False,
-    pdf_merger="pypdf",
-    drop_duplicates=False,
-    slide_postprocessing=None,
-):
-    """Render global slides"""
-    if _global_slides is None:
-        raise Exception("No slides to render")
-    return _global_slides.render(
-        output,
-        threads,
-        return_svg,
-        pdf_merger,
-        drop_duplicates,
-        slide_postprocessing,
-    )

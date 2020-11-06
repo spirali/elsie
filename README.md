@@ -11,11 +11,13 @@ Minimal example:
 ```python
 import elsie
 
-@elsie.slide()
+slides = elsie.Slides()
+
+@slides.slide()
 def hello(slide):
     slide.text("Hello world!")
 
-elsie.render()  # Creates file 'slides.pdf'
+slides.render()  # Creates file 'slides.pdf'
 ```
 
 ## Requirements

@@ -1,9 +1,9 @@
 import elsie
 
-elsie.get_global_slides().debug = True
+slides = elsie.Slides(debug = True)
 
 
-@elsie.slide()
+@slides.slide()
 def latex_demo(slide):
     slide.box().latex("\TeX{} demo", scale=5.0)
     slide.box(height="50")
@@ -28,4 +28,4 @@ def latex_demo(slide):
     )
 
 
-elsie.render("latex_demo.pdf")
+slides.render("latex_demo.pdf")
