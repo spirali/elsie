@@ -24,7 +24,9 @@ class Slides:
         cache_dir="./elsie-cache",
         inkscape_bin=None,
     ):
-        self.inkscape_bin = inkscape_bin or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
+        self.inkscape_bin = (
+            inkscape_bin or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
+        )
         self.inkscape_version = get_inkscape_version(self.inkscape_bin)
         self.cache_dir = cache_dir
 
@@ -195,7 +197,9 @@ class Slides:
             new_cache = dict((q.key, cache[q.key]) for q in queries if q.key in cache)
         else:
             new_cache = cache
-        for i, result in enumerate(pool.map(lambda q: compute_query(self.inkscape_bin, q), need_compute)):
+        for i, result in enumerate(
+            pool.map(lambda q: compute_query(self.inkscape_bin, q), need_compute)
+        ):
             key = need_compute[i]
             new_cache[key] = result
             self._show_progress("Preprocessing", i, len(need_compute))
@@ -251,7 +255,12 @@ class Slides:
             self._show_progress("Building", first=True)
             prev_pdf = None
             for i, pdf in enumerate(
-                pool.map(lambda x: x[0].render(x[1], self.debug, export_type, self.inkscape_bin), renders)
+                pool.map(
+                    lambda x: x[0].render(
+                        x[1], self.debug, export_type, self.inkscape_bin
+                    ),
+                    renders,
+                )
             ):
                 if not drop_duplicates or prev_pdf != pdf:
                     merger.append(pdf)

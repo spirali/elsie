@@ -78,14 +78,18 @@ def paiting2(slide):
     red = slide.box(x="[40%]", y="[40%]", width=300, height=300)
     red.rect(bg_color="red")
     slide.box(x="[60%]", y="[50%]", width=300, height=300).rect(bg_color="green")
-    slide.box(below=red, x="[30%]", y="[60%]", width=300, height=300).rect(bg_color="blue")
+    slide.box(below=red, x="[30%]", y="[60%]", width=300, height=300).rect(
+        bg_color="blue"
+    )
     slide.rect(color="black", stroke_width=4)
 
 
 @slides.slide()
 def paiting3(slide):
     slide.box(x="[40%]", y="[40%]", width=300, height=300).rect(bg_color="red")
-    slide.box(z_level=1, x="[60%]", y="[50%]", width=300, height=300).rect(bg_color="green")
+    slide.box(z_level=1, x="[60%]", y="[50%]", width=300, height=300).rect(
+        bg_color="green"
+    )
     slide.box(x="[30%]", y="[60%]", width=300, height=300).rect(bg_color="blue")
     slide.rect(color="black", stroke_width=4)
 
@@ -128,19 +132,24 @@ def scale_to_fit(slide):
 
 @slides.slide()
 def code(slide):
-    slide.box().code("python", """
+    slide.box().code(
+        "python",
+        """
         x = "Elsie"
         print("Hello", x)
-    """)
+    """,
+    )
     slide.rect(color="black", stroke_width=4)
 
 
 @slides.slide()
 def textboxes(slide):
-    text_item = slide.box().text("""This is a long
+    text_item = slide.box().text(
+        """This is a long
     text ~#A{that} takes
     3 lines.
-    """)
+    """
+    )
 
     text_item.line_box(2, z_level=-1).rect(bg_color="red")
     text_item.inline_box("#A", z_level=-1).rect(bg_color="green")
@@ -150,7 +159,14 @@ def textboxes(slide):
 @slides.slide()
 def rectangle(slide):
     box = slide.box(x="[50%]", y="[50%]", width="80%", height=300)
-    box.rect(bg_color="green", color="red", stroke_width=10, stroke_dasharray="10 4", rx=20, ry=20)
+    box.rect(
+        bg_color="green",
+        color="red",
+        stroke_width=10,
+        stroke_dasharray="10 4",
+        rx=20,
+        ry=20,
+    )
     slide.rect(color="black", stroke_width=4)
 
 
@@ -161,7 +177,7 @@ def textrect(slide):
 
 
 svgs = slides.render(return_svg=True)  # Creates file 'slides.pdf'
-#svgs = slides.render(return_svg=False)  # Creates file 'slides.pdf'
+# svgs = slides.render(return_svg=False)  # Creates file 'slides.pdf'
 
 for slide, step, out in svgs:
     name = slide._box.name
@@ -172,4 +188,6 @@ for slide, step, out in svgs:
     print(name)
     with open(filename, "w") as f:
         f.write(out)
-    subprocess.check_call(["inkscape", "-b", "#ffffff", "--export-type", "png", filename])
+    subprocess.check_call(
+        ["inkscape", "-b", "#ffffff", "--export-type", "png", filename]
+    )

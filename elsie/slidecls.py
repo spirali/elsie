@@ -82,7 +82,13 @@ class Slide:
             with open(svg_file, "w") as f:
                 f.write(svg)
 
-        return self.fs_cache.ensure(svg.encode(), export_type, lambda source, target, export_type: export_by_inkscape(inkscape_bin, source, target, export_type))
+        return self.fs_cache.ensure(
+            svg.encode(),
+            export_type,
+            lambda source, target, export_type: export_by_inkscape(
+                inkscape_bin, source, target, export_type
+            ),
+        )
 
 
 class DummyPdfSlide:

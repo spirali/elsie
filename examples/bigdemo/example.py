@@ -219,7 +219,11 @@ int main() {
     # Here we creates the triangle heading to a line,
     # method 'p' returns a position relatively to the box
     label.polygon(
-        [label.p("99%", "40%"), label.p("99%", "60%"), code.line_box(4).p(0, "50%"),],
+        [
+            label.p("99%", "40%"),
+            label.p("99%", "60%"),
+            code.line_box(4).p(0, "50%"),
+        ],
         bg_color="green",
     )
 
