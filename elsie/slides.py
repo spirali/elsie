@@ -18,17 +18,26 @@ class Slides:
         self,
         width=1024,
         height=768,
+        *,
         debug=False,
         pygments_theme="default",
         bg_color=None,
         cache_dir="./elsie-cache",
         inkscape_bin=None,
+        name_policy="auto",
     ):
         self.inkscape_bin = (
             inkscape_bin or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
         )
         self.inkscape_version = get_inkscape_version(self.inkscape_bin)
         self.cache_dir = cache_dir
+
+        if name_policy not in ("auto", "unique", "ignore", "replace"):
+            raise Exception("Invalid value for name_policy")
+        if name_policy == "auto":
+            # TODO: detect Jupyter
+            name_policy = "unique"
+        self.name_policy = name_policy
 
         if not os.path.isdir(cache_dir):
             print("Creating cache directory:", cache_dir)
@@ -85,6 +94,11 @@ class Slides:
     def get_style(self, style, full_style=True):
         return compose_style(self._styles, style, full_style)
 
+    def get_slide_by_name(self, name):
+        for slide in self._slides:
+            if slide.name == name:
+                return slide
+
     def new_slide(self, bg_color=None, *, view_box=None, name=None, debug_boxes=False):
         if view_box is not None and not (
             isinstance(view_box, tuple)
@@ -94,6 +108,9 @@ class Slides:
             raise Exception(
                 "view_box has to be None or tuple of four numbers (x, y, width, height)"
             )
+
+        self._apply_name_policy(name)
+
         slide = Slide(
             len(self._slides),
             self.width,
@@ -211,6 +228,28 @@ class Slides:
             q.callback(new_cache[q.key])
         self.query_cache = new_cache
         self._save_query_cache(new_cache)
+
+    def _apply_name_policy(self, name):
+        if self.name_policy == "ignore":
+            return
+        if name is None:
+            raise Exception(
+                "Slide needs an explicit name (name policy is now '{}')".format(
+                    self.name_policy
+                )
+            )
+        if not isinstance(name, str):
+            raise Exception(
+                "Slide name has to be a string, not {}".format(repr(type(name)))
+            )
+        slide = self.get_slide_by_name(name)
+        if slide:
+            if self.name_policy == "unique":
+                raise Exception("Slide with name '{}' already exists".format(name))
+            elif self.name_policy == "replace":
+                self._slides.remove(slide)
+            else:
+                assert 0
 
     def render(
         self,

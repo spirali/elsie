@@ -16,7 +16,7 @@ import test_utils  # noqa
 
 class SlideTester:
     def __init__(self):
-        self.slides = elsie.Slides()
+        self.slides = elsie.Slides(name_policy="ignore")
         self._slide = None
 
     @property

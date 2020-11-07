@@ -25,6 +25,7 @@ class Slide:
         name,
         debug_boxes,
     ):
+        self.name = name
         self.width = width
         self.height = height
         self.index = index

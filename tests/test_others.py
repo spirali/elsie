@@ -7,7 +7,7 @@ from elsie import Slides
 # test_env has to be there to switch to work directory
 def test_cache1(test_env):
     cache_dir = "elsie-cache"
-    slides = Slides()
+    slides = Slides(name_policy="ignore")
 
     slide = slides.new_slide()
     slide.box(show="1+").text("1")
@@ -23,7 +23,7 @@ def test_cache1(test_env):
     assert "queries3.cache" in fs
     assert len(fs) == 4
 
-    slides = Slides()
+    slides = Slides(name_policy="ignore")
 
     slide = slides.new_slide()
     slide.box(show="1+").text("1")
@@ -35,7 +35,7 @@ def test_cache1(test_env):
     fs2 = set(os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir)))
     assert fs2 == fs
 
-    slides = Slides()
+    slides = Slides(name_policy="ignore")
 
     slide = slides.new_slide()
     slide.box(show="1+").text("1")
@@ -54,7 +54,7 @@ def test_cache1(test_env):
 def test_cache2(test_env):
     cache_dir = "elsie-cache"
 
-    slides = Slides()
+    slides = Slides(name_policy="ignore")
     for i in range(10):
         slide = slides.new_slide()
         slide.box(width=100, height=100).rect(bg_color="blue")
@@ -65,7 +65,7 @@ def test_cache2(test_env):
     files = set([os.path.basename(p) for p in glob.glob("{}/*".format(cache_dir))])
     assert 2 == len(files)
 
-    slides = Slides()
+    slides = Slides(name_policy="ignore")
     for i in range(10):
         slide = slides.new_slide()
         slide.box(width=100, height=100).rect(bg_color="green")
