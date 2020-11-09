@@ -664,8 +664,8 @@ def chessboard_demo(slide):
 # Size & Positioning demo #################################
 
 
-@slides.slide()
-def position_demo(slide):
+# Because we use this slide on two places, we separate it into a function
+def position_demo_helper(slide):
     slide.box().text("Position demo")
     slide.box(height=15)
 
@@ -733,10 +733,15 @@ def position_demo(slide):
     bb.text("Fill (width='fill(2)')", "inner")
 
 
+@slides.slide()
+def position_demo(slide):
+    position_demo_helper(slide)
+
+
 # Zoom to rectanle at position 300, 200 with size 400, 400
 @slides.slide(view_box=(300, 200, 400, 400))
 def zoomed_position_demo(slide):
-    position_demo(slide)
+    position_demo_helper(slide)
     slide.box(x=390, y=200).rect(bg_color="black").fbox(padding=10).text(
         "Zooming demo", elsie.TextStyle(color="white")
     )
