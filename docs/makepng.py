@@ -1,13 +1,14 @@
 import elsie
 import subprocess
+import datetime
 
 slides = elsie.Slides()
 
 
 @slides.slide()
 def hello(slide):
-    slide.text("Hello world!")
-    slide.rect(color="black", stroke_width=4)
+    this_year = datetime.datetime.now().year
+    slide.text(f"Hello from {this_year}!")
 
 
 @slides.slide()
@@ -182,9 +183,9 @@ svgs = slides.render(return_svg=True)  # Creates file 'slides.pdf'
 for slide, step, out in svgs:
     name = slide._box.name
     if step == 1:
-        filename = "imgs/{}.svg".format(name)
+        filename = "slide_imgs/{}.svg".format(name)
     else:
-        filename = "imgs/{}-{}.svg".format(name, step)
+        filename = "slide_imgs/{}-{}.svg".format(name, step)
     print(name)
     with open(filename, "w") as f:
         f.write(out)
