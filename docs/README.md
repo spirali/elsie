@@ -24,7 +24,8 @@ elsie.render("slides.pdf")
 ## Features
 
 - **Fully programmable presentations** If you have a repeated pattern in slides,
-  you do not have to recreated it manually, you have Turing-complete Python.
+  you do not have to recreated it manually again and again, you have
+  full-featured programming language.
 
 - **Automatic layout** *Elsie* provides a simple yet powerful layout model. Need
   rows? Columns? Grids? Padding? Aligned text? Relative/Absolute positioning?
@@ -60,7 +61,4 @@ Every tool has its disadvantages though.
   must have it installed on your system for it to work. We provide a [Docker
   image](installation.md#docker-installation) with `Inkscape` for convenience.
 - Elsie is not tested only on Linux machines, if you find a problem on a
-  different system, do not hasitate to open an GitHub issue.
-
-## How does it work?
-TOOD: Inkscape, queries, pillow, etc.
+  different system, do not hesitate to open an GitHub issue.

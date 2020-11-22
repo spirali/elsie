@@ -9,7 +9,6 @@ You can install *Elsie* using **PyPi**:
 ```bash
 $ pip3 install elsie
 ```
-*Elsie* requires Python 3.4+.
 
 You will also need **Inkscape** installed, preferably version 1.0+. You can find how to install
 Inkscape [here](https://wiki.inkscape.org/wiki/index.php/Installing_Inkscape). On Ubuntu you can

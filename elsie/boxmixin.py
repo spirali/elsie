@@ -63,7 +63,54 @@ class BoxMixin:
         below=None,
         name=None,
     ):
-        """ Create a new child box """
+        """ Create a new child box
+
+        Position:
+
+            * x - Set X position of the new box
+            * y - Set Y position of the new box
+
+            Possible values: None, number, "NN", "NN%", "[NN%]", or a dynamic coordinate,
+            where NN is a number.
+
+        Size:
+
+            * width - Set the width of the new box
+            * height - Set the height of the new box
+
+            Possible values: None, number, "NN", "NN%", "fill", "fill(NN)".
+
+        Fragments:
+
+            * show - Set in which fragment should be box and its content visible
+
+            Possible values: None, a number, "XX-XX", "XX+" where XX is a number, "next" or "last"
+
+        Padding:
+
+            * p_left - Set left padding of the box
+            * p_right - Set right padding of the box
+            * p_top - Set top padding of the box
+            * p_bottom - Set bottom of the box
+
+            * p_x - Sets p_left and p_right
+            * p_y - Sets p_top and p_bottom
+
+            * padding - Sets p_left, p_right, p_top, and p_bottom
+
+        Others:
+
+            * horizontal - If True, child default position is horizontal, otherwise vertical
+            * z_level - Modifies when the box is painted. If None, the parent z_level is taken.
+                        z_level of the top-level box is 0. If z_level is X then all boxes with *lower*
+                        z_level than X is painted before this box.
+            * prepend - If True, the new box is inserted as the first child of the parent.
+                        Otherwise it is inserted as the last one
+            * above   - Argument has to be a child of the parent box. The new box is put right after this child.
+            * below   - Argument has to be a child of the parent box. The new box is put right before this child.
+            * name    - Set name of the new box for the debugging purposes
+
+        """
         box = self._get_box()
         layout = box.layout.add(
             x=x,
