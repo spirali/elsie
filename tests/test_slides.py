@@ -31,7 +31,7 @@ def test_name_policy_ignore():
     assert len(slides._slides) == 3
 
 
-def test_name_policy_ignore():
+def test_name_policy_replace():
     slides = Slides(name_policy="replace")
     slides.new_slide(name="xxx")
     slides.new_slide(name="yyy")

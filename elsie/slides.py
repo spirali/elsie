@@ -4,6 +4,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 
 from .highlight import make_highlight_styles
+from .jupyter import is_inside_notebook
 from .pdfmerge import get_pdf_merger_by_name
 from .query import compute_query
 from .slidecls import Slide, DummyPdfSlide
@@ -35,8 +36,10 @@ class Slides:
         if name_policy not in ("auto", "unique", "ignore", "replace"):
             raise Exception("Invalid value for name_policy")
         if name_policy == "auto":
-            # TODO: detect Jupyter
-            name_policy = "unique"
+            if is_inside_notebook():
+                name_policy = "replace"
+            else:
+                name_policy = "unique"
         self.name_policy = name_policy
 
         if not os.path.isdir(cache_dir):
@@ -112,6 +115,7 @@ class Slides:
         self._apply_name_policy(name)
 
         slide = Slide(
+            self,
             len(self._slides),
             self.width,
             self.height,
@@ -133,7 +137,7 @@ class Slides:
         return box
 
     def slide(self, bg_color=None, view_box=None, name=None, debug_boxes=False):
-        def _helper(fn):
+        def _helper(fn, *args, **kwargs):
             if name is None:
                 _name = fn.__name__
             else:
@@ -144,7 +148,7 @@ class Slides:
                 name=_name,
                 debug_boxes=debug_boxes,
             )
-            fn(slide)
+            fn(slide, *args, **kwargs)
             return slide.slide
 
         return _helper
