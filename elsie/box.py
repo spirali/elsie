@@ -131,5 +131,8 @@ class Box(BoxMixin):
         self._show_info = self._show_info.ensure_steps(steps)
         self.slide.max_step = max(self.slide.max_step, steps)
 
+    def _repr_html_(self):
+        return self.slide._repr_html_()
+
 
 from .boxitem import BoxItem  # noqa

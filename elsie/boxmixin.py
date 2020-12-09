@@ -63,7 +63,7 @@ class BoxMixin:
         below=None,
         name=None,
     ):
-        """ Create a new child box
+        """Create a new child box
 
         Position:
 

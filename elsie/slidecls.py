@@ -15,6 +15,7 @@ from .sxml import Xml
 class Slide:
     def __init__(
         self,
+        slides,
         index,
         width,
         height,
@@ -25,6 +26,7 @@ class Slide:
         name,
         debug_boxes,
     ):
+        self.slides = slides
         self.name = name
         self.width = width
         self.height = height
@@ -90,6 +92,11 @@ class Slide:
                 inkscape_bin, source, target, export_type
             ),
         )
+
+    def _repr_html_(self):
+        from . import jupyter
+
+        return jupyter.render_slide(self)
 
 
 class DummyPdfSlide:
