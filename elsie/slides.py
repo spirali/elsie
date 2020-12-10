@@ -1,14 +1,13 @@
 import json
 import os
 import sys
-from concurrent.futures import ThreadPoolExecutor
 
 from .highlight import make_highlight_styles
 from .jupyter import is_inside_notebook
 from .pdfmerge import get_pdf_merger_by_name
 from .query import compute_query
 from .slidecls import Slide, DummyPdfSlide
-from .svg import get_inkscape_version
+from .inkscape import InkscapeShell, get_inkscape_version
 from .textstyle import TextStyle, compose_style
 from .version import VERSION
 from .cache import FsCache
@@ -27,10 +26,11 @@ class Slides:
         inkscape_bin=None,
         name_policy="auto",
     ):
-        self.inkscape_bin = (
+        inkscape_bin = (
             inkscape_bin or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
         )
-        self.inkscape_version = get_inkscape_version(self.inkscape_bin)
+        self.inkscape = InkscapeShell(inkscape_bin)
+        self.inkscape_version = get_inkscape_version(inkscape_bin)
         self.cache_dir = cache_dir
 
         if name_policy not in ("auto", "unique", "ignore", "replace"):
@@ -208,7 +208,7 @@ class Slides:
         sys.stdout.write("{}{} {}{}".format(prefix, name, progress, suffix))
         sys.stdout.flush()
 
-    def _process_queries(self, pool, slides, prune):
+    def _process_queries(self, slides, prune):
         cache = self.query_cache or self._load_query_cache()
         queries = sum((s.get_queries() for s in slides), [])
 
@@ -219,7 +219,7 @@ class Slides:
         else:
             new_cache = cache
         for i, result in enumerate(
-            pool.map(lambda q: compute_query(self.inkscape_bin, q), need_compute)
+            map(lambda q: compute_query(self.inkscape, q), need_compute)
         ):
             key = need_compute[i]
             new_cache[key] = result
@@ -258,7 +258,6 @@ class Slides:
     def render(
         self,
         output="slides.pdf",
-        threads=None,
         return_svg=False,
         export_type="pdf",
         pdf_merger="pypdf",
@@ -276,49 +275,40 @@ class Slides:
         if slide_postprocessing:
             slide_postprocessing([slide.box() for slide in select_slides])
 
-        if threads is None:
-            threads = os.cpu_count() or 1
-        pool = ThreadPoolExecutor(threads)
+        self._process_queries(select_slides, prune_cache)
+        renders = []
+        for slide in select_slides:
+            slide.prepare()
+            renders += [(slide, step) for step in range(1, slide.steps() + 1)]
 
-        try:
-            self._process_queries(pool, select_slides, prune_cache)
-            renders = []
-            for slide in select_slides:
-                slide.prepare()
-                renders += [(slide, step) for step in range(1, slide.steps() + 1)]
+        if return_svg:
+            svgs = [(slide, step, slide.make_svg(step)) for slide, step in renders]
+            return svgs
 
-            if return_svg:
-                svgs = [(slide, step, slide.make_svg(step)) for slide, step in renders]
-                return svgs
+        if export_type == "pdf" and pdf_merger is not None:
+            merger = get_pdf_merger_by_name(pdf_merger)
+        else:
+            merger = []
+        self._show_progress("Building", first=True)
+        prev_pdf = None
+        for i, pdf in enumerate(
+            map(
+                lambda x: x[0].render(x[1], self.debug, export_type, self.inkscape),
+                renders,
+            )
+        ):
+            if not drop_duplicates or prev_pdf != pdf:
+                merger.append(pdf)
+                prev_pdf = pdf
+            self._show_progress("Building", i, len(renders))
+        self._show_progress("Building", len(renders), len(renders), last=True)
 
-            if export_type == "pdf" and pdf_merger is not None:
-                merger = get_pdf_merger_by_name(pdf_merger)
-            else:
-                merger = []
-            self._show_progress("Building", first=True)
-            prev_pdf = None
-            for i, pdf in enumerate(
-                pool.map(
-                    lambda x: x[0].render(
-                        x[1], self.debug, export_type, self.inkscape_bin
-                    ),
-                    renders,
-                )
-            ):
-                if not drop_duplicates or prev_pdf != pdf:
-                    merger.append(pdf)
-                    prev_pdf = pdf
-                self._show_progress("Building", i, len(renders))
-            self._show_progress("Building", len(renders), len(renders), last=True)
-
-            if export_type == "pdf" and pdf_merger is not None:
-                merger.write(output, self.debug)
-                if prune_cache:
-                    self.fs_cache.remove_unused()
-                print("Slides written into '{}'".format(output))
-            else:
-                if prune_cache:
-                    self.fs_cache.remove_unused()
-                return merger
-        finally:
-            pool.shutdown()
+        if export_type == "pdf" and pdf_merger is not None:
+            merger.write(output, self.debug)
+            if prune_cache:
+                self.fs_cache.remove_unused()
+            print("Slides written into '{}'".format(output))
+        else:
+            if prune_cache:
+                self.fs_cache.remove_unused()
+            return merger

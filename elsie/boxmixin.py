@@ -102,12 +102,15 @@ class BoxMixin:
 
             * horizontal - If True, child default position is horizontal, otherwise vertical
             * z_level - Modifies when the box is painted. If None, the parent z_level is taken.
-                        z_level of the top-level box is 0. If z_level is X then all boxes with *lower*
+                        z_level of the top-level box is 0.
+                        If z_level is X then all boxes with *lower*
                         z_level than X is painted before this box.
             * prepend - If True, the new box is inserted as the first child of the parent.
                         Otherwise it is inserted as the last one
-            * above   - Argument has to be a child of the parent box. The new box is put right after this child.
-            * below   - Argument has to be a child of the parent box. The new box is put right before this child.
+            * above   - Argument has to be a child of the parent box.
+                        The new box is put right after this child.
+            * below   - Argument has to be a child of the parent box.
+                        The new box is put right before this child.
             * name    - Set name of the new box for the debugging purposes
 
         """
