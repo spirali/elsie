@@ -8,7 +8,8 @@ from .layout import Layout
 from .query import Query
 from .rcontext import RenderingContext
 from .show import ShowInfo
-from .svg import svg_begin, svg_end, export_by_inkscape
+from .svg import svg_begin, svg_end
+from .inkscape import export_by_inkscape
 from .sxml import Xml
 
 
@@ -75,7 +76,7 @@ class Slide:
         svg_end(xml)
         return xml.to_string()
 
-    def render(self, step, debug, export_type, inkscape_bin):
+    def render(self, step, debug, export_type, inkscape):
         svg = self.make_svg(step)
 
         if debug:
@@ -89,7 +90,7 @@ class Slide:
             svg.encode(),
             export_type,
             lambda source, target, export_type: export_by_inkscape(
-                inkscape_bin, source, target, export_type
+                inkscape, source, target, export_type
             ),
         )
 
