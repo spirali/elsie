@@ -78,7 +78,8 @@ class Slides:
             "code_lineno": TextStyle(color="gray"),
         }
         self.temp_cache = {}
-        self.query_cache = None
+        self.query_cache = self._load_query_cache()
+        self.used_query_cache = {}
         self._styles.update(make_highlight_styles(pygments_theme))
         self.fs_cache = FsCache(cache_dir, VERSION, self.inkscape_version)
 
@@ -213,6 +214,7 @@ class Slides:
         sys.stdout.write("{}{} {}{}".format(prefix, name, progress, suffix))
         sys.stdout.flush()
 
+    """
     def _process_queries(self, slides, prune):
         cache = self.query_cache or self._load_query_cache()
         queries = sum((s.get_queries() for s in slides), [])
@@ -236,7 +238,7 @@ class Slides:
         for q in queries:
             q.callback(new_cache[q.key])
         self.query_cache = new_cache
-        self._save_query_cache(new_cache)
+    """
 
     def _apply_name_policy(self, name):
         if self.name_policy == "ignore":
@@ -260,6 +262,15 @@ class Slides:
             else:
                 assert 0
 
+    def process_query(self, method: str, data: str):
+        key = (method, data)
+        value = self.query_cache.get(key)
+        if value is None:
+            value = compute_query(self.inkscape, method, data)
+            self.query_cache[key] = value
+        self.used_query_cache[key] = value
+        return value
+
     def render(
         self,
         output="slides.pdf",
@@ -269,6 +280,7 @@ class Slides:
         drop_duplicates=False,
         slide_postprocessing=None,
         prune_cache=True,
+        save_cache=True,
         select_slides=None,
     ):
         if select_slides is None:
@@ -280,7 +292,13 @@ class Slides:
         if slide_postprocessing:
             slide_postprocessing([slide.box() for slide in select_slides])
 
-        self._process_queries(select_slides, prune_cache)
+        if prune_cache:
+            self.query_cache = self.used_query_cache
+            self.used_query_cache = {}
+
+        if save_cache:
+            self._save_query_cache(self.query_cache)
+
         renders = []
         for slide in select_slides:
             slide.prepare()

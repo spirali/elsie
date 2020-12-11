@@ -26,7 +26,7 @@ class TextBoxItem(BoxItem):
         self._style = style
         self._styles = styles
         self._parsed_text = parsed_text
-        self._make_query(box)
+        self._make_query()
 
         if scale_to_fit:
 
@@ -62,28 +62,25 @@ class TextBoxItem(BoxItem):
                 transform=transform,
             )
 
-    def _make_query(self, box):
-        def on_query(width):
-            layout = self._box.layout
-            style = self._style
-            line_height = style.size * style.line_spacing
-            height = number_of_lines(self._parsed_text) * line_height
-
-            if not self._scale_to_fit:
-                layout.ensure_width(width)
-                layout.ensure_height(height)
-            else:
-                if layout.width_definition is None:
-                    layout.ensure_width(width)
-                if layout.height_definition is None:
-                    layout.ensure_height(height)
-            self._text_size = (width, height)
-
+    def _make_query(self):
         xml = Xml()
         draw_text(xml, 0, 0, self._parsed_text, self._style, self._styles, id="target")
         key = xml.to_string()
-        del xml
-        box.slide.add_query("inkscape", key, on_query)
+        width = self._box.slide.slides.process_query("inkscape-w", key)
+        layout = self._box.layout
+        style = self._style
+        line_height = style.size * style.line_spacing
+        height = number_of_lines(self._parsed_text) * line_height
+
+        if not self._scale_to_fit:
+            layout.ensure_width(width)
+            layout.ensure_height(height)
+        else:
+            if layout.width_definition is None:
+                layout.ensure_width(width)
+            if layout.height_definition is None:
+                layout.ensure_height(height)
+        self._text_size = (width, height)
 
     def line_box(self, index, n_lines=1, **kwargs):
         def compute_y():
@@ -117,12 +114,6 @@ class TextBoxItem(BoxItem):
         )
 
     def _text_box_helper(self, index, box_args):
-        def on_query_x(x):
-            query_result[0] = x
-
-        def on_query_h(width):
-            query_result[1] = width
-
         def compute_y():
             line_number = number_of_lines(self._parsed_text[:index]) - 1
             text_lines = number_of_lines(self._parsed_text)
@@ -134,8 +125,6 @@ class TextBoxItem(BoxItem):
         def compute_height():
             text_lines = number_of_lines(self._parsed_text)
             return self._text_size[1] / text_lines + 1
-
-        query_result = [None, None]
 
         line, index_in_line = extract_line(self._parsed_text, index)
         xml = Xml()
@@ -152,21 +141,19 @@ class TextBoxItem(BoxItem):
         text = xml.to_string()
         del xml
 
-        slide = self._box.slide
-        slide.add_query("inkscape-x", text, on_query_x)
-        slide.add_query("inkscape", text, on_query_h)
+        slides = self._box.slide.slides
+        query_x = slides.process_query("inkscape-x", text)
+        query_w = slides.process_query("inkscape-w", text)
 
         box_args.setdefault(
             "x",
             LazyValue(
                 lambda: text_x_in_rect(self._box.layout.rect, self._style)
-                + query_result[0] * self._text_scale
+                + query_x * self._text_scale
             ),
         )
         box_args.setdefault("y", LazyValue(compute_y))
-        box_args.setdefault(
-            "width", LazyValue(lambda: query_result[1] * self._text_scale)
-        )
+        box_args.setdefault("width", LazyValue(lambda: query_w * self._text_scale))
         box_args.setdefault("height", LazyValue(compute_height))
 
         return self._box.box(**box_args)

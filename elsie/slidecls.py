@@ -5,7 +5,6 @@ import os.path
 from .box import Box
 from .geom import Rect
 from .layout import Layout
-from .query import Query
 from .rcontext import RenderingContext
 from .show import ShowInfo
 from .svg import svg_begin, svg_end
@@ -44,17 +43,9 @@ class Slide:
         self.max_step = 1
         self.temp_cache = temp_cache
         self.fs_cache = fs_cache
-        self._queries = []
 
     def box(self):
         return self._box
-
-    def add_query(self, method, args, callback):
-        query = Query((method, args), callback)
-        self._queries.append(query)
-
-    def get_queries(self):
-        return self._queries
 
     def prepare(self):
         rect = Rect(0, 0, self.width, self.height)
@@ -103,9 +94,6 @@ class Slide:
 class DummyPdfSlide:
     def __init__(self, filename):
         self.filename = os.path.abspath(filename)
-
-    def get_queries(self):
-        return []
 
     def prepare(self):
         pass

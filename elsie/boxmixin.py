@@ -525,28 +525,20 @@ class BoxMixin:
 
         tex_text = "\n".join((header, text, tail))
 
-        container = [None, None, None]
-
-        def on_query(svg):
-            root = et.fromstring(svg)
-            svg_width = svg_size_to_pixels(root.get("width")) * scale
-            svg_height = svg_size_to_pixels(root.get("height")) * scale
-
-            self._get_box().layout.ensure_width(svg_width)
-            self._get_box().layout.ensure_height(svg_height)
-
-            container[0] = svg_width
-            container[1] = svg_height
-            container[2] = svg
-
         def draw(ctx):
             rect = self._get_box().layout.rect
-            svg_width, svg_height, data = container
             x = rect.x + (rect.width - svg_width) / 2
             y = rect.y + (rect.height - svg_height) / 2
-            self._render_svg(ctx, x, y, scale, data)
+            self._render_svg(ctx, x, y, scale, svg)
 
-        self._get_box().slide.add_query("latex", tex_text, on_query)
+        svg = self._get_box().slide.slides.process_query("latex", tex_text)
+        root = et.fromstring(svg)
+        svg_width = svg_size_to_pixels(root.get("width")) * scale
+        svg_height = svg_size_to_pixels(root.get("height")) * scale
+
+        self._get_box().layout.ensure_width(svg_width)
+        self._get_box().layout.ensure_height(svg_height)
+
         return self._create_simple_box_item(draw)
 
     def x(self, value):
