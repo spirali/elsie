@@ -7,7 +7,7 @@ from .jupyter import is_inside_notebook
 from .pdfmerge import get_pdf_merger_by_name
 from .query import compute_query
 from .slidecls import Slide, DummyPdfSlide
-from .inkscape import InkscapeShell, get_inkscape_version
+from .inkscape import InkscapeShell
 from .textstyle import TextStyle, compose_style
 from .version import VERSION
 from .cache import FsCache
@@ -30,7 +30,8 @@ class Slides:
             inkscape_bin or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
         )
         self.inkscape = InkscapeShell(inkscape_bin)
-        self.inkscape_version = get_inkscape_version(inkscape_bin)
+        self.inkscape_version = self.inkscape.get_version()
+        assert "Inkscape" in self.inkscape_version
         self.cache_dir = cache_dir
 
         if name_policy not in ("auto", "unique", "ignore", "replace"):

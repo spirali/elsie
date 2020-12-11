@@ -100,14 +100,8 @@ class InkscapeShell:
         self.process.stdin.flush()
         return self.wait_for_prompt()
 
-
-def get_inkscape_version(inkscape_bin) -> str:
-    args = (inkscape_bin, "--version")
-    p = subprocess.Popen(
-        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.DEVNULL
-    )
-    stdout, stderr = p.communicate()
-    return stdout.decode().strip()
+    def get_version(self):
+        return "\n".join(self.run_command("inkscape-version"))
 
 
 def export_by_inkscape(inkscape: InkscapeShell, source: str, target: str, type: str):
