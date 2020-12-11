@@ -37,7 +37,12 @@ class InkscapeShell:
         stdout = self.process.stdout
         while True:
             character = stdout.read(1)
-            if character == " " and chars and chars[-1] == ">" and (len(chars) == 1 or chars[-2] == "\n"):
+            if (
+                character == " "
+                and chars
+                and chars[-1] == ">"
+                and (len(chars) == 1 or chars[-2] == "\n")
+            ):
                 line = "".join(chars[:-2])
                 return line
             else:

@@ -25,11 +25,15 @@ class Slides:
         cache_dir="./elsie-cache",
         inkscape_bin=None,
         name_policy="auto",
+        inkscape=None,
     ):
-        inkscape_bin = (
-            inkscape_bin or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
-        )
-        self.inkscape = InkscapeShell(inkscape_bin)
+        if inkscape:
+            self.inkscape = inkscape
+        else:
+            inkscape_bin = (
+                inkscape_bin or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
+            )
+            self.inkscape = InkscapeShell(inkscape_bin)
         self.inkscape_version = self.inkscape.get_version()
         assert "Inkscape" in self.inkscape_version
         self.cache_dir = cache_dir

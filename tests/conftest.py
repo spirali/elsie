@@ -3,6 +3,8 @@ import sys
 
 import pytest
 
+from elsie.inkscape import InkscapeShell
+
 PYTEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(PYTEST_DIR)
 # WORK_DIR = os.path.join(PYTEST_DIR, "work")
@@ -15,8 +17,8 @@ import test_utils  # noqa
 
 
 class SlideTester:
-    def __init__(self):
-        self.slides = elsie.Slides(name_policy="ignore")
+    def __init__(self, inkscape_shell=None):
+        self.slides = elsie.Slides(name_policy="ignore", inkscape=inkscape_shell)
         self._slide = None
 
     @property
@@ -55,11 +57,19 @@ class SlideTester:
                         f.write(svg)
 
 
+@pytest.yield_fixture(autouse=True, scope="session")
+def inkscape_shell():
+    inkscape_bin = os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
+    shell = InkscapeShell(inkscape_bin)
+    yield shell
+    shell.close()
+
+
 @pytest.yield_fixture(autouse=True, scope="function")
-def test_env(tmp_path):
+def test_env(tmp_path, inkscape_shell):
     cwd = os.getcwd()
     os.chdir(tmp_path)
-    tester = SlideTester()
+    tester = SlideTester(inkscape_shell)
     try:
         yield tester
     finally:
