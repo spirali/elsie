@@ -1,32 +1,8 @@
 import contextlib
 import logging
 import os
-import queue
 import subprocess
 import tempfile
-import threading
-
-PROMPT = "> "
-
-
-class ProcessReader:
-    def __init__(self, stdout, queue):
-        self.thread = threading.Thread(
-            target=self.read, args=(stdout, queue), daemon=True
-        )
-
-    def start(self):
-        self.thread.start()
-
-    def read(self, stdout, queue):
-        line = ""
-
-        while True:
-            character = stdout.read(1)
-            line += character
-            if character == "\n" or line == PROMPT:
-                queue.put(line)
-                line = ""
 
 
 @contextlib.contextmanager
@@ -41,6 +17,7 @@ def svg_file_input(inkscape, svg: str, binary=False):
 
 class InkscapeShell:
     def __init__(self, inkscape_bin: str):
+
         self.process = subprocess.Popen(
             [inkscape_bin, "--shell"],
             stdout=subprocess.PIPE,
@@ -48,24 +25,23 @@ class InkscapeShell:
             stderr=subprocess.PIPE,
             universal_newlines=True,
         )
-        self.queue = queue.Queue()
-        self.reader = ProcessReader(self.process.stdout, self.queue)
-        self.reader.start()
         self.wait_for_prompt()
 
         self.run_command("file-close")
 
-    def wait_for_prompt(self):
-        lines = []
+    def close(self):
+        self.process.stdout.close()
 
+    def wait_for_prompt(self):
+        chars = []
+        stdout = self.process.stdout
         while True:
-            line = self.queue.get().strip("\n")
-            logging.debug(f"Received {line} from Inkscape")
-            if line == PROMPT:
-                break
+            character = stdout.read(1)
+            if character == " " and chars and chars[-1] == ">" and (len(chars) == 1 or chars[-2] == "\n"):
+                line = "".join(chars[:-2])
+                return line
             else:
-                lines.append(line)
-        return lines
+                chars.append(character)
 
     def convert_to_pdf(self, source, target: str, type: str):
         with svg_file_input(self, source, binary=True):
@@ -83,9 +59,7 @@ class InkscapeShell:
     def run_query(self, svg: str, query: str, id: str):
         with svg_file_input(self, svg):
             self.run_command(f"select:{id}")
-            output = self.run_command(query)
-
-            value = output[0]
+            value = self.run_command(query)
             try:
                 return float(value)
             except ValueError:
@@ -101,7 +75,7 @@ class InkscapeShell:
         return self.wait_for_prompt()
 
     def get_version(self):
-        return "\n".join(self.run_command("inkscape-version"))
+        return self.run_command("inkscape-version")
 
 
 def export_by_inkscape(inkscape: InkscapeShell, source: str, target: str, type: str):
