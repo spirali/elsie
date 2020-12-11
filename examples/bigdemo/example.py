@@ -73,6 +73,8 @@ def hello_world(slide):
         """
     import elsie
 
+    slides = elsie.Slides()
+
     @slides.slide()
     def hello(slide):
         slide.text("Hello world!")

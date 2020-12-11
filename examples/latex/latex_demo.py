@@ -1,6 +1,6 @@
 import elsie
 
-slides = elsie.Slides(debug=True)
+slides = elsie.Slides()
 
 
 @slides.slide()
