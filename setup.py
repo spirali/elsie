@@ -26,7 +26,7 @@ setup(
 Elsie is a Framework for making slides in Python,
 Check out its documentation at https://spirali.github.io/elsie.
       """,
-    author="Stanislav Bohm",
+    author="Stanislav Böhm",
     author_email="spirali@kreatrix.org",
     url="https://github.com/spirali/elsie",
     packages=["elsie"],

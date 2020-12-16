@@ -52,6 +52,7 @@ CSS = """
 .elsie-controls {
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 }
 .elsie-controls * {
     margin: 0 10px;
