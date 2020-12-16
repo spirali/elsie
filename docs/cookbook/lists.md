@@ -7,15 +7,15 @@ For example, here is a simple function that will create a new list item in the g
 parent [Box](../userguide/boxes.md). The `level` parameter selects the nesting level of the list
 item.
 
-```python
-def list_item(parent: elsie.Box, level=0, show="last+", **box_args) -> elsie.Box:
+```elsie,type=lib
+def list_item(parent: Box, level=0, show="last+", **box_args) -> Box:
     b = parent.box(x=level * 25, horizontal=True, show=show, **box_args)
     b.box(width=25, y=0).text("•")  # A bullet point
     return b.box(width="fill")
 ```
 
 With a function like this, it becomes easy to create lists:
-```python
+```elsie,width=500
 l = slide.box()
 list_item(l).text("Item 1")
 list_item(l).text("Item 2")
@@ -25,7 +25,8 @@ list_item(l).text("Item 4")
 
 Using [revealing](../userguide/revealing.md), you can easily create list items that are revealed
 step by step:
-```python
+```elsie,width=500
+l = slide.box()
 list_item(l).text("Appears in step 1")
 list_item(l, show="next+").text("Appears in step 2")
 list_item(l, level=1).text("(nested) Appears in step 2")
