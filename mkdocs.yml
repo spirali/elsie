@@ -13,7 +13,7 @@ nav:
   - Overview: README.md
   - installation.md
   - getting_started.md
-  - examples.md
+  - showcase.md
   - User guide:
     - userguide/boxes.md
   - API reference:
