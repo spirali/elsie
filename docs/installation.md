@@ -1,8 +1,9 @@
 # Installation
 ## Requirements
 - Python 3.6+
-- Inkscape 0.92+ (1.0+ recommended)
-- (Required only LaTeX support): pdflatex, pdf2svg
+- Inkscape 1.0+
+    - Versions under 1.0 and above 0.92 might also work, but they are not primarily supported
+- (Required only for `LaTeX` support): `pdflatex`, `pdf2svg`
 
 ## Native installation
 You can install *Elsie* using **PyPi**:
@@ -10,7 +11,7 @@ You can install *Elsie* using **PyPi**:
 $ pip3 install elsie
 ```
 
-You will also need **Inkscape** installed, preferably version 1.0+. You can find how to install
+You will also need **Inkscape** installed, preferably with version 1.0+. You can find how to install
 Inkscape [here](https://wiki.inkscape.org/wiki/index.php/Installing_Inkscape). On Ubuntu you can
 simply execute
 ```bash
@@ -19,7 +20,7 @@ $ apt-get install inkscape
 
 ## Docker installation
 We also provide a [Docker image](https://github.com/spirali/elsie/blob/master/Dockerfile) that has
-Inkscape and all required Python dependencies installed.
+Inkscape and all the required Python dependencies installed.
 
 First build the image:
 ```bash
