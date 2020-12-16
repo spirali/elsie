@@ -2,8 +2,9 @@
 *Elsie* uses `Pygments` to provide syntax highlighting. You can use any supported language from
 this [list](https://pygments.org/languages).
 
-You can use the `code` function on a `Box` to render text with syntax highlighting. The first
-parameter of the function is the language syntax that should be highlighted.
+You can use the [`code`](elsie.boxmixin.BoxMixin.code) function on a
+[`Box`](elsie.boxmixin.BoxMixin) to render text with syntax highlighting. The first parameter of the
+function is the language syntax that should be highlighted.
 
 ```elsie,height=150
 slide.box().code("python", """

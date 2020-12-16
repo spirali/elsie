@@ -25,7 +25,7 @@ from typing import List
 from mkdocs.plugins import BasePlugin
 
 CURRENT_DIR = dirname(abspath(__file__))
-ROOT_DIR = dirname(dirname(dirname(CURRENT_DIR)))
+DOCS_DIR = dirname(dirname(CURRENT_DIR))
 
 
 def is_fence_delimiter(line):
@@ -96,7 +96,7 @@ result = render_slide(slide.slide)
     locals = {}
     code_object = compile(template, "elsie_render.py", "exec")
 
-    with change_cwd(os.path.join(ROOT_DIR, "docs")):
+    with change_cwd(DOCS_DIR):
         exec(code_object, locals)  # Sorry
     return locals["result"]
 

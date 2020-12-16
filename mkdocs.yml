@@ -35,3 +35,4 @@ markdown_extensions:
 
 plugins:
   - elsie
+  - nedoc
