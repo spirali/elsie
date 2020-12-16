@@ -16,6 +16,8 @@ nav:
   - showcase.md
   - User guide:
     - userguide/boxes.md
+  - Cookbook:
+    - cookbook/lists.md
   - API reference:
     - API documentation: apidoc
 
