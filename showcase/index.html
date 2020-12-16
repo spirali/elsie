@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <meta name="author" content="Stanislav Böhm">
-  <link rel="canonical" href="https://spirali.github.io/elsie/examples/">
+  <link rel="canonical" href="https://spirali.github.io/elsie/showcase/">
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Examples - Elsie</title>
+  <title>Showcase - Elsie</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Examples";
-    var mkdocs_page_input_path = "examples.md";
-    var mkdocs_page_url = "/elsie/examples/";
+    var mkdocs_page_name = "Showcase";
+    var mkdocs_page_input_path = "showcase.md";
+    var mkdocs_page_url = "/elsie/showcase/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
@@ -49,11 +49,7 @@
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href=".." class="icon icon-home"> Elsie</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
-  </form>
-</div>
+        
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -70,14 +66,23 @@
                     </li>
                 </ul>
                 <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Examples</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Showcase</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#rust">Rust</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cpu-architecture-effects">CPU architecture effects</a>
+    </li>
     </ul>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">User guide</span></p>
                 <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../userguide/boxes/">Boxes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Cookbook</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../cookbook/lists/">Lists</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">API reference</span></p>
@@ -106,10 +111,10 @@
     
       
     
-    <li>Examples</li>
+    <li>Showcase</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/spirali/elsie/blob/master/docs/examples.md"
+        <a href="https://github.com/spirali/elsie/blob/master/docs/showcase.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -120,9 +125,23 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">#</a></h1>
-<p>TODO: link to repository examples
-TODO: real-life examples</p>
+                <h1 id="showcase">Showcase<a class="headerlink" href="#showcase" title="Permanent link">#</a></h1>
+<p>Here you can find selected presentations made with <em>Elsie</em>, along with their source codes.
+If you want to add your own presentation to the showcase,
+<a href="https://github.com/spirali/elsie/pulls">send us a PR</a>!</p>
+<h2 id="rust">Rust<a class="headerlink" href="#rust" title="Permanent link">#</a></h2>
+<p>Presentation about basic Rust features. Contains a lot of code samples, syntax highlighting and
+code line stepping.</p>
+<ul>
+<li><a href="https://github.com/Kobzol/elsie-showcase/raw/main/rust/slides.pdf">PDF</a></li>
+<li><a href="https://github.com/Kobzol/elsie-showcase/tree/main/rust">Code</a></li>
+</ul>
+<h2 id="cpu-architecture-effects">CPU architecture effects<a class="headerlink" href="#cpu-architecture-effects" title="Permanent link">#</a></h2>
+<p>Presentation about CPU (micro)-architecture effects. Contains advanced animations.</p>
+<ul>
+<li><a href="https://github.com/Kobzol/elsie-showcase/raw/main/cpu-arch/slides.pdf">PDF</a></li>
+<li><a href="https://github.com/Kobzol/elsie-showcase/tree/main/cpu-arch">Code</a></li>
+</ul>
               
             </div>
           </div>
@@ -170,7 +189,6 @@ TODO: real-life examples</p>
 </div>
     <script>var base_url = '..';</script>
     <script src="../js/theme.js" defer></script>
-      <script src="../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);

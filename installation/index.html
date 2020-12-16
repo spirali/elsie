@@ -49,11 +49,7 @@
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href=".." class="icon icon-home"> Elsie</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
-  </form>
-</div>
+        
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -78,12 +74,17 @@
                     </li>
                 </ul>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../examples/">Examples</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../showcase/">Showcase</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">User guide</span></p>
                 <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../userguide/boxes/">Boxes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Cookbook</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../cookbook/lists/">Lists</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">API reference</span></p>
@@ -130,22 +131,24 @@
 <h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">#</a></h2>
 <ul>
 <li>Python 3.6+</li>
-<li>Inkscape 0.92+ (1.0+ recommended)</li>
-<li>(Required only LaTeX support): pdflatex, pdf2svg</li>
+<li>Inkscape 1.0+<ul>
+<li>Versions under 1.0 and above 0.92 might also work, but they are not primarily supported</li>
+</ul>
+</li>
+<li>(Required only for <code>LaTeX</code> support): <code>pdflatex</code>, <code>pdf2svg</code></li>
 </ul>
 <h2 id="native-installation">Native installation<a class="headerlink" href="#native-installation" title="Permanent link">#</a></h2>
 <p>You can install <em>Elsie</em> using <strong>PyPi</strong>:</p>
 <pre><code class="language-bash">$ pip3 install elsie
 </code></pre>
-<p><em>Elsie</em> requires Python 3.4+.</p>
-<p>You will also need <strong>Inkscape</strong> installed, preferably version 1.0+. You can find how to install
+<p>You will also need <strong>Inkscape</strong> installed, preferably with version 1.0+. You can find how to install
 Inkscape <a href="https://wiki.inkscape.org/wiki/index.php/Installing_Inkscape">here</a>. On Ubuntu you can
 simply execute</p>
 <pre><code class="language-bash">$ apt-get install inkscape
 </code></pre>
 <h2 id="docker-installation">Docker installation<a class="headerlink" href="#docker-installation" title="Permanent link">#</a></h2>
 <p>We also provide a <a href="https://github.com/spirali/elsie/blob/master/Dockerfile">Docker image</a> that has
-Inkscape and all required Python dependencies installed.</p>
+Inkscape and all the required Python dependencies installed.</p>
 <p>First build the image:</p>
 <pre><code class="language-bash">$ docker build -t elsie .
 </code></pre>
@@ -204,7 +207,6 @@ in the current directory and you want to render it into PDF. You can do that wit
 </div>
     <script>var base_url = '..';</script>
     <script src="../js/theme.js" defer></script>
-      <script src="../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);

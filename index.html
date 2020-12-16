@@ -49,11 +49,7 @@
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href="." class="icon icon-home"> Elsie</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
-  </form>
-</div>
+        
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -64,7 +60,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#features">Features</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#how-does-it-work">How does it work?</a>
+    <li class="toctree-l2"><a class="reference internal" href="#faq">FAQ</a>
     </li>
     </ul>
                     </li>
@@ -78,12 +74,17 @@
                     </li>
                 </ul>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="examples/">Examples</a>
+                    <li class="toctree-l1"><a class="reference internal" href="showcase/">Showcase</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">User guide</span></p>
                 <ul>
                     <li class="toctree-l1"><a class="reference internal" href="userguide/boxes/">Boxes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Cookbook</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="cookbook/lists/">Lists</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">API reference</span></p>
@@ -128,56 +129,77 @@
               
                 <h1 id="elsie">Elsie<a class="headerlink" href="#elsie" title="Permanent link">#</a></h1>
 <p><strong>Elsie</strong> allows you to <strong>create slides programmatically</strong> using Python.</p>
-<p>Elsie is a Python library that lets you build
-<a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> slides in a composable way and
-then render them to PDF. There is no DSL or GUI – presentations created with <em>elsie</em>
-are fully programmed with Python!</p>
+<p><em>Elsie</em> is a Python library that lets you build
+<a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> slides in a
+composable way and then render them to PDF. There is no DSL or GUI –
+presentations created with <em>Elsie</em> are fully programmed with Python.</p>
 <h2 id="hello-world">Hello world<a class="headerlink" href="#hello-world" title="Permanent link">#</a></h2>
-<pre><code class="language-python">import elsie, getpass
+<pre><code class="language-python">import elsie, datetime
 
-@elsie.slide()
+slides = elsie.Slides()
+
+@slides.slide()
 def hello_world(slide):
-    slide.text(f&quot;Hello world from {getpass.getuser()}!&quot;)
+    this_year = datetime.datetime.now().year
+    slide.text(f&quot;Hello from {this_year}!&quot;)
 
 elsie.render(&quot;slides.pdf&quot;)
 </code></pre>
 <p><img width="512px" height="384px" src="slide_imgs/hello.png"></p>
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>Fully programmable presentations!</strong> No more annoying clicking or manually going through hundreds
-of slides just to change the font – change a single line of code and regenerate your whole presentation
-with a single command. Noticed a typo that spans all slides a moment before your big talk begins?
-Just fix it and recreate the whole presentation within seconds! Experience the power of Turing-complete
-presentations.</li>
-<li><strong>Automatic layout</strong> <em>Elsie</em> provides a simple yet powerful layout model that can automatically
-layout anything. Need rows? Columns? Grids? Padding? Aligned text? Relative positioning? Automatic
-scaling? We got you covered. Oh, you want to draw a <code>64x32</code> image at the coordinates <code>(x=105, y=42)</code>?
-You can do that too!</li>
-<li><strong>Animations and fragments</strong> Reveal your slides gradually using fragments or create custom
-step-by-step animations using Python code. Or draw a fine-tuned SVG image by hand in <code>Inkscape</code>
-and let <em>Elsie</em> turn it into an animation using a handy <a href="TODO">layer-naming convention</a>.</li>
-<li><strong>Source code highlighting</strong> Enjoy automatic <a href="TODO">source code highlighting</a>. Create code walkthroughs
-using individual line highlighting or arrows pointing to specific code elements.</li>
-<li><strong>Batteries included</strong> Leverage familiar SVG features - fonts, colors, dashed line borders,
-you name it. Include <code>PNG/JPG/SVG</code> images directly into your slides. Render <a href="TODO">LaTex</a> into your
-slides. Debug your slides interactively in <a href="TODO">Jupyter notebooks</a>.</li>
-<li><strong>Familiarity</strong> At its heart, <em>Elsie</em> is an API for creating SVG images, optimized for making slides.
-If you know basics of Python and SVG, you'll be right at home.</li>
+<li>
+<p><strong>Automatic layout</strong> <em>Elsie</em> provides a simple yet powerful layout model. Need
+  rows? Columns? Grids? Padding? Aligned text? Relative/absolute positioning?
+  Automatic scaling? We got you covered.</p>
+</li>
+<li>
+<p><strong>Animations and fragments</strong> Reveal your slides gradually using fragments or
+  create custom step-by-step animations using Python code. Or draw a fine-tuned
+  SVG image by hand in <code>Inkscape</code> and let <em>Elsie</em> turn it into an animation
+  using a handy <a href="TODO">layer-naming convention</a>.</p>
+</li>
+<li>
+<p><strong>Source code highlighting</strong> Enjoy automatic <a href="TODO">source code highlighting</a>.
+  Create code walkthroughs using individual line highlighting or arrows pointing
+  to specific code elements.</p>
+</li>
+<li>
+<p><strong>Batteries included</strong> Leverage familiar SVG features - fonts, colors, dashed
+  line borders, you name it. Include <code>PNG/JPG/SVG</code> images directly into your
+  slides. Render <a href="TODO">LaTex</a> into your slides. Debug your slides interactively
+  in <a href="TODO">Jupyter notebooks</a>.</p>
+</li>
+<li>
+<p><strong>Familiarity</strong> At its heart, <em>Elsie</em> is an API for creating SVG images,
+  optimized for making slides. If you know basics of Python and SVG, you'll be
+  right at home.</p>
+</li>
 </ul>
 <p>Every tool has its disadvantages though.</p>
 <ul>
-<li><em>Elsie</em> provides a rather low level API. While that means that you can create a slide in any way
-you like, on the other hand you also sometimes have to do some extra work to achieve results that
-are trivial in e.g. Powerpoint. TODO: lists</li>
-<li><em>Elsie</em> produces PDF slides, so it can only create animations with a single frame per slide. If you
-need 60 FPS animations or GIFs, you will be better off with e.g. PowerPoint.</li>
-<li>Currently, <em>Elsie</em> renders SVG slides to PDF using <code>Inkscape</code>. Therefore you must have it installed
-on your system for it to work. We provide a <a href="installation/#docker-installation">Docker image</a> with
-<code>Inkscape</code> for convenience.</li>
-<li>It will probably only work on Linux.</li>
+<li><em>Elsie</em> provides a rather low-level API. While that means that you can create
+  a slide in almost any way you like, you will sometimes have to roll up your sleeves
+  to achieve your desired goal. But once you implement it, just put it inside a function
+  and reuse it!</li>
+<li><em>Elsie</em> produces PDF slides, so it can only create animations with a single
+  frame per slide. If you need 60 FPS animations or GIFs in your presentations, this tool
+  is not for you.</li>
+<li>Currently, <em>Elsie</em> renders SVG slides to PDF using <code>Inkscape</code>. Therefore, you
+  must have it installed on your system for it to work. We provide a
+  <a href="installation/#docker-installation">Docker image</a> with <code>Inkscape</code> for convenience.</li>
+<li>Elsie is tested only on Linux machines, if you find a problem on a
+  different platform, do not hesitate to open a <a href="https://github.com/spirali/elsie/issues/new">GitHub issue</a>.</li>
 </ul>
-<h2 id="how-does-it-work">How does it work?<a class="headerlink" href="#how-does-it-work" title="Permanent link">#</a></h2>
-<p>TOOD: Inkscape, queries, pillow, etc.</p>
+<h2 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">#</a></h2>
+<ul>
+<li>Why do you use <code>Inkscape</code> instead of e.g. <code>Cairo</code>?
+TODO</li>
+<li>Why don't you use a known layout model, e.g. <code>flexbox</code>?
+TODO</li>
+<li>Why is there no support for lists in <code>Elsie</code>?
+TODO</li>
+</ul>
               
             </div>
           </div>
@@ -221,7 +243,6 @@ on your system for it to work. We provide a <a href="installation/#docker-instal
 </div>
     <script>var base_url = '.';</script>
     <script src="js/theme.js" defer></script>
-      <script src="search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);
@@ -233,5 +254,5 @@ on your system for it to work. We provide a <a href="installation/#docker-instal
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2020-11-03 18:00:27.233456+00:00
+Build Date UTC : 2020-12-16 17:13:17.714445+00:00
 -->
