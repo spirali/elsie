@@ -25,6 +25,7 @@ jobs:
         python -m pip install -r requirements-dev.txt
         python -m pip install .
         python -m pip install docs/mkdocs-elsie-plugin
+        python -m pip install docs/mkdocs-nedoc-plugin
     - name: Build API documentation
       run: |
         python -m nedoc build
