@@ -49,10 +49,12 @@ updateState(active_step);
 
 
 CSS = """
+.elsie-slide {
+    margin-bottom: 20px;
+}
 .elsie-controls {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
 }
 .elsie-controls * {
     margin: 0 10px;
@@ -70,7 +72,7 @@ def render_slide(slide: Slide) -> str:
 
     slide_id = f"elsie-slide-{uuid.uuid4().hex}"
     content = f"""
-<div class="{slide_id}">
+<div class="elsie-slide {slide_id}">
     {fragments_text}
 </div>
 """
@@ -81,10 +83,8 @@ def render_slide(slide: Slide) -> str:
     <div class="elsie-current-step">Step: 1</div>
     <button class="elsie-next">></button>
 </div>
-{get_javascript(len(fragments), slide_id)}
-<style>{CSS}</style>"""
-
-    return content
+{get_javascript(len(fragments), slide_id)}"""
+    return content + f"<style>{CSS}</style>"
 
 
 # https://stackoverflow.com/a/22424821/1107768

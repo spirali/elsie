@@ -15,9 +15,15 @@ nav:
   - getting_started.md
   - showcase.md
   - User guide:
-    - userguide/boxes.md
+    - userguide/layout.md
+    - userguide/revealing.md
+    - userguide/text.md
+    - userguide/syntax_highlighting.md
+    - userguide/images.md
+    - userguide/shapes.md
   - Cookbook:
     - cookbook/lists.md
+    - cookbook/postprocessing.md
   - API reference:
     - API documentation: apidoc
 

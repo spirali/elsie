@@ -10,15 +10,22 @@ You can optionally use the following parameters:
 - height=<int>: Height of the resulting image.
 - type=<lib, render>: If `type` is `lib`, do not render the code block as a slide, but use it as
 a library function for futher slides on the page.
+- border=<yes, no>: Whether to draw a border around the slide.
 
 Example:
 ```elsie,width=300,height=300
 slide.box().text("Hello world")
 ```
 """
+import contextlib
+import os
+from os.path import abspath, dirname
 from typing import List
 
 from mkdocs.plugins import BasePlugin
+
+CURRENT_DIR = dirname(abspath(__file__))
+ROOT_DIR = dirname(dirname(dirname(CURRENT_DIR)))
 
 
 def is_fence_delimiter(line):
@@ -48,9 +55,29 @@ class CodeContext:
         return "\n".join(self.lib)
 
 
-def render_slide(code: List[str], ctx: CodeContext, width: int, height: int) -> str:
+def trim_indent(lines):
+    min_indent = min(len(line) - len(line.lstrip()) for line in lines)
+    return [line[min_indent:] for line in lines]
+
+
+@contextlib.contextmanager
+def change_cwd(directory: str):
+    cwd = os.getcwd()
+    os.chdir(directory)
+    try:
+        yield
+    finally:
+        os.chdir(cwd)
+
+
+def render_slide(code: List[str],
+                 ctx: CodeContext,
+                 width: int,
+                 height: int,
+                 border: bool) -> str:
     # TODO: render to PNG
-    code = "\n".join(code)
+    border_str = """slide.rect(color="black")""" if border else ""
+    code = "\n".join(trim_indent(code))
     template = f"""
 import elsie
 from elsie.box import Box
@@ -60,6 +87,7 @@ from elsie.jupyter import render_slide
 
 slides = elsie.Slides(width={width}, height={height}, name_policy="ignore")
 slide = slides.new_slide()
+{border_str}
 {code}
 
 result = render_slide(slide.slide)
@@ -67,7 +95,9 @@ result = render_slide(slide.slide)
 
     locals = {}
     code_object = compile(template, "elsie_render.py", "exec")
-    exec(code_object, locals) # Sorry
+
+    with change_cwd(os.path.join(ROOT_DIR, "docs")):
+        exec(code_object, locals)  # Sorry
     return locals["result"]
 
 
@@ -117,8 +147,13 @@ class ElsiePlugin(BasePlugin):
                 elif type == "render":
                     width = args.get("width", 300)
                     height = args.get("height", 300)
+                    border = args.get("border", "yes")
 
-                    lines = render_slide(fence_lines, ctx, width=width, height=height).splitlines(
+                    lines = render_slide(fence_lines,
+                                         ctx,
+                                         width=width,
+                                         height=height,
+                                         border=border == "yes").splitlines(
                         keepends=False)
                 return elsie_to_python_header(header), lines
             return header, []
