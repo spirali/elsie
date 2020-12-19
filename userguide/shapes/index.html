@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Stanislav Böhm">
+  <link rel="canonical" href="https://spirali.github.io/elsie/userguide/shapes/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Shapes - Elsie</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Shapes";
+    var mkdocs_page_input_path = "userguide/shapes.md";
+    var mkdocs_page_url = "/elsie/userguide/shapes/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-V9H5Q6FZ6D', 'https://spirali.github.io/elsie/');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Elsie</a>
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../getting_started/">Getting started</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../showcase/">Showcase</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">User guide</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../layout/">Layout</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../revealing/">Fragments</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../text/">Text</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../syntax_highlighting/">Syntax highlighting</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../images/">Images</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Shapes</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#rectangles">Rectangles</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#geometrical-shapes">Geometrical shapes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#line-and-polygon">Line and Polygon</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#arrow-head">Arrow head</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#path">Path</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#chaining-box-items">Chaining box items</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#modification-of-lazypoints">Modification of LazyPoints</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Cookbook</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/postprocessing/">Slide post-processing</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">API reference</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="../../apidoc">API documentation</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Elsie</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>User guide &raquo;</li>
+        
+      
+    
+    <li>Shapes</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/spirali/elsie/blob/master/docs/userguide/shapes.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="shapes">Shapes<a class="headerlink" href="#shapes" title="Permanent link">#</a></h1>
+<h3 id="rectangles">Rectangles<a class="headerlink" href="#rectangles" title="Permanent link">#</a></h3>
+<p>The simplest box items are rectangles, they are created by calling <code>.rect(..)</code>
+method on a box. The position and size of a rectangle is taken from the box. A
+<code>rectangle</code> method takes the following parameters:</p>
+<ul>
+<li><code>color</code> (<code>str</code> or <code>None</code>) -- Defines a color that is used to draw a rectangle. If <code>None</code> no rectangle is drawn. (Default <code>None</code>)</li>
+<li><code>stroke_width</code> (a number) -- Defines thickness of the drawn rectangle</li>
+<li><code>stroke_dasharray</code> (<code>str</code> or <code>None</code>) -- Defines pattern of dashes and gaps to paint a rectangle. More information: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray</li>
+<li><code>bg_color</code> (<code>str</code> or <code>None</code>) -- Defines a color that is used to fill the rectangle.</li>
+<li><code>rx</code> and <code>ry</code> -- Defines a radius of round corners of the rectangle. See https://developer.mozilla.org/en-US/docs/Web/SVG/Element/rect.</li>
+</ul>
+<pre><code class="language-python">@elsie.slide()
+def rectangle(slide):
+    box = slide.box(x=&quot;[50%]&quot;, y=&quot;[50%]&quot;, width=&quot;80%&quot;, height=300)
+    box.rect(bg_color=&quot;green&quot;, color=&quot;red&quot;, stroke_width=10, stroke_dasharray=&quot;10 4&quot;, rx=20, ry=20)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/rectangle.png"></p>
+<h2 id="geometrical-shapes">Geometrical shapes<a class="headerlink" href="#geometrical-shapes" title="Permanent link">#</a></h2>
+<p>Elsie allows to draw additional shapes: (poly)line, polygon, and a generic path.
+On top of that, Elsie offers an abstraction for arrow heads that can be placed
+on the ends of a line or a path.</p>
+<h3 id="line-and-polygon">Line and Polygon<a class="headerlink" href="#line-and-polygon" title="Permanent link">#</a></h3>
+<p>Both polygon and line takes a list of points as the first argument.
+A point can be defines as:</p>
+<ul>
+<li>A 2-tuple <code>(x_value, y_value)</code> where <code>x_value</code> (resp <code>y_value</code>) that are passed to method <code>.x(..)</code> (resp <code>.y(..)</code>) of the box holding the line/polygon.</li>
+<li>A dynamic point obtained by calling <code>.p(x_value, y_value)</code> of any box.</li>
+</ul>
+<p>TODO</p>
+<h3 id="arrow-head">Arrow head<a class="headerlink" href="#arrow-head" title="Permanent link">#</a></h3>
+<p>An arrow head is be defined by instantiating class <code>elsie.Arrow</code>
+that takes the following attributes:</p>
+<ul>
+<li><code>size</code> - The size of the arrow head</li>
+<li><code>angle</code> - The main angle of arrow head</li>
+<li><code>stroke_width</code> - If <code>None</code> then the arrow head is filled area, otherwise it defines the thickness of the line that is used to draw the arrow head.</li>
+<li><code>inner</code> - How the inner point of the arrow is moved. Value 1.0 has no
+  effect, value bigger than 1.0 produce a diamond shape, value smaller than 1.0
+  produce a more sharp arrow. See the effect in the picture below. The move of
+  the point is the proportional to the size of the arrow.</li>
+</ul>
+<p><img src="imgs/arrows.png"/></p>
+<p>Note: That the head defines only the shape, not the color. The color is taken from the line where the arrow head is attached.</p>
+<h2 id="path">Path<a class="headerlink" href="#path" title="Permanent link">#</a></h2>
+<p>TODO</p>
+<h2 id="chaining-box-items">Chaining box items<a class="headerlink" href="#chaining-box-items" title="Permanent link">#</a></h2>
+<p>TODO</p>
+<h2 id="modification-of-lazypoints">Modification of LazyPoints<a class="headerlink" href="#modification-of-lazypoints" title="Permanent link">#</a></h2>
+<p>TODO</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../cookbook/lists/" class="btn btn-neutral float-right" title="Lists">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../images/" class="btn btn-neutral" title="Images"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/spirali/elsie/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../images/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../../cookbook/lists/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Stanislav Böhm">
+  <link rel="canonical" href="https://spirali.github.io/elsie/userguide/syntax_highlighting/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Syntax highlighting - Elsie</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Syntax highlighting";
+    var mkdocs_page_input_path = "userguide/syntax_highlighting.md";
+    var mkdocs_page_url = "/elsie/userguide/syntax_highlighting/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-V9H5Q6FZ6D', 'https://spirali.github.io/elsie/');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Elsie</a>
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../getting_started/">Getting started</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../showcase/">Showcase</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">User guide</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../layout/">Layout</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../revealing/">Fragments</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../text/">Text</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Syntax highlighting</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#differences-to-text">Differences to text</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#line-numbering">Line numbering</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#line-and-inline-boxes">Line and inline boxes</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../images/">Images</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../shapes/">Shapes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Cookbook</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/postprocessing/">Slide post-processing</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">API reference</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="../../apidoc">API documentation</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Elsie</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>User guide &raquo;</li>
+        
+      
+    
+    <li>Syntax highlighting</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/spirali/elsie/blob/master/docs/userguide/syntax_highlighting.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="syntax-highlighting">Syntax highlighting<a class="headerlink" href="#syntax-highlighting" title="Permanent link">#</a></h1>
+<p><em>Elsie</em> uses <code>Pygments</code> to provide syntax highlighting. You can use any supported language from
+this <a href="https://pygments.org/languages">list</a>.</p>
+<p>You can use the <a href="https://spirali.github.io/elsie//apidoc/elsie.boxmixin.BoxMixin.html#f_code"><code>code</code></a> function on a
+<a href="https://spirali.github.io/elsie//apidoc/elsie.boxmixin.BoxMixin.html"><code>Box</code></a> to render text with syntax highlighting. The first parameter of the
+function is the language syntax that should be highlighted.</p>
+<pre><code class="language-python">slide.box().code(&quot;python&quot;, &quot;&quot;&quot;
+name = &quot;Elsie&quot;
+print(&quot;Hello&quot;, name)
+&quot;&quot;&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-dc444a09bb5248beb54bebc6a410d44a">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='150'><rect x='0' y='0' width='300' height='150' style='fill:none;stroke:black;stroke-width:1' /><text x='32.6905' y='71.0' text-anchor='start' font-family='monospace' font-size='20' style='fill:#222;'><tspan font-variant-numeric='lining-nums'><tspan xml:space='preserve'>name</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve' style='fill:#666666;'>=</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>"</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>Elsie</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>"</tspan></tspan><tspan xml:space='preserve' x='32.6905' dy='24.0' font-family='monospace' font-size='20' style='fill:#222;'><tspan xml:space='preserve' style='fill:#008000;'>print</tspan><tspan xml:space='preserve'>(</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>"</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>Hello</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>"</tspan><tspan xml:space='preserve'>,</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve'>name</tspan><tspan xml:space='preserve'>)</tspan></tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h3 id="differences-to-text">Differences to <code>text</code><a class="headerlink" href="#differences-to-text" title="Permanent link">#</a></h3>
+<p><code>box.code()</code> behaves similarly to the <code>box.text()</code> method, with two exceptions:</p>
+<ul>
+<li>The <code>code()</code> method uses text style <code>code</code> as a base style (instead of <code>default</code>).</li>
+<li>If you want to use inline styles, you have to explicitly enable them by setting <code>use_styles=True</code>.</li>
+</ul>
+<h3 id="line-numbering">Line numbering<a class="headerlink" href="#line-numbering" title="Permanent link">#</a></h3>
+<p>You can render line numbers using the parameter <code>line_numbers</code>. The style of line numbers can be
+modified by changing the <code>code_lineno</code> style.</p>
+<pre><code class="language-python">style = slide.get_style(
+    &quot;code_lineno&quot;,
+    full_style=False
+).compose(elsie.TextStyle(color=&quot;red&quot;))
+slide.set_style(&quot;code_lineno&quot;, style)
+
+slide.box().code(&quot;python&quot;, &quot;&quot;&quot;
+a = 1
+b = 2
+c = 3
+&quot;&quot;&quot;, line_numbers=True)
+</code></pre>
+<div class="elsie-slide elsie-slide-21ad7298466a477a99fef89125b1648f">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='109.2334' y='134.0' text-anchor='start' font-family='monospace' font-size='20' style='fill:#222;'><tspan font-variant-numeric='lining-nums'><tspan xml:space='preserve' style='fill:red;'>1&#160;</tspan><tspan xml:space='preserve'>a</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve' style='fill:#666666;'>=</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve' style='fill:#666666;'>1</tspan></tspan><tspan xml:space='preserve' x='109.2334' dy='24.0' font-family='monospace' font-size='20' style='fill:#222;'><tspan xml:space='preserve' style='fill:red;'>2&#160;</tspan><tspan xml:space='preserve'>b</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve' style='fill:#666666;'>=</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve' style='fill:#666666;'>2</tspan></tspan><tspan xml:space='preserve' x='109.2334' dy='24.0' font-family='monospace' font-size='20' style='fill:#222;'><tspan xml:space='preserve' style='fill:red;'>3&#160;</tspan><tspan xml:space='preserve'>c</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve' style='fill:#666666;'>=</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve' style='fill:#666666;'>3</tspan></tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h3 id="line-and-inline-boxes">Line and inline boxes<a class="headerlink" href="#line-and-inline-boxes" title="Permanent link">#</a></h3>
+<p>The <a href="TODO"><code>text</code></a> and <a href="TODO"><code>code</code></a> methods return a special <a href="TODO"><code>TextBoxItem</code></a> item that has
+the following two extra methods:</p>
+<ul>
+<li><code>line_box(line_number, ...)</code> creates a box around a specified line (line numbers are counted from
+0). Other arguments are forwarded to the box. You can use this to create e.g. colored boxes around
+some code lines.</li>
+</ul>
+<pre><code class="language-python">box = slide.box().code(&quot;python&quot;, &quot;&quot;&quot;
+name = &quot;Elsie&quot;
+print(&quot;Hello&quot;, name)
+&quot;&quot;&quot;)
+
+box.line_box(1, z_level=-1).rect(bg_color=&quot;orange&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-1f264e7e444544499372b90045298adb">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='150'><rect x='32.6905' y='75.0' width='234.619' height='25.0' style='fill:orange;stroke:none' /><rect x='0' y='0' width='300' height='150' style='fill:none;stroke:black;stroke-width:1' /><text x='32.6905' y='71.0' text-anchor='start' font-family='monospace' font-size='20' style='fill:#222;'><tspan font-variant-numeric='lining-nums'><tspan xml:space='preserve'>name</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve' style='fill:#666666;'>=</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>"</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>Elsie</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>"</tspan></tspan><tspan xml:space='preserve' x='32.6905' dy='24.0' font-family='monospace' font-size='20' style='fill:#222;'><tspan xml:space='preserve' style='fill:#008000;'>print</tspan><tspan xml:space='preserve'>(</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>"</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>Hello</tspan><tspan xml:space='preserve' style='fill:#BA2121;'>"</tspan><tspan xml:space='preserve'>,</tspan><tspan xml:space='preserve'>&#160;</tspan><tspan xml:space='preserve'>name</tspan><tspan xml:space='preserve'>)</tspan></tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<ul>
+<li><code>inline_box(style_name, nth=1, ...)</code> creates a box around text which is wrapped with the given
+style. If there are multiple occurrences of the specified inline style, you can specify which one
+do you want by the <code>nth</code> argument. <code>style_name</code> can be any existing style name or a dummy style that
+starts with the <code>"#"</code> character. Dummy  styles do not have to be defined and they do not have any
+visual effect. They serve purely for defining inline boxes.</li>
+</ul>
+<pre><code class="language-python">text_item = slide.box().text(&quot;&quot;&quot;This is a long
+text ~#A{that} takes
+3 lines.
+&quot;&quot;&quot;)
+
+text_item.inline_box(&quot;#A&quot;, z_level=-1).rect(bg_color=&quot;green&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-18b4c9f664fa408ead0b9ccda0093a8a">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='112.3066' y='133.2' width='55.4941' height='34.6' style='fill:green;stroke:none' /><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='127.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>This&#160;is&#160;a&#160;long</tspan><tspan xml:space='preserve' x='150.0' dy='33.6' font-family='sans-serif' font-size='28' style='fill:black;'>text&#160;<tspan xml:space='preserve'>that</tspan>&#160;takes</tspan><tspan xml:space='preserve' x='150.0' dy='33.6' font-family='sans-serif' font-size='28' style='fill:black;'>3&#160;lines.</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>Note that boxes created by <code>line_box</code> and <code>inline_box</code> are always created after the box containing
+the text. Therefore, to render them below the text, you have to use the <code>z_level</code> or <code>below</code>
+parameters.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../images/" class="btn btn-neutral float-right" title="Images">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../text/" class="btn btn-neutral" title="Text"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/spirali/elsie/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../text/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../images/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

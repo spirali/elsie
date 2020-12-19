@@ -71,7 +71,17 @@
                 </ul>
                 <p class="caption"><span class="caption-text">User guide</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/boxes/">Boxes</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/layout/">Layout</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/revealing/">Fragments</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/text/">Text</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/syntax_highlighting/">Syntax highlighting</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/images/">Images</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/shapes/">Shapes</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
@@ -79,6 +89,8 @@
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Lists</a>
     <ul class="current">
     </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../postprocessing/">Slide post-processing</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">API reference</span></p>
@@ -130,7 +142,7 @@
 support in <em>Elsie</em> for creating lists, it is easy to create your own function for it
 and customize it for your use case.</p>
 <p>For example, here is a simple function that will create a new list item in the given
-parent <a href="../../userguide/boxes/">Box</a>. The <code>level</code> parameter selects the nesting level of the list
+parent <a href="../userguide/boxes.md">Box</a>. The <code>level</code> parameter selects the nesting level of the list
 item.</p>
 <pre><code class="language-python">def list_item(parent: Box, level=0, show=&quot;last+&quot;, **box_args) -&gt; Box:
     b = parent.box(x=level * 25, horizontal=True, show=show, **box_args)
@@ -144,11 +156,23 @@ list_item(l).text(&quot;Item 2&quot;)
 list_item(l, level=1).text(&quot;(nested) Item 3&quot;)
 list_item(l).text(&quot;Item 4&quot;)
 </code></pre>
-<div class="elsie-slide-1bd63a1dd63444deb63229663ff1b772">
-    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><text x='143.88549999999998' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='198.96654999999998' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Item&#160;1</tspan></text><text x='143.88549999999998' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='198.85719999999998' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Item&#160;2</tspan></text><text x='168.88549999999998' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='287.5' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(nested)&#160;Item&#160;3</tspan></text><text x='143.88549999999998' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='199.4724' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Item&#160;4</tspan></text></svg></div>
+<div class="elsie-slide elsie-slide-fba03de055a347a590de57e0b2f1c434">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><rect x='0' y='0' width='500' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='143.88549999999998' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='198.96654999999998' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Item&#160;1</tspan></text><text x='143.88549999999998' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='198.85719999999998' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Item&#160;2</tspan></text><text x='168.88549999999998' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='287.5' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(nested)&#160;Item&#160;3</tspan></text><text x='143.88549999999998' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='199.4724' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Item&#160;4</tspan></text></svg></div>
 </div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
 
-<p>Using <a href="../userguide/revealing.md">revealing</a>, you can easily create list items that are revealed
+<p>Using <a href="../../userguide/revealing/">revealing</a>, you can easily create list items that are revealed
 step by step:</p>
 <pre><code class="language-python">l = slide.box()
 list_item(l).text(&quot;Appears in step 1&quot;)
@@ -156,13 +180,13 @@ list_item(l, show=&quot;next+&quot;).text(&quot;Appears in step 2&quot;)
 list_item(l, level=1).text(&quot;(nested) Appears in step 2&quot;)
 list_item(l, show=&quot;next+&quot;).text(&quot;Appears in step 3&quot;)
 </code></pre>
-<div class="elsie-slide-366f2415a08d46f080190c38e195d364">
-    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><text x='66.45500000000001' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.5115' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;1</tspan></text></svg></div>
-<div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><text x='66.45500000000001' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.5115' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;1</tspan></text><text x='66.45500000000001' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.4025' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;2</tspan></text><text x='91.45500000000001' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='287.5' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(nested)&#160;Appears&#160;in&#160;step&#160;2</tspan></text></svg></div>
-<div class='elsie-step step-3'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><text x='66.45500000000001' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.5115' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;1</tspan></text><text x='66.45500000000001' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.4025' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;2</tspan></text><text x='91.45500000000001' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='287.5' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(nested)&#160;Appears&#160;in&#160;step&#160;2</tspan></text><text x='66.45500000000001' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.68250000000003' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;3</tspan></text></svg></div>
+<div class="elsie-slide elsie-slide-fc26a8e5ed514376b16636a2673f12c6">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><rect x='0' y='0' width='500' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='66.45500000000001' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.5115' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;1</tspan></text></svg></div>
+<div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><rect x='0' y='0' width='500' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='66.45500000000001' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.5115' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;1</tspan></text><text x='66.45500000000001' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.4025' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;2</tspan></text><text x='91.45500000000001' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='287.5' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(nested)&#160;Appears&#160;in&#160;step&#160;2</tspan></text></svg></div>
+<div class='elsie-step step-3'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><rect x='0' y='0' width='500' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='66.45500000000001' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.5115' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;1</tspan></text><text x='66.45500000000001' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.4025' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;2</tspan></text><text x='91.45500000000001' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='287.5' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(nested)&#160;Appears&#160;in&#160;step&#160;2</tspan></text><text x='66.45500000000001' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.68250000000003' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;3</tspan></text></svg></div>
 </div>
 
-<div class="elsie-controls elsie-slide-366f2415a08d46f080190c38e195d364">
+<div class="elsie-controls elsie-slide-fc26a8e5ed514376b16636a2673f12c6">
     <button class="elsie-previous"><</button>
     <div class="elsie-current-step">Step: 1</div>
     <button class="elsie-next">></button>
@@ -170,7 +194,7 @@ list_item(l, show=&quot;next+&quot;).text(&quot;Appears in step 3&quot;)
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 3;
-var slide_id = ".elsie-slide-366f2415a08d46f080190c38e195d364";
+var slide_id = ".elsie-slide-fc26a8e5ed514376b16636a2673f12c6";
 
 function getSelector(selector) {
     return slide_id + " > " + selector;
@@ -205,10 +229,12 @@ document.querySelector(getSelector(".elsie-previous")).addEventListener('click',
 updateState(active_step);
 })()</script>
 <style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
 .elsie-controls {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
 }
 .elsie-controls * {
     margin: 0 10px;
@@ -224,8 +250,10 @@ and write a function that will render it as a set of lines with bullet points us
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="../postprocessing/" class="btn btn-neutral float-right" title="Slide post-processing">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-        <a href="../../userguide/boxes/" class="btn btn-neutral" title="Boxes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+        <a href="../../userguide/shapes/" class="btn btn-neutral" title="Shapes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -253,8 +281,10 @@ and write a function that will render it as a set of lines with bullet points us
           <a href="https://github.com/spirali/elsie/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../../userguide/boxes/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../userguide/shapes/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
+      
+        <span style="margin-left: 15px"><a href="../postprocessing/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

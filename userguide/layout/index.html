@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Stanislav Böhm">
+  <link rel="canonical" href="https://spirali.github.io/elsie/userguide/layout/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Layout - Elsie</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Layout";
+    var mkdocs_page_input_path = "userguide/layout.md";
+    var mkdocs_page_url = "/elsie/userguide/layout/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-V9H5Q6FZ6D', 'https://spirali.github.io/elsie/');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Elsie</a>
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../getting_started/">Getting started</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../showcase/">Showcase</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">User guide</span></p>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Layout</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#creating-boxes">Creating boxes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tree-of-boxes">Tree of boxes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#box-naming">Box naming</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#width-and-height">Width and Height</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#box-aliases">Box aliases</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#padding">Padding</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#box-position">Box Position</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#default-position">Default position</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dynamic-positions">Dynamic positions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#modifying-painting-order">Modifying painting order</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../revealing/">Fragments</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../text/">Text</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../syntax_highlighting/">Syntax highlighting</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../images/">Images</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../shapes/">Shapes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Cookbook</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/postprocessing/">Slide post-processing</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">API reference</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="../../apidoc">API documentation</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Elsie</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>User guide &raquo;</li>
+        
+      
+    
+    <li>Layout</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/spirali/elsie/blob/master/docs/userguide/layout.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="layout">Layout<a class="headerlink" href="#layout" title="Permanent link">#</a></h1>
+<p>The most prominent objects in Elsie are boxes. They serve as a layout mechanism
+and the way how to put a content into a slide.</p>
+<h3 id="creating-boxes">Creating boxes<a class="headerlink" href="#creating-boxes" title="Permanent link">#</a></h3>
+<p>Let us create the following example, where 3 boxes are created from the
+top-level box. The new box is created by calling <code>.box(...)</code> on an existing box.
+The parameter <code>slide</code> passed into the slide function is also a box.</p>
+<pre><code class="language-python">@elsie.slide()
+def boxdemo1(slide):
+    slide.box().text(&quot;Box 1&quot;)
+    slide.box().text(&quot;Box 2&quot;)
+    slide.box().text(&quot;Box 3&quot;)
+</code></pre>
+<p>The code will create the following slide:</p>
+<p><img width="512px" height="384px" src="slide_imgs/boxdemo0.png"></p>
+<p>Boxes do not produce any visible content but it influence positions of other
+elements. To see where the boxes are, we can switch on the box debug mode:</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def boxdemo1(slide):
+    slide.box().text(&quot;Box 1&quot;)
+    slide.box().text(&quot;Box 2&quot;)
+    slide.box().text(&quot;Box 3&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/boxdemo1.png"></p>
+<p>Here we see the four boxes, the top-level box representing the whole slide and
+three inner boxes.</p>
+<p>Newly created boxes have the following behavior as default:
+- It occupies as less space as possible (in our case is only as big as it could
+  contain the text)
+- Boxes are put verticaly in the order as they were defined
+- They are centered vertically and horizontally.</p>
+<p>In the text below, we will see how these default positioning and sizes can be changed.</p>
+<p>Boxes can be hierarchically composed (parameter <code>padding</code> creates a padding in
+all directions, it will be explained later).</p>
+<pre><code class="language-python">slide.box(padding=40).box(padding=40).box(padding=40).text(&quot;Box 1&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/composition.png"></p>
+<h3 id="tree-of-boxes">Tree of boxes<a class="headerlink" href="#tree-of-boxes" title="Permanent link">#</a></h3>
+<p>Boxes creates a tree of <em>boxes</em> and <em>box items</em>. Boxes creates layout and box items
+represents paitable contant as text, pictures, etc.
+Box items are always leaves of the tree and does not contain child boxes.</p>
+<p>When a slide is rendered, the box tree is traversed in depth-first way and each child is visited in the order in which it was defined.</p>
+<p>This can be modified by parameters <code>above</code>, <code>below</code> and z-level, see <a href="#modifying-painting-order">Modifying painting order</a>.</p>
+<p>Allmost all methods on box creates a new boxes (e.g. <code>box</code>) or box items (e.g. <code>text</code> or <code>rect</code>). Actually all these methods are also provided by box items; however as box items cannot directly contain its own child elements, they are created in the parent box of the box item. Therefore the following two slides creates the equivalent slides:</p>
+<pre><code class="language-python">@elsie.slide()
+def textrect_v1(slide):
+    box = slide.box()
+    box.rect(bg_color=&quot;#aaf&quot;)
+    box.text(&quot;Hello!&quot;)
+
+@elsie.slide()
+def textrect_v2(slide):
+    slide.box().rect(bg_color=&quot;#aaf&quot;).text(&quot;Hello!&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/textrect.png"></p>
+<h3 id="box-naming">Box naming<a class="headerlink" href="#box-naming" title="Permanent link">#</a></h3>
+<p>Box can be named by calling <code>.box(name="Box name")</code>. It has no impact on
+normal rendering of the slide. The name of slide is shown when
+argument <code>debug_boxes=True</code> is used.</p>
+<p>The name of the top-level slide is name of the slide function when the decorator
+<code>@elsie.slide()</code> is used to create the slide.</p>
+<h3 id="width-and-height">Width and Height<a class="headerlink" href="#width-and-height" title="Permanent link">#</a></h3>
+<p>Width and height of a box can be changed by setting <code>width</code> and <code>height</code> arguments when calling <code>.box(...)</code> method.</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def sizedemo1(slide):
+    slide.box().text(&quot;Box 1&quot;)
+    slide.box(width=300, height=100).text(&quot;Box 2&quot;)
+    slide.box(width=&quot;100%&quot;).text(&quot;Box 3&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/sizedemo1.png"></p>
+<p>These paramters define <strong>minimal</strong> size of the box. This mean that when its
+content (child boxes, texts, etc.) request a bigger size, the box will use the
+requested size of the content.</p>
+<p>The value should be one of the following:</p>
+<ul>
+<li><code>None</code> (default): No minimal size request</li>
+<li><code>int</code>, <code>float</code>, or a string containg only digits: Size defined in pixels</li>
+<li>String in format <code>"XX%"</code> where XX is a number (e.g. <code>"50%"</code>): Size defined
+  in percentage of the parent box size.</li>
+<li>String <code>"fill"</code> or <code>"fill(XX)"</code> where XX is a number. The box fills all
+  available space of the parent box. If more boxes on the same level use filling
+  value then the size is distributed respecting the ratio of parameters. For
+  example, when one box has argument <code>fill(2)</code> and second one <code>fill(3)</code>,
+  remaining size will be divided in ratio 2:3. Value <code>"fill"</code> is shortcut for
+  <code>"fill(1)"</code>.</li>
+</ul>
+<p>The following code shows example of "fill" usage:</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def filldemo1(slide):
+    slide.box().text(&quot;Box 1&quot;)
+    slide.box(width=300, height=100).text(&quot;Box 2&quot;)
+    slide.box(height=&quot;fill&quot;).text(&quot;Box 3&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/filldemo1.png"></p>
+<h3 id="box-aliases">Box aliases<a class="headerlink" href="#box-aliases" title="Permanent link">#</a></h3>
+<p>New box can be created also by calling methods <code>fbox</code>, <code>sbox</code>, and <code>overlay</code>.</p>
+<ul>
+<li>Method <code>fbox(...)</code> (fill-box) is a shortcut for calling <code>box(width="fill", height="fill", ...)</code>.</li>
+<li>Method <code>sbox(...)</code> (stretch-box) is a shortcut for
+calling <code>box(width="fill", ...)</code> if the parent box is vertical and
+<code>box(width="fill", ...)</code> if the parent box is horizontal.
+In other words, it fills the box in the unmanaged direction.</li>
+<li>Method <code>overlay(..)</code> is a shortcut for <code>box(x=0, y=0, width="100%", height="100%)</code>.</li>
+</ul>
+<h3 id="padding">Padding<a class="headerlink" href="#padding" title="Permanent link">#</a></h3>
+<p>By default, box gives all its space to its children. This can be controlled by
+padding. There are four padding values: left, right, top, and bottom. There are
+controlled by parameters <code>p_left</code>, <code>p_right</code>, <code>p_top</code>, and <code>p_bottom</code>.
+After the layout of parent box is computed and the final size and position is
+given to a box, padding shrinks its size in the specified directions.</p>
+<p>Padding can also be set through the following parameters:
+* <code>p_x</code> that sets <code>p_left</code> and <code>p_right</code>
+* <code>p_y</code> that sets <code>p_top</code> and <code>p_bottom</code>
+* <code>padding</code> that sets all four paddings.</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def padding_demo(slide):
+    slide.box(width=200, height=200, p_left=100, name=&quot;Top box&quot;)
+    slide.box(width=200, height=&quot;fill&quot;, p_y=100, name=&quot;Bottom box&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/padding_demo.png"></p>
+<h3 id="box-position">Box Position<a class="headerlink" href="#box-position" title="Permanent link">#</a></h3>
+<p>Position of box can be set by arguments <code>x</code> and <code>y</code>. The allowed values are:</p>
+<ul>
+<li><code>None</code> (default) -- see below.</li>
+<li><code>int</code>, <code>float</code>, or string containing only digits -- absolute position of
+  in pixels. Coordinates are relative to top-left corner of the parent box.</li>
+<li>string <code>"XX%</code> where XX is a number -- position in the parent box where 0% is left (for <code>x</code>) or top (for <code>y</code>) edge of the box and 100% is right (for <code>x</code>) or bottom (for <code>y</code>) edge of the box.</li>
+<li>string <code>"[XX%]</code> where XX is a number -- aligning box in the parent box. <code>"[0%]"</code> is left (resp. top), <code>"[50%]</code> is a middle, and <code>"[100%]"</code> is right (resp. bottom).</li>
+<li>Dynamically defined position -- see below.</li>
+</ul>
+<h3 id="default-position">Default position<a class="headerlink" href="#default-position" title="Permanent link">#</a></h3>
+<p>The default position is influenced by configuration of the parent box.
+When the parent box is vertical (default behavior),
+the value for x-axis equivalent to <code>"[50%]"</code>, i.e. centering horizontally.</p>
+<p>Fox y-axis, the behavior is a more complex. When a box have <code>y</code> attribtue set
+to <code>None</code> then we call such a box as <em>managed box</em>. A box takes its all
+children boxes that are managed and stack them one-by-one while centering the
+resulting composite object. The behavior can be observed in the <code>boxdemo1</code> at
+the beginning of the user guide.</p>
+<p><img width="512px" height="384px" src="slide_imgs/boxdemo1.png"></p>
+<p>The vertical stacking can be switched
+to horizontal by <code>horizontal=True</code> in box construction.
+In such case, children boxes are stacked by x-axis and <code>"[50%]"</code> is default for y-axis.</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def horizontal(slide):
+    parent = slide.box(width=&quot;100%&quot;, height=&quot;100%&quot;, horizontal=True)
+    parent.box().text(&quot;Box 1&quot;)
+    parent.box().text(&quot;Box 2&quot;)
+    parent.box().text(&quot;Box 3&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/horizontal.png"></p>
+<h3 id="dynamic-positions">Dynamic positions<a class="headerlink" href="#dynamic-positions" title="Permanent link">#</a></h3>
+<p>Box position can be defined dynamically with respect to other boxes. Calling
+method <code>x</code> (resp. <code>y</code>) on a box returns a proxy object that returns real
+position when the layout is computed. The reference point is the left top corner
+of the box.</p>
+<p>Arguments can be:</p>
+<ul>
+<li>an integer or float -- the constant added to the reference point</li>
+<li>a string in form <code>"XX%"</code> where XX is an integer -- the ratio of the size of the box added to the reference point</li>
+</ul>
+<p>For example:</p>
+<ul>
+<li>.x("0%") returns the most left coordinate of the box.</li>
+<li>.x("50%") returns "x" coordinate of the middle of the box.</li>
+<li>.x("100%") return the most right coordinate of the box.</li>
+<li>.x(10) returns the most left edge of th box + 10.</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-python">@elsie.slide(debug_boxes=True)
+def horizontal(slide):
+    b = slide.box(width=100, height=100, name=&quot;First&quot;)
+    slide.box(x=b.x(&quot;50%&quot;), y=b.y(&quot;50%&quot;), width=100, height=100, name=&quot;Second&quot;)
+    slide.box(x=0, y=b.y(&quot;100%&quot;), width=&quot;100%&quot;, height=200, name=&quot;Third&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/xy.png"></p>
+<h3 id="modifying-painting-order">Modifying painting order<a class="headerlink" href="#modifying-painting-order" title="Permanent link">#</a></h3>
+<p>By default, boxes are painted by the depth-first walk through the box tree.
+Each child is visited in the order in which it was defined.</p>
+<p>In the following example, the blue box is painted over all previous boxes as it is defined the last.</p>
+<pre><code class="language-python">@elsie.slide()
+def paiting1(slide):
+    slide.box(x=&quot;[40%]&quot;, y=&quot;[40%]&quot;, width=300, height=300).rect(bg_color=&quot;red&quot;)
+    slide.box(x=&quot;[60%]&quot;, y=&quot;[50%]&quot;, width=300, height=300).rect(bg_color=&quot;green&quot;)
+    slide.box(x=&quot;[30%]&quot;, y=&quot;[60%]&quot;, width=300, height=300).rect(bg_color=&quot;blue&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/paiting1.png"></p>
+<p>The order in inside box can be defined by attributes <code>below</code> and <code>above</code> that takes another child in the box (box or box item) and creates new directly below or above given object.</p>
+<p><img width="512px" height="384px" src="slide_imgs/paiting2.png"></p>
+<pre><code class="language-python">@elsie.slide()
+def paiting2(slide):
+    red = slide.box(x=&quot;[40%]&quot;, y=&quot;[40%]&quot;, width=300, height=300)
+    red.rect(bg_color=&quot;red&quot;)
+    slide.box(x=&quot;[60%]&quot;, y=&quot;[50%]&quot;, width=300, height=300).rect(bg_color=&quot;green&quot;)
+    slide.box(below=red, x=&quot;[30%]&quot;, y=&quot;[60%]&quot;, width=300, height=300).rect(bg_color=&quot;blue&quot;)
+</code></pre>
+<p>To modify drawing order even across boxes can be modified by <code>z_level</code>. Before
+final drawing, all drawing elements is stable sorted by <code>z_level</code>. It causes
+that an element with a higher <code>z_level</code> is drawn <em>after</em> an element with a
+lower <code>z_level</code>. If <code>z_level</code> is not specified, it is inherited from a
+parent box. The top-level box has <code>z_level</code> set to 0.</p>
+<pre><code class="language-python">@elsie.slide()
+def paiting3(slide):
+    slide.box(x=&quot;[40%]&quot;, y=&quot;[40%]&quot;, width=300, height=300).rect(bg_color=&quot;red&quot;)
+    slide.box(z_level=1, x=&quot;[60%]&quot;, y=&quot;[50%]&quot;, width=300, height=300).rect(bg_color=&quot;green&quot;)
+    slide.box(x=&quot;[30%]&quot;, y=&quot;[60%]&quot;, width=300, height=300).rect(bg_color=&quot;blue&quot;)
+</code></pre>
+<p><img width="512px" height="384px" src="slide_imgs/paiting3.png"></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../revealing/" class="btn btn-neutral float-right" title="Fragments">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../showcase/" class="btn btn-neutral" title="Showcase"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/spirali/elsie/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../../showcase/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../revealing/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
