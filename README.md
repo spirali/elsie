@@ -2,11 +2,12 @@
 
 Elsie is a framework for making slides in Python.
 
-Full demonstration:
+### Full demonstration
+
   * Result: [example.pdf](examples/bigdemo/example.pdf)
   * Source code: [example.py](examples/bigdemo/example.py)
 
-Minimal example:
+### Minimal example
 
 ```python
 import elsie
@@ -20,9 +21,13 @@ def hello(slide):
 slides.render()  # Creates file 'slides.pdf'
 ```
 
+### Other sources
+
+  * [Repository with real-life presentations](https://github.com/Kobzol/elsie-showcase/)
+
 ## Requirements
 
-* Python 3.4 or newer
+* Python 3.6 or newer
 * Inkscape (Elsie uses Inkscape in the background, you do not have to know how to use it.)
 * (Optional for LaTeX support): pdflatex, pdf2svg
 
