@@ -19,13 +19,9 @@ slide.box().text("Hello world")
 """
 import contextlib
 import os
-from os.path import abspath, dirname
 from typing import List
 
 from mkdocs.plugins import BasePlugin
-
-CURRENT_DIR = dirname(abspath(__file__))
-DOCS_DIR = dirname(dirname(CURRENT_DIR))
 
 
 def is_fence_delimiter(line):
@@ -71,6 +67,7 @@ def change_cwd(directory: str):
 
 
 def render_slide(code: List[str],
+                 docs_dir: str,
                  ctx: CodeContext,
                  width: int,
                  height: int,
@@ -96,7 +93,7 @@ result = render_slide(slide.slide)
     locals = {}
     code_object = compile(template, "elsie_render.py", "exec")
 
-    with change_cwd(DOCS_DIR):
+    with change_cwd(docs_dir):
         exec(code_object, locals)  # Sorry
     return locals["result"]
 
@@ -133,8 +130,10 @@ def iterate_fences(src: str, handle_fence):
 
 
 class ElsiePlugin(BasePlugin):
-    def on_page_markdown(self, src: str, *args, **kwargs):
+    def on_page_markdown(self, src: str, page, config, *args, **kwargs):
         # TODO: use Markdown parser
+
+        docs_dir = config["docs_dir"]
         ctx = CodeContext()
 
         def handle_fence(header, fence_lines):
@@ -150,6 +149,7 @@ class ElsiePlugin(BasePlugin):
                     border = args.get("border", "yes")
 
                     lines = render_slide(fence_lines,
+                                         docs_dir,
                                          ctx,
                                          width=width,
                                          height=height,

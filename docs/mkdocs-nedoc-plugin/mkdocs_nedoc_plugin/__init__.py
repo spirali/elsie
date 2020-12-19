@@ -17,29 +17,28 @@ import json
 from mkdocs.plugins import BasePlugin
 from mkdocs.structure.pages import Page
 
-CURRENT_DIR = dirname(abspath(__file__))
-DOCS_DIR = dirname(dirname(CURRENT_DIR))
-
-MAP_FILE = os.path.join(DOCS_DIR, "apidoc", "map.json")
-MAP = {}
-
-if os.path.isfile(MAP_FILE):
-    with open(MAP_FILE) as f:
-        MAP = json.load(f)
-else:
-    print("WARNING: docs/apidoc/map.json file is missing")
-
-
 LINK_REGEX = re.compile(r"\[`.*?`\]\((.*?)\)")
 
 
 class NedocPlugin(BasePlugin):
     def __init__(self):
         self.site_url = None
+        self.url_map = {}
 
     def on_config(self, config, **kwargs):
         self.site_url = config.get("site_url") or "/"
+        if self.site_url and self.site_url[:-1] != "/":
+            self.site_url = f"{self.site_url}/"
         self.site_url = f"{self.site_url}apidoc"
+
+        docs_dir = config["docs_dir"]
+        map_file = os.path.join(docs_dir, "apidoc", "map.json")
+
+        if os.path.isfile(map_file):
+            with open(map_file) as f:
+                self.url_map = json.load(f)
+        else:
+            print(f"WARNING: {map_file} file is missing")
 
     def on_page_markdown(self, src: str, page, config, *args, **kwargs):
         # TODO: use Markdown parser
@@ -48,7 +47,7 @@ class NedocPlugin(BasePlugin):
             # Iterate from the end to make replacing substrings easier
             for match in reversed(list(LINK_REGEX.finditer(line))):
                 link_key = match.group(1)
-                link_url = MAP.get(link_key)
+                link_url = self.url_map.get(link_key)
                 if link_url:
                     url = f"{self.site_url}/{link_url}"
                     start, end = match.span(1)
