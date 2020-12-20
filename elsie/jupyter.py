@@ -63,10 +63,11 @@ CSS = """
 
 
 def render_slide(slide: Slide) -> str:
-    items = slide.slides.render(None, return_svg=True, select_slides=[slide])
+    units = slide.slides.render(None, return_units=True, select_slides=[slide])
+    svgs = filter(None, (unit.get_svg() for unit in units))
     fragments = tuple(
-        f"<div class='elsie-step step-{index + 1}'>{item[2]}</div>"
-        for (index, item) in enumerate(items)
+        f"<div class='elsie-step step-{index + 1}'>{svg}</div>"
+        for (index, svg) in enumerate(svgs)
     )
     fragments_text = "\n".join(fragments)
 

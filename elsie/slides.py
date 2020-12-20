@@ -6,8 +6,10 @@ from .highlight import make_highlight_styles
 from .jupyter import is_inside_notebook
 from .pdfmerge import get_pdf_merger_by_name
 from .query import compute_query
-from .slidecls import Slide, DummyPdfSlide
-from .inkscape import InkscapeShell
+from .slidecls import Slide, ExternPdfSlide
+from .inkscape import InkscapeShell, export_by_inkscape
+from .svg import svg_begin, svg_end
+from .sxml import Xml
 from .textstyle import TextStyle, compose_style
 from .version import VERSION
 from .cache import FsCache
@@ -161,7 +163,7 @@ class Slides:
 
     def add_pdf(self, filename):
         """ Just add pdf without touches into resulting slides """
-        self._slides.append(DummyPdfSlide(filename))
+        self._slides.append(ExternPdfSlide(filename))
 
     def _query_cache_file(self):
         return os.path.join(self.cache_dir, "queries3.cache")
@@ -274,20 +276,30 @@ class Slides:
     def render(
         self,
         output="slides.pdf",
-        return_svg=False,
+        return_units=False,
         export_type="pdf",
         pdf_merger="pypdf",
-        drop_duplicates=False,
         slide_postprocessing=None,
         prune_cache=True,
         save_cache=True,
         select_slides=None,
+        slides_per_page=None,
     ):
         if select_slides is None:
             select_slides = self._slides
 
         if not select_slides:
             raise Exception("No slides to render")
+
+        if slides_per_page is not None:
+            if (
+                len(slides_per_page) != 2
+                or isinstance(slides_per_page[0], int)
+                or isinstance(slides_per_page[1], int)
+            ):
+                raise Exception(
+                    "slides_per_page has to be None or pair of two integers"
+                )
 
         if slide_postprocessing:
             slide_postprocessing([slide.box() for slide in select_slides])
@@ -299,32 +311,31 @@ class Slides:
         if save_cache:
             self._save_query_cache(self.query_cache)
 
-        renders = []
+        units = []
         for slide in select_slides:
             slide.prepare()
-            renders += [(slide, step) for step in range(1, slide.steps() + 1)]
+            for step in range(1, slide.steps() + 1):
+                units.append(slide.make_render_unit(step))
 
-        if return_svg:
-            svgs = [(slide, step, slide.make_svg(step)) for slide, step in renders]
-            return svgs
+        if return_units:
+            return units
 
         if export_type == "pdf" and pdf_merger is not None:
             merger = get_pdf_merger_by_name(pdf_merger)
         else:
             merger = []
+
+        if self.debug:
+            for unit in units:
+                unit.write_debug(self.fs_cache.cache_dir)
+
         self._show_progress("Building", first=True)
-        prev_pdf = None
-        for i, pdf in enumerate(
-            map(
-                lambda x: x[0].render(x[1], self.debug, export_type, self.inkscape),
-                renders,
-            )
-        ):
-            if not drop_duplicates or prev_pdf != pdf:
-                merger.append(pdf)
-                prev_pdf = pdf
-            self._show_progress("Building", i, len(renders))
-        self._show_progress("Building", len(renders), len(renders), last=True)
+        for i, unit in enumerate(units):
+            unit_output = unit.export(self.fs_cache, export_type, self.inkscape)
+            if unit_output is not None:
+                merger.append(unit_output)
+            self._show_progress("Building", i, len(units))
+        self._show_progress("Building", len(units), len(units), last=True)
 
         if export_type == "pdf" and pdf_merger is not None:
             merger.write(output, self.debug)
@@ -335,3 +346,19 @@ class Slides:
             if prune_cache:
                 self.fs_cache.remove_unused()
             return merger
+
+    """
+    def group_more_slides_per_page(self, x_count, y_count):
+        groupped_svgs = []
+        idx = 0
+        for _ in range((len(groupped_svgs) - 1) / (x_count * y_count) + 1):
+            xml = Xml()
+            svg_begin(xml, self.width * x_count, self.height * y_count)
+            for i in range(x_count):
+                for j in range(y_count):
+                    xml.raw_text(svgs[idx])
+                    idx += 1
+
+            svg_end(xml)
+        return xml.to_string()
+    """
