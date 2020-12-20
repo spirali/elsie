@@ -6,6 +6,7 @@ from .highlight import make_highlight_styles
 from .jupyter import is_inside_notebook
 from .pdfmerge import get_pdf_merger_by_name
 from .query import compute_query
+from .render import per_page_groupping
 from .slidecls import Slide, ExternPdfSlide
 from .inkscape import InkscapeShell, export_by_inkscape
 from .svg import svg_begin, svg_end
@@ -294,11 +295,11 @@ class Slides:
         if slides_per_page is not None:
             if (
                 len(slides_per_page) != 2
-                or isinstance(slides_per_page[0], int)
-                or isinstance(slides_per_page[1], int)
+                or not isinstance(slides_per_page[0], int)
+                or not isinstance(slides_per_page[1], int)
             ):
                 raise Exception(
-                    "slides_per_page has to be None or pair of two integers"
+                    f"slides_per_page has to be None or pair of two integers, not {slides_per_page}"
                 )
 
         if slide_postprocessing:
@@ -317,6 +318,15 @@ class Slides:
             for step in range(1, slide.steps() + 1):
                 units.append(slide.make_render_unit(step))
 
+        if self.debug:
+            for unit in units:
+                unit.write_debug(self.fs_cache.cache_dir)
+
+        if slides_per_page is not None:
+            units = per_page_groupping(
+                units, slides_per_page[0], slides_per_page[1], self.width, self.height
+            )
+
         if return_units:
             return units
 
@@ -324,10 +334,6 @@ class Slides:
             merger = get_pdf_merger_by_name(pdf_merger)
         else:
             merger = []
-
-        if self.debug:
-            for unit in units:
-                unit.write_debug(self.fs_cache.cache_dir)
 
         self._show_progress("Building", first=True)
         for i, unit in enumerate(units):
@@ -346,19 +352,3 @@ class Slides:
             if prune_cache:
                 self.fs_cache.remove_unused()
             return merger
-
-    """
-    def group_more_slides_per_page(self, x_count, y_count):
-        groupped_svgs = []
-        idx = 0
-        for _ in range((len(groupped_svgs) - 1) / (x_count * y_count) + 1):
-            xml = Xml()
-            svg_begin(xml, self.width * x_count, self.height * y_count)
-            for i in range(x_count):
-                for j in range(y_count):
-                    xml.raw_text(svgs[idx])
-                    idx += 1
-
-            svg_end(xml)
-        return xml.to_string()
-    """

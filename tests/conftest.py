@@ -52,9 +52,9 @@ class SlideTester:
             done = True
         finally:
             if not done:
-                for i, (_slide, _step, svg) in enumerate(svgs):
+                for i, unit in enumerate(units):
                     with open("{}-{}.svg".format(expected, i), "w") as f:
-                        f.write(svg)
+                        f.write(unit.get_svg())
 
 
 @pytest.yield_fixture(autouse=True, scope="session")

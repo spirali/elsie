@@ -69,3 +69,21 @@ def test_leaf_chaining(test_env):
     box = slide.box(width="50%", height="50%")
     box.rect(bg_color="black").rect(color="white").text("Hello!").rect(color="green")
     test_env.check("leaf_chaining", 1)
+
+
+def test_per_page_groupping1(test_env):
+    colors = ["red", "green", "blue", "orange"]
+    for i in range(10):
+        slide = test_env.slides.new_slide()
+        slide.rect(bg_color=colors[i % len(colors)])
+        slide.text(f"SLIDE {i}", TextStyle(color="white"))
+    test_env.check("per_page_groupping", 2, render_args={"slides_per_page": (3, 2)})
+
+
+def test_per_page_groupping2(test_env):
+    colors = ["red", "green", "blue"]
+    for i in range(3):
+        slide = test_env.slides.new_slide()
+        slide.rect(bg_color=colors[i % len(colors)])
+        slide.text(f"SLIDE {i}", TextStyle(color="white"))
+    test_env.check("per_page_groupping2", 1, render_args={"slides_per_page": (1, 3)})
