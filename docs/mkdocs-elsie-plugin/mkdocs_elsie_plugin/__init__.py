@@ -11,6 +11,7 @@ You can optionally use the following parameters:
 - type=<lib, render>: If `type` is `lib`, do not render the code block as a slide, but use it as
 a library function for futher slides on the page.
 - border=<yes, no>: Whether to draw a border around the slide.
+- debug=<yes, no>: Whether to use debug_boxes.
 
 Example:
 ```elsie,width=300,height=300
@@ -31,7 +32,14 @@ def is_fence_delimiter(line):
 def parse_fence_header(header):
     items = header.strip(" `").split(",")
     lang = items[0]
-    args = dict(item.split("=") for item in items[1:])
+
+    def get_kv(item):
+        vals = item.split("=")
+        if len(vals) == 1:
+            return (vals[0], "yes")
+        return vals
+
+    args = dict(get_kv(item) for item in items[1:])
     return (lang, args)
 
 
@@ -71,10 +79,18 @@ def render_slide(code: List[str],
                  ctx: CodeContext,
                  width: int,
                  height: int,
-                 border: bool) -> str:
+                 border: bool,
+                 debug_boxes: bool,
+                 skip: int) -> str:
     # TODO: render to PNG
     border_str = """slide.rect(color="black")""" if border else ""
+
+    code = code[skip:]
     code = "\n".join(trim_indent(code))
+    slide_args = ""
+    if debug_boxes:
+        slide_args = "debug_boxes=True"
+
     template = f"""
 import elsie
 from elsie.box import Box
@@ -83,7 +99,7 @@ from elsie.jupyter import render_slide
 {ctx.get_lib_code()}
 
 slides = elsie.Slides(width={width}, height={height}, name_policy="ignore")
-slide = slides.new_slide()
+slide = slides.new_slide({slide_args})
 {border_str}
 {code}
 
@@ -144,16 +160,20 @@ class ElsiePlugin(BasePlugin):
                 if type == "lib":
                     ctx.add_lib_code(fence_lines)
                 elif type == "render":
-                    width = args.get("width", 300)
-                    height = args.get("height", 300)
+                    width = args.get("width", "300")
+                    height = args.get("height", "300")
                     border = args.get("border", "yes")
+                    skip = int(args.get("skip", 0))
+                    debug_boxes = args.get("debug", "no")
 
                     lines = render_slide(fence_lines,
                                          docs_dir,
                                          ctx,
                                          width=width,
                                          height=height,
-                                         border=border == "yes").splitlines(
+                                         border=border == "yes",
+                                         skip=skip,
+                                         debug_boxes=debug_boxes == "yes").splitlines(
                         keepends=False)
                 return elsie_to_python_header(header), lines
             return header, []
