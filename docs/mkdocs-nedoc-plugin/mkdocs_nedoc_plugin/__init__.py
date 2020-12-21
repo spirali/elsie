@@ -27,7 +27,7 @@ class NedocPlugin(BasePlugin):
 
     def on_config(self, config, **kwargs):
         self.site_url = config.get("site_url") or "/"
-        if self.site_url and self.site_url[:-1] != "/":
+        if self.site_url and self.site_url[-1] != "/":
             self.site_url = f"{self.site_url}/"
         self.site_url = f"{self.site_url}apidoc"
 

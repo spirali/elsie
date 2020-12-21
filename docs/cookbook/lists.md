@@ -4,7 +4,7 @@ support in *Elsie* for creating lists, it is easy to create your own function fo
 and customize it for your use case.
 
 For example, here is a simple function that will create a new list item in the given
-parent [Box](../userguide/boxes.md). The `level` parameter selects the nesting level of the list
+parent [Box](../userguide/layout.md). The `level` parameter selects the nesting level of the list
 item.
 
 ```elsie,type=lib

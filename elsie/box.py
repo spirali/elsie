@@ -98,7 +98,7 @@ class Box(BoxMixin):
         set_paint_style(xml, "#ff00ff", None, 2, [None, "4 2", "1 2"][depth % 3])
         xml.close("rect")
 
-        text = " {}[{},{}]".format(
+        text = " {}[{:.2f},{:.2f}]".format(
             self.name + " " if self.name else "", rect.width, rect.height
         )
         size = 14

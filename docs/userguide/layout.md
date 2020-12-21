@@ -1,293 +1,296 @@
 # Layout
-The most prominent objects in Elsie are boxes. They serve as a layout mechanism
-and the way how to put a content into a slide.
+*Elsie* contains a layout system which allows you to quickly build scenarios that are common in
+presentations, while still providing the option of finely tuned customization for situations where
+every pixel placement matters.
 
-### Creating boxes
+The central element of the layout system is the **Box**.
 
-Let us create the following example, where 3 boxes are created from the
-top-level box. The new box is created by calling `.box(...)` on an existing box.
-The parameter ``slide`` passed into the slide function is also a box.
+Each *Elsie* slide contains a layout hierarchy tree. The internal nodes of the tree are *boxes* and
+the leaves are *box items*. Boxes are layout containers, which do not produce any visual content, but
+they dictate how are their children laid out on a slide. Box items are individual paintable items,
+such as text, images, shapes, etc. Anything that can be rendered by *Elsie* thus has an accompanied
+parent box which decides its size and position on a slide.
 
-```python
-@elsie.slide()
-def boxdemo1(slide):
+## Creating boxes
+To create a new box, you can call the [`box`](elsie.boxmixin.BoxMixin.box) method on an existing
+[`Box`](elsie.boxmixin.BoxMixin). This will return a new box which will be a child of the box object
+on which you call the `box` method. The root box of the slide layout hierarchy is the
+[`Slide`](elsie.slidecls.Slide) object itself, therefore you can create other boxes by calling
+`box` on it.
+
+Here we create three boxes as children of the top-level slide box and create a child text item
+in each box.
+```elsie,width=200,height=200,skip=2
+@slides.slide()
+def three_boxes(slide):
     slide.box().text("Box 1")
     slide.box().text("Box 2")
     slide.box().text("Box 3")
 ```
 
-The code will create the following slide:
-
-<img width="512px" height="384px" src="slide_imgs/boxdemo0.png">
-
-Boxes do not produce any visible content but it influence positions of other
-elements. To see where the boxes are, we can switch on the box debug mode:
-
-```python
-@elsie.slide(debug_boxes=True)
-def boxdemo1(slide):
+The boxes themselves are invisible, but they have caused the three text items to be rendered
+below one another. If you are fine-tuning or debugging the layout of your slide and you want to see
+the extents and bounds of your boxes, you can use the
+[`debug_boxes`](elsie.slidecls.Slide.__init__) parameter when creating a slide:
+```elsie,width=200,height=200,debug,skip=2
+@slides.slide(debug_boxes=True)
+def three_boxes_debug(slide):
     slide.box().text("Box 1")
     slide.box().text("Box 2")
     slide.box().text("Box 3")
 ```
+You can see that there is a single root box that wraps the whole slide and then there are three
+individual boxes in the middle. The box debug draw mode will be used in some examples on this page
+to demonstrate the extents of individual boxes.
 
-<img width="512px" height="384px" src="slide_imgs/boxdemo1.png">
+### Default box layout properties
+Newly created boxes have the following behavior by default:
 
-Here we see the four boxes, the top-level box representing the whole slide and
-three inner boxes.
+- They occupy as few space as possible. You can change this by modifying their [size](#sizing-boxes).
+- Children are placed vertically in a column, in the order in which they were
+  created. You can change this by modifying their [axis](#box-axis).
+- Children are centered vertically and horizontally. You can change this by modifying their
+[position](#positioning-boxes).
 
-Newly created boxes have the following behavior as default:
-- It occupies as less space as possible (in our case is only as big as it could
-  contain the text)
-- Boxes are put verticaly in the order as they were defined
-- They are centered vertically and horizontally.
-
-In the text below, we will see how these default positioning and sizes can be changed.
-
-Boxes can be hierarchically composed (parameter ``padding`` creates a padding in
-all directions, it will be explained later).
-
-```python
-slide.box(padding=40).box(padding=40).box(padding=40).text("Box 1")
-```
-
-<img width="512px" height="384px" src="slide_imgs/composition.png">
-
-
-### Tree of boxes
-
-Boxes creates a tree of *boxes* and *box items*. Boxes creates layout and box items
-represents paitable contant as text, pictures, etc.
-Box items are always leaves of the tree and does not contain child boxes.
-
-When a slide is rendered, the box tree is traversed in depth-first way and each child is visited in the order in which it was defined.
-
-This can be modified by parameters ``above``, ``below`` and z-level, see [Modifying painting order](#modifying-painting-order).
-
-Allmost all methods on box creates a new boxes (e.g. ``box``) or box items (e.g. ``text`` or ``rect``). Actually all these methods are also provided by box items; however as box items cannot directly contain its own child elements, they are created in the parent box of the box item. Therefore the following two slides creates the equivalent slides:
-
-```python
-@elsie.slide()
-def textrect_v1(slide):
-    box = slide.box()
-    box.rect(bg_color="#aaf")
-    box.text("Hello!")
-
-@elsie.slide()
-def textrect_v2(slide):
-    slide.box().rect(bg_color="#aaf").text("Hello!")
-```
-
-<img width="512px" height="384px" src="slide_imgs/textrect.png">
-
+In the following sections below we will see how these default positioning and sizing rules can be
+changed.
 
 ### Box naming
+Boxes can be named with the `name` parameter (`.box(name="My box")`). It has no impact on normal
+rendering of the slide, but the name will be shown if the box debug draw mode is enabled.
 
-Box can be named by calling ``.box(name="Box name")``. It has no impact on
-normal rendering of the slide. The name of slide is shown when
-argument ``debug_boxes=True`` is used.
+If you use the `@slides.slide()` decorator, the name of the top-level slide will be set to the
+name of the function on which the decorator was used.
 
-The name of the top-level slide is name of the slide function when the decorator
-``@elsie.slide()`` is used to create the slide.
+## Box axis
+Boxes can either be *vertical* or *horizontal*:
 
+- Vertical boxes place its child items vertically in a column. Their *main* axis is vertical and
+their *cross* axis is horizontal.
+- Horizontal boxes place its child items horizontally in a row. Their *main* axis is horizontal
+and their *cross* axis is vertical.
 
-### Width and Height
-
-Width and height of a box can be changed by setting ``width`` and ``height`` arguments when calling ``.box(...)`` method.
-
-```python
-@elsie.slide(debug_boxes=True)
-def sizedemo1(slide):
-    slide.box().text("Box 1")
-    slide.box(width=300, height=100).text("Box 2")
-    slide.box(width="100%").text("Box 3")
+Boxes are vertical by default, if you want to create a horizontal box, use the `horizontal=True`
+parameter when creating a box:
+```elsie,width=200,height=200
+box = slide.box(horizontal=True)
+box.box().text("Box 1")
+box.box().text("Box 2")
 ```
 
-<img width="512px" height="384px" src="slide_imgs/sizedemo1.png">
-
-These paramters define **minimal** size of the box. This mean that when its
-content (child boxes, texts, etc.) request a bigger size, the box will use the
-requested size of the content.
-
-The value should be one of the following:
-
-* ``None`` (default): No minimal size request
-* ``int``, ``float``, or a string containg only digits: Size defined in pixels
-* String in format ``"XX%"`` where XX is a number (e.g. ``"50%"``): Size defined
-  in percentage of the parent box size.
-* String ``"fill"`` or ``"fill(XX)"`` where XX is a number. The box fills all
-  available space of the parent box. If more boxes on the same level use filling
-  value then the size is distributed respecting the ratio of parameters. For
-  example, when one box has argument ``fill(2)`` and second one ``fill(3)``,
-  remaining size will be divided in ratio 2:3. Value ``"fill"`` is shortcut for
-  ``"fill(1)"``.
-
-The following code shows example of "fill" usage:
-
-```python
-@elsie.slide(debug_boxes=True)
-def filldemo1(slide):
-    slide.box().text("Box 1")
-    slide.box(width=300, height=100).text("Box 2")
-    slide.box(height="fill").text("Box 3")
+## Composing boxes
+By composing boxes, you can create complex hierarchical row and column layouts.
+```elsie,width=300,height=200
+row = slide.box(horizontal=True)
+col_a = row.box()
+col_a.box().text("Col. A/1")
+col_a.box().text("Col. A/2")
+col_b = row.box()
+col_b.box().text("Col. B/1")
 ```
 
-<img width="512px" height="384px" src="slide_imgs/filldemo1.png">
+Note that almost all methods on a box will create a new box ([`box`](elsie.boxmixin.BoxMixin.box))
+or an item (e.g. [`text`](elsie.boxmixin.BoxMixin.text) or
+[`rect`](elsie.boxmixin.BoxMixin.rect)). Leaf items cannot contain children, but for
+convenience they also offer most of the methods available on boxes, which they delegate to their
+parent. Therefore, the following two snippets will create the same slide content:
+```elsie,skip=4
+# A: create text on its parent box
+box = slide.box()
+box.rect(bg_color="#aaf")
+box.text("Hello!")
 
+# B: create text on its sibling rectangle
+slide.box().rect(bg_color="#aaf").text("Hello!")
+```
 
-### Box aliases
+## Sizing boxes
+You can change the width and height of a box by using the `width` and `height` parameters of the
+[`box`](elsie.boxmixin.BoxMixin.box) method.
 
-New box can be created also by calling methods ``fbox``, ``sbox``, and ``overlay``.
+Here we create three boxes (`A`, `B` and `C`). Box `A` has a default size, which is set according
+to the required size of its text child. Box `B` has a width of `300` pixels and height of `100`
+pixels. Box `C` has width equal to the full width of its parent and height is again set to the height
+of its child text item.
+```elsie,debug
+slide.box(name="A").text("Box 1")
+slide.box(name="B", width=300, height=100).text("Box 2")
+slide.box(name="C", width="100%").text("Box 3")
+``` 
 
-* Method ``fbox(...)`` (fill-box) is a shortcut for calling ``box(width="fill", height="fill", ...)``.
-* Method ``sbox(...)`` (stretch-box) is a shortcut for
-calling ``box(width="fill", ...)`` if the parent box is vertical and
-``box(width="fill", ...)`` if the parent box is horizontal.
-In other words, it fills the box in the unmanaged direction.
-* Method ``overlay(..)`` is a shortcut for ``box(x=0, y=0, width="100%", height="100%)``.
+The `width` and `height` parameters define the **minimal** size of the box. Therefore, if its
+children (child boxes, text items, etc.) request a larger size, the box will use the requested
+size of its content.
 
+### Size value formats
+You can enter `width` and `height` values in several formats:
+
+- `None` (the default): No minimal size request.
+- `int`, `float` or a string containg only digits: Exact minimal size defined in pixels.
+- `"<number>%"` (e.g. `"50%"`): Minimal size in percentage of the parent box
+  size.
+- `"fill"` or `"fill(<number>)"`: The box will fill all available space of the parent box. If there
+  are more boxes on the same level which use fill, then the size will be distributed amongst them,
+  while respecting the ratio of the `fill` parameter.
+  For example, when one box has argument `fill(2)` and the second one `fill(3)`, the remaining size
+  will be divided using the ratio `2:3`. Using just `"fill"` is a shortcut for `"fill(1)"`.
+
+The following code shows an example of `"fill"` usage:
+
+```elsie,width=400,height=300,debug
+slide.box(width="fill").text("Box 1")
+box = slide.box(width=300, height=180)
+box.box(height="fill(1)").text("Box 2")
+box.box(height="fill(2)").text("Box 3")
+slide.box(height="fill").text("Box 4")
+```
+
+### Aliases for commonly sized boxes
+*Elsie* contains three shortcuts for creating boxes with common minimal size requirements:
+
+- [`fbox`](elsie.boxmixin.BoxMixin.fbox) (fill-box): shortcut for `box(width="fill", height="fill")`.
+- [`sbox`](elsie.boxmixin.BoxMixin.sbox) (stretch-box): shortcut for `box(width="fill")` if the
+parent box has a vertical layout or `box(height="fill")` if the parent box has a
+[horizontal](#box-axis) layout. In other words, it fills the box in the cross axis.
+- [`overlay`](elsie.boxmixin.BoxMixin.overlay): shortcut for
+`box(x=0, y=0, width="100%", height="100%)`. This can be used if you want to overlay several boxes
+on top of each other, which is useful especially in combination with [revealing](revealing.md).
 
 ### Padding
+By default, each box gives all of its space to its children. This can be modified by padding.
+There are four padding values: `left`, `right`, `top`, and `bottom`. They can be modified with the
+`p_left`, `p_right`, `p_top`, and `p_bottom` parameters of the
+[`box`](elsie.boxmixin.BoxMixin.box) method.
 
-By default, box gives all its space to its children. This can be controlled by
-padding. There are four padding values: left, right, top, and bottom. There are
-controlled by parameters ``p_left``, ``p_right``, ``p_top``, and ``p_bottom``.
-After the layout of parent box is computed and the final size and position is
-given to a box, padding shrinks its size in the specified directions.
-
-Padding can also be set through the following parameters:
-* ``p_x`` that sets ``p_left`` and ``p_right``
-* ``p_y`` that sets ``p_top`` and ``p_bottom``
-* ``padding`` that sets all four paddings.
-
-```python
-@elsie.slide(debug_boxes=True)
-def padding_demo(slide):
-    slide.box(width=200, height=200, p_left=100, name="Top box")
-    slide.box(width=200, height="fill", p_y=100, name="Bottom box")
+After the layout of the parent box is computed and the final size and position of a box is known,
+the padding will shrink its size in the specified directions.
+```elsie,width=400,debug
+slide.box(width=160, height=100, p_left=40, name="Top box")
+slide.box(width=160, height=150, p_y=50, name="Bottom box")
 ```
+In the above example, the top box is shrunk by `40` pixels from the left. Note that the padding is
+applied after the layout was calculated, therefore the box was first centered horizontally, and
+then the padding reduced its size. The bottom box is shrunk by `50` pixels from the top and from
+the bottom.
 
-<img width="512px" height="384px" src="slide_imgs/padding_demo.png">
+You can also use the following padding shortcut parameters of the `box` method:
 
+- `p_x` sets both `p_left` and `p_right`.
+- `p_y` sets both `p_top` and `p_bottom`.
+- `padding` sets all four paddings at once.
 
-### Box Position
+## Positioning boxes
+You can set the position of the top-left corner of a box via the `x` and `y` parameters of the `box`
+method. You can enter the `x` and `y` positions in several formats:
 
-Position of box can be set by arguments `x` and `y`. The allowed values are:
+- `None` (default): Set the default position (see [below](#default-position)).
+- `int`, `float` or a string containing only digits: Set absolute position in pixels.
+Coordinates are relative to the top-left corner of the parent box.
+- `"<number>%`: Set position relative to the parent box. `"0%"` represents the left (`x`) or top
+(`y`) edge of the parent and `"100%"` the right (`x`) or bottom (`y`) edge of the parent.
+- `"[<number>%]`:  Align the box in the parent box. `"[0%]"` is left (`x`) or top (`y`),
+`"[50%]"` is middle and `"[100%]"` is right (`x`) or bottom (`y`) alignment.
+- Dynamically defined position: See [below](#dynamic-positions).
 
-* ``None`` (default) -- see below.
-* ``int``, ``float``, or string containing only digits -- absolute position of
-  in pixels. Coordinates are relative to top-left corner of the parent box.
-* string ``"XX%`` where XX is a number -- position in the parent box where 0% is left (for ``x``) or top (for ``y``) edge of the box and 100% is right (for ``x``) or bottom (for ``y``) edge of the box.
-* string ``"[XX%]`` where XX is a number -- aligning box in the parent box. ``"[0%]"`` is left (resp. top), ``"[50%]`` is a middle, and ``"[100%]"`` is right (resp. bottom).
-* Dynamically defined position -- see below.
-
+Here is an example of using absolute and relative position coordinates:
+```elsie
+slide.box(x=0, y=10).text("Box 1")
+row = slide.box(width="fill")
+row.box(x="20%").text("Box 2")
+row.box(x="60%").text("Box 3")
+```
 
 ### Default position
+The default positioning of a box depends on the axis of its parent. The following
+explanation assumes a vertical box. For a horizontal box, the main and cross axes would
+be swapped.
 
-The default position is influenced by configuration of the parent box.
-When the parent box is vertical (default behavior),
-the value for x-axis equivalent to ``"[50%]"``, i.e. centering horizontally.
+Children of a box will be by default centered along the *cross* axis. In the case of a vertical
+parent box, the `x` attribute would be set to `"[50%]"`, i.e. child boxes will be horizontally
+centered.
 
-Fox y-axis, the behavior is a more complex. When a box have ``y`` attribtue set
-to ``None`` then we call such a box as *managed box*. A box takes its all
-children boxes that are managed and stack them one-by-one while centering the
-resulting composite object. The behavior can be observed in the ``boxdemo1`` at
-the beginning of the user guide.
+For the *main* axis, the behaviour is more complex. When a box has its *main* axis position
+set to `None`, it is a *managed box*. A parent box stacks all of its *managed* children boxes along
+its *main* axis one-by-one. In addition, it also centers all of its children together along the
+*main* axis.
+```elsie
+slide.box().text("Box 1")
+slide.box().text("Box 2")
+slide.box().text("Box 3")
+```
+In the above example, the `slide` is a parent vertical box. Its three children will thus be laid
+below one another, they will be centered horizontally, and all of them together will also be centered
+vertically.
 
-<img width="512px" height="384px" src="slide_imgs/boxdemo1.png">
-
-The vertical stacking can be switched
-to horizontal by ``horizontal=True`` in box construction.
-In such case, children boxes are stacked by x-axis and ``"[50%]"`` is default for y-axis.
-
-```python
-@elsie.slide(debug_boxes=True)
-def horizontal(slide):
-    parent = slide.box(width="100%", height="100%", horizontal=True)
-    parent.box().text("Box 1")
-    parent.box().text("Box 2")
-    parent.box().text("Box 3")
+Here is the same situation with a horizontal parent box:
+```elsie
+row = slide.box(horizontal=True)
+row.box().text("Box 1")
+row.box().text("Box 2")
+row.box().text("Box 3")
 ```
 
-<img width="512px" height="384px" src="slide_imgs/horizontal.png">
-
-
 ### Dynamic positions
+Box position can also be defined dynamically with respect to other boxes. You can get a position
+that is relative to the final position of a box using the [`x`](elsie.boxmixin.BoxMixin.x) or
+[`y`](elsie.boxmixin.BoxMixin.y) methods. The returned value of these methods will be a proxy
+object that will resolve the actual final position after layout is computed.
 
-Box position can be defined dynamically with respect to other boxes. Calling
-method ``x`` (resp. ``y``) on a box returns a proxy object that returns real
-position when the layout is computed. The reference point is the left top corner
-of the box.
+The reference point of these two methods is the top-left corner of the target box. The parameter
+can be either:
 
-Arguments can be:
-
-* an integer or float -- the constant added to the reference point
-* a string in form ``"XX%"`` where XX is an integer -- the ratio of the size of the box added to the reference point
+- `int` or `float`: Resolves to the given number of pixels from the reference point.
+- `"<number>%"`: Resolves to the ratio of the size of the box added to the reference point.
 
 For example:
 
-* .x("0%") returns the most left coordinate of the box.
-* .x("50%") returns "x" coordinate of the middle of the box.
-* .x("100%") return the most right coordinate of the box.
-* .x(10) returns the most left edge of th box + 10.
+- `.x("0%")` returns the left-most `x` coordinate of the box.
+- `.x("50%")` returns the `x` coordinate of the middle of the box.
+- `.x("100%")` return the right-most `x` coordinate of the box.
+- `.x(10)` returns the left-most `x` coordinate of the box, moved by `10` pixels to the right.
 
-Example:
-
-```python
-@elsie.slide(debug_boxes=True)
-def horizontal(slide):
-    b = slide.box(width=100, height=100, name="First")
-    slide.box(x=b.x("50%"), y=b.y("50%"), width=100, height=100, name="Second")
-    slide.box(x=0, y=b.y("100%"), width="100%", height=200, name="Third")
+Here you can observe dynamic positions in action:
+```elsie,debug
+b = slide.box(width=100, height=100, name="First")
+slide.box(x=b.x("50%"), y=b.y("50%"), width=100, height=100, name="Second")
+slide.box(x=0, y=b.y("100%"), width="100%", height=200, name="Third")
 ```
 
-<img width="512px" height="384px" src="slide_imgs/xy.png">
+## Modifying render order
+By default, boxes are rendered by performing a depth-first walk through the layout tree. Each child
+is visited in the order in which it was defined.
 
-### Modifying painting order
-
-By default, boxes are painted by the depth-first walk through the box tree.
-Each child is visited in the order in which it was defined.
-
-In the following example, the blue box is painted over all previous boxes as it is defined the last.
-
-```python
-@elsie.slide()
-def paiting1(slide):
-    slide.box(x="[40%]", y="[40%]", width=300, height=300).rect(bg_color="red")
-    slide.box(x="[60%]", y="[50%]", width=300, height=300).rect(bg_color="green")
-    slide.box(x="[30%]", y="[60%]", width=300, height=300).rect(bg_color="blue")
+In the following example, the blue box is rendered over all the previous boxes as it was defined
+the last.
+```elsie,width=200,height=200
+slide.box(x=40, y=20, width=80, height=120).rect(bg_color="red")
+slide.box(x=50, y=30, width=80, height=80).rect(bg_color="green")
+slide.box(x=60, y=40, width=80, height=80).rect(bg_color="blue")
 ```
 
-<img width="512px" height="384px" src="slide_imgs/paiting1.png">
+You have several options how to change the rendering order:
 
-The order in inside box can be defined by attributes ``below`` and ``above`` that takes another child in the box (box or box item) and creates new directly below or above given object.
-
-
-<img width="512px" height="384px" src="slide_imgs/paiting2.png">
-
-
-```python
-@elsie.slide()
-def paiting2(slide):
-    red = slide.box(x="[40%]", y="[40%]", width=300, height=300)
-    red.rect(bg_color="red")
-    slide.box(x="[60%]", y="[50%]", width=300, height=300).rect(bg_color="green")
-    slide.box(below=red, x="[30%]", y="[60%]", width=300, height=300).rect(bg_color="blue")
+- Use the `prepend` parameter when creating a box. This will insert it as the first child of the
+parent box, instead of the last.
+```elsie,width=200,height=200
+slide.box(x=40, y=20, width=80, height=120).rect(bg_color="red")
+slide.box(x=50, y=30, width=80, height=80).rect(bg_color="green")
+slide.box(x=60, y=40, width=80, height=80, prepend=True).rect(bg_color="blue")
 ```
-
-To modify drawing order even across boxes can be modified by ``z_level``. Before
-final drawing, all drawing elements is stable sorted by ``z_level``. It causes
-that an element with a higher ``z_level`` is drawn *after* an element with a
-lower ``z_level``. If ``z_level`` is not specified, it is inherited from a
-parent box. The top-level box has ``z_level`` set to 0.
-
-
-```python
-@elsie.slide()
-def paiting3(slide):
-    slide.box(x="[40%]", y="[40%]", width=300, height=300).rect(bg_color="red")
-    slide.box(z_level=1, x="[60%]", y="[50%]", width=300, height=300).rect(bg_color="green")
-    slide.box(x="[30%]", y="[60%]", width=300, height=300).rect(bg_color="blue")
+- Use the `below` or `above` parameters when creating a box to place the newly created box
+above/below the box passed in the parameter.
+```elsie,width=200,height=200
+a = slide.box(x=40, y=20, width=80, height=120)
+a.rect(bg_color="red")
+slide.box(x=50, y=30, width=80, height=80, below=a).rect(bg_color="green")
+slide.box(x=60, y=40, width=80, height=80).rect(bg_color="blue")
 ```
-
-<img width="512px" height="384px" src="slide_imgs/paiting3.png">
+- You can also move boxes in the `z` axis using the `z_level` parameter. Before the final paint,
+all drawing elements will be sorted using a stable sort by their `z_level`. An element with a
+larger `z_level` will be drawn *after* an element with a small `z_level`. If the `z_level` is not
+specified, it is inherited from the parent box. The root box has `z_level` set to `0`.
+```elsie,width=200,height=200
+slide.box(x=40, y=20, width=80, height=120, z_level=3).rect(bg_color="red")
+slide.box(x=50, y=30, width=80, height=80, z_level=2).rect(bg_color="green")
+slide.box(x=60, y=40, width=80, height=80, z_level=1).rect(bg_color="blue")
+```
