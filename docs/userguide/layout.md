@@ -154,7 +154,8 @@ parent box has a vertical layout or `box(height="fill")` if the parent box has a
 [horizontal](#box-axis) layout. In other words, it fills the box in the cross axis.
 - [`overlay`](elsie.boxmixin.BoxMixin.overlay): shortcut for
 `box(x=0, y=0, width="100%", height="100%)`. This can be used if you want to overlay several boxes
-on top of each other, which is useful especially in combination with [revealing](revealing.md).
+on top of each other, which is useful especially in combination with
+[revealing](revealing.md#overlaying-boxes).
 
 ### Padding
 By default, each box gives all of its space to its children. This can be modified by padding.
