@@ -12,6 +12,8 @@ You can optionally use the following parameters:
 a library function for futher slides on the page.
 - border=<yes, no>: Whether to draw a border around the slide.
 - debug=<yes, no>: Whether to use debug_boxes.
+- skip=<start:end>: Skip lines from the beginning (and optionally from the end). Uses the Python
+slice syntax.
 
 Example:
 ```elsie,width=300,height=300
@@ -81,11 +83,11 @@ def render_slide(code: List[str],
                  height: int,
                  border: bool,
                  debug_boxes: bool,
-                 skip: int) -> str:
+                 skip: slice) -> str:
     # TODO: render to PNG
     border_str = """slide.rect(color="black")""" if border else ""
 
-    code = code[skip:]
+    code = code[skip]
     code = "\n".join(trim_indent(code))
     slide_args = ""
     if debug_boxes:
@@ -103,7 +105,7 @@ slide = slides.new_slide({slide_args})
 {border_str}
 {code}
 
-result = render_slide(slide.slide)
+result = render_slide(slides._slides[-1])
 """.strip()
 
     locals = {}
@@ -163,8 +165,14 @@ class ElsiePlugin(BasePlugin):
                     width = args.get("width", "300")
                     height = args.get("height", "300")
                     border = args.get("border", "yes")
-                    skip = int(args.get("skip", 0))
+                    skip = args.get("skip", "0")
                     debug_boxes = args.get("debug", "no")
+
+                    if ":" in skip:
+                        start, end = skip.split(":")
+                        skip_slice = slice(int(start), int(end))
+                    else:
+                        skip_slice = slice(int(skip), None)
 
                     lines = render_slide(fence_lines,
                                          docs_dir,
@@ -172,7 +180,7 @@ class ElsiePlugin(BasePlugin):
                                          width=width,
                                          height=height,
                                          border=border == "yes",
-                                         skip=skip,
+                                         skip=skip_slice,
                                          debug_boxes=debug_boxes == "yes").splitlines(
                         keepends=False)
                 return elsie_to_python_header(header), lines
