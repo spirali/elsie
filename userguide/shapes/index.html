@@ -85,19 +85,11 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#rectangles">Rectangles</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#geometrical-shapes">Geometrical shapes</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#line-and-polygon">Line and Polygon</a>
+    <li class="toctree-l2"><a class="reference internal" href="#lines-and-polygons">Lines and polygons</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#arrow-head">Arrow head</a>
+    <li class="toctree-l2"><a class="reference internal" href="#arrow-heads">Arrow heads</a>
     </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#path">Path</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#chaining-box-items">Chaining box items</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#modification-of-lazypoints">Modification of LazyPoints</a>
+    <li class="toctree-l2"><a class="reference internal" href="#paths">Paths</a>
     </li>
     </ul>
                     </li>
@@ -154,55 +146,148 @@
             <div class="section">
               
                 <h1 id="shapes">Shapes<a class="headerlink" href="#shapes" title="Permanent link">#</a></h1>
-<h3 id="rectangles">Rectangles<a class="headerlink" href="#rectangles" title="Permanent link">#</a></h3>
-<p>The simplest box items are rectangles, they are created by calling <code>.rect(..)</code>
-method on a box. The position and size of a rectangle is taken from the box. A
-<code>rectangle</code> method takes the following parameters:</p>
+<p><em>Elsie</em> allows you to draw various SVG shapes into slides: rectangles, (poly)lines, polygons or
+generic paths. On top of that, it offers an abstraction for arrow heads that can be placed on the
+ends of lines or paths.</p>
+<h2 id="rectangles">Rectangles<a class="headerlink" href="#rectangles" title="Permanent link">#</a></h2>
+<p>You can draw rectangles using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_rect"><code>rect</code></a> method on a box. The
+position and size of the rectangle will be copied from the box. You can pass the following
+additional parameters:</p>
 <ul>
-<li><code>color</code> (<code>str</code> or <code>None</code>) -- Defines a color that is used to draw a rectangle. If <code>None</code> no rectangle is drawn. (Default <code>None</code>)</li>
-<li><code>stroke_width</code> (a number) -- Defines thickness of the drawn rectangle</li>
-<li><code>stroke_dasharray</code> (<code>str</code> or <code>None</code>) -- Defines pattern of dashes and gaps to paint a rectangle. More information: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray</li>
-<li><code>bg_color</code> (<code>str</code> or <code>None</code>) -- Defines a color that is used to fill the rectangle.</li>
-<li><code>rx</code> and <code>ry</code> -- Defines a radius of round corners of the rectangle. See https://developer.mozilla.org/en-US/docs/Web/SVG/Element/rect.</li>
+<li><code>color=&lt;str or None&gt;</code>: <a href="../text/#colors">Color</a> used to draw the edges of the rectangle. If you
+pass <code>None</code> (the default), the edges will not be drawn.</li>
+<li><code>stroke_width=&lt;number&gt;</code>: Thickness of the drawn rectangle.</li>
+<li><code>stroke_dasharray=&lt;str or None&gt;</code>: Pattern of dashes and gaps to used when drawing the edges of
+the rectangle. You can find more about this attribute
+<a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray">here</a>.</li>
+<li><code>bg_color=&lt;str or None&gt;</code>: Color used to fill the rectangle.</li>
+<li><code>rx</code>, <code>ry</code>: Radius of
+<a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/rect">rounded corners</a> of the rectangle.</li>
 </ul>
-<pre><code class="language-python">@elsie.slide()
-def rectangle(slide):
-    box = slide.box(x=&quot;[50%]&quot;, y=&quot;[50%]&quot;, width=&quot;80%&quot;, height=300)
-    box.rect(bg_color=&quot;green&quot;, color=&quot;red&quot;, stroke_width=10, stroke_dasharray=&quot;10 4&quot;, rx=20, ry=20)
+<p>An example of drawing a rectangle:</p>
+<pre><code class="language-python">box = slide.box(x=&quot;[50%]&quot;, y=&quot;[50%]&quot;, width=&quot;80%&quot;, height=200)
+box.rect(
+  bg_color=&quot;green&quot;, color=&quot;red&quot;,
+  stroke_width=10, stroke_dasharray=&quot;10 4&quot;,
+  rx=20, ry=20
+)
 </code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/rectangle.png"></p>
-<h2 id="geometrical-shapes">Geometrical shapes<a class="headerlink" href="#geometrical-shapes" title="Permanent link">#</a></h2>
-<p>Elsie allows to draw additional shapes: (poly)line, polygon, and a generic path.
-On top of that, Elsie offers an abstraction for arrow heads that can be placed
-on the ends of a line or a path.</p>
-<h3 id="line-and-polygon">Line and Polygon<a class="headerlink" href="#line-and-polygon" title="Permanent link">#</a></h3>
-<p>Both polygon and line takes a list of points as the first argument.
-A point can be defines as:</p>
+<div class="elsie-wrapper elsie-wrapper-3a36022a1155459e9a634b71b717620f">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='30.0' y='50.0' width='240.0' height='200' rx='20' ry='20' style='fill:green;stroke:red;stroke-width:10;stroke-dasharray:10 4' /></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h2 id="lines-and-polygons">Lines and polygons<a class="headerlink" href="#lines-and-polygons" title="Permanent link">#</a></h2>
+<p>You can draw lines using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_line"><code>line</code></a> method and polygons using the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_polygon"><code>polygon</code></a>. Both of these methods take a list of poinst as their
+first argument. Each point can be defined as one of the following variants:</p>
 <ul>
-<li>A 2-tuple <code>(x_value, y_value)</code> where <code>x_value</code> (resp <code>y_value</code>) that are passed to method <code>.x(..)</code> (resp <code>.y(..)</code>) of the box holding the line/polygon.</li>
-<li>A dynamic point obtained by calling <code>.p(x_value, y_value)</code> of any box.</li>
+<li>A tuple <code>(x_value, y_value)</code>: Both values will be interpreted as locations relative to the top-left
+corner of the parent box of the line/polygon. See
+<a href="../layout/#positioning-boxes">box positioning</a>.</li>
+<li>A dynamic point obtained by calling <code>.p(x_value, y_value)</code> on some box. See
+<a href="../layout/#dynamic-positions">dynamic positions</a>.</li>
 </ul>
-<p>TODO</p>
-<h3 id="arrow-head">Arrow head<a class="headerlink" href="#arrow-head" title="Permanent link">#</a></h3>
-<p>An arrow head is be defined by instantiating class <code>elsie.Arrow</code>
-that takes the following attributes:</p>
+<pre><code class="language-python">slide.box(width=100, height=100).line([(0, 0), (50, 50)], color=&quot;red&quot;, stroke_width=5) 
+box = slide.box().text(&quot;Hello&quot;)
+slide.box().polygon([
+  box.p(-20, &quot;50%&quot;),
+  box.p(&quot;50%&quot;, -20),
+  box.p(&quot;100%&quot;, &quot;50%&quot;).add(20, 0),
+  box.p(&quot;50%&quot;, &quot;100%&quot;).add(0, 20)
+], color=&quot;green&quot;)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-badb02ced3f84c6a828fc0ab25b5819a">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><polyline points='100.0,83.2 150.0,133.2' style='fill:none;stroke:red;stroke-width:5' /><text x='150.0' y='211.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello</tspan></text><polygon points='96.66794999999999,200.0 150.0,163.2 203.33204999999998,200.0 150.0,236.79999999999998' style='fill:none;stroke:green;stroke-width:1' /></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>You can pass <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_line"><code>style attributes</code></a> to lines and polygons, similarly
+to rectangles.</p>
+<h2 id="arrow-heads">Arrow heads<a class="headerlink" href="#arrow-heads" title="Permanent link">#</a></h2>
+<p>An arrow head is defined using the <a href="https://spirali.github.io/elsie/apidoc/elsie.arrow.Arrow.html"><code>Arrow</code></a> class. It takes the following
+attributes:</p>
 <ul>
-<li><code>size</code> - The size of the arrow head</li>
-<li><code>angle</code> - The main angle of arrow head</li>
-<li><code>stroke_width</code> - If <code>None</code> then the arrow head is filled area, otherwise it defines the thickness of the line that is used to draw the arrow head.</li>
-<li><code>inner</code> - How the inner point of the arrow is moved. Value 1.0 has no
-  effect, value bigger than 1.0 produce a diamond shape, value smaller than 1.0
-  produce a more sharp arrow. See the effect in the picture below. The move of
-  the point is the proportional to the size of the arrow.</li>
+<li><code>size</code>: Size of the arrow head.</li>
+<li><code>angle</code>: Main angle of arrow head.</li>
+<li><code>stroke_width</code>: Thickness of the line used to draw the arrow head. If <code>None</code>, the arrow head will
+be filled. </li>
+<li><code>inner</code>: Determines the shape of the arrow head. Value <code>1</code> (default) produces a normal arrow,
+values larger than <code>1</code> will produce a diamond shape, values smaller than <code>1</code>
+will produce a sharper arrow. See the effect in the picture below. The effect of the <code>inner</code> value
+is proportional to the size of the arrow.</li>
 </ul>
-<p><img src="imgs/arrows.png"/></p>
-<p>Note: That the head defines only the shape, not the color. The color is taken from the line where the arrow head is attached.</p>
-<h2 id="path">Path<a class="headerlink" href="#path" title="Permanent link">#</a></h2>
-<p>TODO</p>
-<h2 id="chaining-box-items">Chaining box items<a class="headerlink" href="#chaining-box-items" title="Permanent link">#</a></h2>
-<p>TODO</p>
-<h2 id="modification-of-lazypoints">Modification of LazyPoints<a class="headerlink" href="#modification-of-lazypoints" title="Permanent link">#</a></h2>
-<p>TODO</p>
+<p>Arrow attributes reference image:</p>
+<p><img alt="Arrow reference" src="../../imgs/arrows.png" /></p>
+<p>You can attach an arrow head to a line using the <code>start_arrow</code> and <code>end_arrow</code> parameters of the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_line"><code>line</code></a> method. Here is an example of using arrow heads:</p>
+<pre><code class="language-python">slide.box(width=100, height=100).line(
+  [(0, 0), (50, 50)],
+  color=&quot;red&quot;,
+  stroke_width=5,
+  start_arrow=elsie.Arrow(size=20, inner=2.0, angle=30),
+  end_arrow=elsie.Arrow(size=40),
+) 
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-5e1f7a8359cf4be5b8c4b6103aca5b10">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><polyline points='106.12372435695795,106.12372435695795 139.16649559160595,139.16649559160595' style='fill:none;stroke:red;stroke-width:5' /><polygon style='fill:red;stroke:none;' points='105.17638090205041,119.31851652578136 100.0,100.0 119.31851652578136,105.17638090205043 124.49489742783179,124.49489742783179' /><polygon style='fill:red;stroke:none;' points='146.51377029009367,110.15221207633019 150.0,150.0 110.15221207633019,146.51377029009367' /></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>Note: the arrow head defines only its shape, not color. The color is always taken from the line to
+which the arrow head is attached.</p>
+<h2 id="paths">Paths<a class="headerlink" href="#paths" title="Permanent link">#</a></h2>
+<p>You can also draw arbitrary
+<a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths">SVG paths</a> using the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_path"><code>path</code></a> method.</p>
               
             </div>
           </div>
