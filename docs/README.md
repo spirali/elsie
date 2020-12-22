@@ -59,6 +59,14 @@ Every tool has its disadvantages though.
 - Elsie is tested only on Linux machines, if you find a problem on a
   different platform, do not hesitate to open a [GitHub issue](https://github.com/spirali/elsie/issues/new).
 
+## Comparison to other tools
+- Reveal.js
+TODO
+- Google slides/PowerPoint
+TODO
+- Beamer
+TODO
+
 ## FAQ
 - Why do you use `Inkscape` instead of e.g. `Cairo`?
 TODO

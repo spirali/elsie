@@ -26,6 +26,10 @@ class Box(BoxMixin):
     def _get_box(self):
         return self
 
+    def current_step(self) -> int:
+        """Returns the current step (the step with the highest number defined so far)."""
+        return self.slide.current_step()
+
     def add_child(self, obj, prepend=False, above=None, below=None):
         """Semi-internal function, you can add your child if you know
         what you are doing."""

@@ -48,6 +48,9 @@ class Slide:
     def box(self):
         return self._box
 
+    def current_step(self) -> int:
+        return self.max_step
+
     def prepare(self):
         rect = Rect(0, 0, self.width, self.height)
         self._box.layout.set_rect(rect)
