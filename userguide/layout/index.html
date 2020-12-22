@@ -74,24 +74,36 @@
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Layout</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#creating-boxes">Creating boxes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#default-box-layout-properties">Default box layout properties</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#tree-of-boxes">Tree of boxes</a>
+    <li class="toctree-l3"><a class="reference internal" href="#box-naming">Box naming</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#box-naming">Box naming</a>
+        </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#width-and-height">Width and Height</a>
+    <li class="toctree-l2"><a class="reference internal" href="#box-axis">Box axis</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#box-aliases">Box aliases</a>
+    <li class="toctree-l2"><a class="reference internal" href="#composing-boxes">Composing boxes</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#padding">Padding</a>
+    <li class="toctree-l2"><a class="reference internal" href="#sizing-boxes">Sizing boxes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#size-value-formats">Size value formats</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#box-position">Box Position</a>
+    <li class="toctree-l3"><a class="reference internal" href="#aliases-for-commonly-sized-boxes">Aliases for commonly sized boxes</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#default-position">Default position</a>
+    <li class="toctree-l3"><a class="reference internal" href="#padding">Padding</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#dynamic-positions">Dynamic positions</a>
+        </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#modifying-painting-order">Modifying painting order</a>
+    <li class="toctree-l2"><a class="reference internal" href="#positioning-boxes">Positioning boxes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#default-position">Default position</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#dynamic-positions">Dynamic positions</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#modifying-render-order">Modifying render order</a>
     </li>
     </ul>
                     </li>
@@ -158,213 +170,512 @@
             <div class="section">
               
                 <h1 id="layout">Layout<a class="headerlink" href="#layout" title="Permanent link">#</a></h1>
-<p>The most prominent objects in Elsie are boxes. They serve as a layout mechanism
-and the way how to put a content into a slide.</p>
-<h3 id="creating-boxes">Creating boxes<a class="headerlink" href="#creating-boxes" title="Permanent link">#</a></h3>
-<p>Let us create the following example, where 3 boxes are created from the
-top-level box. The new box is created by calling <code>.box(...)</code> on an existing box.
-The parameter <code>slide</code> passed into the slide function is also a box.</p>
-<pre><code class="language-python">@elsie.slide()
-def boxdemo1(slide):
+<p><em>Elsie</em> contains a layout system which allows you to quickly build scenarios that are common in
+presentations, while still providing the option of finely tuned customization for situations where
+every pixel placement matters.</p>
+<p>The central element of the layout system is the <strong>Box</strong>.</p>
+<p>Each <em>Elsie</em> slide contains a layout hierarchy tree. The internal nodes of the tree are <em>boxes</em> and
+the leaves are <em>box items</em>. Boxes are layout containers, which do not produce any visual content, but
+they dictate how are their children laid out on a slide. Box items are individual paintable items,
+such as text, images, shapes, etc. Anything that can be rendered by <em>Elsie</em> thus has an accompanied
+parent box which decides its size and position on a slide.</p>
+<h2 id="creating-boxes">Creating boxes<a class="headerlink" href="#creating-boxes" title="Permanent link">#</a></h2>
+<p>To create a new box, you can call the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_box"><code>box</code></a> method on an existing
+<code>Box</code>. This will return a new box which will be a child of the box object
+on which you call the <code>box</code> method. The root box of the slide layout hierarchy is available to you
+as the return value of the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_new_slide"><code>new_slide</code></a> method or the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_slide"><code>slide</code></a> decorator.</p>
+<p>Here we create three boxes as children of the top-level slide box and create a child text item
+in each box.</p>
+<pre><code class="language-python">@slides.slide()
+def three_boxes(slide):
     slide.box().text(&quot;Box 1&quot;)
     slide.box().text(&quot;Box 2&quot;)
     slide.box().text(&quot;Box 3&quot;)
 </code></pre>
-<p>The code will create the following slide:</p>
-<p><img width="512px" height="384px" src="slide_imgs/boxdemo0.png"></p>
-<p>Boxes do not produce any visible content but it influence positions of other
-elements. To see where the boxes are, we can switch on the box debug mode:</p>
-<pre><code class="language-python">@elsie.slide(debug_boxes=True)
-def boxdemo1(slide):
-    slide.box().text(&quot;Box 1&quot;)
-    slide.box().text(&quot;Box 2&quot;)
-    slide.box().text(&quot;Box 3&quot;)
-</code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/boxdemo1.png"></p>
-<p>Here we see the four boxes, the top-level box representing the whole slide and
-three inner boxes.</p>
-<p>Newly created boxes have the following behavior as default:
-- It occupies as less space as possible (in our case is only as big as it could
-  contain the text)
-- Boxes are put verticaly in the order as they were defined
-- They are centered vertically and horizontally.</p>
-<p>In the text below, we will see how these default positioning and sizes can be changed.</p>
-<p>Boxes can be hierarchically composed (parameter <code>padding</code> creates a padding in
-all directions, it will be explained later).</p>
-<pre><code class="language-python">slide.box(padding=40).box(padding=40).box(padding=40).text(&quot;Box 1&quot;)
-</code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/composition.png"></p>
-<h3 id="tree-of-boxes">Tree of boxes<a class="headerlink" href="#tree-of-boxes" title="Permanent link">#</a></h3>
-<p>Boxes creates a tree of <em>boxes</em> and <em>box items</em>. Boxes creates layout and box items
-represents paitable contant as text, pictures, etc.
-Box items are always leaves of the tree and does not contain child boxes.</p>
-<p>When a slide is rendered, the box tree is traversed in depth-first way and each child is visited in the order in which it was defined.</p>
-<p>This can be modified by parameters <code>above</code>, <code>below</code> and z-level, see <a href="#modifying-painting-order">Modifying painting order</a>.</p>
-<p>Allmost all methods on box creates a new boxes (e.g. <code>box</code>) or box items (e.g. <code>text</code> or <code>rect</code>). Actually all these methods are also provided by box items; however as box items cannot directly contain its own child elements, they are created in the parent box of the box item. Therefore the following two slides creates the equivalent slides:</p>
-<pre><code class="language-python">@elsie.slide()
-def textrect_v1(slide):
-    box = slide.box()
-    box.rect(bg_color=&quot;#aaf&quot;)
-    box.text(&quot;Hello!&quot;)
+<div class="elsie-slide elsie-slide-b9a246ad86e948eead48d2fff4b85ff2">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='200' height='200'><rect x='0' y='0' width='200' height='200' style='fill:none;stroke:black;stroke-width:1' /><text x='100.0' y='77.60000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='100.0' y='111.20000000000002' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text><text x='100.0' y='144.8' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
 
-@elsie.slide()
-def textrect_v2(slide):
-    slide.box().rect(bg_color=&quot;#aaf&quot;).text(&quot;Hello!&quot;)
-</code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/textrect.png"></p>
-<h3 id="box-naming">Box naming<a class="headerlink" href="#box-naming" title="Permanent link">#</a></h3>
-<p>Box can be named by calling <code>.box(name="Box name")</code>. It has no impact on
-normal rendering of the slide. The name of slide is shown when
-argument <code>debug_boxes=True</code> is used.</p>
-<p>The name of the top-level slide is name of the slide function when the decorator
-<code>@elsie.slide()</code> is used to create the slide.</p>
-<h3 id="width-and-height">Width and Height<a class="headerlink" href="#width-and-height" title="Permanent link">#</a></h3>
-<p>Width and height of a box can be changed by setting <code>width</code> and <code>height</code> arguments when calling <code>.box(...)</code> method.</p>
-<pre><code class="language-python">@elsie.slide(debug_boxes=True)
-def sizedemo1(slide):
+<p>The boxes themselves are invisible, but they have caused the three text items to be rendered
+below one another. If you are fine-tuning or debugging the layout of your slide and you want to see
+the extents and bounds of your boxes, you can use the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_slide"><code>debug_boxes</code></a> parameter when creating a slide:</p>
+<pre><code class="language-python">@slides.slide(debug_boxes=True)
+def three_boxes_debug(slide):
     slide.box().text(&quot;Box 1&quot;)
-    slide.box(width=300, height=100).text(&quot;Box 2&quot;)
-    slide.box(width=&quot;100%&quot;).text(&quot;Box 3&quot;)
+    slide.box().text(&quot;Box 2&quot;)
+    slide.box().text(&quot;Box 3&quot;)
 </code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/sizedemo1.png"></p>
-<p>These paramters define <strong>minimal</strong> size of the box. This mean that when its
-content (child boxes, texts, etc.) request a bigger size, the box will use the
-requested size of the content.</p>
-<p>The value should be one of the following:</p>
+<div class="elsie-slide elsie-slide-9b8f19c529ae4657a4b8ee074ba44f29">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='200' height='200'><rect x='0' y='0' width='200' height='200' style='fill:none;stroke:black;stroke-width:1' /><text x='100.0' y='77.60000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><rect x='63.29785' y='49.60000000000001' width='73.4043' height='33.6' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='63.29785' y='62.20000000000001' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;[73.40,33.60]</tspan></text><text x='100.0' y='111.20000000000002' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text><rect x='63.40725' y='83.20000000000002' width='73.1855' height='33.6' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='63.40725' y='95.80000000000001' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;[73.19,33.60]</tspan></text><text x='100.0' y='144.8' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text><rect x='63.12695' y='116.80000000000001' width='73.7461' height='33.6' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='63.12695' y='129.4' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;[73.75,33.60]</tspan></text><rect x='0' y='0' width='200' height='200' style='fill:none;stroke:#ff00ff;stroke-width:2' /><text x='0' y='198.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↙&#160;[200.00,200.00]</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+<p>You can see that there is a single root box that wraps the whole slide and then there are three
+individual boxes in the middle. The box debug draw mode will be used in some examples on this page
+to demonstrate the extents of individual boxes.</p>
+<h3 id="default-box-layout-properties">Default box layout properties<a class="headerlink" href="#default-box-layout-properties" title="Permanent link">#</a></h3>
+<p>Newly created boxes have the following behavior by default:</p>
 <ul>
-<li><code>None</code> (default): No minimal size request</li>
-<li><code>int</code>, <code>float</code>, or a string containg only digits: Size defined in pixels</li>
-<li>String in format <code>"XX%"</code> where XX is a number (e.g. <code>"50%"</code>): Size defined
-  in percentage of the parent box size.</li>
-<li>String <code>"fill"</code> or <code>"fill(XX)"</code> where XX is a number. The box fills all
-  available space of the parent box. If more boxes on the same level use filling
-  value then the size is distributed respecting the ratio of parameters. For
-  example, when one box has argument <code>fill(2)</code> and second one <code>fill(3)</code>,
-  remaining size will be divided in ratio 2:3. Value <code>"fill"</code> is shortcut for
-  <code>"fill(1)"</code>.</li>
+<li>They occupy as few space as possible. You can change this by modifying their <a href="#sizing-boxes">size</a>.</li>
+<li>Children are placed vertically in a column, in the order in which they were
+  created. You can change this by modifying their <a href="#box-axis">axis</a>.</li>
+<li>Children are centered vertically and horizontally. You can change this by modifying their
+<a href="#positioning-boxes">position</a>.</li>
 </ul>
-<p>The following code shows example of "fill" usage:</p>
-<pre><code class="language-python">@elsie.slide(debug_boxes=True)
-def filldemo1(slide):
-    slide.box().text(&quot;Box 1&quot;)
-    slide.box(width=300, height=100).text(&quot;Box 2&quot;)
-    slide.box(height=&quot;fill&quot;).text(&quot;Box 3&quot;)
-</code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/filldemo1.png"></p>
-<h3 id="box-aliases">Box aliases<a class="headerlink" href="#box-aliases" title="Permanent link">#</a></h3>
-<p>New box can be created also by calling methods <code>fbox</code>, <code>sbox</code>, and <code>overlay</code>.</p>
+<p>In the following sections below we will see how these default positioning and sizing rules can be
+changed.</p>
+<h3 id="box-naming">Box naming<a class="headerlink" href="#box-naming" title="Permanent link">#</a></h3>
+<p>Boxes can be named with the <code>name</code> parameter (<code>.box(name="My box")</code>). It has no impact on normal
+rendering of the slide, but the name will be shown if the box debug draw mode is enabled.</p>
+<p>If you use the <code>@slides.slide()</code> decorator, the name of the top-level slide will be set to the
+name of the function on which the decorator was used.</p>
+<h2 id="box-axis">Box axis<a class="headerlink" href="#box-axis" title="Permanent link">#</a></h2>
+<p>Boxes can either be <em>vertical</em> or <em>horizontal</em>:</p>
 <ul>
-<li>Method <code>fbox(...)</code> (fill-box) is a shortcut for calling <code>box(width="fill", height="fill", ...)</code>.</li>
-<li>Method <code>sbox(...)</code> (stretch-box) is a shortcut for
-calling <code>box(width="fill", ...)</code> if the parent box is vertical and
-<code>box(width="fill", ...)</code> if the parent box is horizontal.
-In other words, it fills the box in the unmanaged direction.</li>
-<li>Method <code>overlay(..)</code> is a shortcut for <code>box(x=0, y=0, width="100%", height="100%)</code>.</li>
+<li>Vertical boxes place its child items vertically in a column. Their <em>main</em> axis is vertical and
+their <em>cross</em> axis is horizontal.</li>
+<li>Horizontal boxes place its child items horizontally in a row. Their <em>main</em> axis is horizontal
+and their <em>cross</em> axis is vertical.</li>
+</ul>
+<p>Boxes are vertical by default, if you want to create a horizontal box, use the <code>horizontal=True</code>
+parameter when creating a box:</p>
+<pre><code class="language-python">box = slide.box(horizontal=True)
+box.box().text(&quot;Box 1&quot;)
+box.box().text(&quot;Box 2&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-56bf70c615ab47f5ae9102dede8260a0">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='200' height='200'><rect x='0' y='0' width='200' height='200' style='fill:none;stroke:black;stroke-width:1' /><text x='63.40725' y='111.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='136.70215' y='111.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h2 id="composing-boxes">Composing boxes<a class="headerlink" href="#composing-boxes" title="Permanent link">#</a></h2>
+<p>By composing boxes, you can create complex hierarchical row and column layouts.</p>
+<pre><code class="language-python">row = slide.box(horizontal=True)
+col_a = row.box()
+col_a.box().text(&quot;Col. A/1&quot;)
+col_a.box().text(&quot;Col. A/2&quot;)
+col_b = row.box()
+col_b.box().text(&quot;Col. B/1&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-12bcea3ffc0f44a1b988ea0db51b2f5e">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='200'><rect x='0' y='0' width='300' height='200' style='fill:none;stroke:black;stroke-width:1' /><text x='97.69800000000001' y='94.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Col.&#160;A/1</tspan></text><text x='97.69800000000001' y='128.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Col.&#160;A/2</tspan></text><text x='202.2745' y='111.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Col.&#160;B/1</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>Note that almost all methods on a box will create a new box (<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_box"><code>box</code></a>)
+or an item (e.g. <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_text"><code>text</code></a> or
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_rect"><code>rect</code></a>). Leaf items cannot contain children, but for
+convenience they also offer most of the methods available on boxes, which they delegate to their
+parent. Therefore, the following two snippets will create the same slide content:</p>
+<pre><code class="language-python"># A: create text on its parent box
+box = slide.box()
+box.rect(bg_color=&quot;#aaf&quot;)
+box.text(&quot;Hello!&quot;)
+
+# B: create text on its sibling rectangle
+slide.box().rect(bg_color=&quot;#aaf&quot;).text(&quot;Hello!&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-5681d3a25f394e4799a9cf9b93e06c95">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='112.4092' y='133.2' width='75.1816' height='33.6' style='fill:#aaf;stroke:none' /><text x='150.0' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello!</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h2 id="sizing-boxes">Sizing boxes<a class="headerlink" href="#sizing-boxes" title="Permanent link">#</a></h2>
+<p>You can change the width and height of a box by using the <code>width</code> and <code>height</code> parameters of the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_box"><code>box</code></a> method.</p>
+<p>Here we create three boxes (<code>A</code>, <code>B</code> and <code>C</code>). Box <code>A</code> has a default size, which is set according
+to the required size of its text child. Box <code>B</code> has a width of <code>300</code> pixels and height of <code>100</code>
+pixels. Box <code>C</code> has width equal to the full width of its parent and height is again set to the height
+of its child text item.</p>
+<pre><code class="language-python">slide.box(name=&quot;A&quot;).text(&quot;Box 1&quot;)
+slide.box(name=&quot;B&quot;, width=300, height=100).text(&quot;Box 2&quot;)
+slide.box(name=&quot;C&quot;, width=&quot;100%&quot;).text(&quot;Box 3&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-f8fb7deeb609421ab8e387f9e5a70413">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='94.39999999999999' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><rect x='113.29785' y='66.39999999999999' width='73.4043' height='33.6' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='113.29785' y='78.99999999999999' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;A&#160;[73.40,33.60]</tspan></text><text x='150.0' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text><rect x='0.0' y='100.0' width='300' height='100' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='0.0' y='112.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;B&#160;[300.00,100.00]</tspan></text><text x='150.0' y='228.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text><rect x='0.0' y='200.0' width='300.0' height='33.6' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='0.0' y='212.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;C&#160;[300.00,33.60]</tspan></text><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:#ff00ff;stroke-width:2' /><text x='0' y='298.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↙&#160;[300.00,300.00]</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>The <code>width</code> and <code>height</code> parameters define the <strong>minimal</strong> size of the box. Therefore, if its
+children (child boxes, text items, etc.) request a larger size, the box will use the requested
+size of its content.</p>
+<h3 id="size-value-formats">Size value formats<a class="headerlink" href="#size-value-formats" title="Permanent link">#</a></h3>
+<p>You can enter <code>width</code> and <code>height</code> values in several formats:</p>
+<ul>
+<li><code>None</code> (the default): No minimal size request.</li>
+<li><code>int</code>, <code>float</code> or a string containg only digits: Exact minimal size defined in pixels.</li>
+<li><code>"&lt;number&gt;%"</code> (e.g. <code>"50%"</code>): Minimal size in percentage of the parent box
+  size.</li>
+<li><code>"fill"</code> or <code>"fill(&lt;number&gt;)"</code>: The box will fill all available space of the parent box. If there
+  are more boxes on the same level which use fill, then the size will be distributed amongst them,
+  while respecting the ratio of the <code>fill</code> parameter.
+  For example, when one box has argument <code>fill(2)</code> and the second one <code>fill(3)</code>, the remaining size
+  will be divided using the ratio <code>2:3</code>. Using just <code>"fill"</code> is a shortcut for <code>"fill(1)"</code>.</li>
+</ul>
+<p>The following code shows an example of <code>"fill"</code> usage:</p>
+<pre><code class="language-python">slide.box(width=&quot;fill&quot;).text(&quot;Box 1&quot;)
+box = slide.box(width=300, height=180)
+box.box(height=&quot;fill(1)&quot;).text(&quot;Box 2&quot;)
+box.box(height=&quot;fill(2)&quot;).text(&quot;Box 3&quot;)
+slide.box(height=&quot;fill&quot;).text(&quot;Box 4&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-bea86811c2914089ad0875e9642bb688">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='300'><rect x='0' y='0' width='400' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='200.0' y='28.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><rect x='0.0' y='0.0' width='400' height='33.6' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='0.0' y='12.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;[400.00,33.60]</tspan></text><text x='200.0' y='74.8' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text><rect x='163.40725' y='33.6' width='73.1855' height='60.0' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:1 2' /><text x='163.40725' y='92.19999999999999' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↙&#160;[73.19,60.00]</tspan></text><text x='200.0' y='164.8' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text><rect x='163.12695' y='93.6' width='73.7461' height='120.0' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:1 2' /><text x='163.12695' y='212.2' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↙&#160;[73.75,120.00]</tspan></text><rect x='50.0' y='33.6' width='300' height='180' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='50.0' y='46.2' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;[300.00,180.00]</tspan></text><text x='200.0' y='268.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;4</tspan></text><rect x='162.792' y='213.6' width='74.416' height='86.39999999999998' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='162.792' y='226.2' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;[74.42,86.40]</tspan></text><rect x='0' y='0' width='400' height='300' style='fill:none;stroke:#ff00ff;stroke-width:2' /><text x='0' y='298.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↙&#160;[400.00,300.00]</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h3 id="aliases-for-commonly-sized-boxes">Aliases for commonly sized boxes<a class="headerlink" href="#aliases-for-commonly-sized-boxes" title="Permanent link">#</a></h3>
+<p><em>Elsie</em> contains three shortcuts for creating boxes with common minimal size requirements:</p>
+<ul>
+<li><a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_fbox"><code>fbox</code></a> (fill-box): shortcut for <code>box(width="fill", height="fill")</code>.</li>
+<li><a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_sbox"><code>sbox</code></a> (stretch-box): shortcut for <code>box(width="fill")</code> if the
+parent box has a vertical layout or <code>box(height="fill")</code> if the parent box has a
+<a href="#box-axis">horizontal</a> layout. In other words, it fills the box in the cross axis.</li>
+<li><a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_overlay"><code>overlay</code></a>: shortcut for
+<code>box(x=0, y=0, width="100%", height="100%)</code>. This can be used if you want to overlay several boxes
+on top of each other, which is useful especially in combination with <a href="../revealing/">revealing</a>.</li>
 </ul>
 <h3 id="padding">Padding<a class="headerlink" href="#padding" title="Permanent link">#</a></h3>
-<p>By default, box gives all its space to its children. This can be controlled by
-padding. There are four padding values: left, right, top, and bottom. There are
-controlled by parameters <code>p_left</code>, <code>p_right</code>, <code>p_top</code>, and <code>p_bottom</code>.
-After the layout of parent box is computed and the final size and position is
-given to a box, padding shrinks its size in the specified directions.</p>
-<p>Padding can also be set through the following parameters:
-* <code>p_x</code> that sets <code>p_left</code> and <code>p_right</code>
-* <code>p_y</code> that sets <code>p_top</code> and <code>p_bottom</code>
-* <code>padding</code> that sets all four paddings.</p>
-<pre><code class="language-python">@elsie.slide(debug_boxes=True)
-def padding_demo(slide):
-    slide.box(width=200, height=200, p_left=100, name=&quot;Top box&quot;)
-    slide.box(width=200, height=&quot;fill&quot;, p_y=100, name=&quot;Bottom box&quot;)
+<p>By default, each box gives all of its space to its children. This can be modified by padding.
+There are four padding values: <code>left</code>, <code>right</code>, <code>top</code>, and <code>bottom</code>. They can be modified with the
+<code>p_left</code>, <code>p_right</code>, <code>p_top</code>, and <code>p_bottom</code> parameters of the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_box"><code>box</code></a> method.</p>
+<p>After the layout of the parent box is computed and the final size and position of a box is known,
+the padding will shrink its size in the specified directions.</p>
+<pre><code class="language-python">slide.box(width=160, height=100, p_left=40, name=&quot;Top box&quot;)
+slide.box(width=160, height=150, p_y=50, name=&quot;Bottom box&quot;)
 </code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/padding_demo.png"></p>
-<h3 id="box-position">Box Position<a class="headerlink" href="#box-position" title="Permanent link">#</a></h3>
-<p>Position of box can be set by arguments <code>x</code> and <code>y</code>. The allowed values are:</p>
+<div class="elsie-slide elsie-slide-e0beeb3dcc804240a25b620fbed9fb1c">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='300'><rect x='0' y='0' width='400' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='160.0' y='25.0' width='120' height='100' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='160.0' y='37.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;Top&#160;box&#160;[120.00,100.00]</tspan></text><rect x='120.0' y='175.0' width='160' height='50' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='120.0' y='187.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;Bottom&#160;box&#160;[160.00,50.00]</tspan></text><rect x='0' y='0' width='400' height='300' style='fill:none;stroke:#ff00ff;stroke-width:2' /><text x='0' y='298.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↙&#160;[400.00,300.00]</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+<p>In the above example, the top box is shrunk by <code>40</code> pixels from the left. Note that the padding is
+applied after the layout was calculated, therefore the box was first centered horizontally, and
+then the padding reduced its size. The bottom box is shrunk by <code>50</code> pixels from the top and from
+the bottom.</p>
+<p>You can also use the following padding shortcut parameters of the <code>box</code> method:</p>
 <ul>
-<li><code>None</code> (default) -- see below.</li>
-<li><code>int</code>, <code>float</code>, or string containing only digits -- absolute position of
-  in pixels. Coordinates are relative to top-left corner of the parent box.</li>
-<li>string <code>"XX%</code> where XX is a number -- position in the parent box where 0% is left (for <code>x</code>) or top (for <code>y</code>) edge of the box and 100% is right (for <code>x</code>) or bottom (for <code>y</code>) edge of the box.</li>
-<li>string <code>"[XX%]</code> where XX is a number -- aligning box in the parent box. <code>"[0%]"</code> is left (resp. top), <code>"[50%]</code> is a middle, and <code>"[100%]"</code> is right (resp. bottom).</li>
-<li>Dynamically defined position -- see below.</li>
+<li><code>p_x</code> sets both <code>p_left</code> and <code>p_right</code>.</li>
+<li><code>p_y</code> sets both <code>p_top</code> and <code>p_bottom</code>.</li>
+<li><code>padding</code> sets all four paddings at once.</li>
 </ul>
-<h3 id="default-position">Default position<a class="headerlink" href="#default-position" title="Permanent link">#</a></h3>
-<p>The default position is influenced by configuration of the parent box.
-When the parent box is vertical (default behavior),
-the value for x-axis equivalent to <code>"[50%]"</code>, i.e. centering horizontally.</p>
-<p>Fox y-axis, the behavior is a more complex. When a box have <code>y</code> attribtue set
-to <code>None</code> then we call such a box as <em>managed box</em>. A box takes its all
-children boxes that are managed and stack them one-by-one while centering the
-resulting composite object. The behavior can be observed in the <code>boxdemo1</code> at
-the beginning of the user guide.</p>
-<p><img width="512px" height="384px" src="slide_imgs/boxdemo1.png"></p>
-<p>The vertical stacking can be switched
-to horizontal by <code>horizontal=True</code> in box construction.
-In such case, children boxes are stacked by x-axis and <code>"[50%]"</code> is default for y-axis.</p>
-<pre><code class="language-python">@elsie.slide(debug_boxes=True)
-def horizontal(slide):
-    parent = slide.box(width=&quot;100%&quot;, height=&quot;100%&quot;, horizontal=True)
-    parent.box().text(&quot;Box 1&quot;)
-    parent.box().text(&quot;Box 2&quot;)
-    parent.box().text(&quot;Box 3&quot;)
-</code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/horizontal.png"></p>
-<h3 id="dynamic-positions">Dynamic positions<a class="headerlink" href="#dynamic-positions" title="Permanent link">#</a></h3>
-<p>Box position can be defined dynamically with respect to other boxes. Calling
-method <code>x</code> (resp. <code>y</code>) on a box returns a proxy object that returns real
-position when the layout is computed. The reference point is the left top corner
-of the box.</p>
-<p>Arguments can be:</p>
+<h2 id="positioning-boxes">Positioning boxes<a class="headerlink" href="#positioning-boxes" title="Permanent link">#</a></h2>
+<p>You can set the position of the top-left corner of a box via the <code>x</code> and <code>y</code> parameters of the <code>box</code>
+method. You can enter the <code>x</code> and <code>y</code> positions in several formats:</p>
 <ul>
-<li>an integer or float -- the constant added to the reference point</li>
-<li>a string in form <code>"XX%"</code> where XX is an integer -- the ratio of the size of the box added to the reference point</li>
+<li><code>None</code> (default): Set the default position (see <a href="#default-position">below</a>).</li>
+<li><code>int</code>, <code>float</code> or a string containing only digits: Set absolute position in pixels.
+Coordinates are relative to the top-left corner of the parent box.</li>
+<li><code>"&lt;number&gt;%</code>: Set position relative to the parent box. <code>"0%"</code> represents the left (<code>x</code>) or top
+(<code>y</code>) edge of the parent and <code>"100%"</code> the right (<code>x</code>) or bottom (<code>y</code>) edge of the parent.</li>
+<li><code>"[&lt;number&gt;%]</code>:  Align the box in the parent box. <code>"[0%]"</code> is left (<code>x</code>) or top (<code>y</code>),
+<code>"[50%]"</code> is middle and <code>"[100%]"</code> is right (<code>x</code>) or bottom (<code>y</code>) alignment.</li>
+<li>Dynamically defined position: See <a href="#dynamic-positions">below</a>.</li>
+</ul>
+<p>Here is an example of using absolute and relative position coordinates:</p>
+<pre><code class="language-python">slide.box(x=0, y=10).text(&quot;Box 1&quot;)
+row = slide.box(width=&quot;fill&quot;)
+row.box(x=&quot;20%&quot;).text(&quot;Box 2&quot;)
+row.box(x=&quot;60%&quot;).text(&quot;Box 3&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-01ee40ba810a4614a6fb923891b200b7">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='36.70215' y='38.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='96.59275' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text><text x='216.87305' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h3 id="default-position">Default position<a class="headerlink" href="#default-position" title="Permanent link">#</a></h3>
+<p>The default positioning of a box depends on the axis of its parent. The following
+explanation assumes a vertical box. For a horizontal box, the main and cross axes would
+be swapped.</p>
+<p>Children of a box will be by default centered along the <em>cross</em> axis. In the case of a vertical
+parent box, the <code>x</code> attribute would be set to <code>"[50%]"</code>, i.e. child boxes will be horizontally
+centered.</p>
+<p>For the <em>main</em> axis, the behaviour is more complex. When a box has its <em>main</em> axis position
+set to <code>None</code>, it is a <em>managed box</em>. A parent box stacks all of its <em>managed</em> children boxes along
+its <em>main</em> axis one-by-one. In addition, it also centers all of its children together along the
+<em>main</em> axis.</p>
+<pre><code class="language-python">slide.box().text(&quot;Box 1&quot;)
+slide.box().text(&quot;Box 2&quot;)
+slide.box().text(&quot;Box 3&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-ab5b125d203a452cbe7ce332ff603b47">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='127.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='150.0' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text><text x='150.0' y='194.79999999999998' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+<p>In the above example, the <code>slide</code> is a parent vertical box. Its three children will thus be laid
+below one another, they will be centered horizontally, and all of them together will also be centered
+vertically.</p>
+<p>Here is the same situation with a horizontal parent box:</p>
+<pre><code class="language-python">row = slide.box(horizontal=True)
+row.box().text(&quot;Box 1&quot;)
+row.box().text(&quot;Box 2&quot;)
+row.box().text(&quot;Box 3&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-2d15221b95e34f23ba3f2903ef86e659">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='76.5342' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='149.8291' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text><text x='223.2949' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h3 id="dynamic-positions">Dynamic positions<a class="headerlink" href="#dynamic-positions" title="Permanent link">#</a></h3>
+<p>Box position can also be defined dynamically with respect to other boxes. You can get a position
+that is relative to the final position of a box using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_x"><code>x</code></a> or
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_y"><code>y</code></a> methods. The returned value of these methods will be a proxy
+object that will resolve the actual final position after layout is computed.</p>
+<p>The reference point of these two methods is the top-left corner of the target box. The parameter
+can be either:</p>
+<ul>
+<li><code>int</code> or <code>float</code>: Resolves to the given number of pixels from the reference point.</li>
+<li><code>"&lt;number&gt;%"</code>: Resolves to the ratio of the size of the box added to the reference point.</li>
 </ul>
 <p>For example:</p>
 <ul>
-<li>.x("0%") returns the most left coordinate of the box.</li>
-<li>.x("50%") returns "x" coordinate of the middle of the box.</li>
-<li>.x("100%") return the most right coordinate of the box.</li>
-<li>.x(10) returns the most left edge of th box + 10.</li>
+<li><code>.x("0%")</code> returns the left-most <code>x</code> coordinate of the box.</li>
+<li><code>.x("50%")</code> returns the <code>x</code> coordinate of the middle of the box.</li>
+<li><code>.x("100%")</code> return the right-most <code>x</code> coordinate of the box.</li>
+<li><code>.x(10)</code> returns the left-most <code>x</code> coordinate of the box, moved by <code>10</code> pixels to the right.</li>
 </ul>
-<p>Example:</p>
-<pre><code class="language-python">@elsie.slide(debug_boxes=True)
-def horizontal(slide):
-    b = slide.box(width=100, height=100, name=&quot;First&quot;)
-    slide.box(x=b.x(&quot;50%&quot;), y=b.y(&quot;50%&quot;), width=100, height=100, name=&quot;Second&quot;)
-    slide.box(x=0, y=b.y(&quot;100%&quot;), width=&quot;100%&quot;, height=200, name=&quot;Third&quot;)
+<p>Here you can observe dynamic positions in action:</p>
+<pre><code class="language-python">b = slide.box(width=100, height=100, name=&quot;First&quot;)
+slide.box(x=b.x(&quot;50%&quot;), y=b.y(&quot;50%&quot;), width=100, height=100, name=&quot;Second&quot;)
+slide.box(x=0, y=b.y(&quot;100%&quot;), width=&quot;100%&quot;, height=200, name=&quot;Third&quot;)
 </code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/xy.png"></p>
-<h3 id="modifying-painting-order">Modifying painting order<a class="headerlink" href="#modifying-painting-order" title="Permanent link">#</a></h3>
-<p>By default, boxes are painted by the depth-first walk through the box tree.
-Each child is visited in the order in which it was defined.</p>
-<p>In the following example, the blue box is painted over all previous boxes as it is defined the last.</p>
-<pre><code class="language-python">@elsie.slide()
-def paiting1(slide):
-    slide.box(x=&quot;[40%]&quot;, y=&quot;[40%]&quot;, width=300, height=300).rect(bg_color=&quot;red&quot;)
-    slide.box(x=&quot;[60%]&quot;, y=&quot;[50%]&quot;, width=300, height=300).rect(bg_color=&quot;green&quot;)
-    slide.box(x=&quot;[30%]&quot;, y=&quot;[60%]&quot;, width=300, height=300).rect(bg_color=&quot;blue&quot;)
+<div class="elsie-slide elsie-slide-1157856b14f145a5946404563ba9a15b">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='100.0' y='100.0' width='100' height='100' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='100.0' y='112.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;First&#160;[100.00,100.00]</tspan></text><rect x='150.0' y='150.0' width='100' height='100' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='150.0' y='162.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;Second&#160;[100.00,100.00]</tspan></text><rect x='0' y='200.0' width='300.0' height='200' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='0' y='212.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;Third&#160;[300.00,200.00]</tspan></text><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:#ff00ff;stroke-width:2' /><text x='0' y='298.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↙&#160;[300.00,300.00]</tspan></text></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h2 id="modifying-render-order">Modifying render order<a class="headerlink" href="#modifying-render-order" title="Permanent link">#</a></h2>
+<p>By default, boxes are rendered by performing a depth-first walk through the layout tree. Each child
+is visited in the order in which it was defined.</p>
+<p>In the following example, the blue box is rendered over all the previous boxes as it was defined
+the last.</p>
+<pre><code class="language-python">slide.box(x=40, y=20, width=80, height=120).rect(bg_color=&quot;red&quot;)
+slide.box(x=50, y=30, width=80, height=80).rect(bg_color=&quot;green&quot;)
+slide.box(x=60, y=40, width=80, height=80).rect(bg_color=&quot;blue&quot;)
 </code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/paiting1.png"></p>
-<p>The order in inside box can be defined by attributes <code>below</code> and <code>above</code> that takes another child in the box (box or box item) and creates new directly below or above given object.</p>
-<p><img width="512px" height="384px" src="slide_imgs/paiting2.png"></p>
-<pre><code class="language-python">@elsie.slide()
-def paiting2(slide):
-    red = slide.box(x=&quot;[40%]&quot;, y=&quot;[40%]&quot;, width=300, height=300)
-    red.rect(bg_color=&quot;red&quot;)
-    slide.box(x=&quot;[60%]&quot;, y=&quot;[50%]&quot;, width=300, height=300).rect(bg_color=&quot;green&quot;)
-    slide.box(below=red, x=&quot;[30%]&quot;, y=&quot;[60%]&quot;, width=300, height=300).rect(bg_color=&quot;blue&quot;)
+<div class="elsie-slide elsie-slide-3b1d8735912846678964f1bc7d8ef187">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='200' height='200'><rect x='0' y='0' width='200' height='200' style='fill:none;stroke:black;stroke-width:1' /><rect x='40' y='20' width='80' height='120' style='fill:red;stroke:none' /><rect x='50' y='30' width='80' height='80' style='fill:green;stroke:none' /><rect x='60' y='40' width='80' height='80' style='fill:blue;stroke:none' /></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>You have several options how to change the rendering order:</p>
+<ul>
+<li>Use the <code>prepend</code> parameter when creating a box. This will insert it as the first child of the
+parent box, instead of the last.</li>
+</ul>
+<pre><code class="language-python">slide.box(x=40, y=20, width=80, height=120).rect(bg_color=&quot;red&quot;)
+slide.box(x=50, y=30, width=80, height=80).rect(bg_color=&quot;green&quot;)
+slide.box(x=60, y=40, width=80, height=80, prepend=True).rect(bg_color=&quot;blue&quot;)
 </code></pre>
-<p>To modify drawing order even across boxes can be modified by <code>z_level</code>. Before
-final drawing, all drawing elements is stable sorted by <code>z_level</code>. It causes
-that an element with a higher <code>z_level</code> is drawn <em>after</em> an element with a
-lower <code>z_level</code>. If <code>z_level</code> is not specified, it is inherited from a
-parent box. The top-level box has <code>z_level</code> set to 0.</p>
-<pre><code class="language-python">@elsie.slide()
-def paiting3(slide):
-    slide.box(x=&quot;[40%]&quot;, y=&quot;[40%]&quot;, width=300, height=300).rect(bg_color=&quot;red&quot;)
-    slide.box(z_level=1, x=&quot;[60%]&quot;, y=&quot;[50%]&quot;, width=300, height=300).rect(bg_color=&quot;green&quot;)
-    slide.box(x=&quot;[30%]&quot;, y=&quot;[60%]&quot;, width=300, height=300).rect(bg_color=&quot;blue&quot;)
+<div class="elsie-slide elsie-slide-8203c1f4a30b450bad97176f023249dc">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='200' height='200'><rect x='60' y='40' width='80' height='80' style='fill:blue;stroke:none' /><rect x='0' y='0' width='200' height='200' style='fill:none;stroke:black;stroke-width:1' /><rect x='40' y='20' width='80' height='120' style='fill:red;stroke:none' /><rect x='50' y='30' width='80' height='80' style='fill:green;stroke:none' /></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+<ul>
+<li>Use the <code>below</code> or <code>above</code> parameters when creating a box to place the newly created box
+above/below the box passed in the parameter.</li>
+</ul>
+<pre><code class="language-python">a = slide.box(x=40, y=20, width=80, height=120)
+a.rect(bg_color=&quot;red&quot;)
+slide.box(x=50, y=30, width=80, height=80, below=a).rect(bg_color=&quot;green&quot;)
+slide.box(x=60, y=40, width=80, height=80).rect(bg_color=&quot;blue&quot;)
 </code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/paiting3.png"></p>
+<div class="elsie-slide elsie-slide-c79ff2cc14144b51b48f133486d16cc4">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='200' height='200'><rect x='0' y='0' width='200' height='200' style='fill:none;stroke:black;stroke-width:1' /><rect x='50' y='30' width='80' height='80' style='fill:green;stroke:none' /><rect x='40' y='20' width='80' height='120' style='fill:red;stroke:none' /><rect x='60' y='40' width='80' height='80' style='fill:blue;stroke:none' /></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+<ul>
+<li>You can also move boxes in the <code>z</code> axis using the <code>z_level</code> parameter. Before the final paint,
+all drawing elements will be sorted using a stable sort by their <code>z_level</code>. An element with a
+larger <code>z_level</code> will be drawn <em>after</em> an element with a small <code>z_level</code>. If the <code>z_level</code> is not
+specified, it is inherited from the parent box. The root box has <code>z_level</code> set to <code>0</code>.</li>
+</ul>
+<pre><code class="language-python">slide.box(x=40, y=20, width=80, height=120, z_level=3).rect(bg_color=&quot;red&quot;)
+slide.box(x=50, y=30, width=80, height=80, z_level=2).rect(bg_color=&quot;green&quot;)
+slide.box(x=60, y=40, width=80, height=80, z_level=1).rect(bg_color=&quot;blue&quot;)
+</code></pre>
+<div class="elsie-slide elsie-slide-0342b24bd10340a98222a5f1bcd2b7e4">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='200' height='200'><rect x='0' y='0' width='200' height='200' style='fill:none;stroke:black;stroke-width:1' /><rect x='60' y='40' width='80' height='80' style='fill:blue;stroke:none' /><rect x='50' y='30' width='80' height='80' style='fill:green;stroke:none' /><rect x='40' y='20' width='80' height='120' style='fill:red;stroke:none' /></svg></div>
+</div>
+<style>
+.elsie-slide {
+    margin-bottom: 20px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
               
             </div>
           </div>
