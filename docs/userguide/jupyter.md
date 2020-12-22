@@ -40,7 +40,13 @@ You can see an example of Jupyter integration
 ## Name policy inside Jupyter
 The [name policy](slides.md#name-policy) is automatically set to `replace` when running inside
 Jupyter. Therefore, if you re-run a cell which creates a slide with the same name as in the previous
-cell execution, the previous slide will be replaced. Otherwise, you would create a new slide for each
+cell execution, the previous slide will be removed. Otherwise, you would create a new slide for each
 execution of a cell, which might not be what you want. To make the process of naming slides easier,
 we recommend you to create slides using the [decorator](slides.md#decorator), which will name them
 automatically, according to the name of the decorated function.
+
+Note that after modifying a cell with a slide when using the `replace` policy, you should also
+execute all the following cells with slides to not change the order of slides. In general, creating
+slides inside Jupyter is designed for interactive experiments with complex slides. For a final
+render, you should either copy your code into a Python script or restart the notebook kernel and
+reexecute the whole notebook from the start.
