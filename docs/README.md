@@ -1,10 +1,15 @@
 # Elsie
-**Elsie** allows you to **create slides programmatically** using Python.
+**Elsie** allows you to **create slides programmatically** using Python. It is a Python library
+that lets you build [SVG](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) slides in a
+composable way and then render them to PDF. There is no DSL or GUI – presentations created with
+*Elsie* are fully programmed with Python.
 
-*Elsie* is a Python library that lets you build
-[SVG](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) slides in a
-composable way and then render them to PDF. There is no DSL or GUI –
-presentations created with *Elsie* are fully programmed with Python.
+It was created out of frustration of having to deal with
+[existing tools](#comparison-to-other-tools) for creating presentations. We believe that creating
+presentations should be automated and programmable as much as possible.
+
+See [Getting started](getting_started.md) for a short intro tutorial or the [Gallery](gallery.md)
+for presentations that were created using *Elsie*. 
 
 ## Hello world
 ```elsie,skip=3:-1
@@ -62,23 +67,65 @@ installed on your system for it to work. We provide a
 to open a [GitHub issue](https://github.com/spirali/elsie/issues/new).
 
 ## Comparison to other tools
-- Reveal.js
-TODO
-- Google slides/PowerPoint
-TODO
-- Beamer
-TODO
+- **Google slides/PowerPoint**
+These tools are fine if you need to make a bunch of very simple slides quickly, but using them
+gets very annoying if you need anything more complex. You need to place all items manually,
+alignment is usually a mess, fragments (animations) are not supported very well. If you need to
+change some small detail (placement, style, color) of a thing that is repeated on many slides, you
+pretty much have to go through all the slides and modify them by hand, one by one. Displaying source
+code with syntax highlighting is notoriously badly supported, so often you have to resort to
+exporting the highlighted code from [carbon.sh](https://carbon.sh) or screenshotting it from your
+IDE, both of which are far from ideal. Also, you can't really use source (e.g. `git`) to version
+and/or share your presentation, which is a shame.
+
+    However, PowerPoint does allow you to create continuous animations (if you do not export to PDF
+    of course), so if you need that, it might be a good choice.
+
+- **LaTeX/Beamer**
+LaTeX (Beamer) produces fine-looking presentations, has good support for syntax highlighting and
+can be versioned easily. However, in our experience it is not that easy to create custom diagrams
+and animations using LaTeX, mainly because of its declarative nature. If you can speak in
+[TikZ](https://www.overleaf.com/learn/latex/TikZ_package) and you understand the error messages of
+`pdflatex`, you are probably fine. If not, creating slides with complex animations, diagrams and
+source code snippets might be easier for you in Python.
+
+    While *Elsie* also has basic support for rendering [LaTeX](userguide/latex.md), if your
+    presentation is mostly composed of math formulas, it might be easier to create it in LaTeX
+    directly.
+
+- **Reveal.js**
+[reveal.js](https://revealjs.com) is a great tool for making HTML presentations. It supports syntax
+highlighting, has good-looking animations and can be versioned. However, it shares some disadvantages
+of LaTeX/Beamer, which stems from the fact that it is also declarative. Creating an animation that
+would walk line-by-line through a source code snippet or that would repeatedly display and hide
+objects in custom fragments is difficult. You can actually use JavaScript to create more complex
+animations, but it's not integrated very well, and the library itself does not offer you any API
+to make it easier.
+
+    That being said, if you are fine with declarative description of slides, and you prefer
+    HTML/CSS to Python/SVG, I would recommend you to use `reveal.js`.
+
+- **Prezi**
+If you want presentations with three or more dimensions, it's a good choice. Otherwise, the
+disadvantages of PowerPoint also apply here.
+
+None of the above solutions allow you to build slides using (an imperative) programming language,
+which gives you a number of useful powers. You can split a large presentation into several
+modules/files, parametrize animations or objects that appear often using functions, create
+arbitrarily complex slides and animations or interactively modify the font, aspect ratio or text
+color/size of your whole presentation by changing a single line of code. This is the ultimate
+feature of *Elsie* that is not available in the other tools.
 
 ## FAQ
-- Why do you use `Inkscape` instead of e.g. `Cairo`?
-We are experimenting with a `Cairo` backend. It would be probably difficult to fully support
-embedding SVG images into slides with Cairo, but it is possible that *Elsie* will not require
-Inkscape in the future.
-- Why don't you use a known layout model, e.g. `flexbox`?
+- Why do you use `Inkscape` instead of e.g. `Cairo` for rendering slides?
+We are experimenting with a `Cairo` backend, but it would be probably difficult to fully support
+embedding SVG images into slides with Cairo, which is something that we use a lot. But it is
+possible that *Elsie* will not require `Inkscape` sometime in the future.
+- Why don't you use an existing layout model, e.g. `flexbox`?
 TODO: ???
-Also, we haven't found a usable binding of any layout model in Python. If you know of any, please
-let us know.
-- Why is there no support for lists in `Elsie`?
+Also, we haven't found a usable binding of a good and standalone layout model in Python. If you
+know of any, please let us know.
+- Why is there no built-in support for lists (bullet items etc.) in `Elsie`?
 Even though a list might sound like a simple feature, it would be difficult to create an abstraction
 that would match everyone's needs. We instead provide an [example function](cookbook/lists.md) for
 creating a list which you can copy and modify for your use case.
