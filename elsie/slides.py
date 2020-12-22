@@ -247,6 +247,8 @@ class Slides:
         if self.name_policy == "ignore":
             return
         if name is None:
+            if self.name_policy == "unique":
+                return
             raise Exception(
                 "Slide needs an explicit name (name policy is now '{}')".format(
                     self.name_policy
@@ -254,7 +256,7 @@ class Slides:
             )
         if not isinstance(name, str):
             raise Exception(
-                "Slide name has to be a string, not {}".format(repr(type(name)))
+                "Slide name has to be a string or None, not {}".format(repr(type(name)))
             )
         slide = self.get_slide_by_name(name)
         if slide:

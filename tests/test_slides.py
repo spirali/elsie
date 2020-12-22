@@ -5,17 +5,15 @@ import pytest
 @pytest.mark.parametrize("policy", ["auto", "unique"])
 def test_name_policy_unique(policy):
     slides = Slides(name_policy=policy)
-    with pytest.raises(Exception, match="needs an explicit name"):
-        slides.new_slide()
+    slides.new_slide()
+    slides.new_slide()
     slides.new_slide(name="xxx")
     with pytest.raises(Exception, match="already exists"):
         slides.new_slide(name="xxx")
     slides.new_slide(name="yyy")
-    with pytest.raises(Exception, match="needs an explicit name"):
-        slides.new_slide()
     with pytest.raises(Exception, match="has to be a string"):
         slides.new_slide(name=123)
-    assert len(slides._slides) == 2
+    assert len(slides._slides) == 4
 
 
 def test_invalid_name_policy():
