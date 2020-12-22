@@ -111,7 +111,7 @@ class Slides:
             if slide.name == name:
                 return slide
 
-    def new_slide(self, bg_color=None, *, view_box=None, name=None, debug_boxes=False):
+    def new_slide(self, name=None, *, bg_color=None, view_box=None, debug_boxes=False):
         if view_box is not None and not (
             isinstance(view_box, tuple)
             and len(view_box) == 4
@@ -145,16 +145,16 @@ class Slides:
             )
         return box
 
-    def slide(self, bg_color=None, view_box=None, name=None, debug_boxes=False):
+    def slide(self, name=None, *, bg_color=None, view_box=None, debug_boxes=False):
         def _helper(fn, *args, **kwargs):
             if name is None:
                 _name = fn.__name__
             else:
                 _name = name
             slide = self.new_slide(
+                name=_name,
                 bg_color=bg_color,
                 view_box=view_box,
-                name=_name,
                 debug_boxes=debug_boxes,
             )
             fn(slide, *args, **kwargs)
