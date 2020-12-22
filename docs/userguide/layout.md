@@ -21,15 +21,18 @@ as the return value of the [`new_slide`](elsie.slides.Slides.new_slide) method o
 Here we create three boxes as children of the top-level slide box and create a child text item
 in each box.
 ```elsie,width=200,height=200,skip=2
-@slides.slide()
-def three_boxes(slide):
-    slide.box().text("Box 1")
-    slide.box().text("Box 2")
-    slide.box().text("Box 3")
+slide.box().text("Box 1")
+slide.box().text("Box 2")
+slide.box().text("Box 3")
 ```
 
+Note: for brevity, most code snippets in this user guide assume that there is a `slides` variable
+containing a `Slides` object and a `slide` variable containing a `Slide` object. The `render`
+method call is also omitted from most of the examples that display rendered slide output.
+
+### Debug draw mode
 The boxes themselves are invisible, but they have caused the three text items to be rendered
-below one another. If you are fine-tuning or debugging the layout of your slide and you want to see
+below one another. If you are fine-tuning or debugging the layout of your slide, and you want to see
 the extents and bounds of your boxes, you can use the
 [`debug_boxes`](elsie.slides.Slides.slide) parameter when creating a slide:
 ```elsie,width=200,height=200,debug,skip=2
