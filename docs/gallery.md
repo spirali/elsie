@@ -3,6 +3,9 @@ Here you can find selected presentations made with *Elsie*, along with their sou
 If you want to add your own presentation to the gallery,
 [send us a PR](https://github.com/spirali/elsie/pulls)!
 
+You can also find a demo which demonstrates a lot of *Elsie* features
+[here](https://github.com/spirali/elsie/tree/master/examples/bigdemo).
+
 ## Rust
 Presentation about basic Rust features. Contains a lot of code snippets, syntax highlighting and
 code line stepping.
