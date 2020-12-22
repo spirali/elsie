@@ -13,10 +13,10 @@ parent box which decides its size and position on a slide.
 
 ## Creating boxes
 To create a new box, you can call the [`box`](elsie.boxmixin.BoxMixin.box) method on an existing
-[`Box`](elsie.boxmixin.BoxMixin). This will return a new box which will be a child of the box object
-on which you call the `box` method. The root box of the slide layout hierarchy is the
-[`Slide`](elsie.slidecls.Slide) object itself, therefore you can create other boxes by calling
-`box` on it.
+`Box`. This will return a new box which will be a child of the box object
+on which you call the `box` method. The root box of the slide layout hierarchy is available to you
+as the return value of the [`new_slide`](elsie.slides.Slides.new_slide) method or the
+[`slide`](elsie.slides.Slides.slide) decorator.
 
 Here we create three boxes as children of the top-level slide box and create a child text item
 in each box.
@@ -31,7 +31,7 @@ def three_boxes(slide):
 The boxes themselves are invisible, but they have caused the three text items to be rendered
 below one another. If you are fine-tuning or debugging the layout of your slide and you want to see
 the extents and bounds of your boxes, you can use the
-[`debug_boxes`](elsie.slidecls.Slide.__init__) parameter when creating a slide:
+[`debug_boxes`](elsie.slides.Slides.slide) parameter when creating a slide:
 ```elsie,width=200,height=200,debug,skip=2
 @slides.slide(debug_boxes=True)
 def three_boxes_debug(slide):
