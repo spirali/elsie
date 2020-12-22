@@ -11,7 +11,7 @@ from .svg import rename_ids
 def render_latex(text):
     args = ("/usr/bin/pdflatex", "-interaction=batchmode", "content.tex")
 
-    with TemporaryDirectory(prefix="elphie-") as wdir:
+    with TemporaryDirectory(prefix="elsie-") as wdir:
         with open(os.path.join(wdir, "content.tex"), "w") as f:
             f.write(text)
 
