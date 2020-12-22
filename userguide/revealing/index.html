@@ -9,7 +9,7 @@
   <meta name="author" content="Stanislav Böhm">
   <link rel="canonical" href="https://spirali.github.io/elsie/userguide/revealing/">
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Fragments - Elsie</title>
+  <title>Revealing - Elsie</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,7 +18,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Fragments";
+    var mkdocs_page_name = "Revealing";
     var mkdocs_page_input_path = "userguide/revealing.md";
     var mkdocs_page_url = "/elsie/userguide/revealing/";
   </script>
@@ -73,9 +73,13 @@
                 <ul class="current">
                     <li class="toctree-l1"><a class="reference internal" href="../layout/">Layout</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Fragments</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Revealing</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#fragments_1">Fragments</a>
+    <li class="toctree-l2"><a class="reference internal" href="#fragment-selectors">Fragment selectors</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#fragment-placeholders">Fragment placeholders</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#overlaying-boxes">Overlaying boxes</a>
     </li>
     </ul>
                     </li>
@@ -125,7 +129,7 @@
         
       
     
-    <li>Fragments</li>
+    <li>Revealing</li>
     <li class="wy-breadcrumbs-aside">
       
         <a href="https://github.com/spirali/elsie/blob/master/docs/userguide/revealing.md"
@@ -139,40 +143,560 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="fragments">Fragments<a class="headerlink" href="#fragments" title="Permanent link">#</a></h1>
-<h2 id="fragments_1">Fragments<a class="headerlink" href="#fragments_1" title="Permanent link">#</a></h2>
-<p>Fragments allow to reveal parts of a slide gradually in several steps. It is
-controlled by parameter <code>show</code> that defines in which steps the box content
-should be drawn. Note that <code>show</code> influences only drawing not the layout, i.e.
-space for a box is allocated in every step even the box is not shown in this
-step. Steps are counted from 1. Every slide (even empty) generates at least one
-step.</p>
-<p>The possible values are the following. Value <code>last</code> returns the current maximal step, <code>next</code> takes the the current maximal step and adds 1.</p>
+                <h1 id="revealing">Revealing<a class="headerlink" href="#revealing" title="Permanent link">#</a></h1>
+<p>Presentations often contain slides that are revealed gradually in several steps (usually called
+<em>fragments</em>). <em>Elsie</em> allows you to create multiple fragments per slide and selectively show
+individual <a href="../layout/">boxes</a> in specific fragments using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_box"><code>show</code></a>
+parameter.</p>
+<p>Fragments on a slide are counted from <code>1</code> and there is always at least a single fragment in each
+slide. The number of fragments of a slide is determined by the highest fragment number in which some
+box is visible.</p>
+<p>To display a box in a specific fragment, pass the fragment number as a string to the <code>show</code> parameter:</p>
+<pre><code class="language-python">slide.box().text(&quot;Box 1&quot;)
+slide.box(show=&quot;2&quot;).text(&quot;Box 2&quot;)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-ff8038074ae84b608804d620a805b701">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='144.39999999999998' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text></svg></div>
+<div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='144.39999999999998' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='150.0' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text></svg></div>
+</div>
+
+<div class="elsie-controls">
+    <button class="elsie-previous"><</button>
+    <div class="elsie-current-step">Fragment: 1</div>
+    <button class="elsie-next">></button>
+</div>
+<script type='text/javascript'>(function () {
+var active_step = 1;
+var max_step = 2;
+var slide_id = ".elsie-wrapper-ff8038074ae84b608804d620a805b701";
+
+function getSelector(selector) {
+    return slide_id + " " + selector;
+}
+
+function updateState(step) {
+    var step_str = step.toString();
+
+    document.querySelector(getSelector(".elsie-next")).disabled = step >= max_step;
+    document.querySelector(getSelector(".elsie-previous")).disabled = step <= 1;
+    document.querySelector(getSelector(".elsie-current-step")).innerText = "Fragment: " + step_str;
+
+    var items = document.querySelectorAll(getSelector(".elsie-step"));
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "none";
+    }
+    document.querySelector(getSelector(".elsie-step.step-" + step_str)).style.display = "block";
+}
+function moveStep(offset) {
+    var new_step = active_step + offset;
+    if (new_step >= 1 && new_step <= max_step) {
+        active_step = new_step;
+    }
+    updateState(active_step);
+}
+document.querySelector(getSelector(".elsie-next")).addEventListener('click', function() {
+    moveStep(1);
+});
+document.querySelector(getSelector(".elsie-previous")).addEventListener('click', function() {
+    moveStep(-1);
+});
+updateState(active_step);
+})()</script></div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>The slide above has two fragments, because the second box will be shown in fragment <code>2</code>. You can
+use the buttons below the slide to move between individual fragments.</p>
+<p>Fragment visibility is hierarchical, i.e. if you hide a parent, all of its children will be hidden
+as well:</p>
+<pre><code class="language-python">box = slide.box(show=&quot;2&quot;)
+box.box().text(&quot;Box 1&quot;)
+box.box().text(&quot;Box 2&quot;)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-ea1ee17470e74f28b75e6eb4610550ff">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /></svg></div>
+<div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='150.0' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text></svg></div>
+</div>
+
+<div class="elsie-controls">
+    <button class="elsie-previous"><</button>
+    <div class="elsie-current-step">Fragment: 1</div>
+    <button class="elsie-next">></button>
+</div>
+<script type='text/javascript'>(function () {
+var active_step = 1;
+var max_step = 2;
+var slide_id = ".elsie-wrapper-ea1ee17470e74f28b75e6eb4610550ff";
+
+function getSelector(selector) {
+    return slide_id + " " + selector;
+}
+
+function updateState(step) {
+    var step_str = step.toString();
+
+    document.querySelector(getSelector(".elsie-next")).disabled = step >= max_step;
+    document.querySelector(getSelector(".elsie-previous")).disabled = step <= 1;
+    document.querySelector(getSelector(".elsie-current-step")).innerText = "Fragment: " + step_str;
+
+    var items = document.querySelectorAll(getSelector(".elsie-step"));
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "none";
+    }
+    document.querySelector(getSelector(".elsie-step.step-" + step_str)).style.display = "block";
+}
+function moveStep(offset) {
+    var new_step = active_step + offset;
+    if (new_step >= 1 && new_step <= max_step) {
+        active_step = new_step;
+    }
+    updateState(active_step);
+}
+document.querySelector(getSelector(".elsie-next")).addEventListener('click', function() {
+    moveStep(1);
+});
+document.querySelector(getSelector(".elsie-previous")).addEventListener('click', function() {
+    moveStep(-1);
+});
+updateState(active_step);
+})()</script></div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h2 id="fragment-selectors">Fragment selectors<a class="headerlink" href="#fragment-selectors" title="Permanent link">#</a></h2>
+<p>In addition to choosing a single specific fragment in which should a box be displayed, there are
+other values that you can pass to the <code>show</code> parameter:</p>
 <ul>
-<li><code>None</code> (default) - Box is shown in all steps (it is equivalent to value <code>"1+"</code>)</li>
-<li>positive integer / <code>"next"</code> / <code>"last"</code> -- Box is shown only in step specified by the value</li>
-<li><code>"XX+"</code> where XX is a positive integer or <code>next</code> or <code>last</code> - Box is shown in the step specified by the value and in all folllowing steps.</li>
-<li><code>"XX-YY"</code> where XX and YY are positive integers or <code>next</code> or <code>last</code> -
-Box shown only in the range of steps speficified by values.
-It is inclusive range from both sides.</li>
+<li><code>None</code> (default): The box will be shown in all steps. This is equivalent to passing <code>"1+"</code>.</li>
+<li><code>"&lt;number&gt;"</code>: The box will be shown only in the fragment with the given number.</li>
+<li><code>"&lt;number&gt;+"</code>: The box will be shown in the fragment with the given number and also in all
+following fragments. This is called an <em>open</em> fragment range.</li>
+<li><code>"&lt;from&gt;-&lt;to&gt;"</code>: The box will be shown in fragment <code>from</code> and it will stay shown until fragment
+<code>to</code>. This is called a <em>closed</em> fragment range. The range is inclusive from both sides.</li>
 </ul>
-<pre><code class="language-python">@elsie.slide()
-def steps(slide):
-    slide.box().text(&quot;Box 1&quot;)
-    slide.box(show=&quot;2+&quot;).text(&quot;Box 2&quot;)
-    slide.box(show=&quot;3+&quot;).text(&quot;Box 3&quot;)
+<p>Here is an example of the various <code>show</code> values in action:</p>
+<pre><code class="language-python">slide.box().text(&quot;Box 1&quot;)
+slide.box(show=&quot;2-3&quot;).text(&quot;Box 2&quot;)
+slide.box(show=&quot;2+&quot;).text(&quot;Box 3&quot;)
+slide.box(show=&quot;4&quot;).text(&quot;Box 4&quot;)
 </code></pre>
-<p>This creates the following three slides:</p>
-<p><img width="512px" height="384px" src="slide_imgs/steps.png">
-<img width="512px" height="384px" src="slide_imgs/steps-2.png">
-<img width="512px" height="384px" src="slide_imgs/steps-3.png"></p>
-<p>The same result can be also achieved by this code:</p>
-<pre><code class="language-python">@elsie.slide()
-def steps(slide):
-    slide.box().text(&quot;Box 1&quot;)
-    slide.box(show=&quot;next+&quot;).text(&quot;Box 2&quot;)
-    slide.box(show=&quot;next+&quot;).text(&quot;Box 3&quot;)
+<div class="elsie-wrapper elsie-wrapper-f693a756709e4828970f4bc66e0d3679">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='110.8' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text></svg></div>
+<div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='110.8' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='150.0' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text><text x='150.0' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text></svg></div>
+<div class='elsie-step step-3'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='110.8' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='150.0' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text><text x='150.0' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text></svg></div>
+<div class='elsie-step step-4'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='110.8' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='150.0' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text><text x='150.0' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;4</tspan></text></svg></div>
+</div>
+
+<div class="elsie-controls">
+    <button class="elsie-previous"><</button>
+    <div class="elsie-current-step">Fragment: 1</div>
+    <button class="elsie-next">></button>
+</div>
+<script type='text/javascript'>(function () {
+var active_step = 1;
+var max_step = 4;
+var slide_id = ".elsie-wrapper-f693a756709e4828970f4bc66e0d3679";
+
+function getSelector(selector) {
+    return slide_id + " " + selector;
+}
+
+function updateState(step) {
+    var step_str = step.toString();
+
+    document.querySelector(getSelector(".elsie-next")).disabled = step >= max_step;
+    document.querySelector(getSelector(".elsie-previous")).disabled = step <= 1;
+    document.querySelector(getSelector(".elsie-current-step")).innerText = "Fragment: " + step_str;
+
+    var items = document.querySelectorAll(getSelector(".elsie-step"));
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "none";
+    }
+    document.querySelector(getSelector(".elsie-step.step-" + step_str)).style.display = "block";
+}
+function moveStep(offset) {
+    var new_step = active_step + offset;
+    if (new_step >= 1 && new_step <= max_step) {
+        active_step = new_step;
+    }
+    updateState(active_step);
+}
+document.querySelector(getSelector(".elsie-next")).addEventListener('click', function() {
+    moveStep(1);
+});
+document.querySelector(getSelector(".elsie-previous")).addEventListener('click', function() {
+    moveStep(-1);
+});
+updateState(active_step);
+})()</script></div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+<p>The first box will be shown in all fragments, the second box in fragments <code>2</code> and <code>3</code>, the third
+box in all fragments from <code>2</code> to the end, and the fourth box will be shown only in fragment <code>4</code>. The
+largest fragment number present in the slide is <code>4</code>, so the slide will have four fragments in total.</p>
+<h2 id="fragment-placeholders">Fragment placeholders<a class="headerlink" href="#fragment-placeholders" title="Permanent link">#</a></h2>
+<p>If you have a lot of fragments on a slide, it might be tedious to count the fragment numbers
+manually and keep them in sync when you make changes to the slide. To make this process easier,
+you can use placeholders to refer to the current fragment.</p>
+<p>The <em>current</em> fragment is the fragment with the largest number defined on a slide so far. You can
+access its number using the <a href="https://spirali.github.io/elsie/apidoc/elsie.box.Box.html#f_current_step"><code>current_step</code></a> method. This value changes
+dynamically as you add more fragments to the slide:</p>
+<pre><code class="language-python"># slide.current_step() == 1
+slide.box().text(&quot;Box 1&quot;)
+# slide.current_step() == 1
+slide.box(show=&quot;2&quot;).text(&quot;Box 1&quot;)
+# slide.current_step() == 2
+slide.box(show=&quot;3&quot;).text(&quot;Box 1&quot;)
+# slide.current_step() == 3
 </code></pre>
+<p>To leverage the <em>current</em> fragment, you can use two placeholders in place of a fragment number
+passed to <code>show</code>:</p>
+<ul>
+<li>The <code>"last"</code> placeholder resolves to the value of the <em>current</em> fragment.</li>
+<li>The <code>"next"</code> placeholder increments the <em>current</em> fragment and then resolves to the incremented
+value.</li>
+</ul>
+<p>Using the placeholders, you can show boxes in the same order as they appear in the source code.
+Here is an example of their usage:</p>
+<pre><code class="language-python">slide.box().text(&quot;Box 1&quot;)
+
+# Moves current fragment to 2 and shows the box in fragment 2
+slide.box(show=&quot;next&quot;).text(&quot;Box 2&quot;)
+
+# Shows the box in fragment 2
+slide.box(show=&quot;last&quot;).text(&quot;Box 3&quot;)
+
+# Moves current fragment to 3 and shows the box in fragment 3
+slide.box(show=&quot;next&quot;).text(&quot;Box 4&quot;)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-4d5070fe9a174ff6b86b70191f9cea76">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='110.8' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text></svg></div>
+<div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='110.8' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='150.0' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text><text x='150.0' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text></svg></div>
+<div class='elsie-step step-3'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='110.8' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='150.0' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;4</tspan></text></svg></div>
+</div>
+
+<div class="elsie-controls">
+    <button class="elsie-previous"><</button>
+    <div class="elsie-current-step">Fragment: 1</div>
+    <button class="elsie-next">></button>
+</div>
+<script type='text/javascript'>(function () {
+var active_step = 1;
+var max_step = 3;
+var slide_id = ".elsie-wrapper-4d5070fe9a174ff6b86b70191f9cea76";
+
+function getSelector(selector) {
+    return slide_id + " " + selector;
+}
+
+function updateState(step) {
+    var step_str = step.toString();
+
+    document.querySelector(getSelector(".elsie-next")).disabled = step >= max_step;
+    document.querySelector(getSelector(".elsie-previous")).disabled = step <= 1;
+    document.querySelector(getSelector(".elsie-current-step")).innerText = "Fragment: " + step_str;
+
+    var items = document.querySelectorAll(getSelector(".elsie-step"));
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "none";
+    }
+    document.querySelector(getSelector(".elsie-step.step-" + step_str)).style.display = "block";
+}
+function moveStep(offset) {
+    var new_step = active_step + offset;
+    if (new_step >= 1 && new_step <= max_step) {
+        active_step = new_step;
+    }
+    updateState(active_step);
+}
+document.querySelector(getSelector(".elsie-next")).addEventListener('click', function() {
+    moveStep(1);
+});
+document.querySelector(getSelector(".elsie-previous")).addEventListener('click', function() {
+    moveStep(-1);
+});
+updateState(active_step);
+})()</script></div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>You can also combine the placeholders with open fragment ranges:</p>
+<pre><code class="language-python">slide.box().text(&quot;List item 1&quot;)
+slide.box(show=&quot;next+&quot;).text(&quot;List item 2&quot;)
+slide.box(show=&quot;last+&quot;, p_left=20).text(&quot;Subitem 1&quot;)
+slide.box(show=&quot;last+&quot;, p_left=20).text(&quot;Subitem 2&quot;)
+slide.box(show=&quot;next+&quot;).text(&quot;List item 3&quot;)
+slide.box(show=&quot;last+&quot;, p_left=20).text(&quot;Subitem 1&quot;)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-b662852b7bbd4ccfb4020a9c662c3b47">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='77.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>List&#160;item&#160;1</tspan></text></svg></div>
+<div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='77.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>List&#160;item&#160;1</tspan></text><text x='150.0' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>List&#160;item&#160;2</tspan></text><text x='160.0' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Subitem&#160;1</tspan></text><text x='160.0' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Subitem&#160;2</tspan></text></svg></div>
+<div class='elsie-step step-3'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='77.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>List&#160;item&#160;1</tspan></text><text x='150.0' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>List&#160;item&#160;2</tspan></text><text x='160.0' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Subitem&#160;1</tspan></text><text x='160.0' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Subitem&#160;2</tspan></text><text x='150.0' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>List&#160;item&#160;3</tspan></text><text x='160.0' y='245.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Subitem&#160;1</tspan></text></svg></div>
+</div>
+
+<div class="elsie-controls">
+    <button class="elsie-previous"><</button>
+    <div class="elsie-current-step">Fragment: 1</div>
+    <button class="elsie-next">></button>
+</div>
+<script type='text/javascript'>(function () {
+var active_step = 1;
+var max_step = 3;
+var slide_id = ".elsie-wrapper-b662852b7bbd4ccfb4020a9c662c3b47";
+
+function getSelector(selector) {
+    return slide_id + " " + selector;
+}
+
+function updateState(step) {
+    var step_str = step.toString();
+
+    document.querySelector(getSelector(".elsie-next")).disabled = step >= max_step;
+    document.querySelector(getSelector(".elsie-previous")).disabled = step <= 1;
+    document.querySelector(getSelector(".elsie-current-step")).innerText = "Fragment: " + step_str;
+
+    var items = document.querySelectorAll(getSelector(".elsie-step"));
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "none";
+    }
+    document.querySelector(getSelector(".elsie-step.step-" + step_str)).style.display = "block";
+}
+function moveStep(offset) {
+    var new_step = active_step + offset;
+    if (new_step >= 1 && new_step <= max_step) {
+        active_step = new_step;
+    }
+    updateState(active_step);
+}
+document.querySelector(getSelector(".elsie-next")).addEventListener('click', function() {
+    moveStep(1);
+});
+document.querySelector(getSelector(".elsie-previous")).addEventListener('click', function() {
+    moveStep(-1);
+});
+updateState(active_step);
+})()</script></div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h2 id="overlaying-boxes">Overlaying boxes<a class="headerlink" href="#overlaying-boxes" title="Permanent link">#</a></h2>
+<p>As you may have already noticed, using <code>show</code> only influences the visibility of a box, not its
+layout. Therefore, the space for a box is allocated in each fragment, even if the box is not visible
+in that fragment (if you know CSS, fragment visibility behaves like <code>visibility: hidden</code>,
+not <code>display: none</code>).</p>
+<p>If you instead want to show boxes gradually on top of one another, you can use the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_overlay"><code>overlay</code></a> shortcut to render a box at the same location and size
+as another box.</p>
+<pre><code class="language-python">slide.overlay(show=&quot;1&quot;).text(&quot;Box 1&quot;)
+slide.overlay(show=&quot;2&quot;).text(&quot;Box 2&quot;)
+slide.overlay(show=&quot;3&quot;).text(&quot;Box 3&quot;)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-92fa689c71334b8ebb32e27ff49bf4c9">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text></svg></div>
+<div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text></svg></div>
+<div class='elsie-step step-3'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;3</tspan></text></svg></div>
+</div>
+
+<div class="elsie-controls">
+    <button class="elsie-previous"><</button>
+    <div class="elsie-current-step">Fragment: 1</div>
+    <button class="elsie-next">></button>
+</div>
+<script type='text/javascript'>(function () {
+var active_step = 1;
+var max_step = 3;
+var slide_id = ".elsie-wrapper-92fa689c71334b8ebb32e27ff49bf4c9";
+
+function getSelector(selector) {
+    return slide_id + " " + selector;
+}
+
+function updateState(step) {
+    var step_str = step.toString();
+
+    document.querySelector(getSelector(".elsie-next")).disabled = step >= max_step;
+    document.querySelector(getSelector(".elsie-previous")).disabled = step <= 1;
+    document.querySelector(getSelector(".elsie-current-step")).innerText = "Fragment: " + step_str;
+
+    var items = document.querySelectorAll(getSelector(".elsie-step"));
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "none";
+    }
+    document.querySelector(getSelector(".elsie-step.step-" + step_str)).style.display = "block";
+}
+function moveStep(offset) {
+    var new_step = active_step + offset;
+    if (new_step >= 1 && new_step <= max_step) {
+        active_step = new_step;
+    }
+    updateState(active_step);
+}
+document.querySelector(getSelector(".elsie-next")).addEventListener('click', function() {
+    moveStep(1);
+});
+document.querySelector(getSelector(".elsie-previous")).addEventListener('click', function() {
+    moveStep(-1);
+});
+updateState(active_step);
+})()</script></div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>When using overlays, make sure that the box that you are overlaying is actually visible in the
+fragment when you want it to be overlaid. For example, this may not work as expected:</p>
+<pre><code class="language-python">box = slide.box(show=&quot;1&quot;).text(&quot;Box 1&quot;)
+box.overlay(show=&quot;2&quot;).text(&quot;Box 2&quot;)
+box.overlay(show=&quot;3&quot;).text(&quot;Box 3&quot;)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-b94a8e20170c4363bc29ac328cec2070">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text></svg></div>
+<div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /></svg></div>
+<div class='elsie-step step-3'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /></svg></div>
+</div>
+
+<div class="elsie-controls">
+    <button class="elsie-previous"><</button>
+    <div class="elsie-current-step">Fragment: 1</div>
+    <button class="elsie-next">></button>
+</div>
+<script type='text/javascript'>(function () {
+var active_step = 1;
+var max_step = 3;
+var slide_id = ".elsie-wrapper-b94a8e20170c4363bc29ac328cec2070";
+
+function getSelector(selector) {
+    return slide_id + " " + selector;
+}
+
+function updateState(step) {
+    var step_str = step.toString();
+
+    document.querySelector(getSelector(".elsie-next")).disabled = step >= max_step;
+    document.querySelector(getSelector(".elsie-previous")).disabled = step <= 1;
+    document.querySelector(getSelector(".elsie-current-step")).innerText = "Fragment: " + step_str;
+
+    var items = document.querySelectorAll(getSelector(".elsie-step"));
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "none";
+    }
+    document.querySelector(getSelector(".elsie-step.step-" + step_str)).style.display = "block";
+}
+function moveStep(offset) {
+    var new_step = active_step + offset;
+    if (new_step >= 1 && new_step <= max_step) {
+        active_step = new_step;
+    }
+    updateState(active_step);
+}
+document.querySelector(getSelector(".elsie-next")).addEventListener('click', function() {
+    moveStep(1);
+});
+document.querySelector(getSelector(".elsie-previous")).addEventListener('click', function() {
+    moveStep(-1);
+});
+updateState(active_step);
+})()</script></div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+<p>Because boxes <code>2</code> and <code>3</code> are children of box <code>1</code>, which is only shown in fragment <code>1</code>.</p>
               
             </div>
           </div>

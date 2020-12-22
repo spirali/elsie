@@ -73,7 +73,7 @@
                 <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../userguide/layout/">Layout</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/revealing/">Fragments</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/revealing/">Revealing</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../userguide/text/">Text</a>
                     </li>
@@ -156,12 +156,17 @@ list_item(l).text(&quot;Item 2&quot;)
 list_item(l, level=1).text(&quot;(nested) Item 3&quot;)
 list_item(l).text(&quot;Item 4&quot;)
 </code></pre>
-<div class="elsie-slide elsie-slide-908e039b89d74c8ea54ccc58086dd899">
+<div class="elsie-wrapper elsie-wrapper-567b4d19cd1c42118750f7a6525f3cdd">
+<div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><rect x='0' y='0' width='500' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='143.88549999999998' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='198.96654999999998' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Item&#160;1</tspan></text><text x='143.88549999999998' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='198.85719999999998' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Item&#160;2</tspan></text><text x='168.88549999999998' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='287.5' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(nested)&#160;Item&#160;3</tspan></text><text x='143.88549999999998' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='199.4724' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Item&#160;4</tspan></text></svg></div>
 </div>
+</div>
 <style>
-.elsie-slide {
+.elsie-wrapper {
     margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
 }
 .elsie-controls {
     display: flex;
@@ -180,24 +185,25 @@ list_item(l, show=&quot;next+&quot;).text(&quot;Appears in step 2&quot;)
 list_item(l, level=1).text(&quot;(nested) Appears in step 2&quot;)
 list_item(l, show=&quot;next+&quot;).text(&quot;Appears in step 3&quot;)
 </code></pre>
-<div class="elsie-slide elsie-slide-df79dc880e0b4478bf32ccfaba9667a6">
+<div class="elsie-wrapper elsie-wrapper-53118119f31141499e7389d3ab5d65df">
+<div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><rect x='0' y='0' width='500' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='66.45500000000001' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.5115' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;1</tspan></text></svg></div>
 <div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><rect x='0' y='0' width='500' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='66.45500000000001' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.5115' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;1</tspan></text><text x='66.45500000000001' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.4025' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;2</tspan></text><text x='91.45500000000001' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='287.5' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(nested)&#160;Appears&#160;in&#160;step&#160;2</tspan></text></svg></div>
 <div class='elsie-step step-3'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='500' height='300'><rect x='0' y='0' width='500' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='66.45500000000001' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.5115' y='110.80000000000001' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;1</tspan></text><text x='66.45500000000001' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.4025' y='144.4' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;2</tspan></text><text x='91.45500000000001' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='287.5' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(nested)&#160;Appears&#160;in&#160;step&#160;2</tspan></text><text x='66.45500000000001' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>•</tspan></text><text x='200.68250000000003' y='211.6' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Appears&#160;in&#160;step&#160;3</tspan></text></svg></div>
 </div>
 
-<div class="elsie-controls elsie-slide-df79dc880e0b4478bf32ccfaba9667a6">
+<div class="elsie-controls">
     <button class="elsie-previous"><</button>
-    <div class="elsie-current-step">Step: 1</div>
+    <div class="elsie-current-step">Fragment: 1</div>
     <button class="elsie-next">></button>
 </div>
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 3;
-var slide_id = ".elsie-slide-df79dc880e0b4478bf32ccfaba9667a6";
+var slide_id = ".elsie-wrapper-53118119f31141499e7389d3ab5d65df";
 
 function getSelector(selector) {
-    return slide_id + " > " + selector;
+    return slide_id + " " + selector;
 }
 
 function updateState(step) {
@@ -205,7 +211,7 @@ function updateState(step) {
 
     document.querySelector(getSelector(".elsie-next")).disabled = step >= max_step;
     document.querySelector(getSelector(".elsie-previous")).disabled = step <= 1;
-    document.querySelector(getSelector(".elsie-current-step")).innerText = "Step: " + step_str;
+    document.querySelector(getSelector(".elsie-current-step")).innerText = "Fragment: " + step_str;
 
     var items = document.querySelectorAll(getSelector(".elsie-step"));
     for (var i = 0; i < items.length; i++) {
@@ -227,10 +233,13 @@ document.querySelector(getSelector(".elsie-previous")).addEventListener('click',
     moveStep(-1);
 });
 updateState(active_step);
-})()</script>
+})()</script></div>
 <style>
-.elsie-slide {
+.elsie-wrapper {
     margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
 }
 .elsie-controls {
     display: flex;
