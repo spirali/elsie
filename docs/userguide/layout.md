@@ -240,7 +240,8 @@ object that will resolve the actual final position after layout is computed.
 The reference point of these two methods is the top-left corner of the target box. The parameter
 can be either:
 
-- `int` or `float`: Resolves to the given number of pixels from the reference point.
+- `int` or `float`: Resolves to the given number of pixels from the reference point. The value can
+be negative.
 - `"<number>%"`: Resolves to the ratio of the size of the box added to the reference point.
 
 For example:
@@ -256,6 +257,12 @@ b = slide.box(width=100, height=100, name="First")
 slide.box(x=b.x("50%"), y=b.y("50%"), width=100, height=100, name="Second")
 slide.box(x=0, y=b.y("100%"), width="100%", height=200, name="Third")
 ```
+
+In addition to using the individual `x` and `y` methods, you can also use the
+[`p`](elsie.boxmixin.BoxMixin.p) method to create a dynamic point, which will again be resolved
+after the layout is fully computed. You can also further move this point via the
+[`add`](elsie.lazy.LazyPoint.add) method. This is mostly useful for defining points of
+[lines and polygons](shapes.md#lines-and-polygons).
 
 ## Modifying render order
 By default, boxes are rendered by performing a depth-first walk through the layout tree. Each child
