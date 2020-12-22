@@ -4,7 +4,7 @@ If you want to add your own presentation to the gallery,
 [send us a PR](https://github.com/spirali/elsie/pulls)!
 
 ## Rust
-Presentation about basic Rust features. Contains a lot of code samples, syntax highlighting and
+Presentation about basic Rust features. Contains a lot of code snippets, syntax highlighting and
 code line stepping.
 
 - [PDF](https://github.com/Kobzol/elsie-showcase/raw/main/rust/slides.pdf)
