@@ -9,7 +9,7 @@ slide = slides.new_slide()
 slide.box().text("Hello world")
 slide
 ```
-If you create slides using the [`decorator`](slides.md#decorator) approach, you need to return the
+If you create slides using the [decorator](basics.md#decorator) approach, you need to return the
 decorated function from the cell:
 ```python
 import elsie
@@ -38,11 +38,11 @@ You can see an example of Jupyter integration
 [here](https://github.com/spirali/elsie/tree/master/examples/jupyter).
 
 ## Name policy inside Jupyter
-The [name policy](slides.md#name-policy) is automatically set to `replace` when running inside
+The [name policy](basics.md#name-policy) is automatically set to `replace` when running inside
 Jupyter. Therefore, if you re-run a cell which creates a slide with the same name as in the previous
 cell execution, the previous slide will be removed. Otherwise, you would create a new slide for each
 execution of a cell, which might not be what you want. To make the process of naming slides easier,
-we recommend you to create slides using the [decorator](slides.md#decorator), which will name them
+we recommend you to create slides using the [decorator](basics.md#decorator), which will name them
 automatically, according to the name of the decorated function.
 
 Note that after modifying a cell with a slide when using the `replace` policy, you should also
