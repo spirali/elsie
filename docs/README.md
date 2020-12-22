@@ -75,8 +75,8 @@ change some small detail (placement, style, color) of a thing that is repeated o
 pretty much have to go through all the slides and modify them by hand, one by one. Displaying source
 code with syntax highlighting is notoriously badly supported, so often you have to resort to
 exporting the highlighted code from [carbon.sh](https://carbon.sh) or screenshotting it from your
-IDE, both of which are far from ideal. Also, you can't really use source (e.g. `git`) to version
-and/or share your presentation, which is a shame.
+IDE, both of which are far from ideal. Also, you can't really use source control (e.g. `git`) to
+version your presentation, which is a shame.
 
     However, PowerPoint does allow you to create continuous animations (if you do not export to PDF
     of course), so if you need that, it might be a good choice.
@@ -128,7 +128,9 @@ know of any, please let us know.
 - Why is there no built-in support for lists (bullet items etc.) in `Elsie`?
 Even though a list might sound like a simple feature, it would be difficult to create an abstraction
 that would match everyone's needs. We instead provide an [example function](cookbook/lists.md) for
-creating a list which you can copy and modify for your use case.
+creating a list which you can copy and modify for your use case. This is a general theme of *Elsie*:
+it provides you with a set of compact building blocks that can be used to build more advanced
+features which can be fully customized to your needs.
 
 ## License
 [MIT](https://github.com/spirali/elsie/blob/master/LICENSE).
