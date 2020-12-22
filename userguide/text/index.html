@@ -66,7 +66,7 @@
                     </li>
                 </ul>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../showcase/">Showcase</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../gallery/">Gallery</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">User guide</span></p>
@@ -77,11 +77,19 @@
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Text</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#defining-text-styles">Defining text styles</a>
+    <li class="toctree-l2"><a class="reference internal" href="#text-style">Text style</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#text-style-inheritance">Text style inheritance</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#predefined-text-styles">Predefined text styles</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#updating-text-style">Updating text style</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#inline-text-styles">Inline text styles</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#scaling-to-fit-the-box">Scaling to fit the box</a>
+    <li class="toctree-l2"><a class="reference internal" href="#text-scaling">Text scaling</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#colors">Colors</a>
     </li>
@@ -146,54 +154,147 @@
             <div class="section">
               
                 <h1 id="text">Text<a class="headerlink" href="#text" title="Permanent link">#</a></h1>
-<p>Text can be created by calling <code>.text(..)</code> method on a box. It creates a box
-item that draws a text in the middle of the box.</p>
-<h3 id="defining-text-styles">Defining text styles<a class="headerlink" href="#defining-text-styles" title="Permanent link">#</a></h3>
-<p>Text styles (size, color, font, ...) are defined by <code>TextStyle</code> instances. The constructor takes the following parameters:</p>
+<p>You can render text by calling the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_text"><code>text</code></a> method on a box.
+By default, it will create a box item that will draw the specified text in the middle of the box:</p>
+<pre><code class="language-python">slide.box().text(&quot;Hello world!&quot;)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-8330af66a8264279bc25fdec2696085d">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='200' height='200'><rect x='0' y='0' width='200' height='200' style='fill:none;stroke:black;stroke-width:1' /><text x='100.0' y='111.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h2 id="text-style">Text style<a class="headerlink" href="#text-style" title="Permanent link">#</a></h2>
+<p><em>Elsie</em> draws text using SVG, so you can use common SVG attributes (such as size, color, font) to
+modify the appearance of the rendered text. The style of a text is defined by a
+<a href="https://spirali.github.io/elsie/apidoc/elsie.textstyle.TextStyle.html"><code>TextStyle</code></a> object. Its constructor takes the following parameters:</p>
 <ul>
-<li><code>font</code> - name of the font</li>
-<li><code>size</code> - size of the font</li>
-<li><code>align</code> - align of the text, possible values: <code>"left"</code>, <code>"middle"</code>, <code>"right"</code>.</li>
-<li><code>line_spacing</code> - Spacing between lines, specified relatively to <code>size</code> argument.</li>
-<li><code>color</code> - a string defining the color name</li>
-<li><code>bold</code> - a boolean value if text is bold</li>
-<li><code>itelic</code> - a boolean value if text is italic</li>
-<li><code>variant_numeric</code> - allowed values: <code>"normal"</code>,
+<li><code>font</code>: Name of the used font.</li>
+<li><code>size</code>: Size of the used font.</li>
+<li><code>align</code>: Alignment of the text. Allowed values are <code>"left"</code>, <code>"middle"</code> or <code>"right"</code>.</li>
+<li><code>line_spacing</code>: Spacing between lines. The value is relative to the <code>size</code> value.</li>
+<li><code>color</code>: Color of the text.</li>
+<li><code>bold</code>: Make the text bold.</li>
+<li><code>itelic</code>: Make the text italic.</li>
+<li><code>variant_numeric</code>: Specifies the style of rendering numbers. Allowed values are <code>"normal"</code>,
         <code>"ordinal"</code>,
         <code>"slashed-zero"</code>,
         <code>"lining-nums"</code>,
         <code>"oldstyle-nums"</code>,
         <code>"proportinal-nums"</code>,
         <code>"tabular-nums"</code>,
-        <code>"diagonal-fractions"</code>,
-        <code>"stacked-fractions"</code>. For meaning see SVG standard.</li>
+        <code>"diagonal-fractions"</code> or
+        <code>"stacked-fractions"</code>.
+See <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-variant">SVG documentation</a>
+for its meaning.</li>
 </ul>
-<p>Each parameter may also be <code>None</code> (default value) that
-means that the value should be inherited from the parent style.</p>
-<p>The simplest use cases, is passing style directly as the second argument of <code>tex</code> method:</p>
-<pre><code class="language-python">@elsie.slide()
-def text1(slide):
-    slide.text(&quot;Hello world!&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
+<p>Each parameter may also be <code>None</code> (the default value). This means that the value will be inherited
+from its parent style (see below).</p>
+<p>If you want to font or text properties that are not available in <code>TextStyle</code>, please
+<a href="https://github.com/spirali/elsie/issues/new">let us know</a>.</p>
+<p>You can pass a text style as a second argument to the <code>text</code> method:</p>
+<pre><code class="language-python">slide.text(&quot;Hello world!&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 </code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/text1.png"></p>
-<p>Each box also inherits from its parent a list of named styles. A style can be named and then referred by its name. The two following examples produce the same slide as the example above:</p>
-<pre><code class="language-python"># Setting style globally
-elsie.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
+<div class="elsie-wrapper elsie-wrapper-1c4c195c55d843d58648bbdbed9e9f35">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='150'><rect x='0' y='0' width='400' height='150' style='fill:none;stroke:black;stroke-width:1' /><text x='200.0' y='103.0' text-anchor='middle' font-family='sans-serif' font-size='70' style='fill:red;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
 
-@elsie.slide()
-def text1(slide):
-    slide.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
+<p><em>Tip</em>: to avoid repeating the <code>TextStyle</code> class name, you can import it via some short alias:</p>
+<pre><code class="language-python">from elsie import TextStyle as s
+...
+slide.box().text(&quot;Hello world!&quot;, s(color=&quot;red&quot;))
 </code></pre>
-<pre><code class="language-python">@elsie.slide()
-def text1(slide):
-    box = slide.box()
-
-    # Setting style locally for a box
-    box.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
-
-    box.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
+<h3 id="text-style-inheritance">Text style inheritance<a class="headerlink" href="#text-style-inheritance" title="Permanent link">#</a></h3>
+<p>Each box also inherits a list of named styles from its parent. If you use a string instead of a
+<code>TextStyle</code>, <em>Elsie</em> will try to find a style with the given name. The two following examples
+produce the same slide as the example above:</p>
+<pre><code class="language-python"># Setting a style globally for all slides
+slides.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
+slide = slides.new_slide(name=&quot;slide1&quot;)
+slide.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 </code></pre>
-<p>There are several predifined global styles.</p>
+<div class="elsie-wrapper elsie-wrapper-1aebc096cdaa464ba614407f52949336">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='150'><text x='200.0' y='103.0' text-anchor='middle' font-family='sans-serif' font-size='70' style='fill:red;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<pre><code class="language-python">box = slide.box()
+
+# Setting style locally for a box
+box.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
+box.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-e1966aeda8d5415897771c8b7aedf05f">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='150'><rect x='0' y='0' width='400' height='150' style='fill:none;stroke:black;stroke-width:1' /><text x='200.0' y='103.0' text-anchor='middle' font-family='sans-serif' font-size='70' style='fill:red;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h3 id="predefined-text-styles">Predefined text styles<a class="headerlink" href="#predefined-text-styles" title="Permanent link">#</a></h3>
+<p>There are several predefined global styles available by default. You can use them by their name:</p>
 <ul>
 <li><em>"default"</em> - <code>TextStyle(font="Ubuntu", color="black", size=28, line_spacing=1.20, align="middle", variant_numeric="lining-nums")</code></li>
 <li><em>"tt"</em> - <code>TextStyle(font="Ubuntu mono")</code></li>
@@ -202,55 +303,149 @@ def text1(slide):
 <li><em>"code"</em> - <code>TextStyle(font="Ubuntu Mono", align="left", color="#222" line_spacing=1.20, size=20)</code></li>
 <li><em>"code_lineno"</em> - <code>TextStyle(color="gray")</code></li>
 </ul>
-<p>The "default" style is special and it serves as a base text style for all text operations. In other words, if a property is not specified in the current text style, it is inherited from the "default" text style.
-Therefore modification of "default" style to globally change default text style.</p>
-<p>For example, color of default text can be globally changed as follows:</p>
-<pre><code class="language-python">default_style = elsie.get_style(&quot;default&quot;)
+<p>The <code>default</code> style is special, because it serves as a base text style for all text operations.
+In other words, if a property is not specified in the current text style nor in any of its parent
+styles, it is inherited from the <code>default</code> text style. Therefore, you can modify the <code>default</code>
+style to change the default style of all text items in your presentation.</p>
+<p>For example, the default color of text can be changed globally like this:</p>
+<pre><code class="language-python">default_style = slides.get_style(&quot;default&quot;)
 default_style.color = &quot;orange&quot;
-elsie.set_style(&quot;default&quot;, default_style)
+slides.set_style(&quot;default&quot;, default_style)
 
-@elsie.slide()
-def text2(slide):
-    slide.text(&quot;Hello world!&quot;)
+slide = slides.new_slide(&quot;slide&quot;)
+slide.text(&quot;Hello world!&quot;)
 </code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/text2.png"></p>
-<p>Getting a style and updating it is a common pattern; therefore, there is a shortcut method for this: <code>update_style</code>. It can also called globally (as function in <code>elsie</code> package) or locally as a method of a box.</p>
-<pre><code class="language-python">elsie.update_style(&quot;default&quot;, elsie.TextStyl(color=&quot;orange&quot;))
+<div class="elsie-wrapper elsie-wrapper-802c665acaa2472d809a77a4f2c61c18">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><text x='150.0' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:orange;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
 
-@elsie.slide()
-def text2(slide):
-    slide.text(&quot;Hello world!&quot;)
+<h3 id="updating-text-style">Updating text style<a class="headerlink" href="#updating-text-style" title="Permanent link">#</a></h3>
+<p>Getting some text style by name and updating it is a common pattern. Therefore, <em>Elsie</em> provides
+a shortcut method for this: <a href="https://spirali.github.io/elsie/apidoc/elsie.box.Box.html#f_update_style"><code>update_style</code></a>:</p>
+<pre><code class="language-python">slides.update_style(&quot;default&quot;, elsie.TextStyle(color=&quot;orange&quot;))
+# ^ the same as v
+default_style = slides.get_style(&quot;default&quot;)
+default_style.color = &quot;orange&quot;
+slides.set_style(&quot;default&quot;, default_style)
 </code></pre>
-<p>This produce the same result as the example above.</p>
-<h3 id="inline-text-styles">Inline text styles<a class="headerlink" href="#inline-text-styles" title="Permanent link">#</a></h3>
-<p>Styles can be changed in the text by the following syntax: ~STYLE{TEXT} where STYLE is a named style and TEXT a text that will be drawn.</p>
-<pre><code class="language-python">@elsie.slide()
-def inline_styles(slide):
-    slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
-    slide.text(&quot;Normal text ~red{red text} ~tt{Typewriter text}&quot;)
+<p>If you work with individual <code>TextStyle</code> instances, you can compose them together using the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.textstyle.TextStyle.html#f_compose"><code>compose</code></a> method:</p>
+<pre><code class="language-python">style_a = elsie.TextStyle(color=&quot;red&quot;)
+style_b = style_a.compose(elsie.TestStyle(size=20))
+# style_b has color=&quot;red&quot; and size=20
 </code></pre>
-<p>Styles can be applied hierarchically without limitation. The escape charater "~"
-can be changed to any other character by parameter <code>escape_character</code> of
-<code>.text()</code> method. To write an escape character in the text, repeat it (i.e.
-"~~" for default escape character).</p>
-<p><img width="512px" height="384px" src="slide_imgs/inline_styles.png"></p>
-<h3 id="scaling-to-fit-the-box">Scaling to fit the box<a class="headerlink" href="#scaling-to-fit-the-box" title="Permanent link">#</a></h3>
-<p>By default, the size of text is influenced by the size defined in the text
-style. This can be changed by parameter <code>scale_to_fit</code> that scales the text to size that fits inside its parent box.</p>
-<pre><code class="language-python">@elsie.slide(debug_boxes=True)
-def scale_to_fit(slide):
-    slide.box(width=300, height=80).text(&quot;Hello world!&quot;, scale_to_fit=True)
-    slide.box(width=80, height=300).text(&quot;Hello world!&quot;, scale_to_fit=True)
+<h2 id="inline-text-styles">Inline text styles<a class="headerlink" href="#inline-text-styles" title="Permanent link">#</a></h2>
+<p>You can also change the style of individual sections of text inside a single string passed to
+the <code>text</code> method. To do this, wrap a section of text that you want to be styled differently with
+<code>~&lt;style&gt;{&lt;text&gt;}</code> where <code>style</code> is a name of a style and <code>text</code> is some section of text.</p>
+<pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
+slide.text(&quot;Normal text ~red{red text} ~tt{Typewriter text}&quot;)
 </code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/scale_to_fit.png"></p>
+<div class="elsie-wrapper elsie-wrapper-df1a5ef10eaa4af186e88c1e31662242">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='600' height='200'><rect x='0' y='0' width='600' height='200' style='fill:none;stroke:black;stroke-width:1' /><text x='300.0' y='111.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Normal&#160;text&#160;<tspan xml:space='preserve' style='fill:red;'>red&#160;text</tspan>&#160;<tspan xml:space='preserve' font-family='monospace'>Typewriter&#160;text</tspan></tspan></text></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>Inline styles can also be nested arbitrarily:</p>
+<pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
+slide.text(&quot;~red{text1 ~tt{text2}}&quot;)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-8dec4a7f0c4a4f05a369d270b9f210e0">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='200'><rect x='0' y='0' width='300' height='200' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='111.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'><tspan xml:space='preserve' style='fill:red;'>text1&#160;<tspan xml:space='preserve' font-family='monospace'>text2</tspan></tspan></tspan></text></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>You can escape the inline style character (by default <code>~</code>) by repeating it (e.g. <code>"~~"</code>).
+If you need to use the <code>~</code> character a lot in your text, you can change it to a different
+character using the <code>escape_character</code> parameter of the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_text"><code>text</code></a> method.</p>
+<h2 id="text-scaling">Text scaling<a class="headerlink" href="#text-scaling" title="Permanent link">#</a></h2>
+<p>By default, the size of text is determined by the size defined in its text style. This can be
+changed by the parameter <code>scale_to_fit</code>, which will scale the text to fit the size of its parent
+box.</p>
+<pre><code class="language-python">slide.box(width=200, height=80).text(&quot;Hello world!&quot;, scale_to_fit=True)
+slide.box(width=80, height=200).text(&quot;Hello world!&quot;, scale_to_fit=True)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-cb8081b8b10f43a3a980239d1946cc6f">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='120.90375000000002' y='51.50125' transform='scale(1.2406563071865016)' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text><rect x='50.0' y='10.0' width='200' height='80' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='50.0' y='22.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;[200.00,80.00]</tspan></text><text x='302.25937500000003' y='394.0618750000001' transform='scale(0.4962625228746006)' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text><rect x='110.0' y='90.0' width='80' height='200' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='110.0' y='102.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;[80.00,200.00]</tspan></text><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:#ff00ff;stroke-width:2' /><text x='0' y='298.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↙&#160;[300.00,300.00]</tspan></text></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
 <h2 id="colors">Colors<a class="headerlink" href="#colors" title="Permanent link">#</a></h2>
-<p>In some places, a color can be defined (e.g. color of a text, or a line color).
-In all such places, it is expected a string that contains any valid SVG color definition, i.e.:</p>
+<p>You can define the color of text, <a href="../shapes/">shapes</a> and other things using a string that is
+compatible with SVG. You can be one of the following variants of color definitions:</p>
 <ul>
-<li>Color name - e.g. <code>green</code>, <code>blue</code>; https://commons.wikimedia.org/wiki/File:SVG_Recognized_color_keyword_names.svg</li>
-<li>Hex color value: e.g. <code>#fff</code>, <code>#a0a0a0</code></li>
-<li>RGB values: e.g. <code>rgb(34, 12, 64, 0.6)</code></li>
-<li>HSL values: e.g. <code>hsl(30, 100%, 50%, 0.6)</code></li>
+<li>Color name: e.g. <code>green</code>, <code>blue</code>. See list of
+<a href="https://upload.wikimedia.org/wikipedia/commons/2/2b/SVG_Recognized_color_keyword_names.svg">recognized</a>
+SVG color names.</li>
+<li>Hex color value: e.g. <code>#fff</code>, <code>#a0a0a0</code>.</li>
+<li>RGB values: e.g. <code>rgb(34, 12, 64, 0.6)</code>.</li>
+<li>HSL values: e.g. <code>hsl(30, 100%, 50%, 0.6)</code>.</li>
 </ul>
               
             </div>
