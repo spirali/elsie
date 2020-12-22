@@ -32,7 +32,7 @@ for its meaning.
 Each parameter may also be `None` (the default value). This means that the value will be inherited
 from its parent style (see below).
 
-If you want to font or text properties that are not available in `TextStyle`, please
+If you want to use font or text properties that are not available in `TextStyle`, please
 [let us know](https://github.com/spirali/elsie/issues/new).
 
 You can pass a text style as a second argument to the `text` method:
@@ -69,11 +69,11 @@ box.text("Hello world!", "big_red")
 ### Predefined text styles
 There are several predefined global styles available by default. You can use them by their name:
 
-- *"default"* - `TextStyle(font="Ubuntu", color="black", size=28, line_spacing=1.20, align="middle", variant_numeric="lining-nums")`
-- *"tt"* - `TextStyle(font="Ubuntu mono")`
+- *"default"* - `TextStyle(font="sans-serif", color="black", size=28, line_spacing=1.20, align="middle", variant_numeric="lining-nums")`
+- *"tt"* - `TextStyle(font="monospace")`
 - *"emph"* - `TextStyle(italic=True)`
 - *"alert"* - `TextStyle(bold=True, color="red")`
-- *"code"* - `TextStyle(font="Ubuntu Mono", align="left", color="#222" line_spacing=1.20, size=20)`
+- *"code"* - `TextStyle(font="monospace", align="left", color="#222" line_spacing=1.20, size=20)`
 - *"code_lineno"* - `TextStyle(color="gray")`
 
 The `default` style is special, because it serves as a base text style for all text operations.
