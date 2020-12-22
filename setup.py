@@ -5,9 +5,9 @@ import sys
 from setuptools import setup
 
 if sys.version_info.major < 3 or (
-    sys.version_info.major == 3 and sys.version_info.minor < 4
+    sys.version_info.major == 3 and sys.version_info.minor < 6
 ):
-    sys.exit("Python 3.4 or newer is required")
+    sys.exit("Python 3.6 or newer is required")
 
 VERSION = None
 with open("elsie/version.py") as f:
