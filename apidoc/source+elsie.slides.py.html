@@ -351,7 +351,9 @@
 351
 352
 353
-354</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>json</span>
+354
+355
+356</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>json</span>
 <a name=line-2></a><span class=kn>import</span> <span class=nn>os</span>
 <a name=line-3></a><span class=kn>import</span> <span class=nn>sys</span>
 <a name=line-4></a>
@@ -464,7 +466,7 @@
 <a name=line-111></a>            <span class=k>if</span> <span class=n>slide</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=n>name</span><span class=p>:</span>
 <a name=line-112></a>                <span class=k>return</span> <span class=n>slide</span>
 <a name=line-113></a>
-<a name=line-114></a>    <span class=k>def</span> <span class=nf>new_slide</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>bg_color</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=o>*</span><span class=p>,</span> <span class=n>view_box</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>name</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>debug_boxes</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
+<a name=line-114></a>    <span class=k>def</span> <span class=nf>new_slide</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>name</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=o>*</span><span class=p>,</span> <span class=n>bg_color</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>view_box</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>debug_boxes</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
 <a name=line-115></a>        <span class=k>if</span> <span class=n>view_box</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span> <span class=ow>and</span> <span class=ow>not</span> <span class=p>(</span>
 <a name=line-116></a>            <span class=nb>isinstance</span><span class=p>(</span><span class=n>view_box</span><span class=p>,</span> <span class=nb>tuple</span><span class=p>)</span>
 <a name=line-117></a>            <span class=ow>and</span> <span class=nb>len</span><span class=p>(</span><span class=n>view_box</span><span class=p>)</span> <span class=o>==</span> <span class=mi>4</span>
@@ -498,16 +500,16 @@
 <a name=line-145></a>            <span class=p>)</span>
 <a name=line-146></a>        <span class=k>return</span> <span class=n>box</span>
 <a name=line-147></a>
-<a name=line-148></a>    <span class=k>def</span> <span class=nf>slide</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>bg_color</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>view_box</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>name</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>debug_boxes</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
+<a name=line-148></a>    <span class=k>def</span> <span class=nf>slide</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>name</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=o>*</span><span class=p>,</span> <span class=n>bg_color</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>view_box</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>debug_boxes</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
 <a name=line-149></a>        <span class=k>def</span> <span class=nf>_helper</span><span class=p>(</span><span class=n>fn</span><span class=p>,</span> <span class=o>*</span><span class=n>args</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>):</span>
 <a name=line-150></a>            <span class=k>if</span> <span class=n>name</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
 <a name=line-151></a>                <span class=n>_name</span> <span class=o>=</span> <span class=n>fn</span><span class=o>.</span><span class=vm>__name__</span>
 <a name=line-152></a>            <span class=k>else</span><span class=p>:</span>
 <a name=line-153></a>                <span class=n>_name</span> <span class=o>=</span> <span class=n>name</span>
 <a name=line-154></a>            <span class=n>slide</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>new_slide</span><span class=p>(</span>
-<a name=line-155></a>                <span class=n>bg_color</span><span class=o>=</span><span class=n>bg_color</span><span class=p>,</span>
-<a name=line-156></a>                <span class=n>view_box</span><span class=o>=</span><span class=n>view_box</span><span class=p>,</span>
-<a name=line-157></a>                <span class=n>name</span><span class=o>=</span><span class=n>_name</span><span class=p>,</span>
+<a name=line-155></a>                <span class=n>name</span><span class=o>=</span><span class=n>_name</span><span class=p>,</span>
+<a name=line-156></a>                <span class=n>bg_color</span><span class=o>=</span><span class=n>bg_color</span><span class=p>,</span>
+<a name=line-157></a>                <span class=n>view_box</span><span class=o>=</span><span class=n>view_box</span><span class=p>,</span>
 <a name=line-158></a>                <span class=n>debug_boxes</span><span class=o>=</span><span class=n>debug_boxes</span><span class=p>,</span>
 <a name=line-159></a>            <span class=p>)</span>
 <a name=line-160></a>            <span class=n>fn</span><span class=p>(</span><span class=n>slide</span><span class=p>,</span> <span class=o>*</span><span class=n>args</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>)</span>
@@ -600,109 +602,111 @@
 <a name=line-247></a>        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>name_policy</span> <span class=o>==</span> <span class=s2>&quot;ignore&quot;</span><span class=p>:</span>
 <a name=line-248></a>            <span class=k>return</span>
 <a name=line-249></a>        <span class=k>if</span> <span class=n>name</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-250></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
-<a name=line-251></a>                <span class=s2>&quot;Slide needs an explicit name (name policy is now &#39;</span><span class=si>{}</span><span class=s2>&#39;)&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span>
-<a name=line-252></a>                    <span class=bp>self</span><span class=o>.</span><span class=n>name_policy</span>
-<a name=line-253></a>                <span class=p>)</span>
-<a name=line-254></a>            <span class=p>)</span>
-<a name=line-255></a>        <span class=k>if</span> <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=nb>str</span><span class=p>):</span>
-<a name=line-256></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
-<a name=line-257></a>                <span class=s2>&quot;Slide name has to be a string, not </span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=nb>repr</span><span class=p>(</span><span class=nb>type</span><span class=p>(</span><span class=n>name</span><span class=p>)))</span>
-<a name=line-258></a>            <span class=p>)</span>
-<a name=line-259></a>        <span class=n>slide</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>get_slide_by_name</span><span class=p>(</span><span class=n>name</span><span class=p>)</span>
-<a name=line-260></a>        <span class=k>if</span> <span class=n>slide</span><span class=p>:</span>
-<a name=line-261></a>            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>name_policy</span> <span class=o>==</span> <span class=s2>&quot;unique&quot;</span><span class=p>:</span>
-<a name=line-262></a>                <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Slide with name &#39;</span><span class=si>{}</span><span class=s2>&#39; already exists&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>name</span><span class=p>))</span>
-<a name=line-263></a>            <span class=k>elif</span> <span class=bp>self</span><span class=o>.</span><span class=n>name_policy</span> <span class=o>==</span> <span class=s2>&quot;replace&quot;</span><span class=p>:</span>
-<a name=line-264></a>                <span class=bp>self</span><span class=o>.</span><span class=n>_slides</span><span class=o>.</span><span class=n>remove</span><span class=p>(</span><span class=n>slide</span><span class=p>)</span>
-<a name=line-265></a>            <span class=k>else</span><span class=p>:</span>
-<a name=line-266></a>                <span class=k>assert</span> <span class=mi>0</span>
-<a name=line-267></a>
-<a name=line-268></a>    <span class=k>def</span> <span class=nf>process_query</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>method</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>data</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
-<a name=line-269></a>        <span class=n>key</span> <span class=o>=</span> <span class=p>(</span><span class=n>method</span><span class=p>,</span> <span class=n>data</span><span class=p>)</span>
-<a name=line-270></a>        <span class=n>value</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>query_cache</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>key</span><span class=p>)</span>
-<a name=line-271></a>        <span class=k>if</span> <span class=n>value</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-272></a>            <span class=n>value</span> <span class=o>=</span> <span class=n>compute_query</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>inkscape</span><span class=p>,</span> <span class=n>method</span><span class=p>,</span> <span class=n>data</span><span class=p>)</span>
-<a name=line-273></a>            <span class=bp>self</span><span class=o>.</span><span class=n>query_cache</span><span class=p>[</span><span class=n>key</span><span class=p>]</span> <span class=o>=</span> <span class=n>value</span>
-<a name=line-274></a>        <span class=bp>self</span><span class=o>.</span><span class=n>used_query_cache</span><span class=p>[</span><span class=n>key</span><span class=p>]</span> <span class=o>=</span> <span class=n>value</span>
-<a name=line-275></a>        <span class=k>return</span> <span class=n>value</span>
-<a name=line-276></a>
-<a name=line-277></a>    <span class=k>def</span> <span class=nf>render</span><span class=p>(</span>
-<a name=line-278></a>        <span class=bp>self</span><span class=p>,</span>
-<a name=line-279></a>        <span class=n>output</span><span class=o>=</span><span class=s2>&quot;slides.pdf&quot;</span><span class=p>,</span>
-<a name=line-280></a>        <span class=n>return_units</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span>
-<a name=line-281></a>        <span class=n>export_type</span><span class=o>=</span><span class=s2>&quot;pdf&quot;</span><span class=p>,</span>
-<a name=line-282></a>        <span class=n>pdf_merger</span><span class=o>=</span><span class=s2>&quot;pypdf&quot;</span><span class=p>,</span>
-<a name=line-283></a>        <span class=n>slide_postprocessing</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
-<a name=line-284></a>        <span class=n>prune_cache</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
-<a name=line-285></a>        <span class=n>save_cache</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
-<a name=line-286></a>        <span class=n>select_slides</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
-<a name=line-287></a>        <span class=n>slides_per_page</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
-<a name=line-288></a>    <span class=p>):</span>
-<a name=line-289></a>        <span class=k>if</span> <span class=n>select_slides</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-290></a>            <span class=n>select_slides</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>_slides</span>
-<a name=line-291></a>
-<a name=line-292></a>        <span class=k>if</span> <span class=ow>not</span> <span class=n>select_slides</span><span class=p>:</span>
-<a name=line-293></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;No slides to render&quot;</span><span class=p>)</span>
-<a name=line-294></a>
-<a name=line-295></a>        <span class=k>if</span> <span class=n>slides_per_page</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-296></a>            <span class=k>if</span> <span class=p>(</span>
-<a name=line-297></a>                <span class=nb>len</span><span class=p>(</span><span class=n>slides_per_page</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>2</span>
-<a name=line-298></a>                <span class=ow>or</span> <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>slides_per_page</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=nb>int</span><span class=p>)</span>
-<a name=line-299></a>                <span class=ow>or</span> <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>slides_per_page</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=nb>int</span><span class=p>)</span>
-<a name=line-300></a>            <span class=p>):</span>
-<a name=line-301></a>                <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
-<a name=line-302></a>                    <span class=sa>f</span><span class=s2>&quot;slides_per_page has to be None or pair of two integers, not </span><span class=si>{</span><span class=n>slides_per_page</span><span class=si>}</span><span class=s2>&quot;</span>
-<a name=line-303></a>                <span class=p>)</span>
-<a name=line-304></a>
-<a name=line-305></a>        <span class=k>if</span> <span class=n>slide_postprocessing</span><span class=p>:</span>
-<a name=line-306></a>            <span class=n>slide_postprocessing</span><span class=p>([</span><span class=n>slide</span><span class=o>.</span><span class=n>box</span><span class=p>()</span> <span class=k>for</span> <span class=n>slide</span> <span class=ow>in</span> <span class=n>select_slides</span><span class=p>])</span>
-<a name=line-307></a>
-<a name=line-308></a>        <span class=k>if</span> <span class=n>prune_cache</span><span class=p>:</span>
-<a name=line-309></a>            <span class=bp>self</span><span class=o>.</span><span class=n>query_cache</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>used_query_cache</span>
-<a name=line-310></a>            <span class=bp>self</span><span class=o>.</span><span class=n>used_query_cache</span> <span class=o>=</span> <span class=p>{}</span>
-<a name=line-311></a>
-<a name=line-312></a>        <span class=k>if</span> <span class=n>save_cache</span><span class=p>:</span>
-<a name=line-313></a>            <span class=bp>self</span><span class=o>.</span><span class=n>_save_query_cache</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>query_cache</span><span class=p>)</span>
-<a name=line-314></a>
-<a name=line-315></a>        <span class=n>units</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-316></a>        <span class=k>for</span> <span class=n>slide</span> <span class=ow>in</span> <span class=n>select_slides</span><span class=p>:</span>
-<a name=line-317></a>            <span class=n>slide</span><span class=o>.</span><span class=n>prepare</span><span class=p>()</span>
-<a name=line-318></a>            <span class=k>for</span> <span class=n>step</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>slide</span><span class=o>.</span><span class=n>steps</span><span class=p>()</span> <span class=o>+</span> <span class=mi>1</span><span class=p>):</span>
-<a name=line-319></a>                <span class=n>units</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>slide</span><span class=o>.</span><span class=n>make_render_unit</span><span class=p>(</span><span class=n>step</span><span class=p>))</span>
-<a name=line-320></a>
-<a name=line-321></a>        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>debug</span><span class=p>:</span>
-<a name=line-322></a>            <span class=k>for</span> <span class=n>unit</span> <span class=ow>in</span> <span class=n>units</span><span class=p>:</span>
-<a name=line-323></a>                <span class=n>unit</span><span class=o>.</span><span class=n>write_debug</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>fs_cache</span><span class=o>.</span><span class=n>cache_dir</span><span class=p>)</span>
-<a name=line-324></a>
-<a name=line-325></a>        <span class=k>if</span> <span class=n>slides_per_page</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-326></a>            <span class=n>units</span> <span class=o>=</span> <span class=n>per_page_groupping</span><span class=p>(</span>
-<a name=line-327></a>                <span class=n>units</span><span class=p>,</span> <span class=n>slides_per_page</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>slides_per_page</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=bp>self</span><span class=o>.</span><span class=n>width</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>height</span>
-<a name=line-328></a>            <span class=p>)</span>
-<a name=line-329></a>
-<a name=line-330></a>        <span class=k>if</span> <span class=n>return_units</span><span class=p>:</span>
-<a name=line-331></a>            <span class=k>return</span> <span class=n>units</span>
-<a name=line-332></a>
-<a name=line-333></a>        <span class=k>if</span> <span class=n>export_type</span> <span class=o>==</span> <span class=s2>&quot;pdf&quot;</span> <span class=ow>and</span> <span class=n>pdf_merger</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-334></a>            <span class=n>merger</span> <span class=o>=</span> <span class=n>get_pdf_merger_by_name</span><span class=p>(</span><span class=n>pdf_merger</span><span class=p>)</span>
-<a name=line-335></a>        <span class=k>else</span><span class=p>:</span>
-<a name=line-336></a>            <span class=n>merger</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-337></a>
-<a name=line-338></a>        <span class=bp>self</span><span class=o>.</span><span class=n>_show_progress</span><span class=p>(</span><span class=s2>&quot;Building&quot;</span><span class=p>,</span> <span class=n>first</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-<a name=line-339></a>        <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>unit</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>units</span><span class=p>):</span>
-<a name=line-340></a>            <span class=n>unit_output</span> <span class=o>=</span> <span class=n>unit</span><span class=o>.</span><span class=n>export</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>fs_cache</span><span class=p>,</span> <span class=n>export_type</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>inkscape</span><span class=p>)</span>
-<a name=line-341></a>            <span class=k>if</span> <span class=n>unit_output</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-342></a>                <span class=n>merger</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>unit_output</span><span class=p>)</span>
-<a name=line-343></a>            <span class=bp>self</span><span class=o>.</span><span class=n>_show_progress</span><span class=p>(</span><span class=s2>&quot;Building&quot;</span><span class=p>,</span> <span class=n>i</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>units</span><span class=p>))</span>
-<a name=line-344></a>        <span class=bp>self</span><span class=o>.</span><span class=n>_show_progress</span><span class=p>(</span><span class=s2>&quot;Building&quot;</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>units</span><span class=p>),</span> <span class=nb>len</span><span class=p>(</span><span class=n>units</span><span class=p>),</span> <span class=n>last</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-<a name=line-345></a>
-<a name=line-346></a>        <span class=k>if</span> <span class=n>export_type</span> <span class=o>==</span> <span class=s2>&quot;pdf&quot;</span> <span class=ow>and</span> <span class=n>pdf_merger</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-347></a>            <span class=n>merger</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>output</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>debug</span><span class=p>)</span>
-<a name=line-348></a>            <span class=k>if</span> <span class=n>prune_cache</span><span class=p>:</span>
-<a name=line-349></a>                <span class=bp>self</span><span class=o>.</span><span class=n>fs_cache</span><span class=o>.</span><span class=n>remove_unused</span><span class=p>()</span>
-<a name=line-350></a>            <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;Slides written into &#39;</span><span class=si>{}</span><span class=s2>&#39;&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>output</span><span class=p>))</span>
-<a name=line-351></a>        <span class=k>else</span><span class=p>:</span>
-<a name=line-352></a>            <span class=k>if</span> <span class=n>prune_cache</span><span class=p>:</span>
-<a name=line-353></a>                <span class=bp>self</span><span class=o>.</span><span class=n>fs_cache</span><span class=o>.</span><span class=n>remove_unused</span><span class=p>()</span>
-<a name=line-354></a>            <span class=k>return</span> <span class=n>merger</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.7 at 2020-12-22 12:20 </p></div></div></body></html>
+<a name=line-250></a>            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>name_policy</span> <span class=o>==</span> <span class=s2>&quot;unique&quot;</span><span class=p>:</span>
+<a name=line-251></a>                <span class=k>return</span>
+<a name=line-252></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
+<a name=line-253></a>                <span class=s2>&quot;Slide needs an explicit name (name policy is now &#39;</span><span class=si>{}</span><span class=s2>&#39;)&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span>
+<a name=line-254></a>                    <span class=bp>self</span><span class=o>.</span><span class=n>name_policy</span>
+<a name=line-255></a>                <span class=p>)</span>
+<a name=line-256></a>            <span class=p>)</span>
+<a name=line-257></a>        <span class=k>if</span> <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=nb>str</span><span class=p>):</span>
+<a name=line-258></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
+<a name=line-259></a>                <span class=s2>&quot;Slide name has to be a string or None, not </span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=nb>repr</span><span class=p>(</span><span class=nb>type</span><span class=p>(</span><span class=n>name</span><span class=p>)))</span>
+<a name=line-260></a>            <span class=p>)</span>
+<a name=line-261></a>        <span class=n>slide</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>get_slide_by_name</span><span class=p>(</span><span class=n>name</span><span class=p>)</span>
+<a name=line-262></a>        <span class=k>if</span> <span class=n>slide</span><span class=p>:</span>
+<a name=line-263></a>            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>name_policy</span> <span class=o>==</span> <span class=s2>&quot;unique&quot;</span><span class=p>:</span>
+<a name=line-264></a>                <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Slide with name &#39;</span><span class=si>{}</span><span class=s2>&#39; already exists&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>name</span><span class=p>))</span>
+<a name=line-265></a>            <span class=k>elif</span> <span class=bp>self</span><span class=o>.</span><span class=n>name_policy</span> <span class=o>==</span> <span class=s2>&quot;replace&quot;</span><span class=p>:</span>
+<a name=line-266></a>                <span class=bp>self</span><span class=o>.</span><span class=n>_slides</span><span class=o>.</span><span class=n>remove</span><span class=p>(</span><span class=n>slide</span><span class=p>)</span>
+<a name=line-267></a>            <span class=k>else</span><span class=p>:</span>
+<a name=line-268></a>                <span class=k>assert</span> <span class=mi>0</span>
+<a name=line-269></a>
+<a name=line-270></a>    <span class=k>def</span> <span class=nf>process_query</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>method</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>data</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
+<a name=line-271></a>        <span class=n>key</span> <span class=o>=</span> <span class=p>(</span><span class=n>method</span><span class=p>,</span> <span class=n>data</span><span class=p>)</span>
+<a name=line-272></a>        <span class=n>value</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>query_cache</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>key</span><span class=p>)</span>
+<a name=line-273></a>        <span class=k>if</span> <span class=n>value</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-274></a>            <span class=n>value</span> <span class=o>=</span> <span class=n>compute_query</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>inkscape</span><span class=p>,</span> <span class=n>method</span><span class=p>,</span> <span class=n>data</span><span class=p>)</span>
+<a name=line-275></a>            <span class=bp>self</span><span class=o>.</span><span class=n>query_cache</span><span class=p>[</span><span class=n>key</span><span class=p>]</span> <span class=o>=</span> <span class=n>value</span>
+<a name=line-276></a>        <span class=bp>self</span><span class=o>.</span><span class=n>used_query_cache</span><span class=p>[</span><span class=n>key</span><span class=p>]</span> <span class=o>=</span> <span class=n>value</span>
+<a name=line-277></a>        <span class=k>return</span> <span class=n>value</span>
+<a name=line-278></a>
+<a name=line-279></a>    <span class=k>def</span> <span class=nf>render</span><span class=p>(</span>
+<a name=line-280></a>        <span class=bp>self</span><span class=p>,</span>
+<a name=line-281></a>        <span class=n>output</span><span class=o>=</span><span class=s2>&quot;slides.pdf&quot;</span><span class=p>,</span>
+<a name=line-282></a>        <span class=n>return_units</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span>
+<a name=line-283></a>        <span class=n>export_type</span><span class=o>=</span><span class=s2>&quot;pdf&quot;</span><span class=p>,</span>
+<a name=line-284></a>        <span class=n>pdf_merger</span><span class=o>=</span><span class=s2>&quot;pypdf&quot;</span><span class=p>,</span>
+<a name=line-285></a>        <span class=n>slide_postprocessing</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
+<a name=line-286></a>        <span class=n>prune_cache</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
+<a name=line-287></a>        <span class=n>save_cache</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
+<a name=line-288></a>        <span class=n>select_slides</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
+<a name=line-289></a>        <span class=n>slides_per_page</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
+<a name=line-290></a>    <span class=p>):</span>
+<a name=line-291></a>        <span class=k>if</span> <span class=n>select_slides</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-292></a>            <span class=n>select_slides</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>_slides</span>
+<a name=line-293></a>
+<a name=line-294></a>        <span class=k>if</span> <span class=ow>not</span> <span class=n>select_slides</span><span class=p>:</span>
+<a name=line-295></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;No slides to render&quot;</span><span class=p>)</span>
+<a name=line-296></a>
+<a name=line-297></a>        <span class=k>if</span> <span class=n>slides_per_page</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-298></a>            <span class=k>if</span> <span class=p>(</span>
+<a name=line-299></a>                <span class=nb>len</span><span class=p>(</span><span class=n>slides_per_page</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>2</span>
+<a name=line-300></a>                <span class=ow>or</span> <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>slides_per_page</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=nb>int</span><span class=p>)</span>
+<a name=line-301></a>                <span class=ow>or</span> <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>slides_per_page</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=nb>int</span><span class=p>)</span>
+<a name=line-302></a>            <span class=p>):</span>
+<a name=line-303></a>                <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
+<a name=line-304></a>                    <span class=sa>f</span><span class=s2>&quot;slides_per_page has to be None or pair of two integers, not </span><span class=si>{</span><span class=n>slides_per_page</span><span class=si>}</span><span class=s2>&quot;</span>
+<a name=line-305></a>                <span class=p>)</span>
+<a name=line-306></a>
+<a name=line-307></a>        <span class=k>if</span> <span class=n>slide_postprocessing</span><span class=p>:</span>
+<a name=line-308></a>            <span class=n>slide_postprocessing</span><span class=p>([</span><span class=n>slide</span><span class=o>.</span><span class=n>box</span><span class=p>()</span> <span class=k>for</span> <span class=n>slide</span> <span class=ow>in</span> <span class=n>select_slides</span><span class=p>])</span>
+<a name=line-309></a>
+<a name=line-310></a>        <span class=k>if</span> <span class=n>prune_cache</span><span class=p>:</span>
+<a name=line-311></a>            <span class=bp>self</span><span class=o>.</span><span class=n>query_cache</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>used_query_cache</span>
+<a name=line-312></a>            <span class=bp>self</span><span class=o>.</span><span class=n>used_query_cache</span> <span class=o>=</span> <span class=p>{}</span>
+<a name=line-313></a>
+<a name=line-314></a>        <span class=k>if</span> <span class=n>save_cache</span><span class=p>:</span>
+<a name=line-315></a>            <span class=bp>self</span><span class=o>.</span><span class=n>_save_query_cache</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>query_cache</span><span class=p>)</span>
+<a name=line-316></a>
+<a name=line-317></a>        <span class=n>units</span> <span class=o>=</span> <span class=p>[]</span>
+<a name=line-318></a>        <span class=k>for</span> <span class=n>slide</span> <span class=ow>in</span> <span class=n>select_slides</span><span class=p>:</span>
+<a name=line-319></a>            <span class=n>slide</span><span class=o>.</span><span class=n>prepare</span><span class=p>()</span>
+<a name=line-320></a>            <span class=k>for</span> <span class=n>step</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>slide</span><span class=o>.</span><span class=n>steps</span><span class=p>()</span> <span class=o>+</span> <span class=mi>1</span><span class=p>):</span>
+<a name=line-321></a>                <span class=n>units</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>slide</span><span class=o>.</span><span class=n>make_render_unit</span><span class=p>(</span><span class=n>step</span><span class=p>))</span>
+<a name=line-322></a>
+<a name=line-323></a>        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>debug</span><span class=p>:</span>
+<a name=line-324></a>            <span class=k>for</span> <span class=n>unit</span> <span class=ow>in</span> <span class=n>units</span><span class=p>:</span>
+<a name=line-325></a>                <span class=n>unit</span><span class=o>.</span><span class=n>write_debug</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>fs_cache</span><span class=o>.</span><span class=n>cache_dir</span><span class=p>)</span>
+<a name=line-326></a>
+<a name=line-327></a>        <span class=k>if</span> <span class=n>slides_per_page</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-328></a>            <span class=n>units</span> <span class=o>=</span> <span class=n>per_page_groupping</span><span class=p>(</span>
+<a name=line-329></a>                <span class=n>units</span><span class=p>,</span> <span class=n>slides_per_page</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>slides_per_page</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=bp>self</span><span class=o>.</span><span class=n>width</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>height</span>
+<a name=line-330></a>            <span class=p>)</span>
+<a name=line-331></a>
+<a name=line-332></a>        <span class=k>if</span> <span class=n>return_units</span><span class=p>:</span>
+<a name=line-333></a>            <span class=k>return</span> <span class=n>units</span>
+<a name=line-334></a>
+<a name=line-335></a>        <span class=k>if</span> <span class=n>export_type</span> <span class=o>==</span> <span class=s2>&quot;pdf&quot;</span> <span class=ow>and</span> <span class=n>pdf_merger</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-336></a>            <span class=n>merger</span> <span class=o>=</span> <span class=n>get_pdf_merger_by_name</span><span class=p>(</span><span class=n>pdf_merger</span><span class=p>)</span>
+<a name=line-337></a>        <span class=k>else</span><span class=p>:</span>
+<a name=line-338></a>            <span class=n>merger</span> <span class=o>=</span> <span class=p>[]</span>
+<a name=line-339></a>
+<a name=line-340></a>        <span class=bp>self</span><span class=o>.</span><span class=n>_show_progress</span><span class=p>(</span><span class=s2>&quot;Building&quot;</span><span class=p>,</span> <span class=n>first</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+<a name=line-341></a>        <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>unit</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>units</span><span class=p>):</span>
+<a name=line-342></a>            <span class=n>unit_output</span> <span class=o>=</span> <span class=n>unit</span><span class=o>.</span><span class=n>export</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>fs_cache</span><span class=p>,</span> <span class=n>export_type</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>inkscape</span><span class=p>)</span>
+<a name=line-343></a>            <span class=k>if</span> <span class=n>unit_output</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-344></a>                <span class=n>merger</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>unit_output</span><span class=p>)</span>
+<a name=line-345></a>            <span class=bp>self</span><span class=o>.</span><span class=n>_show_progress</span><span class=p>(</span><span class=s2>&quot;Building&quot;</span><span class=p>,</span> <span class=n>i</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>units</span><span class=p>))</span>
+<a name=line-346></a>        <span class=bp>self</span><span class=o>.</span><span class=n>_show_progress</span><span class=p>(</span><span class=s2>&quot;Building&quot;</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>units</span><span class=p>),</span> <span class=nb>len</span><span class=p>(</span><span class=n>units</span><span class=p>),</span> <span class=n>last</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+<a name=line-347></a>
+<a name=line-348></a>        <span class=k>if</span> <span class=n>export_type</span> <span class=o>==</span> <span class=s2>&quot;pdf&quot;</span> <span class=ow>and</span> <span class=n>pdf_merger</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-349></a>            <span class=n>merger</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>output</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>debug</span><span class=p>)</span>
+<a name=line-350></a>            <span class=k>if</span> <span class=n>prune_cache</span><span class=p>:</span>
+<a name=line-351></a>                <span class=bp>self</span><span class=o>.</span><span class=n>fs_cache</span><span class=o>.</span><span class=n>remove_unused</span><span class=p>()</span>
+<a name=line-352></a>            <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;Slides written into &#39;</span><span class=si>{}</span><span class=s2>&#39;&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>output</span><span class=p>))</span>
+<a name=line-353></a>        <span class=k>else</span><span class=p>:</span>
+<a name=line-354></a>            <span class=k>if</span> <span class=n>prune_cache</span><span class=p>:</span>
+<a name=line-355></a>                <span class=bp>self</span><span class=o>.</span><span class=n>fs_cache</span><span class=o>.</span><span class=n>remove_unused</span><span class=p>()</span>
+<a name=line-356></a>            <span class=k>return</span> <span class=n>merger</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.7 at 2020-12-22 12:45 </p></div></div></body></html>
