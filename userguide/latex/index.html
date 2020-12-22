@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <meta name="author" content="Stanislav Böhm">
-  <link rel="canonical" href="https://spirali.github.io/elsie/cookbook/postprocessing/">
+  <link rel="canonical" href="https://spirali.github.io/elsie/userguide/latex/">
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Slide postprocessing - Elsie</title>
+  <title>Latex - Elsie</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Slide postprocessing";
-    var mkdocs_page_input_path = "cookbook/postprocessing.md";
-    var mkdocs_page_url = "/elsie/cookbook/postprocessing/";
+    var mkdocs_page_name = "Latex";
+    var mkdocs_page_input_path = "userguide/latex.md";
+    var mkdocs_page_url = "/elsie/userguide/latex/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
@@ -70,35 +70,33 @@
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">User guide</span></p>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/basics/">Basics</a>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../basics/">Basics</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/layout/">Layout</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../layout/">Layout</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/revealing/">Revealing</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../revealing/">Revealing</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/text/">Text</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../text/">Text</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/syntax_highlighting/">Syntax highlighting</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../syntax_highlighting/">Syntax highlighting</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/images/">Images</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../images/">Images</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/shapes/">Shapes</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../shapes/">Shapes</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/jupyter/">Jupyter integration</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../jupyter/">Jupyter integration</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/latex/">Latex</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Latex</a>
+    <ul class="current">
+    </ul>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
-                <ul class="current">
-                    <li class="toctree-l1"><a class="reference internal" href="../lists/">Lists</a>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Slide postprocessing</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#slide-numbering">Slide numbering</a>
-    </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/postprocessing/">Slide postprocessing</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">API reference</span></p>
@@ -127,14 +125,14 @@
     
       
         
-          <li>Cookbook &raquo;</li>
+          <li>User guide &raquo;</li>
         
       
     
-    <li>Slide postprocessing</li>
+    <li>Latex</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/spirali/elsie/blob/master/docs/cookbook/postprocessing.md"
+        <a href="https://github.com/spirali/elsie/blob/master/docs/userguide/latex.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -145,43 +143,12 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="slide-postprocessing">Slide postprocessing<a class="headerlink" href="#slide-postprocessing" title="Permanent link">#</a></h1>
-<p>Sometimes you may want to add some global data to your slides, for example a footer, license
-information or <a href="#slide-numbering">slide numbers</a>. To make it easier, you can pass a function to
-the <code>slide_postprocessing</code> parameter of the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_render"><code>render</code></a> method. The
-function will receive a list of root boxes of each slide in the presentation. You can then go
-through the list and modify the slides, for example by adding some text to them.</p>
-<h2 id="slide-numbering">Slide numbering<a class="headerlink" href="#slide-numbering" title="Permanent link">#</a></h2>
-<p>It is quite easy to add numbers to each slide using slide postprocessing. Here is an example:</p>
-<pre><code class="language-python">import elsie
-slides = elsie.Slides()
-
-@slides.slide()
-def slide1(slide):
-    slide.text(&quot;Page numbering demo&quot;)
-
-@slides.slide()
-def slide2(slide):
-    slide.box().text(&quot;Hello world!&quot;)
-    slide.box(show=&quot;next+&quot;).text(&quot;Hello world!&quot;)
-    slide.box(show=&quot;next+&quot;).text(&quot;Hello world!&quot;)
-
-@slides.slide()
-def slide3(slide):
-    slide.box().text(&quot;Last slide&quot;)
-
-def page_numbering(slides):
-    for i, slide in enumerate(slides):
-        slide.box(x=&quot;90%&quot;, y=&quot;90%&quot;, width=70, height=45).rect(
-            bg_color=&quot;orange&quot;, rx=5, ry=5
-        ).text(f&quot;{i + 1}/{len(slides)}&quot;)
-
-slides.render(slide_postprocessing=page_numbering)
-</code></pre>
-<p>You can find the rendered PDF with slide numbers
-<a href="https://github.com/spirali/elsie/raw/master/examples/page_numbers/page_numbers.pdf">here</a>.</p>
-<p>You could also easily create a fragment number for each fragment of each slide by iterating numbers
-up to the <a href="https://spirali.github.io/elsie/apidoc/elsie.slidecls.Slide.html#f_current_step"><code>current_slide()</code></a> of each slide.</p>
+                <h1 id="latex">Latex<a class="headerlink" href="#latex" title="Permanent link">#</a></h1>
+<p><em>Elsie</em> can render LaTeX directly into your slides. You need to have <code>pdflatex</code> and <code>pdf2svg</code> 
+installed for this to work. LaTeX code can be rendered using the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_latex"><code>latex</code></a> method.</p>
+<p>You can find an example of <code>LaTeX</code> usage with <em>Elsie</em>
+<a href="https://github.com/spirali/elsie/blob/master/examples/latex/latex_demo.py">here</a>.</p>
               
             </div>
           </div>
@@ -189,8 +156,10 @@ up to the <a href="https://spirali.github.io/elsie/apidoc/elsie.slidecls.Slide.h
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="../../cookbook/lists/" class="btn btn-neutral float-right" title="Lists">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-        <a href="../lists/" class="btn btn-neutral" title="Lists"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+        <a href="../jupyter/" class="btn btn-neutral" title="Jupyter integration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -218,8 +187,10 @@ up to the <a href="https://spirali.github.io/elsie/apidoc/elsie.slidecls.Slide.h
           <a href="https://github.com/spirali/elsie/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../lists/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../jupyter/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
+      
+        <span style="margin-left: 15px"><a href="../../cookbook/lists/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Stanislav Böhm">
+  <link rel="canonical" href="https://spirali.github.io/elsie/userguide/jupyter/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Jupyter integration - Elsie</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Jupyter integration";
+    var mkdocs_page_input_path = "userguide/jupyter.md";
+    var mkdocs_page_url = "/elsie/userguide/jupyter/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-V9H5Q6FZ6D', 'https://spirali.github.io/elsie/');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Elsie</a>
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../getting_started/">Getting started</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../gallery/">Gallery</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">User guide</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../basics/">Basics</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../layout/">Layout</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../revealing/">Revealing</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../text/">Text</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../syntax_highlighting/">Syntax highlighting</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../images/">Images</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../shapes/">Shapes</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Jupyter integration</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#name-policy-inside-jupyter">Name policy inside Jupyter</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../latex/">Latex</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Cookbook</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/postprocessing/">Slide postprocessing</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">API reference</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="../../apidoc">API documentation</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Elsie</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>User guide &raquo;</li>
+        
+      
+    
+    <li>Jupyter integration</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/spirali/elsie/blob/master/docs/userguide/jupyter.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="jupyter-integration">Jupyter integration<a class="headerlink" href="#jupyter-integration" title="Permanent link">#</a></h1>
+<p><em>Elsie</em> has built-in support for creating slides interactively using
+<a href="https://jupyter.org/">Jupyter</a>. If you return a box from a Jupyter notebook cell, it will be
+rendered directly inside the notebook:</p>
+<pre><code class="language-python">import elsie
+slides = elsie.Slides()
+slide = slides.new_slide()
+slide.box().text(&quot;Hello world&quot;)
+slide
+</code></pre>
+<p>If you create slides using the <a href="slides.md#decorator"><code>decorator</code></a> approach, you need to return the
+decorated function from the cell:</p>
+<pre><code class="language-python">import elsie
+slides = elsie.Slides()
+
+@slides.slide()
+def hello(slide):
+    slide.box().text(&quot;Hello world&quot;)
+hello
+</code></pre>
+<p>If your slide contains multiple <a href="../revealing/">fragments</a>, there will be two buttons below the slide
+which will let you move between the individual fragments:</p>
+<pre><code class="language-python">slide.box().text(&quot;Box 1&quot;)
+slide.box(show=&quot;next+&quot;).text(&quot;Box 2&quot;)
+slide
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-3203c030668d4f2ca5c81376b81f573a">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='144.39999999999998' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text></svg></div>
+<div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='144.39999999999998' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;1</tspan></text><text x='150.0' y='178.0' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Box&#160;2</tspan></text></svg></div>
+</div>
+
+<div class="elsie-controls">
+    <button class="elsie-previous"><</button>
+    <div class="elsie-current-step">Fragment: 1</div>
+    <button class="elsie-next">></button>
+</div>
+<script type='text/javascript'>(function () {
+var active_step = 1;
+var max_step = 2;
+var slide_id = ".elsie-wrapper-3203c030668d4f2ca5c81376b81f573a";
+
+function getSelector(selector) {
+    return slide_id + " " + selector;
+}
+
+function updateState(step) {
+    var step_str = step.toString();
+
+    document.querySelector(getSelector(".elsie-next")).disabled = step >= max_step;
+    document.querySelector(getSelector(".elsie-previous")).disabled = step <= 1;
+    document.querySelector(getSelector(".elsie-current-step")).innerText = "Fragment: " + step_str;
+
+    var items = document.querySelectorAll(getSelector(".elsie-step"));
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "none";
+    }
+    document.querySelector(getSelector(".elsie-step.step-" + step_str)).style.display = "block";
+}
+function moveStep(offset) {
+    var new_step = active_step + offset;
+    if (new_step >= 1 && new_step <= max_step) {
+        active_step = new_step;
+    }
+    updateState(active_step);
+}
+document.querySelector(getSelector(".elsie-next")).addEventListener('click', function() {
+    moveStep(1);
+});
+document.querySelector(getSelector(".elsie-previous")).addEventListener('click', function() {
+    moveStep(-1);
+});
+updateState(active_step);
+})()</script></div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>You can combine this feature with <a href="https://ipywidgets.readthedocs.io/en/latest/">ipywidgets</a> to
+create fully interactive slides. For example, you can create something like this:</p>
+<p><img alt="Elsie Jupyter interactive example" src="../../imgs/elsie-jupyter-interactive.gif" /></p>
+<p>You can see an example of Jupyter integration
+<a href="https://github.com/spirali/elsie/tree/master/examples/jupyter">here</a>.</p>
+<h2 id="name-policy-inside-jupyter">Name policy inside Jupyter<a class="headerlink" href="#name-policy-inside-jupyter" title="Permanent link">#</a></h2>
+<p>The <a href="slides.md#name-policy">name policy</a> is automatically set to <code>replace</code> when running inside
+Jupyter. Therefore, if you re-run a cell which creates a slide with the same name as in the previous
+cell execution, the previous slide will be replaced. Otherwise, you would create a new slide for each
+execution of a cell, which might not be what you want. To make the process of naming slides easier,
+we recommend you to create slides using the <a href="slides.md#decorator">decorator</a>, which will name them
+automatically, according to the name of the decorated function.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../latex/" class="btn btn-neutral float-right" title="Latex">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../shapes/" class="btn btn-neutral" title="Shapes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/spirali/elsie/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../shapes/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../latex/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

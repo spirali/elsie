@@ -64,6 +64,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#faq">FAQ</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#license">License</a>
+    </li>
     </ul>
                     </li>
                 </ul>
@@ -95,12 +97,16 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="userguide/shapes/">Shapes</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="userguide/jupyter/">Jupyter integration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="userguide/latex/">Latex</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
                 <ul>
                     <li class="toctree-l1"><a class="reference internal" href="cookbook/lists/">Lists</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="cookbook/postprocessing/">Slide post-processing</a>
+                    <li class="toctree-l1"><a class="reference internal" href="cookbook/postprocessing/">Slide postprocessing</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">API reference</span></p>
@@ -144,87 +150,169 @@
             <div class="section">
               
                 <h1 id="elsie">Elsie<a class="headerlink" href="#elsie" title="Permanent link">#</a></h1>
-<p><strong>Elsie</strong> allows you to <strong>create slides programmatically</strong> using Python.</p>
-<p><em>Elsie</em> is a Python library that lets you build
-<a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> slides in a
-composable way and then render them to PDF. There is no DSL or GUI –
-presentations created with <em>Elsie</em> are fully programmed with Python.</p>
+<p><strong>Elsie</strong> allows you to <strong>create slides programmatically</strong> using Python. It is a Python library
+that lets you build <a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> slides in a
+composable way and then render them to PDF. There is no DSL or GUI – presentations created with
+<em>Elsie</em> are fully programmed with Python.</p>
+<p>It was created out of frustration of having to deal with
+<a href="#comparison-to-other-tools">existing tools</a> for creating presentations. We believe that creating
+presentations should be automated and programmable as much as possible.</p>
+<p>See <a href="getting_started/">Getting started</a> for a short intro tutorial or the <a href="gallery/">Gallery</a>
+for presentations that were created using <em>Elsie</em>. </p>
 <h2 id="hello-world">Hello world<a class="headerlink" href="#hello-world" title="Permanent link">#</a></h2>
-<pre><code class="language-python">import elsie, datetime
-
+<pre><code class="language-python">import elsie
 slides = elsie.Slides()
 
 @slides.slide()
 def hello_world(slide):
-    this_year = datetime.datetime.now().year
-    slide.text(f&quot;Hello from {this_year}!&quot;)
+    import datetime
+    slide.box().text(f&quot;Hello from&quot;)
 
-elsie.render(&quot;slides.pdf&quot;)
+    year = str(datetime.datetime.now().year)
+    row = slide.box(horizontal=True, p_top=20)
+    for i in range(4):
+        row.box(width=40, height=40).rect(
+          color=&quot;black&quot;,
+          bg_color=&quot;black&quot; if i % 2 == 0 else &quot;white&quot;
+        ).text(year[i], elsie.TextStyle(color=&quot;red&quot;))
+
+slides.render(&quot;slides.pdf&quot;)
 </code></pre>
-<p><img width="512px" height="384px" src="slide_imgs/hello.png"></p>
+<div class="elsie-wrapper elsie-wrapper-7ebd0e9c95ca446f83a2ea8c424b1da3">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><text x='150.0' y='131.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello&#160;from</tspan></text><rect x='70.0' y='156.79999999999998' width='40' height='40' style='fill:black;stroke:black;stroke-width:1' /><text x='90.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>2</tspan></text><rect x='110.0' y='156.79999999999998' width='40' height='40' style='fill:white;stroke:black;stroke-width:1' /><text x='130.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>0</tspan></text><rect x='150.0' y='156.79999999999998' width='40' height='40' style='fill:black;stroke:black;stroke-width:1' /><text x='170.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>2</tspan></text><rect x='190.0' y='156.79999999999998' width='40' height='40' style='fill:white;stroke:black;stroke-width:1' /><text x='210.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>0</tspan></text></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">#</a></h2>
 <ul>
 <li>
-<p><strong>Automatic layout</strong> <em>Elsie</em> provides a simple yet powerful layout model. Need
-  rows? Columns? Grids? Padding? Aligned text? Relative/absolute positioning?
-  Automatic scaling? We got you covered.</p>
+<p><strong>Automatic layout</strong> <em>Elsie</em> provides a simple, yet powerful layout model. Need rows? Columns?
+Padding? Aligned text? Relative/absolute positioning? Automatic scaling? We got you covered.</p>
 </li>
 <li>
-<p><strong>Animations and fragments</strong> Reveal your slides gradually using fragments or
-  create custom step-by-step animations using Python code. Or draw a fine-tuned
-  SVG image by hand in <code>Inkscape</code> and let <em>Elsie</em> turn it into an animation
-  using a handy <a href="TODO">layer-naming convention</a>.</p>
+<p><strong>Animations and fragments</strong> Reveal your slides gradually using fragments or create custom
+step-by-step animations using Python code. Or draw a fine-tuned SVG image by hand in <code>Inkscape</code> and
+let <em>Elsie</em> turn it into an animation using a handy
+<a href="userguide/images/#embedding-fragments-in-images">layer-naming convention</a>.</p>
 </li>
 <li>
-<p><strong>Source code highlighting</strong> Enjoy automatic <a href="TODO">source code highlighting</a>.
-  Create code walkthroughs using individual line highlighting or arrows pointing
-  to specific code elements.</p>
+<p><strong>Source code highlighting</strong> Enjoy beautiful code snippets thanks to built-in
+<a href="userguide/syntax_highlighting/">source code highlighting</a>. Create code walkthroughs using
+individual <a href="userguide/syntax_highlighting/#line-and-inline-boxes">line highlighting</a> or
+<a href="userguide/shapes/#arrow-head">arrows</a> pointing to specific code elements.</p>
 </li>
 <li>
-<p><strong>Batteries included</strong> Leverage familiar SVG features - fonts, colors, dashed
-  line borders, you name it. Include <code>PNG/JPG/SVG</code> images directly into your
-  slides. Render <a href="TODO">LaTex</a> into your slides. Debug your slides interactively
-  in <a href="TODO">Jupyter notebooks</a>.</p>
+<p><strong>Batteries included</strong> Leverage familiar SVG features - fonts, colors, dashed line borders.
+Include <code>PNG/JPG/SVG/ORA</code> images directly into your slides. Render <a href="userguide/layout/">LaTeX</a>
+into your slides. Debug your slides interactively in <a href="userguide/jupyter/">Jupyter notebooks</a>.</p>
 </li>
 <li>
-<p><strong>Familiarity</strong> At its heart, <em>Elsie</em> is an API for creating SVG images,
-  optimized for making slides. If you know basics of Python and SVG, you'll be
-  right at home.</p>
+<p><strong>Familiarity</strong> At its heart, <em>Elsie</em> is a streamlined API for creating SVG images, optimized for
+making presentations. If you know the basics of Python and SVG, you'll be right at home.</p>
 </li>
 </ul>
-<p>Every tool has its disadvantages though.</p>
+<p><em>Every tool has its disadvantages though.</em></p>
 <ul>
-<li><em>Elsie</em> provides a rather low-level API. While that means that you can create
-  a slide in almost any way you like, you will sometimes have to roll up your sleeves
-  to achieve your desired goal. But once you implement it, just put it inside a function
-  and reuse it!</li>
-<li><em>Elsie</em> produces PDF slides, so it can only create animations with a single
-  frame per slide. If you need 60 FPS animations or GIFs in your presentations, this tool
-  is not for you.</li>
-<li>Currently, <em>Elsie</em> renders SVG slides to PDF using <code>Inkscape</code>. Therefore, you
-  must have it installed on your system for it to work. We provide a
-  <a href="installation/#docker-installation">Docker image</a> with <code>Inkscape</code> for convenience.</li>
-<li>Elsie is tested only on Linux machines, if you find a problem on a
-  different platform, do not hesitate to open a <a href="https://github.com/spirali/elsie/issues/new">GitHub issue</a>.</li>
+<li><em>Elsie</em> provides a rather low-level API. While that means that you can create a slide in almost
+any way you like, you will sometimes have to roll up your sleeves to achieve your desired goal.
+But once you implement it, you can just put it inside a function and reuse it the next time!</li>
+<li><em>Elsie</em> produces PDF slides, so it can only create animations with a single frame per page.
+If you need 60 FPS animations or GIFs in your presentations, this tool is not for you.</li>
+<li><em>Elsie</em> currently renders SVG slides to PDF using <code>Inkscape</code>. Therefore, you must have it
+installed on your system for it to work. We provide a
+<a href="installation/#docker-installation">Docker image</a> with <code>Inkscape</code> for convenience.</li>
+<li><em>Elsie</em> is tested only on Linux. If you find a problem on a different platform, do not hesitate
+to open a <a href="https://github.com/spirali/elsie/issues/new">GitHub issue</a>.</li>
 </ul>
 <h2 id="comparison-to-other-tools">Comparison to other tools<a class="headerlink" href="#comparison-to-other-tools" title="Permanent link">#</a></h2>
 <ul>
-<li>Reveal.js
-TODO</li>
-<li>Google slides/PowerPoint
-TODO</li>
-<li>Beamer
-TODO</li>
+<li>
+<p><strong>Google slides/PowerPoint</strong>
+These tools are fine if you need to make a bunch of very simple slides quickly, but using them
+gets very annoying if you need anything more complex. You need to place all items manually,
+alignment is usually a mess, fragments (animations) are not supported very well. If you need to
+change some small detail (placement, style, color) of a thing that is repeated on many slides, you
+pretty much have to go through all the slides and modify them by hand, one by one. Displaying source
+code with syntax highlighting is notoriously badly supported, so often you have to resort to
+exporting the highlighted code from <a href="https://carbon.sh">carbon.sh</a> or screenshotting it from your
+IDE, both of which are far from ideal. Also, you can't really use source control (e.g. <code>git</code>) to
+version your presentation, which is a shame.</p>
+<p>However, PowerPoint does allow you to create continuous animations (if you do not export to PDF
+of course), so if you need that, it might be a good choice.</p>
+</li>
+<li>
+<p><strong>LaTeX/Beamer</strong>
+LaTeX (Beamer) produces fine-looking presentations, has good support for syntax highlighting and
+can be versioned easily. However, in our experience it is not that easy to create custom diagrams
+and animations using LaTeX, mainly because of its declarative nature. If you can speak in
+<a href="https://www.overleaf.com/learn/latex/TikZ_package">TikZ</a> and you understand the error messages of
+<code>pdflatex</code>, you are probably fine. If not, creating slides with complex animations, diagrams and
+source code snippets might be easier for you in Python.</p>
+<p>While <em>Elsie</em> also has basic support for rendering <a href="userguide/latex/">LaTeX</a>, if your
+presentation is mostly composed of math formulas, it might be easier to create it in LaTeX
+directly.</p>
+</li>
+<li>
+<p><strong>Reveal.js</strong>
+<a href="https://revealjs.com">reveal.js</a> is a great tool for making HTML presentations. It supports syntax
+highlighting, has good-looking animations and can be versioned. However, it shares some disadvantages
+of LaTeX/Beamer, which stems from the fact that it is also declarative. Creating an animation that
+would walk line-by-line through a source code snippet or that would repeatedly display and hide
+objects in custom fragments is difficult. You can actually use JavaScript to create more complex
+animations, but it's not integrated very well, and the library itself does not offer you any API
+to make it easier.</p>
+<p>That being said, if you are fine with declarative description of slides, and you prefer
+HTML/CSS to Python/SVG, I would recommend you to use <code>reveal.js</code>.</p>
+</li>
+<li>
+<p><strong>Prezi</strong>
+If you want presentations with three or more dimensions, it's a good choice. Otherwise, the
+disadvantages of PowerPoint also apply here.</p>
+</li>
 </ul>
+<p>None of the above solutions allow you to build slides using (an imperative) programming language,
+which gives you a number of useful powers. You can split a large presentation into several
+modules/files, parametrize animations or objects that appear often using functions, create
+arbitrarily complex slides and animations or interactively modify the font, aspect ratio or text
+color/size of your whole presentation by changing a single line of code. This is the ultimate
+feature of <em>Elsie</em> that is not available in the other tools.</p>
 <h2 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">#</a></h2>
 <ul>
-<li>Why do you use <code>Inkscape</code> instead of e.g. <code>Cairo</code>?
-TODO</li>
-<li>Why don't you use a known layout model, e.g. <code>flexbox</code>?
-TODO</li>
-<li>Why is there no support for lists in <code>Elsie</code>?
-TODO</li>
+<li>Why do you use <code>Inkscape</code> instead of e.g. <code>Cairo</code> for rendering slides?
+We are experimenting with a <code>Cairo</code> backend, but it would be probably difficult to fully support
+embedding SVG images into slides with Cairo, which is something that we use a lot. But it is
+possible that <em>Elsie</em> will not require <code>Inkscape</code> sometime in the future.</li>
+<li>Why don't you use an existing layout model, e.g. <code>flexbox</code>?
+TODO: ???
+Also, we haven't found a usable binding of a good and standalone layout model in Python. If you
+know of any, please let us know.</li>
+<li>Why is there no built-in support for lists (bullet items etc.) in <code>Elsie</code>?
+Even though a list might sound like a simple feature, it would be difficult to create an abstraction
+that would match everyone's needs. We instead provide an <a href="cookbook/lists/">example function</a> for
+creating a list which you can copy and modify for your use case. This is a general theme of <em>Elsie</em>:
+it provides you with a set of compact building blocks that can be used to build more advanced
+features which can be fully customized to your needs.</li>
 </ul>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">#</a></h2>
+<p><a href="https://github.com/spirali/elsie/blob/master/LICENSE">MIT</a>.</p>
+<p>Created by <a href="https://github.com/spirali">Stanislav Böhm</a> and
+<a href="https://github.com/kobzol">Jakub Beránek</a>.</p>
               
             </div>
           </div>
@@ -279,5 +367,5 @@ TODO</li>
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2020-12-22 18:06:37.236240+00:00
+Build Date UTC : 2020-12-22 18:09:16.837595+00:00
 -->
