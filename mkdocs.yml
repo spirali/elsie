@@ -15,6 +15,7 @@ nav:
   - getting_started.md
   - gallery.md
   - User guide:
+    - userguide/basics.md
     - userguide/layout.md
     - userguide/revealing.md
     - userguide/text.md
