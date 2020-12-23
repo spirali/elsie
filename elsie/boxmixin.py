@@ -420,8 +420,13 @@ class BoxMixin:
             Fragment from which will the image fragments be shown.
             Only applicable if `fragments` is set to True.
         select_steps: List[int]
-            List of fragments from the image that will be displayed.
-            Only applicable if `fragments` is set to True.
+            Select which fragments of the image should be drawn at the given fragments of the
+            slide.
+
+            `select_steps=[1, 3, None, 2]`
+            Would render the first image fragment in the first slide fragment, the third image
+            fragment in the second slide fragment, no image fragment in the third slide fragment
+            and the second image fragment in the fourth slide fragment.
         """
         if filename.endswith(".svg"):
             return self._image_svg(filename, scale, fragments, show_begin, select_steps)
