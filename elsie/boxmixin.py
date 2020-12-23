@@ -488,7 +488,7 @@ class BoxMixin:
         if line_numbers:
             parsed_text = add_line_numbers(parsed_text)
 
-        style = self._get_box().get_style(style)
+        style = self._get_box().get_style(style, full_style=True)
         return self._text_helper(parsed_text, style, scale_to_fit)
 
     def text(self, text, style="default", *, escape_char="~", scale_to_fit=False):
@@ -496,7 +496,7 @@ class BoxMixin:
 
         "style" can be string with the name of style or dict defining the style
         """
-        result_style = self._get_box().get_style(style)
+        result_style = self._get_box().get_style(style, full_style=True)
         parsed_text = parse_text(text, escape_char=escape_char)
         return self._text_helper(parsed_text, result_style, scale_to_fit)
 

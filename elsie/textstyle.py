@@ -175,7 +175,7 @@ class TextStyle:
         return copy
 
 
-def compose_style(styles, style, full_style=True):
+def compose_style(styles, style, full_style):
     if isinstance(style, str):
         style_name = style
         style = styles.get(style_name)

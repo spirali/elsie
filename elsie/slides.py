@@ -101,7 +101,7 @@ class Slides:
         self._styles = self._styles.copy()
         self._styles[style_name] = style
 
-    def get_style(self, style, full_style=True):
+    def get_style(self, style, full_style=False):
         return compose_style(self._styles, style, full_style)
 
     def get_slide_by_name(self, name):

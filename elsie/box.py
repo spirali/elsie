@@ -88,7 +88,7 @@ class Box(BoxMixin):
         self._styles = self._styles.copy()
         self._styles[style_name] = style
 
-    def get_style(self, style, full_style=True):
+    def get_style(self, style, full_style=False):
         return compose_style(self._styles, style, full_style)
 
     def _debug_paint(self, ctx, depth):
