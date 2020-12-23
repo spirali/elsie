@@ -205,3 +205,12 @@ def test_size_and_pos(test_env):
     bb.text("Fill (width='fill(3)')", "inner")
 
     test_env.check("sizepos")
+
+
+def test_sbox_on_text(test_env):
+    slide = test_env.slide
+
+    t = slide.text("Text")
+    t.sbox().text("Sbox")
+
+    test_env.check("sbox_on_text")

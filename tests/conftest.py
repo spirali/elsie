@@ -55,6 +55,7 @@ class SlideTester:
                 for i, unit in enumerate(units):
                     with open("{}-{}.svg".format(expected, i), "w") as f:
                         f.write(unit.get_svg())
+                print(f"Units written at {os.getcwd()}", file=sys.stderr)
 
 
 @pytest.yield_fixture(autouse=True, scope="session")

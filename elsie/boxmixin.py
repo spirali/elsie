@@ -186,7 +186,7 @@ class BoxMixin:
         if the layout is vertical.
 
         sbox means "spread box"."""
-        if self.layout.horizontal:
+        if self._get_box().layout.horizontal:
             kwargs.setdefault("height", "fill")
         else:
             kwargs.setdefault("width", "fill")
