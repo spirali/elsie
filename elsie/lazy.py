@@ -1,28 +1,53 @@
+from typing import Tuple
+
+
 class LazyValue:
+    """
+    Value that will be resolved after layout is computed.
+    """
+
     def __init__(self, fn):
         self.fn = fn
 
-    def map(self, fn):
+    def map(self, fn) -> "LazyValue":
+        """Lazily maps the result of this value."""
         return LazyValue(lambda: fn(self.eval()))
 
-    def add(self, value):
+    def add(self, value: float) -> "LazyValue":
+        """Lazily adds the given number to this value."""
         return self.map(lambda v: v + value)
 
     def eval(self):
+        """Evaluates the actual value."""
         return self.fn()
 
 
 class LazyPoint:
+    """
+    2D point that will be resolved after layout is computed.
+    """
+
     def __init__(self, x, y):
         assert isinstance(x, LazyValue)
         assert isinstance(y, LazyValue)
         self.x = x
         self.y = y
 
-    def add(self, x, y):
+    def add(self, x: float, y: float) -> "LazyPoint":
+        """
+        Creates a new point moved by the given (x, y) offset.
+
+        Parameters
+        ----------
+        x: float
+            x offset
+        y: float
+            y offset
+        """
         return LazyPoint(self.x.map(lambda v: v + x), self.y.map(lambda v: v + y))
 
-    def eval(self):
+    def eval(self) -> Tuple[float, float]:
+        """Evaluates the actual point."""
         return self.x.eval(), self.y.eval()
 
 

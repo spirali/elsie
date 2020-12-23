@@ -12,6 +12,7 @@ from .svg import svg_begin, svg_end
 from .sxml import Xml
 
 
+# TODO: document
 class Slide:
     def __init__(
         self,

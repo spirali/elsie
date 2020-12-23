@@ -82,6 +82,7 @@ class TextBoxItem(BoxItem):
                 layout.ensure_height(height)
         self._text_size = (width, height)
 
+    # TODO: document
     def line_box(self, index, n_lines=1, **kwargs):
         def compute_y():
             text_lines = number_of_lines(self._parsed_text)
@@ -100,6 +101,7 @@ class TextBoxItem(BoxItem):
         kwargs.setdefault("height", LazyValue(compute_height))
         return self._box.box(**kwargs)
 
+    # TODO: document
     def inline_box(self, style_name, n_th=1, **box_args):
         """ Create a box around a styled text """
         assert n_th > 0

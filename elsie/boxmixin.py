@@ -1,6 +1,7 @@
 import base64
 import io
 import logging
+from typing import List, TYPE_CHECKING
 
 import lxml.etree as et
 from PIL import Image
@@ -23,6 +24,9 @@ from .textparser import parse_text, add_line_numbers
 from .textparser import tokens_merge, tokens_to_text_without_style
 from .ora import convert_ora_to_svg
 
+if TYPE_CHECKING:
+    from . import arrow, lazy
+
 
 def scaler(rect, image_width, image_height):
     scale_x = rect.width / image_width
@@ -38,81 +42,92 @@ def scaler(rect, image_width, image_height):
 
 
 class BoxMixin:
+    """This mixin contains the most important methods of box-like elements (boxes and box
+    items).
+    """
+
     def _get_box(self):
         raise NotImplementedError
 
     def box(
         self,
-        x=None,
-        y=None,
-        width=None,
-        height=None,
+        x: float = None,
+        y: float = None,
+        width: float = None,
+        height: float = None,
         *,
-        show=None,
-        p_left=None,  # padding left
-        p_right=None,  # padding right
-        p_top=None,  # padding top
-        p_bottom=None,  # padding bottom
-        p_x=None,  # horizontal padding (sets p_left & p_right)
-        p_y=None,  # vertical padding (sets p_top & p_bottom)
-        padding=None,  # sets the same padding to all directions
+        show: str = None,
+        p_left: float = None,
+        p_right: float = None,
+        p_top: float = None,
+        p_bottom: float = None,
+        p_x: float = None,
+        p_y: float = None,
+        padding: float = None,
         horizontal=False,
-        z_level=None,
+        z_level: int = None,
         prepend=False,
-        above=None,
-        below=None,
-        name=None,
-    ):
-        """Create a new child box
+        above: "BoxMixin" = None,
+        below: "BoxMixin" = None,
+        name: str = None,
+    ) -> "BoxMixin":
+        """
+        Creates a new child box.
 
-        Position:
-
-            * x - Set X position of the new box
-            * y - Set Y position of the new box
+        Parameters
+        ----------
+        x: float
+            X position of the box.
+        y: float
+            Y position of the box.
 
             Possible values: None, number, "NN", "NN%", "[NN%]", or a dynamic coordinate,
             where NN is a number.
-
-        Size:
-
-            * width - Set the width of the new box
-            * height - Set the height of the new box
+        width: float
+            Width of the box.
+        height: float
+            Height of the box.
 
             Possible values: None, number, "NN", "NN%", "fill", "fill(NN)".
 
-        Fragments:
-
-            * show - Set in which fragment should be box and its content visible
+        show: str
+            Fragment selector that decides in which fragments should the box be visible.
 
             Possible values: None, a number, "XX-XX", "XX+" where XX is a number, "next" or "last"
-
-        Padding:
-
-            * p_left - Set left padding of the box
-            * p_right - Set right padding of the box
-            * p_top - Set top padding of the box
-            * p_bottom - Set bottom of the box
-
-            * p_x - Sets p_left and p_right
-            * p_y - Sets p_top and p_bottom
-
-            * padding - Sets p_left, p_right, p_top, and p_bottom
-
-        Others:
-
-            * horizontal - If True, child default position is horizontal, otherwise vertical
-            * z_level - Modifies when the box is painted. If None, the parent z_level is taken.
-                        z_level of the top-level box is 0.
-                        If z_level is X then all boxes with *lower*
-                        z_level than X is painted before this box.
-            * prepend - If True, the new box is inserted as the first child of the parent.
-                        Otherwise it is inserted as the last one
-            * above   - Argument has to be a child of the parent box.
-                        The new box is put right after this child.
-            * below   - Argument has to be a child of the parent box.
-                        The new box is put right before this child.
-            * name    - Set name of the new box for the debugging purposes
-
+        p_left: float
+            Left padding of the box.
+        p_right: float
+            Right padding of the box.
+        p_top: float
+            Top padding of the box.
+        p_bottom: float
+            Bottom padding of the box.
+        p_x: float
+            Sets both left and right padding of the box.
+        p_y: float
+            Sets both top and bottom padding of the box.
+        padding: float
+            Sets all four padding values of the box (left, right, top, bottom):
+        horizontal: bool
+            If True, use horizontal layout: children will be placed in a row.
+            If False, use vertical layout (the default): children will be placed in a column.
+        z_level: int
+            Sets the Z-level of the box.
+                If None, the parent z_level will be used.
+                z_level of the top-level box is 0.
+                If z_level is X then all boxes with a *smaller* z_level than X is painted before
+                this box.
+        prepend: bool
+            If True, the new box is inserted as the first child of its parent.
+            Otherwise it is inserted as the last child.
+        above: Box
+            The new box will be inserted into its parent right after the passed box.
+            The passed box has to be a child of the parent box.
+        below: Box
+            The new box will be inserted into its parent right before the passed box.
+            The passed box has to be a child of the parent box.
+        name: str
+            Name of the box (used for debugging purposes).
         """
         box = self._get_box()
         layout = box.layout.add(
@@ -141,23 +156,32 @@ class BoxMixin:
         box.add_child(new_box, prepend, above, below)
         return new_box
 
-    def overlay(self, **kwargs):
-        """ Alias over 'box()' that creates a fixed box over the box """
+    def overlay(self, **kwargs) -> "BoxMixin":
+        """
+        Shortcut for `box(x=0, y=0, width="100%", height="100%")`.
+
+        The resulting box will overlay the whole area of the current box."""
         kwargs.setdefault("x", 0)
         kwargs.setdefault("y", 0)
         kwargs.setdefault("width", "100%")
         kwargs.setdefault("height", "100%")
         return self.box(**kwargs)
 
-    def fbox(self, **kwargs):
-        """ Alias over 'box()' that sets width and height to "fill" """
+    def fbox(self, **kwargs) -> "BoxMixin":
+        """
+        Shortcut for `box(width="fill", height="fill")`.
+
+        fbox means "fill box"."""
         kwargs.setdefault("width", "fill")
         kwargs.setdefault("height", "fill")
         return self.box(**kwargs)
 
-    def sbox(self, **kwargs):
-        """/Spread box/ - Alias over 'box()' that sets width/height to "fill"
-        if vertical/horizontal"""
+    def sbox(self, **kwargs) -> "BoxMixin":
+        """
+        Shortcut for `box(height="fill")` if the layout is horizontal or `box(width="fill")`
+        if the layout is vertical.
+
+        sbox means "spread box"."""
         if self.layout.horizontal:
             kwargs.setdefault("height", "fill")
         else:
@@ -172,8 +196,25 @@ class BoxMixin:
         stroke_dasharray=None,
         rx=None,
         ry=None,
-    ):
-        """ Draw a rect around the box """
+    ) -> "BoxMixin":
+        """
+        Draws a rectangle around the box.
+
+        Parameters
+        ----------
+        color: str
+            Color of the rectangle edge.
+        bg_color: str
+            Color of the rectangle background.
+        stroke_width: float
+            Width of the rectangle edge.
+        stroke_dasharray: str
+            SVG dash effect of the rectangle edge.
+        rx: float
+            x-axis radius of the rectangle. Use it if you want rounded corners.
+        ry: float
+            x-axis radius of the rectangle. Use it if you want rounded corners.
+        """
 
         def draw(ctx):
             rect = self._get_box().layout.rect
@@ -193,9 +234,30 @@ class BoxMixin:
         return self._create_simple_box_item(draw)
 
     def polygon(
-        self, points, color=None, bg_color=None, stroke_width=1, stroke_dasharray=None
-    ):
-        """ Draw a polygon """
+        self,
+        points,
+        color: str = None,
+        bg_color: str = None,
+        stroke_width=1,
+        stroke_dasharray: str = None,
+    ) -> "BoxMixin":
+        """
+        Draws a polygon.
+
+        Parameters
+        ----------
+        points: List[(float, float) | value.LazyPoint]
+            Points of the polygons.
+            Each point can be either a tuple with (x, y) coordinates or a `value.LazyPoint`.
+        color: str
+            Color of the edge of the polygon.
+        bg_color: str
+            Color of the background of the polygon.
+        stroke_width: float
+            Width of the edge of the polygon.
+        stroke_dasharray: str
+            SVG dash effect of the edge of the polygon.
+        """
 
         def draw(ctx):
             xml = ctx.xml
@@ -216,14 +278,32 @@ class BoxMixin:
         self,
         commands,
         color="black",
-        bg_color=None,
+        bg_color: str = None,
         stroke_width=1,
-        stroke_dasharray=None,
-        end_arrow=None,
-    ):
+        stroke_dasharray: str = None,
+        end_arrow: "arrow.Arrow" = None,
+    ) -> "BoxMixin":
+        """
+        Draws a SVG path.
+
+        Parameters
+        ----------
+        commands: List[str]
+            SVG draw commands.
+        color: str
+            Color of the path.
+        bg_color: str
+            Background color of the path.
+        stroke_width: float
+            Width of the path.
+        stroke_dasharray: str
+            SVG dash effect of the path.
+        end_arrow: "arrow.Arrow"
+            End arrow of the path.
+        """
         commands = check_and_unpack_path_commands(commands, self)
         if not commands:
-            return
+            return self
 
         def command_to_str(command):
             name, pairs = command
@@ -252,11 +332,28 @@ class BoxMixin:
         points,
         color="black",
         stroke_width=1,
-        stroke_dasharray=None,
-        start_arrow=None,
-        end_arrow=None,
-    ):
-        """ Draw a line """
+        stroke_dasharray: str = None,
+        start_arrow: "arrow.Arrow" = None,
+        end_arrow: "arrow.Arrow" = None,
+    ) -> "BoxMixin":
+        """
+        Draws a line.
+
+        Parameters
+        ----------
+        points: List[(float, float) | "value.LazyPoint"]
+            List of at least two points.
+        color: str
+            Color of the line.
+        stroke_width: float
+            Width of the lne.
+        stroke_dasharray: str
+            SVG dash effect of the lne.
+        start_arrow: "arrow.Arrow"
+            Start arrow of the line.
+        end_arrow: "arrow.Arrow"
+            End arrow of the line.
+        """
 
         def draw(ctx):
             p = [eval_pair(p) for p in points]
@@ -299,9 +396,33 @@ class BoxMixin:
         ctx.xml.close()
 
     def image(
-        self, filename, scale=None, fragments=True, show_begin=1, select_steps=None
-    ):
-        """ Draw an svg/png/jpeg image, detect by extension """
+        self,
+        filename: str,
+        scale: float = None,
+        fragments=True,
+        show_begin=1,
+        select_steps: List[int] = None,
+    ) -> "BoxMixin":
+        """Draws an SVG/PNG/JPEG/ORA image, detected by the extension of the `filename`.
+
+        Parameters
+        ----------
+        filename: str
+            Filename of the image.
+        scale: float
+            Scale of the resulting image.
+            < 1.0 -> Smaller size.
+            = 1.0 -> Original size.
+            > 1.0 -> Larger size.
+        fragments: bool
+            Load fragments from the image (only applicable for SVG and ORA images).
+        show_begin: int
+            Fragment from which will the image fragments be shown.
+            Only applicable if `fragments` is set to True.
+        select_steps: List[int]
+            List of fragments from the image that will be displayed.
+            Only applicable if `fragments` is set to True.
+        """
         if filename.endswith(".svg"):
             return self._image_svg(filename, scale, fragments, show_begin, select_steps)
         elif filename.endswith(".ora"):
@@ -374,7 +495,12 @@ class BoxMixin:
         return self._image_svg(filename, scale, fragments, show_begin, select_steps)
 
     def _image_svg(
-        self, filename, scale=None, fragments=True, show_begin=1, select_steps=None
+        self,
+        filename: str,
+        scale: float = None,
+        fragments=True,
+        show_begin=1,
+        select_steps: List[int] = None,
     ):
         """ Draw an svg image """
 
@@ -447,8 +573,8 @@ class BoxMixin:
 
     def code(
         self,
-        language,
-        text,
+        language: str,
+        text: str,
         *,
         tabsize=4,
         line_numbers=False,
@@ -456,9 +582,29 @@ class BoxMixin:
         use_styles=False,
         escape_char="~",
         scale_to_fit=False,
-    ):
-        """ Draw a code with syntax highlighting """
+    ) -> "BoxMixin":
+        """
+        Draws a code snippet with syntax highlighting.
 
+        Parameters
+        ----------
+        language: str
+            Language used for syntax highlighting.
+        text: str
+            Content of the code snippet.
+        tabsize: int
+            Number of spaces generated by tab characeters.
+        line_numbers: bool
+            If True, line numbers will be drawn in the code snippet.
+        style: str
+            Name of style used for drawing the code snippet.
+        use_styles: bool
+            If True, inline styles will be evaluated in the code snippet.
+        escape_char: str
+            Escape character for creating inline styles in the code snippet.
+        scale_to_fit: bool
+            If True, scales the code snippet to fit its parent box.
+        """
         text = text.replace("\t", " " * tabsize)
 
         if language:
@@ -491,10 +637,23 @@ class BoxMixin:
         style = self._get_box().get_style(style, full_style=True)
         return self._text_helper(parsed_text, style, scale_to_fit)
 
-    def text(self, text, style="default", *, escape_char="~", scale_to_fit=False):
-        """Draw a text
+    def text(
+        self, text: str, style="default", *, escape_char="~", scale_to_fit=False
+    ) -> "BoxMixin":
+        """
+        Draws text.
 
-        "style" can be string with the name of style or dict defining the style
+        Parameters
+        ----------
+        text: str
+            Text content that will be drawn.
+        style: str | `textstyle.TextStyle`
+            Name of a style or an instance of `textstyle.TextStyle` that will be used to style the
+            text.
+        escape_char: str
+            Escape character for creating inline styles in the text.
+        scale_to_fit:
+            If True, scales the text to fit its parent box.
         """
         result_style = self._get_box().get_style(style, full_style=True)
         parsed_text = parse_text(text, escape_char=escape_char)
@@ -506,8 +665,25 @@ class BoxMixin:
         box.add_child(item)
         return item
 
-    def latex(self, text, scale=1.0, header=None, tail=None):
-        """ Renders LaTeX text into box. """
+    def latex(
+        self, text: str, scale=1.0, header: str = None, tail: str = None
+    ) -> "BoxMixin":
+        """
+        Renders LaTeX.
+
+        Parameters
+        ----------
+        text: str
+            Source code of the LaTeX snippet.
+        scale: float
+            Scale of the rendered output.
+        header: str
+            Prelude of the LaTeX source (for example package imports).
+            Will be included at the beginning of the source code.
+        tail: str
+            End of the LaTeX source (for example end the document).
+            Will be included at the end of the source code.
+        """
 
         if header is None:
             header = """
@@ -541,20 +717,20 @@ class BoxMixin:
 
         return self._create_simple_box_item(draw)
 
-    def x(self, value):
-        """ Create position on x-axis relative to the box """
+    def x(self, value) -> lazy.LazyValue:
+        """Create a lazy value relative to the left edge of the box."""
         return self._get_box().layout.x(value)
 
-    def y(self, value):
-        """ Create position on y-axis relative to the box """
+    def y(self, value) -> lazy.LazyValue:
+        """Create a lazy value relative to the top edge of the box."""
         return self._get_box().layout.y(value)
 
-    def p(self, x, y):
-        """ Create a point relative to the box """
+    def p(self, x, y) -> lazy.LazyPoint:
+        """Create a lazy point relative to the top-left corner of the box."""
         return self._get_box().layout.point(x, y)
 
-    def mid_point(self):
-        """ Create a point in the center of the box """
+    def mid_point(self) -> lazy.LazyPoint:
+        """Create a lazy point that resolves to the center of the box."""
         return self.p("50%", "50%")
 
 

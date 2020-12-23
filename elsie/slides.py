@@ -14,6 +14,7 @@ from .version import VERSION
 from .cache import FsCache
 
 
+# TODO: document
 class Slides:
     def __init__(
         self,

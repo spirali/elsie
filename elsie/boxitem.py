@@ -2,6 +2,13 @@ from .boxmixin import BoxMixin
 
 
 class BoxItem(BoxMixin):
+    """
+    Leaf child of the box layout hierarchy.
+
+    When you call a method from `BoxMixin` that creates a new box (like text, image, etc.), it will
+    add the new box to the parent of the box item.
+    """
+
     def __init__(self, box):
         self._box = box
         self.z_level = box.z_level

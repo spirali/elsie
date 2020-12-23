@@ -201,17 +201,17 @@ class Layout:
         self._height = self._height.ensure(height + self.p_top + self.p_bottom)
 
     def x(self, value):
-        """ Create position on x-axis relative to the box """
+        """Creates position on x-axis relative to the box."""
         value = PosValue.parse(value)
         return LazyValue(lambda: value.compute(self.rect.x, self.rect.width, 0))
 
     def y(self, value):
-        """ Create position on y-axis relative to the box """
+        """Creates position on y-axis relative to the box."""
         value = PosValue.parse(value)
         return LazyValue(lambda: value.compute(self.rect.y, self.rect.height, 0))
 
     def point(self, x, y):
-        """ Create a point relative to the box """
+        """Creates a point relative to the box."""
         return LazyPoint(self.x(x), self.y(y))
 
     def set_image_size_request(self, image_width, image_height):
