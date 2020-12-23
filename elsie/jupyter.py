@@ -1,6 +1,6 @@
 import uuid
 
-from .slidecls import Slide
+from .slide import Slide
 
 
 def get_javascript(max_step: int, slide_id: str) -> str:
