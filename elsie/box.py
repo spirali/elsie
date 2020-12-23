@@ -5,7 +5,7 @@ from .draw import set_paint_style
 from .textstyle import TextStyle, compose_style
 
 if TYPE_CHECKING:
-    from . import slidecls, layout, show
+    from . import slide, layout, show
 
 
 class Box(BoxMixin):
@@ -17,7 +17,7 @@ class Box(BoxMixin):
 
     def __init__(
         self,
-        slide: "slidecls.Slide",
+        slide: "slide.Slide",
         layout: "layout.Layout",
         styles,
         show_info: "show.ShowInfo",
@@ -27,7 +27,7 @@ class Box(BoxMixin):
         """
         Parameters
         ----------
-        slide: slidecls.Slide
+        slide: slide.Slide
             Slide that contains this box.
         layout: layout.Layout
             Layout of the box (vertical/horizontal).

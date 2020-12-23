@@ -8,7 +8,7 @@ from .jupyter import is_inside_notebook
 from .pdfmerge import get_pdf_merger_by_name
 from .query import compute_query
 from .render import per_page_groupping
-from .slidecls import Slide, ExternPdfSlide
+from .slide import Slide, ExternPdfSlide
 from .inkscape import InkscapeShell
 from .textstyle import TextStyle, compose_style
 from .version import VERSION

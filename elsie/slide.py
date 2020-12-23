@@ -1,5 +1,3 @@
-# The file is not named "slide.py" because of class of "slide" import in __init__.py
-
 import os.path
 from typing import TYPE_CHECKING
 
