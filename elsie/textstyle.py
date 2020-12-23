@@ -44,7 +44,7 @@ def _check_choice(name, value, choices):
         )
     return value
 
-
+# TODO: document
 class TextStyle:
 
     ALIGN_VALUES = (None, "left", "middle", "right")

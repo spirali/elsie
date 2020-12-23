@@ -1,19 +1,43 @@
+from typing import TYPE_CHECKING
+
 from .boxmixin import BoxMixin
 from .draw import set_paint_style
 from .textstyle import TextStyle, compose_style
 
+if TYPE_CHECKING:
+    from . import slidecls, layout, show
+
 
 class Box(BoxMixin):
+    """
+    Box is the main layout element of Elsie.
+
+    Its most useful methods actually come from `BoxMixin`.
+    """
+
     def __init__(
         self,
-        slide,
-        layout,
+        slide: "slidecls.Slide",
+        layout: "layout.Layout",
         styles,
-        show_info,
+        show_info: "show.ShowInfo",
         z_level=0,
-        name=None,
+        name: str = None,
     ):
-
+        """
+        Parameters
+        ----------
+        slide: slidecls.Slide
+            Slide that contains this box.
+        layout: layout.Layout
+            Layout of the box (vertical/horizontal).
+        name: str
+            Name of the box (useful for debugging and name policy).
+        show_info: show.ShowInfo
+            Contains information about fragments in which the box should be shown.
+        z_level: int
+            Z-level of the box (useful for changing render order).
+        """
         self.slide = slide
         self.layout = layout
         self.name = name
@@ -31,8 +55,7 @@ class Box(BoxMixin):
         return self.slide.current_step()
 
     def add_child(self, obj, prepend=False, above=None, below=None):
-        """Semi-internal function, you can add your child if you know
-        what you are doing."""
+        """Semi-internal function, you can add your child if you know what you are doing."""
         assert isinstance(obj, Box) or isinstance(obj, BoxItem)
 
         if above is not None and below is not None:
@@ -71,14 +94,16 @@ class Box(BoxMixin):
             )
         return painters
 
-    def update_style(self, style_name, style):
+    def update_style(self, style_name: str, style: TextStyle):
+        """Updates the style associated with the given name."""
         assert isinstance(style_name, str)
         old_style = self.get_style(style_name, full_style=False)
         old_style.update(style)
         self._styles = self._styles.copy()
         self._styles[style_name] = old_style
 
-    def set_style(self, style_name, style, base="default"):
+    def set_style(self, style_name: str, style: TextStyle, base="default"):
+        """Assigns the style to the given name."""
         assert isinstance(style_name, str)
         assert isinstance(style, TextStyle)
         if base != "default":
@@ -88,7 +113,8 @@ class Box(BoxMixin):
         self._styles = self._styles.copy()
         self._styles[style_name] = style
 
-    def get_style(self, style, full_style=False):
+    def get_style(self, style: str, full_style=False):
+        """Returns a style associated with the given name."""
         return compose_style(self._styles, style, full_style)
 
     def _debug_paint(self, ctx, depth):

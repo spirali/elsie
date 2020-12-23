@@ -4,6 +4,26 @@ from .geom import segment_delta, segment_resize
 
 
 class Arrow:
+    """
+    Represents an SVG arrow head.
+
+    Can be attached to the start or end points of lines.
+
+    Attributes
+    ----------
+    size : float
+        Size of the arrow head in pixels.
+    angle : float
+        Angle of the arrow head.
+    stroke_width : float
+        Width of the arrow head edge.
+    inner : float
+        Shape of the arrow head.
+        < 1.0 -> Sharper arrow.
+        = 1.0 -> Normal arrow.
+        > 1.0 -> Diamond shape arrow.
+    """
+
     def __init__(self, size=10, angle=40, stroke_width=None, inner=None):
         self.size = size
         self.angle = angle * math.pi / 180
