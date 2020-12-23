@@ -164,7 +164,7 @@
 By default, it will create a box item that will draw the specified text in the middle of the box:</p>
 <pre><code class="language-python">slide.box().text(&quot;Hello world!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-69c96c4de93146acbc386cb7ee7ab233">
+<div class="elsie-wrapper elsie-wrapper-7f0d0135fbef47c18192236d0c4e661f">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='200' height='200'><rect x='0' y='0' width='200' height='200' style='fill:none;stroke:black;stroke-width:1' /><text x='100.0' y='111.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text></svg></div>
 </div>
@@ -216,7 +216,7 @@ from its parent style (see below).</p>
 <p>You can pass a text style as a second argument to the <code>text</code> method:</p>
 <pre><code class="language-python">slide.text(&quot;Hello world!&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-7e650517caca4da29265eed656edf4f8">
+<div class="elsie-wrapper elsie-wrapper-10ddfffa06b74c9bb95b84a4db787a2e">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='150'><rect x='0' y='0' width='400' height='150' style='fill:none;stroke:black;stroke-width:1' /><text x='200.0' y='103.0' text-anchor='middle' font-family='sans-serif' font-size='70' style='fill:red;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text></svg></div>
 </div>
@@ -251,7 +251,7 @@ slides.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&q
 slide = slides.new_slide(name=&quot;slide1&quot;)
 slide.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-51c8c4f9d7fa46a4b568881964d12846">
+<div class="elsie-wrapper elsie-wrapper-2155a5e469c349abbd071ee0b396787b">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='150'><text x='200.0' y='103.0' text-anchor='middle' font-family='sans-serif' font-size='70' style='fill:red;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text></svg></div>
 </div>
@@ -278,7 +278,7 @@ slide.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 box.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 box.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-ae695ec686154e088f6acecc1ca883f1">
+<div class="elsie-wrapper elsie-wrapper-8f43cbf321e54174aeb7566bf3a79f15">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='150'><rect x='0' y='0' width='400' height='150' style='fill:none;stroke:black;stroke-width:1' /><text x='200.0' y='103.0' text-anchor='middle' font-family='sans-serif' font-size='70' style='fill:red;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text></svg></div>
 </div>
@@ -321,7 +321,7 @@ slides.set_style(&quot;default&quot;, default_style)
 slide = slides.new_slide(&quot;slide&quot;)
 slide.text(&quot;Hello world!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-c060dc791480494788a04507f37f7368">
+<div class="elsie-wrapper elsie-wrapper-ac0520459fcb41daa67962c63a7f0822">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><text x='150.0' y='161.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:orange;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text></svg></div>
 </div>
@@ -364,7 +364,7 @@ the <code>text</code> method. To do this, wrap a section of text that you want t
 <pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
 slide.text(&quot;Normal text ~red{red text} ~tt{Typewriter text}&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-5b5f3ebaee4a44ab82202332fb8099a6">
+<div class="elsie-wrapper elsie-wrapper-3a2cc7941f34458ca06046eda71678e9">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='600' height='200'><rect x='0' y='0' width='600' height='200' style='fill:none;stroke:black;stroke-width:1' /><text x='300.0' y='111.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Normal&#160;text&#160;<tspan xml:space='preserve' style='fill:red;'>red&#160;text</tspan>&#160;<tspan xml:space='preserve' font-family='monospace'>Typewriter&#160;text</tspan></tspan></text></svg></div>
 </div>
@@ -389,7 +389,7 @@ slide.text(&quot;Normal text ~red{red text} ~tt{Typewriter text}&quot;)
 <pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
 slide.text(&quot;~red{text1 ~tt{text2}}&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-d5d838ba548d4051881853f770e4559a">
+<div class="elsie-wrapper elsie-wrapper-a8562db44520421b9f2d8582330dac6a">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='200'><rect x='0' y='0' width='300' height='200' style='fill:none;stroke:black;stroke-width:1' /><text x='150.0' y='111.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'><tspan xml:space='preserve' style='fill:red;'>text1&#160;<tspan xml:space='preserve' font-family='monospace'>text2</tspan></tspan></tspan></text></svg></div>
 </div>
@@ -421,7 +421,7 @@ box.</p>
 <pre><code class="language-python">slide.box(width=200, height=80).text(&quot;Hello world!&quot;, scale_to_fit=True)
 slide.box(width=80, height=200).text(&quot;Hello world!&quot;, scale_to_fit=True)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-796300b4dba847d0ab766ff4abca4db6">
+<div class="elsie-wrapper elsie-wrapper-94ae86883fa140198daa769671707116">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><text x='120.90375000000002' y='51.50125' transform='scale(1.2406563071865016)' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text><rect x='50.0' y='10.0' width='200' height='80' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='50.0' y='22.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;[200.00,80.00]</tspan></text><text x='302.25937500000003' y='394.0618750000001' transform='scale(0.4962625228746006)' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello&#160;world!</tspan></text><rect x='110.0' y='90.0' width='80' height='200' style='fill:none;stroke:#ff00ff;stroke-width:2;stroke-dasharray:4 2' /><text x='110.0' y='102.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↖&#160;[80.00,200.00]</tspan></text><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:#ff00ff;stroke-width:2' /><text x='0' y='298.6' style='fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;'><tspan>↙&#160;[300.00,300.00]</tspan></text></svg></div>
 </div>
