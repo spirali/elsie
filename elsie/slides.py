@@ -362,7 +362,7 @@ class Slides:
         save_cache=True,
         select_slides: List[Slide] = None,
         slides_per_page: Tuple[int, int] = None,
-    ) -> "Union[None, List[RenderUnit]]":
+    ) -> "Union[None, List[RenderUnit], List[str]]":
         """
         Renders the presentation into a PDF file.
 
@@ -374,21 +374,35 @@ class Slides:
             If True, this function will return a list of (either SVG or PDF) render units.
             In this case the presentation will not be rendered into the `output` file.
         export_type: str
-            TODO
+            Output format of slides; it supports all formats supported by Inkscape export 
+            (e.g. "pdf", "png", etc.)
+            If export_type is "pdf" then it is merged into one
+            final PDF file defined by parameter `output`. 
+            For other formats, ``output`` is ignored and returns a list of filenames
+            with exported files. The files are placed into cache directory and could be
+            removed by another call of render with ``prune_cache=True``.
         pdf_merger: {"pypdf", "pdfunite"}
-            Method used to merge PDFs together.
+            Method used to merge PDFs together. It is used when export_type is "pdf".
         slide_postprocessing: Callable[[List[Box]], ...]
             This function will be called just before the slides are rendered.
             It will be passed a list of root boxes, one for each slide.
-        prune_cache: bool
-            TODO
-        save_cache: bool
-            TODO
         select_slides: List[Slide]
-            List of slides to be rendered.
+            List of slides to be rendered. If None then all slides are rendered.
         slides_per_page: Tuple[int, int]
             Must be a 2-element tuple (R, C) of integers.
             Renders a grid of (R, C) slides per each page.
+            If not defined then each slide is rendered on one page.
+
+        Other Parameters
+        ----------------
+
+        prune_cache: bool
+            When True then after a successful render, the the method removes
+            from cache directory all data that was not used for this render.
+            Otherwise unused data is not touched.
+
+        save_cache: bool
+            When True, then the query cache is updated when all queries are computed. 
         """
         if select_slides is None:
             select_slides = self._slides
