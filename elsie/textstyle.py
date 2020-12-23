@@ -44,6 +44,7 @@ def _check_choice(name, value, choices):
         )
     return value
 
+
 # TODO: document
 class TextStyle:
 
