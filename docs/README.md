@@ -117,20 +117,21 @@ color/size of your whole presentation by changing a single line of code. This is
 feature of *Elsie* that is not available in the other tools.
 
 ## FAQ
-- Why do you use `Inkscape` instead of e.g. `Cairo` for rendering slides?
+- **Why do you use `Inkscape` instead of e.g. `Cairo` for rendering slides?**
 We are experimenting with a `Cairo` backend, but it would be probably difficult to fully support
 embedding SVG images into slides with Cairo, which is something that we use a lot. But it is
 possible that *Elsie* will not require `Inkscape` sometime in the future.
-- Why don't you use an existing layout model, e.g. `flexbox`?
-TODO: ???
-Also, we haven't found a usable binding of a good and standalone layout model in Python. If you
-know of any, please let us know.
-- Why is there no built-in support for lists (bullet items etc.) in `Elsie`?
+- **Why don't you use an existing layout model, e.g. `flexbox`?**
+We made the [layout model](userguide/layout.md) tailored for presentations, which might not be
+so easy with a general layout model. But honestly, we also haven't found any usable binding of
+a standalone and sane layout model in Python. If you know of any, please
+[let us know](https://github.com/spirali/elsie/issues).
+- **Why is there no built-in support for lists (bullet items etc.) in `Elsie`?**
 Even though a list might sound like a simple feature, it would be difficult to create an abstraction
-that would match everyone's needs. We instead provide an [example function](cookbook/lists.md) for
-creating a list which you can copy and modify for your use case. This is a general theme of *Elsie*:
-it provides you with a set of compact building blocks that can be used to build more advanced
-features which can be fully customized to your needs.
+that would match everyone's needs. The general theme of *Elsie* is to provide a set of compact
+building blocks that can be used to build more advanced features that can be fully customized to
+your needs. [Here](cookbook/lists.md) you can find an example function for creating list items
+which you can copy and modify for your use case. 
 
 ## License
 [MIT](https://github.com/spirali/elsie/blob/master/LICENSE).
