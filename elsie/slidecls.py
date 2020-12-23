@@ -9,7 +9,6 @@ from .rcontext import RenderingContext
 from .render import SvgRenderUnit, PdfRenderUnit
 from .show import ShowInfo
 from .svg import svg_begin, svg_end
-from .inkscape import export_by_inkscape
 from .sxml import Xml
 
 

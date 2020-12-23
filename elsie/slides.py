@@ -8,9 +8,7 @@ from .pdfmerge import get_pdf_merger_by_name
 from .query import compute_query
 from .render import per_page_groupping
 from .slidecls import Slide, ExternPdfSlide
-from .inkscape import InkscapeShell, export_by_inkscape
-from .svg import svg_begin, svg_end
-from .sxml import Xml
+from .inkscape import InkscapeShell
 from .textstyle import TextStyle, compose_style
 from .version import VERSION
 from .cache import FsCache
