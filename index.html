@@ -178,7 +178,7 @@ def hello_world(slide):
 
 slides.render(&quot;slides.pdf&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-a5de76378abc4a49a2825b3b9be6259d">
+<div class="elsie-wrapper elsie-wrapper-01d02945c1614e3dadd0673589c90bc2">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><text x='150.0' y='131.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello&#160;from</tspan></text><rect x='70.0' y='156.79999999999998' width='40' height='40' style='fill:black;stroke:black;stroke-width:1' /><text x='90.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>2</tspan></text><rect x='110.0' y='156.79999999999998' width='40' height='40' style='fill:white;stroke:black;stroke-width:1' /><text x='130.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>0</tspan></text><rect x='150.0' y='156.79999999999998' width='40' height='40' style='fill:black;stroke:black;stroke-width:1' /><text x='170.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>2</tspan></text><rect x='190.0' y='156.79999999999998' width='40' height='40' style='fill:white;stroke:black;stroke-width:1' /><text x='210.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>0</tspan></text></svg></div>
 </div>
@@ -294,20 +294,21 @@ color/size of your whole presentation by changing a single line of code. This is
 feature of <em>Elsie</em> that is not available in the other tools.</p>
 <h2 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">#</a></h2>
 <ul>
-<li>Why do you use <code>Inkscape</code> instead of e.g. <code>Cairo</code> for rendering slides?
+<li><strong>Why do you use <code>Inkscape</code> instead of e.g. <code>Cairo</code> for rendering slides?</strong>
 We are experimenting with a <code>Cairo</code> backend, but it would be probably difficult to fully support
 embedding SVG images into slides with Cairo, which is something that we use a lot. But it is
 possible that <em>Elsie</em> will not require <code>Inkscape</code> sometime in the future.</li>
-<li>Why don't you use an existing layout model, e.g. <code>flexbox</code>?
-TODO: ???
-Also, we haven't found a usable binding of a good and standalone layout model in Python. If you
-know of any, please let us know.</li>
-<li>Why is there no built-in support for lists (bullet items etc.) in <code>Elsie</code>?
+<li><strong>Why don't you use an existing layout model, e.g. <code>flexbox</code>?</strong>
+We made the <a href="userguide/layout/">layout model</a> tailored for presentations, which might not be
+so easy with a general layout model. But honestly, we also haven't found any usable binding of
+a standalone and sane layout model in Python. If you know of any, please
+<a href="https://github.com/spirali/elsie/issues">let us know</a>.</li>
+<li><strong>Why is there no built-in support for lists (bullet items etc.) in <code>Elsie</code>?</strong>
 Even though a list might sound like a simple feature, it would be difficult to create an abstraction
-that would match everyone's needs. We instead provide an <a href="cookbook/lists/">example function</a> for
-creating a list which you can copy and modify for your use case. This is a general theme of <em>Elsie</em>:
-it provides you with a set of compact building blocks that can be used to build more advanced
-features which can be fully customized to your needs.</li>
+that would match everyone's needs. The general theme of <em>Elsie</em> is to provide a set of compact
+building blocks that can be used to build more advanced features that can be fully customized to
+your needs. <a href="cookbook/lists/">Here</a> you can find an example function for creating list items
+which you can copy and modify for your use case. </li>
 </ul>
 <h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">#</a></h2>
 <p><a href="https://github.com/spirali/elsie/blob/master/LICENSE">MIT</a>.</p>
@@ -367,5 +368,5 @@ features which can be fully customized to your needs.</li>
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2020-12-22 18:14:14.284014+00:00
+Build Date UTC : 2020-12-23 09:24:15.136384+00:00
 -->
