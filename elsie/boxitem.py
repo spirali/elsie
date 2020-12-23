@@ -5,8 +5,8 @@ class BoxItem(BoxMixin):
     """
     Leaf child of the box layout hierarchy.
 
-    When you call a method from `BoxMixin` that creates a new box (like text, image, etc.), it will
-    add the new box to the parent of the box item.
+    When you call a method from `BoxMixin` that creates a new box or a box item (like text, image,
+    etc.), it will be added to the parent of the box item.
     """
 
     def __init__(self, box):

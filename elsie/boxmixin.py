@@ -1,13 +1,12 @@
 import base64
 import io
 import logging
-from typing import List, TYPE_CHECKING
+from typing import List, TYPE_CHECKING, Union
 
 import lxml.etree as et
 from PIL import Image
 
-from .draw import draw_bitmap
-from .draw import set_paint_style
+from .draw import draw_bitmap, set_paint_style
 from .highlight import highlight_code
 from .image import get_image_steps, create_image_data
 from .lazy import eval_value, unpack_point, eval_pair
@@ -20,12 +19,16 @@ from .path import (
 
 from .show import ShowInfo
 from .svg import svg_size_to_pixels
-from .textparser import parse_text, add_line_numbers
-from .textparser import tokens_merge, tokens_to_text_without_style
+from .textparser import (
+    parse_text,
+    add_line_numbers,
+    tokens_merge,
+    tokens_to_text_without_style,
+)
 from .ora import convert_ora_to_svg
 
 if TYPE_CHECKING:
-    from . import arrow, lazy
+    from . import arrow, lazy, box, boxitem, textboxitem
 
 
 def scaler(rect, image_width, image_height):
@@ -70,7 +73,7 @@ class BoxMixin:
         above: "BoxMixin" = None,
         below: "BoxMixin" = None,
         name: str = None,
-    ) -> "BoxMixin":
+    ) -> "box.Box":
         """
         Creates a new child box.
 
@@ -156,7 +159,7 @@ class BoxMixin:
         box.add_child(new_box, prepend, above, below)
         return new_box
 
-    def overlay(self, **kwargs) -> "BoxMixin":
+    def overlay(self, **kwargs) -> "box.Box":
         """
         Shortcut for `box(x=0, y=0, width="100%", height="100%")`.
 
@@ -167,7 +170,7 @@ class BoxMixin:
         kwargs.setdefault("height", "100%")
         return self.box(**kwargs)
 
-    def fbox(self, **kwargs) -> "BoxMixin":
+    def fbox(self, **kwargs) -> "box.Box":
         """
         Shortcut for `box(width="fill", height="fill")`.
 
@@ -176,7 +179,7 @@ class BoxMixin:
         kwargs.setdefault("height", "fill")
         return self.box(**kwargs)
 
-    def sbox(self, **kwargs) -> "BoxMixin":
+    def sbox(self, **kwargs) -> "box.Box":
         """
         Shortcut for `box(height="fill")` if the layout is horizontal or `box(width="fill")`
         if the layout is vertical.
@@ -196,7 +199,7 @@ class BoxMixin:
         stroke_dasharray=None,
         rx=None,
         ry=None,
-    ) -> "BoxMixin":
+    ) -> "boxitem.BoxItem":
         """
         Draws a rectangle around the box.
 
@@ -240,15 +243,16 @@ class BoxMixin:
         bg_color: str = None,
         stroke_width=1,
         stroke_dasharray: str = None,
-    ) -> "BoxMixin":
+    ) -> "boxitem.BoxItem":
         """
         Draws a polygon.
 
         Parameters
         ----------
-        points: List[(float, float) | value.LazyPoint]
-            Points of the polygons.
-            Each point can be either a tuple with (x, y) coordinates or a `value.LazyPoint`.
+        points: list
+            List of points of the polygon.
+            Each point can be either a 2-element tuple/list with (x, y) coordinates or a
+            `value.LazyPoint`.
         color: str
             Color of the edge of the polygon.
         bg_color: str
@@ -282,7 +286,7 @@ class BoxMixin:
         stroke_width=1,
         stroke_dasharray: str = None,
         end_arrow: "arrow.Arrow" = None,
-    ) -> "BoxMixin":
+    ) -> "boxitem.BoxItem":
         """
         Draws a SVG path.
 
@@ -335,7 +339,7 @@ class BoxMixin:
         stroke_dasharray: str = None,
         start_arrow: "arrow.Arrow" = None,
         end_arrow: "arrow.Arrow" = None,
-    ) -> "BoxMixin":
+    ) -> "boxitem.BoxItem":
         """
         Draws a line.
 
@@ -401,8 +405,8 @@ class BoxMixin:
         scale: float = None,
         fragments=True,
         show_begin=1,
-        select_steps: List[int] = None,
-    ) -> "BoxMixin":
+        select_steps: List[Union[int, None]] = None,
+    ) -> "boxitem.BoxItem":
         """Draws an SVG/PNG/JPEG/ORA image, detected by the extension of the `filename`.
 
         Parameters
@@ -419,7 +423,7 @@ class BoxMixin:
         show_begin: int
             Fragment from which will the image fragments be shown.
             Only applicable if `fragments` is set to True.
-        select_steps: List[int]
+        select_steps: List[Union[int, None]]
             Select which fragments of the image should be drawn at the given fragments of the
             slide.
 
@@ -587,7 +591,7 @@ class BoxMixin:
         use_styles=False,
         escape_char="~",
         scale_to_fit=False,
-    ) -> "BoxMixin":
+    ) -> "textboxitem.TextBoxItem":
         """
         Draws a code snippet with syntax highlighting.
 
@@ -644,7 +648,7 @@ class BoxMixin:
 
     def text(
         self, text: str, style="default", *, escape_char="~", scale_to_fit=False
-    ) -> "BoxMixin":
+    ) -> "textboxitem.TextBoxItem":
         """
         Draws text.
 
@@ -672,7 +676,7 @@ class BoxMixin:
 
     def latex(
         self, text: str, scale=1.0, header: str = None, tail: str = None
-    ) -> "BoxMixin":
+    ) -> "boxitem.BoxItem":
         """
         Renders LaTeX.
 
@@ -722,19 +726,19 @@ class BoxMixin:
 
         return self._create_simple_box_item(draw)
 
-    def x(self, value) -> lazy.LazyValue:
+    def x(self, value) -> "lazy.LazyValue":
         """Create a lazy value relative to the left edge of the box."""
         return self._get_box().layout.x(value)
 
-    def y(self, value) -> lazy.LazyValue:
+    def y(self, value) -> "lazy.LazyValue":
         """Create a lazy value relative to the top edge of the box."""
         return self._get_box().layout.y(value)
 
-    def p(self, x, y) -> lazy.LazyPoint:
+    def p(self, x, y) -> "lazy.LazyPoint":
         """Create a lazy point relative to the top-left corner of the box."""
         return self._get_box().layout.point(x, y)
 
-    def mid_point(self) -> lazy.LazyPoint:
+    def mid_point(self) -> "lazy.LazyPoint":
         """Create a lazy point that resolves to the center of the box."""
         return self.p("50%", "50%")
 
