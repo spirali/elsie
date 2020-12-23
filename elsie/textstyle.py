@@ -45,8 +45,10 @@ def _check_choice(name, value, choices):
     return value
 
 
-# TODO: document
 class TextStyle:
+    """
+    Holds information about the style of text.
+    """
 
     ALIGN_VALUES = (None, "left", "middle", "right")
     VARIANT_NUMERIC_VALUES = (
@@ -85,6 +87,26 @@ class TextStyle:
         italic=None,
         variant_numeric=None
     ):
+        """
+        Parameters
+        ----------
+        font: str
+            Font used to render the text.
+        size: float
+            Size of the font.
+        align: {"center", "left", "right"}
+            Alignment of the text.
+        line_spacing: float
+            Space between lines. Scales with font size.
+        color: str
+            Color of the text.
+        bold: bool
+            If True, the text will be rendered as bold.
+        italic: bool
+            If True, the text will be rendered as italic.
+        variant_numeric: str
+            SVG mode for rendering of digits (e.g. "lining-nums").
+        """
         self.font = font
         self.size = size
         self.align = align
@@ -160,10 +182,12 @@ class TextStyle:
             "variant_numeric", value, self.VARIANT_NUMERIC_VALUES
         )
 
-    def copy(self):
+    def copy(self) -> "TextStyle":
+        """Copies the text style."""
         return copy.copy(self)
 
-    def update(self, style):
+    def update(self, style: "TextStyle"):
+        """Updates the text style in-place."""
         assert isinstance(style, TextStyle)
         for slot in self.__slots__:
             value = getattr(style, slot)
@@ -171,6 +195,7 @@ class TextStyle:
                 setattr(self, slot, value)
 
     def compose(self, style: "TextStyle") -> "TextStyle":
+        """Create a new style that will be the combination of the current and the given style."""
         copy = self.copy()
         copy.update(style)
         return copy

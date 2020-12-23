@@ -1,6 +1,7 @@
 # The file is not named "slide.py" because of class of "slide" import in __init__.py
 
 import os.path
+from typing import TYPE_CHECKING
 
 from .box import Box
 from .geom import Rect
@@ -11,21 +12,23 @@ from .show import ShowInfo
 from .svg import svg_begin, svg_end
 from .sxml import Xml
 
+if TYPE_CHECKING:
+    from . import slides
 
-# TODO: document
+
 class Slide:
     def __init__(
         self,
-        slides,
-        index,
-        width,
-        height,
+        slides: "slides.Slides",
+        index: int,
+        width: int,
+        height: int,
         styles,
         fs_cache,
         temp_cache,
         view_box,
-        name,
-        debug_boxes,
+        name: str,
+        debug_boxes: bool,
     ):
         self.slides = slides
         self.name = name
@@ -49,6 +52,7 @@ class Slide:
         return self._box
 
     def current_step(self) -> int:
+        """Returns the current maximum fragment."""
         return self.max_step
 
     def prepare(self):
