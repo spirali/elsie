@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+from typing import Callable, List, TYPE_CHECKING, Tuple, Union
 
 from .highlight import make_highlight_styles
 from .jupyter import is_inside_notebook
@@ -13,9 +14,16 @@ from .textstyle import TextStyle, compose_style
 from .version import VERSION
 from .cache import FsCache
 
+if TYPE_CHECKING:
+    from . import box
+    from .render import RenderUnit
 
-# TODO: document
+
 class Slides:
+    """
+    Presentation containing slides.
+    """
+
     def __init__(
         self,
         width=1024,
@@ -23,17 +31,42 @@ class Slides:
         *,
         debug=False,
         pygments_theme="default",
-        bg_color=None,
+        bg_color: str = None,
         cache_dir="./elsie-cache",
-        inkscape_bin=None,
         name_policy="auto",
-        inkscape=None,
+        inkscape: Union[str, InkscapeShell] = None,
     ):
-        if inkscape:
+        """
+        Parameters
+        ----------
+        width: int
+            Width of the slides.
+        height: int
+            Height of the slides.
+        debug: bool
+            Enable debugging mode.
+        pygments_theme: str
+            Theme used for syntax highlighting.
+        bg_color: str
+            Default background color of each slide.
+        cache_dir: str
+            Directory where slide cache will be stored.
+        name_policy: {"auto", "ignore", "replace", "unique"}
+            Policy used to handle slides with the same name.
+            "unique" -> Slides with the same name are not allowed.
+            "replace" -> If there was a slide with the same name, it will be removed prior to
+            adding the new slide.
+            "ignore" -> Slide names are ignored.
+            "auto" -> Uses "replace" behaviour when running inside Jupyter, otherwise uses
+            "unique".
+        inkscape: Union[str, InkscapeShell]
+            Either a path to the Inkscape binary or an instance of the InkscapeShell class.
+        """
+        if isinstance(inkscape, InkscapeShell):
             self.inkscape = inkscape
         else:
             inkscape_bin = (
-                inkscape_bin or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
+                inkscape or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
             )
             self.inkscape = InkscapeShell(inkscape_bin)
         self.inkscape_version = self.inkscape.get_version()
@@ -85,14 +118,16 @@ class Slides:
         self._styles.update(make_highlight_styles(pygments_theme))
         self.fs_cache = FsCache(cache_dir, VERSION, self.inkscape_version)
 
-    def update_style(self, style_name, style):
+    def update_style(self, style_name: str, style: TextStyle):
+        """Updates the style with the given name in-place."""
         assert isinstance(style_name, str)
         old_style = self.get_style(style_name, full_style=False)
         old_style.update(style)
         self._styles = self._styles.copy()
         self._styles[style_name] = old_style
 
-    def set_style(self, style_name, style, base="default"):
+    def set_style(self, style_name: str, style: TextStyle, base="default"):
+        """Sets the value of the style with the given name."""
         assert isinstance(style_name, str)
         assert isinstance(style, TextStyle)
         if base != "default":
@@ -102,15 +137,32 @@ class Slides:
         self._styles = self._styles.copy()
         self._styles[style_name] = style
 
-    def get_style(self, style, full_style=False):
+    def get_style(self, style, full_style=False) -> TextStyle:
         return compose_style(self._styles, style, full_style)
 
-    def get_slide_by_name(self, name):
+    def get_slide_by_name(self, name: str) -> Union[Slide, None]:
+        """Returns a slide with the given name."""
         for slide in self._slides:
             if slide.name == name:
                 return slide
 
-    def new_slide(self, name=None, *, bg_color=None, view_box=None, debug_boxes=False):
+    def new_slide(
+        self, name=None, *, bg_color=None, view_box=None, debug_boxes=False
+    ) -> "box.Box":
+        """
+        Creates a new slide and returns its root Box.
+
+        Parameters
+        ----------
+        name: str
+            Name of the slide
+        bg_color: str
+            Background color of the slide.
+        view_box: tuple
+            SVG viewbox of the slide. Has to be a 4-element tuple (x, y, width, height).
+        debug_boxes: bool
+            If True, debugging information about each box will be drawn on the slide.
+        """
         if view_box is not None and not (
             isinstance(view_box, tuple)
             and len(view_box) == 4
@@ -145,6 +197,30 @@ class Slides:
         return box
 
     def slide(self, name=None, *, bg_color=None, view_box=None, debug_boxes=False):
+        """
+        Decorator which creates a new slide and passes its root box to the decorated function.
+
+        Examples:
+        slides = elsie.Slides()
+
+        @slides.slide()
+        def slide1(slide: elsie.Box):
+            slide.box().text("Hello")
+
+        Parameters
+        ----------
+        name: str
+            Name of the slide.
+            If `name` is `None`, the name of the slide will be set to the name of the decorated
+            function.
+        bg_color: str
+            Background color of the slide.
+        view_box: tuple
+            SVG viewbox of the slide. Has to be a 4-element tuple (x, y, width, height).
+        debug_boxes: bool
+            If True, debugging information about each box will be drawn on the slide.
+        """
+
         def _helper(fn, *args, **kwargs):
             if name is None:
                 _name = fn.__name__
@@ -161,8 +237,8 @@ class Slides:
 
         return _helper
 
-    def add_pdf(self, filename):
-        """ Just add pdf without touches into resulting slides """
+    def add_pdf(self, filename: str):
+        """Adds raw PDF into the resulting slides."""
         self._slides.append(ExternPdfSlide(filename))
 
     def _query_cache_file(self):
@@ -281,12 +357,39 @@ class Slides:
         return_units=False,
         export_type="pdf",
         pdf_merger="pypdf",
-        slide_postprocessing=None,
+        slide_postprocessing: "Callable[[List[box.Box]], ...]" = None,
         prune_cache=True,
         save_cache=True,
-        select_slides=None,
-        slides_per_page=None,
-    ):
+        select_slides: List[Slide] = None,
+        slides_per_page: Tuple[int, int] = None,
+    ) -> "Union[None, List[RenderUnit]]":
+        """
+        Renders the presentation into a PDF file.
+
+        Parameters
+        ----------
+        output: str
+            Output PDF file path where the slides will be rendered.
+        return_units: bool
+            If True, this function will return a list of (either SVG or PDF) render units.
+            In this case the presentation will not be rendered into the `output` file.
+        export_type: str
+            TODO
+        pdf_merger: {"pypdf", "pdfunite"}
+            Method used to merge PDFs together.
+        slide_postprocessing: Callable[[List[Box]], ...]
+            This function will be called just before the slides are rendered.
+            It will be passed a list of root boxes, one for each slide.
+        prune_cache: bool
+            TODO
+        save_cache: bool
+            TODO
+        select_slides: List[Slide]
+            List of slides to be rendered.
+        slides_per_page: Tuple[int, int]
+            Must be a 2-element tuple (R, C) of integers.
+            Renders a grid of (R, C) slides per each page.
+        """
         if select_slides is None:
             select_slides = self._slides
 

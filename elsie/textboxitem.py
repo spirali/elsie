@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING
+
 from .boxitem import BoxItem
 from .draw import draw_text
 from .lazy import LazyValue
 from .sxml import Xml
 from .textparser import number_of_lines, extract_line
+
+if TYPE_CHECKING:
+    from . import box
 
 
 def text_x_in_rect(rect, style):
@@ -82,8 +87,20 @@ class TextBoxItem(BoxItem):
                 layout.ensure_height(height)
         self._text_size = (width, height)
 
-    # TODO: document
-    def line_box(self, index, n_lines=1, **kwargs):
+    def line_box(self, index: int, n_lines=1, **box_args) -> "box.Box":
+        """
+        Creates a box that wraps the specified number of lines starting at `index`.
+
+        Parameters
+        ----------
+        index: int
+            Index of the first line.
+        n_lines: int
+            Number of items that will be included in the box.
+        box_args
+            Parameters passed to the Box constructor.
+        """
+
         def compute_y():
             text_lines = number_of_lines(self._parsed_text)
             line_height = self._text_size[1] / text_lines
@@ -95,15 +112,26 @@ class TextBoxItem(BoxItem):
             text_lines = number_of_lines(self._parsed_text)
             return n_lines * self._text_size[1] / text_lines + 1
 
-        kwargs.setdefault("width", "fill")
-        kwargs.setdefault("x", 0)
-        kwargs.setdefault("y", LazyValue(compute_y))
-        kwargs.setdefault("height", LazyValue(compute_height))
-        return self._box.box(**kwargs)
+        box_args.setdefault("width", "fill")
+        box_args.setdefault("x", 0)
+        box_args.setdefault("y", LazyValue(compute_y))
+        box_args.setdefault("height", LazyValue(compute_height))
+        return self._box.box(**box_args)
 
-    # TODO: document
-    def inline_box(self, style_name, n_th=1, **box_args):
-        """ Create a box around a styled text """
+    def inline_box(self, style_name, n_th=1, **box_args) -> "box.Box":
+        """
+        Creates a box that will wrap a section of text which is enclosed by the given inline style.
+
+        Parameters
+        ----------
+        style_name: str
+            Name of the (inline) style that should be found inside the text.
+        n_th: int
+            If there are multiple instances of the passed inline style, this parameter selects
+            which instance should be wrapped with the newly created box.
+        box_args
+            Parameters passed to the Box constructor.
+        """
         assert n_th > 0
         count = n_th
         for (i, token) in enumerate(self._parsed_text):

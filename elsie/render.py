@@ -1,8 +1,8 @@
 import os
 
-from elsie.inkscape import export_by_inkscape
-from elsie.svg import svg_end, svg_begin
-from elsie.sxml import Xml
+from .inkscape import export_by_inkscape
+from .svg import svg_end, svg_begin
+from .sxml import Xml
 
 
 class RenderUnit:

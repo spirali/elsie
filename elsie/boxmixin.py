@@ -28,7 +28,8 @@ from .textparser import (
 from .ora import convert_ora_to_svg
 
 if TYPE_CHECKING:
-    from . import arrow, lazy, box, boxitem, textboxitem
+    from . import arrow, lazy, boxitem, textboxitem
+    from .box import Box
 
 
 def scaler(rect, image_width, image_height):
@@ -73,7 +74,7 @@ class BoxMixin:
         above: "BoxMixin" = None,
         below: "BoxMixin" = None,
         name: str = None,
-    ) -> "box.Box":
+    ) -> "Box":
         """
         Creates a new child box.
 
@@ -159,7 +160,7 @@ class BoxMixin:
         box.add_child(new_box, prepend, above, below)
         return new_box
 
-    def overlay(self, **kwargs) -> "box.Box":
+    def overlay(self, **kwargs) -> "Box":
         """
         Shortcut for `box(x=0, y=0, width="100%", height="100%")`.
 
@@ -170,7 +171,7 @@ class BoxMixin:
         kwargs.setdefault("height", "100%")
         return self.box(**kwargs)
 
-    def fbox(self, **kwargs) -> "box.Box":
+    def fbox(self, **kwargs) -> "Box":
         """
         Shortcut for `box(width="fill", height="fill")`.
 
@@ -179,7 +180,7 @@ class BoxMixin:
         kwargs.setdefault("height", "fill")
         return self.box(**kwargs)
 
-    def sbox(self, **kwargs) -> "box.Box":
+    def sbox(self, **kwargs) -> "Box":
         """
         Shortcut for `box(height="fill")` if the layout is horizontal or `box(width="fill")`
         if the layout is vertical.
