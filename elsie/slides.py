@@ -353,7 +353,7 @@ class Slides:
 
     def render(
         self,
-        output="slides.pdf",
+        output: Union[str, None] = "slides.pdf",
         return_units=False,
         export_type="pdf",
         pdf_merger="pypdf",

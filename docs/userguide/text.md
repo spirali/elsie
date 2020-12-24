@@ -36,7 +36,7 @@ If you want to use font or text properties that are not available in `TextStyle`
 [let us know](https://github.com/spirali/elsie/issues/new).
 
 You can pass a text style as a second argument to the `text` method:
-```elsie,width=400,height=150
+```elsie,width=450,height=150
 slide.text("Hello world!", elsie.TextStyle(size=70, color="red"))
 ```
 
@@ -51,14 +51,14 @@ slide.box().text("Hello world!", s(color="red"))
 Each box also inherits a list of named styles from its parent. If you use a string instead of a
 `TextStyle`, *Elsie* will try to find a style with the given name. The two following examples
 produce the same slide as the example above:
-```elsie,width=400,height=150
+```elsie,width=450,height=150
 # Setting a style globally for all slides
 slides.set_style("big_red", elsie.TextStyle(size=70, color="red"))
 slide = slides.new_slide(name="slide1")
 slide.text("Hello world!", "big_red")
 ```
 
-```elsie,width=400,height=150
+```elsie,width=450,height=150
 box = slide.box()
 
 # Setting style locally for a box

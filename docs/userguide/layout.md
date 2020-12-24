@@ -29,6 +29,8 @@ slide.box().text("Box 3")
 Note: for brevity, most code snippets in this user guide assume that there is a `slides` variable
 containing a `Slides` object and a `slide` variable containing a `Slide` object. The `render`
 method call is also omitted from most of the examples that display rendered slide output.
+The output from the code snippets is rendered into PNG images instead of SVG images to ensure that
+they will be displayed consistently on each device.
 
 ### Debug draw mode
 The boxes themselves are invisible, but they have caused the three text items to be rendered
