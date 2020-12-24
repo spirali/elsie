@@ -237,6 +237,42 @@ class BoxMixin:
 
         return self._create_simple_box_item(draw)
 
+    def ellipse(
+        self,
+        color=None,
+        bg_color=None,
+        stroke_width=1,
+        stroke_dasharray=None,
+    ) -> "boxitem.BoxItem":
+        """
+        Draws an ellipse. The dimensions of the ellipse will be set to the dimensions of its parent
+        box. If you want to draw a circle, use a square parent box.
+
+        Parameters
+        ----------
+        color: str
+            Color of the ellipse edge.
+        bg_color: str
+            Color of the ellipse background.
+        stroke_width: float
+            Width of the ellipse edge.
+        stroke_dasharray: str
+            SVG dash effect of the ellipse edge.
+        """
+
+        def draw(ctx):
+            rect = self._get_box().layout.rect
+            xml = ctx.xml
+            xml.element("ellipse")
+            xml.set("cx", rect.mid_x)
+            xml.set("cy", rect.mid_y)
+            xml.set("rx", rect.width / 2)
+            xml.set("ry", rect.height / 2)
+            set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
+            xml.close("ellipse")
+
+        return self._create_simple_box_item(draw)
+
     def polygon(
         self,
         points,

@@ -28,6 +28,30 @@ box.rect(
 )
 ```
 
+## Ellipses
+You can draw ellipses using the [`ellipse`](elsie.boxmixin.BoxMixin.ellipse) method on a box. The
+position and size of the ellipse will be copied from the box. If you want to draw a **circle**,
+use a square parent box.
+
+You can also pass the following additional parameters:
+
+- `color=<str or None>`: [Color](text.md#colors) used to draw the edges of the ellipse. If you
+pass `None` (the default), the edges will not be drawn.
+- `stroke_width=<number>`: Thickness of the ellipse.
+- `stroke_dasharray=<str or None>`: Pattern of dashes and gaps to used when drawing the edges of
+the ellipse. You can find more about this attribute
+[here](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray).
+- `bg_color=<str or None>`: Color used to fill the ellipse.
+
+An example of drawing an ellipse:
+```elsie
+box = slide.box(x="[50%]", y="[50%]", width="80%", height=200)
+box.ellipse(
+  bg_color="green", color="red",
+  stroke_width=10, stroke_dasharray="10 4"
+)
+```
+
 ## Lines and polygons
 You can draw lines using the [`line`](elsie.boxmixin.BoxMixin.line) method and polygons using the
 [`polygon`](elsie.boxmixin.BoxMixin.polygon). Both of these methods take a list of poinst as their
