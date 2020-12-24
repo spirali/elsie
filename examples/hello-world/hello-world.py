@@ -8,4 +8,4 @@ def hello(slide):
     slide.text("Hello world!")
 
 
-slides.render()
+slides.render("minimal.pdf")

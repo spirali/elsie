@@ -419,6 +419,10 @@ def columns_demo(slide):
 
 @slides.slide()
 def shape_demo(slide):
+    slide.box(650, 350, 50, 50).ellipse(bg_color="green")
+    slide.box(720, 350, 150, 50).ellipse(bg_color="purple", color="yellow", stroke_width=10)
+    slide.box(900, 350, 50, 100).ellipse(bg_color="blue")
+
     slide.box(100, 100, 200, 200).rect(color="green")
     slide.box(120, 120, 160, 160).rect(bg_color="green")
 
@@ -740,7 +744,7 @@ def position_demo(slide):
     position_demo_helper(slide)
 
 
-# Zoom to rectanle at position 300, 200 with size 400, 400
+# Zoom to rectangle at position 300, 200 with size 400, 400
 @slides.slide(view_box=(300, 200, 400, 400))
 def zoomed_position_demo(slide):
     position_demo_helper(slide)
@@ -777,14 +781,10 @@ def debugging_slides(slide):
 
 
 # The final slide #################################
-
-
 @slides.slide()
 def final_slide(slide):
     slide.text("Have a nice day!", elsie.TextStyle(size=60))
 
 
-# RENDER THE SLIDES NOW!
-
-
-slides.render("example.pdf")
+# Render the slides
+slides.render("bigdemo.pdf")

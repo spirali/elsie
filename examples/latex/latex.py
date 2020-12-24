@@ -28,4 +28,4 @@ def latex_demo(slide):
     )
 
 
-slides.render("latex_demo.pdf")
+slides.render("latex.pdf")

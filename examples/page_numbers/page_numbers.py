@@ -27,4 +27,4 @@ def page_numbering(slides):
         ).text(f"{i + 1}/{len(slides)}")
 
 
-slides.render(slide_postprocessing=page_numbering)
+slides.render("page_numbers.pdf", slide_postprocessing=page_numbering)
