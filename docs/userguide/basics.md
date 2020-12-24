@@ -38,8 +38,8 @@ def slide1(slide: elsie.Box):
 ```
 
 Both `slide` and `new_slide` have parameters that allow you to change the background color and SVG
-viewbox of the slide. You can also choose its name (see [below](#name-policy))
-or enable [debug draw mode](layout.md#debug-draw-mode).
+viewbox of the slide (see example usage [here](../cookbook/zoom.md)). You can also choose
+its name (see [below](#name-policy)) or enable [debug draw mode](layout.md#debug-draw-mode).
 
 ## Rendering slides
 After you have created all of your desired slides and filled them with content, you can render your
