@@ -97,8 +97,8 @@ def fragments(slide):
     # "2+" - Show from the second page to the last page
     # "2-5" - Show on second page to 5th page
     # "2,3,4" - Show on pages 2, 3, and 4
-    # "next" - Create a new step after so far last step
-    # "last" - Index of so far last step
+    # "next" - Create a new fragment after the current maximum fragment
+    # "last" - Index of the current maximum fragment
     slide.box(show="2+").text("... fragment ...")
     slide.box(show="3+").text("... revealing.")
 

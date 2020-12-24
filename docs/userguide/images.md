@@ -47,9 +47,10 @@ of the [`image`](elsie.boxmixin.BoxMixin.image) method:
 - `show_begin=<x>`: Shifts all fragments in the image forward so that `x` will be the first fragment
 from the perspective of the image. This will cause the image to appear at fragment `x`, a layer
 named `Foo**2` would appear at fragment `x + 1`, etc.
-- `select_steps=<list>` (each element of the list is either an integer or `None`): This allows to
-completely rearrange the fragments of the image. For example, `[3, 7, None, 3]` would show:
-    - in the 1st slide fragment: the 3rd image fragment
-    - in the 2nd slide fragment: the 7th image fragment
-    - in the 3rd slide fragment: no image fragment
-    - in the 4rd slide fragment: again the 3rd image fragment
+- `select_fragments=<list>` (each element of the list is either an integer or `None`): This
+parameter allows you to completely rearrange the fragments of the image. For example,
+`[3, 7, None, 3]` would show:
+    - In the 1st slide fragment: the 3rd image fragment
+    - In the 2nd slide fragment: the 7th image fragment
+    - In the 3rd slide fragment: no image fragment
+    - In the 4rd slide fragment: again the 3rd image fragment

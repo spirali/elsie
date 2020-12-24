@@ -72,8 +72,13 @@ def get_slide_repr_steps(slide: Slide, format: str) -> List[str]:
         raise Exception("Slide can be rendered only to SVG or PNG")
 
     return_units = format == "svg"
-    units = slide.slides.render(output=None, return_units=return_units, select_slides=[slide],
-                                export_type=format, prune_cache=False)
+    units = slide.slides.render(
+        output=None,
+        return_units=return_units,
+        select_slides=[slide],
+        export_type=format,
+        prune_cache=False,
+    )
     if format == "svg":
         return [unit.svg for unit in units]
     elif format == "png":
@@ -81,7 +86,9 @@ def get_slide_repr_steps(slide: Slide, format: str) -> List[str]:
         for png in units:
             with open(png, "rb") as f:
                 data = base64.encodebytes(f.read())
-                images.append(f"""<img src="data:image/png;base64, {data.decode()}" />""")
+                images.append(
+                    f"""<img src="data:image/png;base64, {data.decode()}" />"""
+                )
         return images
     else:
         assert False

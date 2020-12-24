@@ -49,7 +49,7 @@ class Slide:
     def box(self):
         return self._box
 
-    def current_step(self) -> int:
+    def current_fragment(self) -> int:
         """Returns the current maximum fragment."""
         return self.max_step
 

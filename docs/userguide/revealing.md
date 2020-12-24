@@ -53,16 +53,16 @@ manually and keep them in sync when you make changes to the slide. To make this 
 you can use placeholders to refer to the current fragment.
 
 The *current* fragment is the fragment with the largest number defined on a slide so far. You can
-access its number using the [`current_step`](elsie.box.Box.current_step) method. This value changes
-dynamically as you add more fragments to the slide:
+access its number using the [`current_fragment`](elsie.box.Box.current_fragment) method. This
+value changes dynamically as you add more fragments to the slide:
 ```python
-# slide.current_step() == 1
+# slide.current_fragment() == 1
 slide.box().text("Box 1")
-# slide.current_step() == 1
+# slide.current_fragment() == 1
 slide.box(show="2").text("Box 1")
-# slide.current_step() == 2
+# slide.current_fragment() == 2
 slide.box(show="3").text("Box 1")
-# slide.current_step() == 3
+# slide.current_fragment() == 3
 ```
 
 To leverage the *current* fragment, you can use two placeholders in place of a fragment number

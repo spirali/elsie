@@ -149,13 +149,15 @@ def test_ora_fragments_showbegin(test_env):
 def test_image_substeps_show1(test_env):
     """ Regresion test for show attribute when element has no childs """
     slide = test_env.slide
-    slide.image(test_env.assets_path("testimage.svg"), select_steps=[3, None, 1])
+    slide.image(test_env.assets_path("testimage.svg"), select_fragments=[3, None, 1])
     test_env.check("image-substeps1", 3)
 
 
 def test_image_substeps_show2(test_env):
     """ Regresion test for show attribute when element has no childs """
     slide = test_env.slide
-    slide.image(test_env.assets_path("testimage.svg"), select_steps=[2], show_begin=2)
+    slide.image(
+        test_env.assets_path("testimage.svg"), select_fragments=[2], show_begin=2
+    )
     slide.box(width="100", height="100", show="1-3").rect(color="black")
     test_env.check("image-substeps2", 3)

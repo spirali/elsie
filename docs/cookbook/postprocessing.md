@@ -37,4 +37,4 @@ You can find the rendered PDF with slide numbers
 [here](https://github.com/spirali/elsie/raw/master/examples/page_numbers/page_numbers.pdf).
 
 You could also easily create a fragment number for each fragment of each slide by iterating numbers
-up to the [`current_slide()`](elsie.slide.Slide.current_step) of each slide.
+up to the [`current_fragment()`](elsie.slide.Slide.current_fragment) of each slide.

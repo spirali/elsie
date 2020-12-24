@@ -27,10 +27,10 @@ Using [revealing](../userguide/revealing.md), you can then easily create a list 
 be revealed gradually:
 ```elsie,width=500,height=200
 l = slide.box()
-list_item(l).text("Appears in step 1")
-list_item(l, show="next+").text("Appears in step 2")
-list_item(l, level=1).text("(nested) Appears in step 2")
-list_item(l, show="next+").text("Appears in step 3")
+list_item(l).text("Appears in fragment 1")
+list_item(l, show="next+").text("Appears in fragment 2")
+list_item(l, level=1).text("(nested) Appears in fragment 2")
+list_item(l, show="next+").text("Appears in fragment 3")
 ```
 
 If that's still too unwieldy, you can for example put your individual lines into a Python `list`

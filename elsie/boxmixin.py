@@ -442,7 +442,7 @@ class BoxMixin:
         scale: float = None,
         fragments=True,
         show_begin=1,
-        select_steps: List[Union[int, None]] = None,
+        select_fragments: List[Union[int, None]] = None,
     ) -> "boxitem.BoxItem":
         """Draws an SVG/PNG/JPEG/ORA image, detected by the extension of the `filename`.
 
@@ -460,19 +460,23 @@ class BoxMixin:
         show_begin: int
             Fragment from which will the image fragments be shown.
             Only applicable if `fragments` is set to True.
-        select_steps: List[Union[int, None]]
+        select_fragments: List[Union[int, None]]
             Select which fragments of the image should be drawn at the given fragments of the
             slide.
 
-            `select_steps=[1, 3, None, 2]`
+            `select_fragments=[1, 3, None, 2]`
             Would render the first image fragment in the first slide fragment, the third image
             fragment in the second slide fragment, no image fragment in the third slide fragment
             and the second image fragment in the fourth slide fragment.
         """
         if filename.endswith(".svg"):
-            return self._image_svg(filename, scale, fragments, show_begin, select_steps)
+            return self._image_svg(
+                filename, scale, fragments, show_begin, select_fragments
+            )
         elif filename.endswith(".ora"):
-            return self._image_ora(filename, scale, fragments, show_begin, select_steps)
+            return self._image_ora(
+                filename, scale, fragments, show_begin, select_fragments
+            )
         elif any(filename.endswith(ext) for ext in [".png", ".jpeg", ".jpg"]):
             return self._image_bitmap(filename, scale)
         else:
@@ -526,7 +530,7 @@ class BoxMixin:
 
         return self._create_simple_box_item(draw)
 
-    def _image_ora(self, filename, scale, fragments, show_begin, select_steps):
+    def _image_ora(self, filename, scale, fragments, show_begin, select_fragments):
         key = (filename, "svg")
         slide = self._get_box().slide
         if key not in slide.temp_cache:
@@ -538,7 +542,7 @@ class BoxMixin:
 
             cache_file = slide.fs_cache.ensure_by_file(filename, "svg", constructor)
             self._get_box().slide.temp_cache[key] = et.parse(cache_file).getroot()
-        return self._image_svg(filename, scale, fragments, show_begin, select_steps)
+        return self._image_svg(filename, scale, fragments, show_begin, select_fragments)
 
     def _image_svg(
         self,
@@ -546,7 +550,7 @@ class BoxMixin:
         scale: float = None,
         fragments=True,
         show_begin=1,
-        select_steps: List[int] = None,
+        select_fragments: List[int] = None,
     ):
         """ Draw an svg image """
 
@@ -563,8 +567,8 @@ class BoxMixin:
             image_width * (scale or 1), image_height * (scale or 1)
         )
 
-        if select_steps is not None:
-            image_steps = len(select_steps)
+        if select_fragments is not None:
+            image_steps = len(select_fragments)
         else:
             if fragments:
                 image_steps = get_image_steps(root)
@@ -575,7 +579,7 @@ class BoxMixin:
 
         image_data = None
 
-        if image_steps == 1 and not select_steps:
+        if image_steps == 1 and not select_fragments:
             image_data = et.tostring(root).decode()
 
         def draw(ctx):
@@ -583,9 +587,9 @@ class BoxMixin:
 
             if image_data is None:
                 step = ctx.step - show_begin + 1
-                if select_steps is not None:
-                    if 0 < step <= len(select_steps):
-                        step = select_steps[step - 1]
+                if select_fragments is not None:
+                    if 0 < step <= len(select_fragments):
+                        step = select_fragments[step - 1]
                     else:
                         return
                     if step is None:

@@ -374,10 +374,10 @@ class Slides:
             If True, this function will return a list of (either SVG or PDF) render units.
             In this case the presentation will not be rendered into the `output` file.
         export_type: str
-            Output format of slides; it supports all formats supported by Inkscape export 
+            Output format of slides; it supports all formats supported by Inkscape export
             (e.g. "pdf", "png", etc.)
             If export_type is "pdf" then it is merged into one
-            final PDF file defined by parameter `output`. 
+            final PDF file defined by parameter `output`.
             For other formats, `output` is ignored and returns a list of filenames
             with exported files. The files are placed into cache directory and could be
             removed by another call of render with `prune_cache=True`.

@@ -6,7 +6,7 @@ def replace_relative_steps(match, current_max):
     if item:
         if item in ("next", "last") and current_max is None:
             raise Exception(
-                "You have to pass the current maximum step if you use relative values"
+                "You have to pass the current maximum fragment if you use relative values"
             )
 
         if item == "next":
