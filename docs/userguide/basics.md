@@ -16,7 +16,7 @@ You can create new slides in two ways, either using the [`new_slide`](elsie.slid
 method or via a [decorator](#decorator). The `new_slide` method will create a new slide, but for
 convenience, it will not return the slide itself, but its [root box](layout.md), so that you can
 use the returned object immediately for adding things to the slide. Except for some advanced usage,
-you shouldn't ever need to deal with the [`Slide`](elsie.slidecls.Slide) instance itself.
+you shouldn't ever need to deal with the [`Slide`](elsie.slide.Slide) instance itself.
 
 ```python
 slide = slides.new_slide(bg_color="blue")
