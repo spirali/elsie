@@ -1,14 +1,14 @@
 # Elsie
+Elsie is a framework for **creating slides programmatically** using Python.
 
-Elsie is a framework for making slides in Python.
+**Quick links**
+- [Documentation](https://spirali.github.io/elsie)
+- Presentation demonstrating features of Elsie ([PDF](examples/bigdemo/bigdemo.pdf),
+[source code](examples/bigdemo/bigdemo.py)).
+- [Gallery of Elsie presentations](https://spirali.github.io/elsie/gallery)
+- [API reference](https://spirali.github.io/elsie/apidoc) (created with [nedoc](https://github.com/spirali/nedoc))
 
-### Full demonstration
-
-  * Result: [example.pdf](examples/bigdemo/example.pdf)
-  * Source code: [example.py](examples/bigdemo/example.py)
-
-### Minimal example
-
+## Hello world
 ```python
 import elsie
 
@@ -18,27 +18,23 @@ slides = elsie.Slides()
 def hello(slide):
     slide.text("Hello world!")
 
-slides.render()  # Creates file 'slides.pdf'
+slides.render("slides.pdf")
 ```
 
-### Other sources
+## Installation
+### Requirements
+- Python 3.6+
+- Inkscape 1.0+ installed
+    - You can find installation instructions [here](https://wiki.inkscape.org/wiki/index.php/Installing_Inkscape).
+    - Elsie uses Inkscape in the background, you do not have to know how to use it.
+- (Optional for LaTeX support): `pdflatex` and `pdf2svg`
 
-  * [Repository with real-life presentations](https://github.com/Kobzol/elsie-showcase/)
+### Installation using pip
+```bash
+$ pip3 install elsie
+```
 
-## Requirements
-
-* Python 3.6 or newer
-* Inkscape (Elsie uses Inkscape in the background, you do not have to know how to use it.)
-* (Optional for LaTeX support): pdflatex, pdf2svg
-
-
-## PIP Installation
-
-    pip3 install elsie
-
-Note: This does not install Inkscape, you have to do it manually.
-
-## Manual Installation
-
-    python setup.py build
-    python setup.py install
+### Installation using Docker
+```bash
+$ docker build -t elsie .
+```

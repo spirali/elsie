@@ -8,10 +8,15 @@ It was created out of frustration of having to deal with
 [existing tools](#comparison-to-other-tools) for creating presentations. We believe that creating
 presentations should be automated and programmable as much as possible.
 
-See [Getting started](getting_started.md) for a short intro tutorial or the [Gallery](gallery.md)
-for presentations that were created using *Elsie*. 
+**Quick links**
 
-## Hello world
+- [Installation](installation.md)
+- [Getting started](getting_started.md)
+- [User guide](userguide/basics.md)
+- [Gallery](gallery.md)
+- [API Reference](apidoc)
+
+## Elsie example
 ```elsie,skip=3:-1
 import elsie
 slides = elsie.Slides()
@@ -33,7 +38,7 @@ slides.render("slides.pdf")
 ```
 
 ## Features
-- **Automatic layout** *Elsie* provides a simple, yet powerful layout model. Need rows? Columns?
+- **Layout model** *Elsie* provides a simple, yet powerful layout model. Need rows? Columns?
 Padding? Aligned text? Relative/absolute positioning? Automatic scaling? We got you covered.
 
 - **Animations and fragments** Reveal your slides gradually using fragments or create custom
@@ -123,7 +128,7 @@ embedding SVG images into slides with Cairo, which is something that we use a lo
 possible that *Elsie* will not require `Inkscape` sometime in the future.
 - **Why don't you use an existing layout model, e.g. `flexbox`?**
 We made the [layout model](userguide/layout.md) tailored for presentations, which might not be
-so easy with a general layout model. But honestly, we also haven't found any usable binding of
+so easy with a general layout model. And honestly, we couldn't find any usable binding of
 a standalone and sane layout model in Python. If you know of any, please
 [let us know](https://github.com/spirali/elsie/issues).
 - **Why is there no built-in support for lists (bullet items etc.) in `Elsie`?**
