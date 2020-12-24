@@ -27,6 +27,7 @@ nav:
   - Cookbook:
     - cookbook/lists.md
     - cookbook/grids.md
+    - cookbook/zoom.md
     - cookbook/postprocessing.md
   - API reference:
     - API documentation: apidoc
