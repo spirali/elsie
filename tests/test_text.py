@@ -34,7 +34,7 @@ def test_line_highlight_1(test_env):
     t.line_box(6, show="3", below=t).rect(bg_color="#D0D0FF")
     t.line_box(4, n_lines=4, show="4", below=t).rect(color="blue")
 
-    label = slide.box(100, 400, 200, 130, show="5+")
+    label = slide.box(x=100, y=400, width=200, height=130, show="5+")
     label.update_style("default", elsie.TextStyle(color="white"))
     label.rect(bg_color="green", rx=10, ry=10)
     label.text("Comment for\nline")

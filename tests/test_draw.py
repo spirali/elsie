@@ -4,17 +4,17 @@ from elsie import Arrow
 def test_shapes(test_env):
     slide = test_env.slide
 
-    slide.box(650, 350, 50, 50).ellipse(bg_color="green")
-    slide.box(720, 350, 150, 50).ellipse(
+    slide.box(x=650, y=350, width=50, height=50).ellipse(bg_color="green")
+    slide.box(x=720, y=350, width=150, height=50).ellipse(
         bg_color="purple", color="yellow", stroke_width=10
     )
-    slide.box(900, 350, 50, 100).ellipse(bg_color="blue")
+    slide.box(x=900, y=350, width=50, height=100).ellipse(bg_color="blue")
 
-    slide.box(100, 100, 200, 200).rect(color="green")
-    slide.box(120, 120, 160, 160).rect(bg_color="green")
+    slide.box(x=100, y=100, width=200, height=200).rect(color="green")
+    slide.box(x=120, y=120, width=160, height=160).rect(bg_color="green")
 
-    slide.box(320, 100, 200, 200).rect(color="blue", rx=20, ry=20)
-    slide.box(340, 120, 160, 160).rect(bg_color="blue", rx=20, ry=20)
+    slide.box(x=320, y=100, width=200, height=200).rect(color="blue", rx=20, ry=20)
+    slide.box(x=340, y=120, width=160, height=160).rect(bg_color="blue", rx=20, ry=20)
 
     slide.polygon([(540, 300), (740, 300), (640, 100)], color="red")
     slide.polygon([(570, 280), (710, 280), (640, 140)], bg_color="red")
@@ -139,7 +139,7 @@ def test_shapes(test_env):
     slide.line([(100, 410), (500, 410)], stroke_width=10, stroke_dasharray="20 10 2 10")
 
     # dashed rectangle
-    slide.box(550, 350, 50, 50).rect(
+    slide.box(x=550, y=350, width=50, height=50).rect(
         stroke_width=5, stroke_dasharray="2", color="black", rx=5, ry=5
     )
 
