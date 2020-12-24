@@ -107,7 +107,7 @@ class Layout:
         return [child for child in self.children if child.is_managed(self.horizontal)]
 
     def set_rect(self, rect):
-        assert self.rect is None
+        # assert self.rect is None
         rect = rect.shrink(self.p_left, self.p_right, self.p_top, self.p_bottom)
         self.rect = rect
 
