@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <meta name="author" content="Stanislav Böhm">
-  <link rel="canonical" href="https://spirali.github.io/elsie/cookbook/postprocessing/">
+  <link rel="canonical" href="https://spirali.github.io/elsie/cookbook/zoom/">
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Slide postprocessing - Elsie</title>
+  <title>Zooming - Elsie</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Slide postprocessing";
-    var mkdocs_page_input_path = "cookbook/postprocessing.md";
-    var mkdocs_page_url = "/elsie/cookbook/postprocessing/";
+    var mkdocs_page_name = "Zooming";
+    var mkdocs_page_input_path = "cookbook/zoom.md";
+    var mkdocs_page_url = "/elsie/cookbook/zoom/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
@@ -96,13 +96,11 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../grids/">Grids</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../zoom/">Zooming</a>
-                    </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Slide postprocessing</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Zooming</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#slide-numbering">Slide numbering</a>
-    </li>
     </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../postprocessing/">Slide postprocessing</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">API reference</span></p>
@@ -135,10 +133,10 @@
         
       
     
-    <li>Slide postprocessing</li>
+    <li>Zooming</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/spirali/elsie/blob/master/docs/cookbook/postprocessing.md"
+        <a href="https://github.com/spirali/elsie/blob/master/docs/cookbook/zoom.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -149,43 +147,79 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="slide-postprocessing">Slide postprocessing<a class="headerlink" href="#slide-postprocessing" title="Permanent link">#</a></h1>
-<p>Sometimes you may want to add some global data to your slides, for example a footer, license
-information or <a href="#slide-numbering">slide numbers</a>. To make it easier, you can pass a function to
-the <code>slide_postprocessing</code> parameter of the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_render"><code>render</code></a> method. The
-function will receive a list of root boxes of each slide in the presentation. You can then go
-through the list and modify the slides, for example by adding some text to them.</p>
-<h2 id="slide-numbering">Slide numbering<a class="headerlink" href="#slide-numbering" title="Permanent link">#</a></h2>
-<p>It is quite easy to add numbers to each slide using slide postprocessing. Here is an example:</p>
-<pre><code class="language-python">import elsie
-slides = elsie.Slides()
-
-@slides.slide()
-def slide1(slide):
-    slide.text(&quot;Page numbering demo&quot;)
-
-@slides.slide()
-def slide2(slide):
-    slide.box().text(&quot;Hello world!&quot;)
-    slide.box(show=&quot;next+&quot;).text(&quot;Hello world!&quot;)
-    slide.box(show=&quot;next+&quot;).text(&quot;Hello world!&quot;)
-
-@slides.slide()
-def slide3(slide):
-    slide.box().text(&quot;Last slide&quot;)
-
-def page_numbering(slides):
-    for i, slide in enumerate(slides):
-        slide.box(x=&quot;90%&quot;, y=&quot;90%&quot;, width=70, height=45).rect(
-            bg_color=&quot;orange&quot;, rx=5, ry=5
-        ).text(f&quot;{i + 1}/{len(slides)}&quot;)
-
-slides.render(slide_postprocessing=page_numbering)
+                <h1 id="zooming">Zooming<a class="headerlink" href="#zooming" title="Permanent link">#</a></h1>
+<p>SVG defines a <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox">viewbox</a>
+attribute, which allows you to change from which view point is the SVG image rendered. <em>Elsie</em> also
+supports this attribute via the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_slide"><code>view_box</code></a> parameter.</p>
+<p>Using a specific viewbox, you can for example create "zoomed" slides. This might be useful if you
+first want to show an overview of something and then later zoom-in to show some details.</p>
+<p>Let's create a function that will render some content:</p>
+<pre><code class="language-python">def render_slide(parent):
+    parent.box(x=50, y=50, width=100, height=80).rect(bg_color=&quot;red&quot;)
+    return parent.box(x=180, y=50, width=80, height=80).ellipse(bg_color=&quot;blue&quot;)
 </code></pre>
-<p>You can find the rendered PDF with slide numbers
-<a href="https://github.com/spirali/elsie/raw/master/examples/page_numbers/page_numbers.pdf">here</a>.</p>
-<p>You could also easily create a fragment number for each fragment of each slide by iterating numbers
-up to the <a href="https://spirali.github.io/elsie/apidoc/elsie.slide.Slide.html#f_current_step"><code>current_slide()</code></a> of each slide.</p>
+<p>Now we can use it to create an overview slide:</p>
+<pre><code class="language-python">@slides.slide()
+def overview(slide):
+    render_slide(slide)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-dc3f3dd24bf9496daa831b338c3cd997">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='200'><rect x='50' y='50' width='100' height='80' style='fill:red;stroke:none' /><ellipse cx='220.0' cy='90.0' rx='40.0' ry='40.0' style='fill:blue;stroke:none' /></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>And then render the slide content again, this time zoomed-in on a particular spot:</p>
+<pre><code class="language-python">@slides.slide(view_box=(120, 80, 80, 30))
+def detail(slide):
+    circle = render_slide(slide)
+
+    # Text label
+    textbox = slide.box(x=130, y=80, z_level=2)
+    textbox.text(&quot;Circle edge&quot;, elsie.TextStyle(size=6))
+    textbox.overlay(z_level=1).rect(bg_color=&quot;yellow&quot;)
+
+    # Line with arrow
+    slide.box().line([
+        textbox.p(&quot;100%&quot;, &quot;50%&quot;),
+        circle.p(&quot;0%&quot;, &quot;50%&quot;)
+    ], end_arrow=elsie.Arrow(size=6))
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-9a0c9f43512b4dfa8d9f175980b685fb">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='200' viewBox='120 80 80 30'><rect x='50' y='50' width='100' height='80' style='fill:red;stroke:none' /><ellipse cx='220.0' cy='90.0' rx='40.0' ry='40.0' style='fill:blue;stroke:none' /><polyline points='163.1172,83.6 177.8510898022873,89.18538244453757' style='fill:none;stroke:black;stroke-width:1' /><polygon style='fill:black;stroke:none;' points='177.06927018525275,84.7644653804075 180.0,90.0 174.33508902389647,91.97706439774275' /><rect x='130' y='80' width='33.1172' height='7.199999999999999' style='fill:yellow;stroke:none' /><text x='146.5586' y='86.0' text-anchor='middle' font-family='sans-serif' font-size='6' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Circle&#160;edge</tspan></text></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
               
             </div>
           </div>
@@ -193,8 +227,10 @@ up to the <a href="https://spirali.github.io/elsie/apidoc/elsie.slide.Slide.html
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="../postprocessing/" class="btn btn-neutral float-right" title="Slide postprocessing">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-        <a href="../zoom/" class="btn btn-neutral" title="Zooming"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+        <a href="../grids/" class="btn btn-neutral" title="Grids"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -222,8 +258,10 @@ up to the <a href="https://spirali.github.io/elsie/apidoc/elsie.slide.Slide.html
           <a href="https://github.com/spirali/elsie/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../zoom/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../grids/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
+      
+        <span style="margin-left: 15px"><a href="../postprocessing/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

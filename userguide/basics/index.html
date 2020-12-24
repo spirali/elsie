@@ -108,6 +108,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/grids/">Grids</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/zoom/">Zooming</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/postprocessing/">Slide postprocessing</a>
                     </li>
                 </ul>
@@ -185,8 +187,8 @@ def slide1(slide: elsie.Box):
     slide.box().text(&quot;Hello&quot;)
 </code></pre>
 <p>Both <code>slide</code> and <code>new_slide</code> have parameters that allow you to change the background color and SVG
-viewbox of the slide. You can also choose its name (see <a href="#name-policy">below</a>)
-or enable <a href="../layout/#debug-draw-mode">debug draw mode</a>.</p>
+viewbox of the slide (see example usage <a href="../../cookbook/zoom/">here</a>). You can also choose
+its name (see <a href="#name-policy">below</a>) or enable <a href="../layout/#debug-draw-mode">debug draw mode</a>.</p>
 <h2 id="rendering-slides">Rendering slides<a class="headerlink" href="#rendering-slides" title="Permanent link">#</a></h2>
 <p>After you have created all of your desired slides and filled them with content, you can render your
 presentation using the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_render"><code>render</code></a> method. There are several useful

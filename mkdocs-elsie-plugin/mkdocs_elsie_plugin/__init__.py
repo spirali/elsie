@@ -96,7 +96,7 @@ def render_slide(code: List[str],
     template = f"""
 import elsie
 from elsie.box import Box
-from elsie.jupyter import render_slide
+from elsie.jupyter import render_slide as elsie_render_slide
 
 {ctx.get_lib_code()}
 
@@ -105,7 +105,7 @@ slide = slides.new_slide({slide_args})
 {border_str}
 {code}
 
-result = render_slide(slides._slides[-1])
+result = elsie_render_slide(slides._slides[-1])
 """.strip()
 
     locals = {}
