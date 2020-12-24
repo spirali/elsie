@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Stanislav Böhm">
+  <link rel="canonical" href="https://spirali.github.io/elsie/cookbook/grids/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Grids - Elsie</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Grids";
+    var mkdocs_page_input_path = "cookbook/grids.md";
+    var mkdocs_page_url = "/elsie/cookbook/grids/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-V9H5Q6FZ6D', 'https://spirali.github.io/elsie/');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Elsie</a>
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../getting_started/">Getting started</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../gallery/">Gallery</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">User guide</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/basics/">Basics</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/layout/">Layout</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/revealing/">Revealing</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/text/">Text</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/syntax_highlighting/">Syntax highlighting</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/images/">Images</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/shapes/">Shapes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/jupyter/">Jupyter integration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/latex/">Latex</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Cookbook</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../lists/">Lists</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Grids</a>
+    <ul class="current">
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../postprocessing/">Slide postprocessing</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">API reference</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="../../apidoc">API documentation</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Elsie</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Cookbook &raquo;</li>
+        
+      
+    
+    <li>Grids</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/spirali/elsie/blob/master/docs/cookbook/grids.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="grids">Grids<a class="headerlink" href="#grids" title="Permanent link">#</a></h1>
+<p>The <a href="../../userguide/layout/">box</a> model of <em>Elsie</em> makes it easy to create fixed size rectangular
+grids. Simply create a box with a horizontal layout for each row and then fill it with a fixed-size
+box for each column. If you need spaces between the grid items, you can put padding on the inner
+boxes.</p>
+<pre><code class="language-python">row_count = 2
+column_count = 3
+
+for r in range(row_count):
+    row = slide.box(horizontal=True, p_bottom=10)
+    for c in range(column_count):
+        color = &quot;#FF2400&quot; if c % 2 == 0 else &quot;#16A085&quot;
+        box = row.box(width=50, height=50, p_right=10)
+        box.rect(color=&quot;black&quot;, bg_color=color)
+        box.text(f&quot;({r}, {c})&quot;, elsie.TextStyle(color=&quot;white&quot;))
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-cc361ee2082c42218d65fca3320d7eb3">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='300'><rect x='0' y='0' width='400' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='79.20020000000001' y='90.0' width='70.5332' height='50' style='fill:#FF2400;stroke:black;stroke-width:1' /><text x='114.4668' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:white;'><tspan font-variant-numeric='lining-nums'>(0,&#160;0)</tspan></text><rect x='159.73340000000002' y='90.0' width='70.5332' height='50' style='fill:#16A085;stroke:black;stroke-width:1' /><text x='195.0' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:white;'><tspan font-variant-numeric='lining-nums'>(0,&#160;1)</tspan></text><rect x='240.2666' y='90.0' width='70.5332' height='50' style='fill:#FF2400;stroke:black;stroke-width:1' /><text x='275.5332' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:white;'><tspan font-variant-numeric='lining-nums'>(0,&#160;2)</tspan></text><rect x='79.20020000000001' y='150.0' width='70.5332' height='50' style='fill:#FF2400;stroke:black;stroke-width:1' /><text x='114.4668' y='186.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:white;'><tspan font-variant-numeric='lining-nums'>(1,&#160;0)</tspan></text><rect x='159.73340000000002' y='150.0' width='70.5332' height='50' style='fill:#16A085;stroke:black;stroke-width:1' /><text x='195.0' y='186.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:white;'><tspan font-variant-numeric='lining-nums'>(1,&#160;1)</tspan></text><rect x='240.2666' y='150.0' width='70.5332' height='50' style='fill:#FF2400;stroke:black;stroke-width:1' /><text x='275.5332' y='186.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:white;'><tspan font-variant-numeric='lining-nums'>(1,&#160;2)</tspan></text></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<p>Using <a href="../../userguide/revealing/">fragments</a>, you can then make the grid items appear gradually:</p>
+<pre><code class="language-python">row_count = 2
+column_count = 3
+
+fragment = 1
+for r in range(row_count):
+    row = slide.box(horizontal=True, p_bottom=10)
+    for c in range(column_count):
+        box = row.box(width=50, height=50, p_right=10, show=f&quot;{fragment}+&quot;)
+        box.rect(color=&quot;black&quot;)
+        box.text(f&quot;({r}, {c})&quot;)
+        fragment += 1
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-e7a65a0496984546a5c2be4a59ad2c2f">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='300'><rect x='0' y='0' width='400' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='79.20020000000001' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='114.4668' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;0)</tspan></text></svg></div>
+<div class='elsie-step step-2'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='300'><rect x='0' y='0' width='400' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='79.20020000000001' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='114.4668' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;0)</tspan></text><rect x='159.73340000000002' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='195.0' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;1)</tspan></text></svg></div>
+<div class='elsie-step step-3'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='300'><rect x='0' y='0' width='400' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='79.20020000000001' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='114.4668' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;0)</tspan></text><rect x='159.73340000000002' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='195.0' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;1)</tspan></text><rect x='240.2666' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='275.5332' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;2)</tspan></text></svg></div>
+<div class='elsie-step step-4'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='300'><rect x='0' y='0' width='400' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='79.20020000000001' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='114.4668' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;0)</tspan></text><rect x='159.73340000000002' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='195.0' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;1)</tspan></text><rect x='240.2666' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='275.5332' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;2)</tspan></text><rect x='79.20020000000001' y='150.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='114.4668' y='186.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(1,&#160;0)</tspan></text></svg></div>
+<div class='elsie-step step-5'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='300'><rect x='0' y='0' width='400' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='79.20020000000001' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='114.4668' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;0)</tspan></text><rect x='159.73340000000002' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='195.0' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;1)</tspan></text><rect x='240.2666' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='275.5332' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;2)</tspan></text><rect x='79.20020000000001' y='150.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='114.4668' y='186.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(1,&#160;0)</tspan></text><rect x='159.73340000000002' y='150.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='195.0' y='186.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(1,&#160;1)</tspan></text></svg></div>
+<div class='elsie-step step-6'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='400' height='300'><rect x='0' y='0' width='400' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='79.20020000000001' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='114.4668' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;0)</tspan></text><rect x='159.73340000000002' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='195.0' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;1)</tspan></text><rect x='240.2666' y='90.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='275.5332' y='126.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(0,&#160;2)</tspan></text><rect x='79.20020000000001' y='150.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='114.4668' y='186.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(1,&#160;0)</tspan></text><rect x='159.73340000000002' y='150.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='195.0' y='186.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(1,&#160;1)</tspan></text><rect x='240.2666' y='150.0' width='70.5332' height='50' style='fill:none;stroke:black;stroke-width:1' /><text x='275.5332' y='186.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>(1,&#160;2)</tspan></text></svg></div>
+</div>
+
+<div class="elsie-controls">
+    <button class="elsie-previous"><</button>
+    <div class="elsie-current-step">Fragment: 1</div>
+    <button class="elsie-next">></button>
+</div>
+<script type='text/javascript'>(function () {
+var active_step = 1;
+var max_step = 6;
+var slide_id = ".elsie-wrapper-e7a65a0496984546a5c2be4a59ad2c2f";
+
+function getSelector(selector) {
+    return slide_id + " " + selector;
+}
+
+function updateState(step) {
+    var step_str = step.toString();
+
+    document.querySelector(getSelector(".elsie-next")).disabled = step >= max_step;
+    document.querySelector(getSelector(".elsie-previous")).disabled = step <= 1;
+    document.querySelector(getSelector(".elsie-current-step")).innerText = "Fragment: " + step_str;
+
+    var items = document.querySelectorAll(getSelector(".elsie-step"));
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "none";
+    }
+    document.querySelector(getSelector(".elsie-step.step-" + step_str)).style.display = "block";
+}
+function moveStep(offset) {
+    var new_step = active_step + offset;
+    if (new_step >= 1 && new_step <= max_step) {
+        active_step = new_step;
+    }
+    updateState(active_step);
+}
+document.querySelector(getSelector(".elsie-next")).addEventListener('click', function() {
+    moveStep(1);
+});
+document.querySelector(getSelector(".elsie-previous")).addEventListener('click', function() {
+    moveStep(-1);
+});
+updateState(active_step);
+})()</script></div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../postprocessing/" class="btn btn-neutral float-right" title="Slide postprocessing">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../lists/" class="btn btn-neutral" title="Lists"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/spirali/elsie/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../lists/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../postprocessing/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
