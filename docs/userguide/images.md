@@ -13,6 +13,13 @@ ratio. Image scale can be set explicitly with the `scale` parameter.
 slide.image("imgs/python.png", scale=0.2)
 ```
 
+You can also rotate images using the `rotation` parameter. Pass it an angle in degrees to rotate
+the image clockwise around its center.
+
+```elsie,height=120,border=no
+slide.image("imgs/python.png", rotation=180)
+```
+
 `Elsie` supports the following image formats: SVG, PNG, JPEG, and ORA (Open Raster Format).
 
 ## Embedding fragments in images

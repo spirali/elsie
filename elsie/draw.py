@@ -1,3 +1,4 @@
+from .geom import apply_rotation
 from .textstyle import TextStyle
 
 
@@ -103,7 +104,7 @@ def draw_text(
     xml.close("text")
 
 
-def draw_bitmap(xml, x, y, width, height, mime, data, extra_args=None):
+def draw_bitmap(xml, x, y, width, height, mime, data, rotation=None, extra_args=None):
     xml.element("image")
     xml.set("x", x)
     xml.set("y", y)
@@ -111,6 +112,8 @@ def draw_bitmap(xml, x, y, width, height, mime, data, extra_args=None):
         xml.set("width", width)
     if height is not None:
         xml.set("height", height)
+    if rotation:
+        apply_rotation(xml, rotation, (x + width / 2, y + height / 2))
     if extra_args is not None:
         for k, v in extra_args:
             xml.set(k, v)

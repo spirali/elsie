@@ -97,7 +97,8 @@ def _layer_to_svg(element, xml, sources):
         image_height,
         mime,
         data,
-        extra_args,
+        rotation=None,
+        extra_args=extra_args,
     )
 
 

@@ -17,6 +17,8 @@ the rectangle. You can find more about this attribute
 - `bg_color=<str or None>`: Color used to fill the rectangle.
 - `rx`, `ry`: Radius of
 [rounded corners](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/rect) of the rectangle.
+- `rotation=<number>`: Rotate the rectangle by the given number of degrees clockwise around its
+center.
 
 An example of drawing a rectangle:
 ```elsie
@@ -42,6 +44,8 @@ pass `None` (the default), the edges will not be drawn.
 the ellipse. You can find more about this attribute
 [here](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray).
 - `bg_color=<str or None>`: Color used to fill the ellipse.
+- `rotation=<number>`: Rotate the ellipse by the given number of degrees clockwise around its
+center.
 
 An example of drawing an ellipse:
 ```elsie
