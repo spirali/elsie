@@ -87,6 +87,8 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#rectangles">Rectangles</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ellipses">Ellipses</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#lines-and-polygons">Lines and polygons</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#arrow-heads">Arrow heads</a>
@@ -178,9 +180,51 @@ box.rect(
   rx=20, ry=20
 )
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-832291b96ba54bec870f9ece9ff97176">
+<div class="elsie-wrapper elsie-wrapper-273f62f7749a434da547e2c4f0c8ab24">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><rect x='30.0' y='50.0' width='240.0' height='200' rx='20' ry='20' style='fill:green;stroke:red;stroke-width:10;stroke-dasharray:10 4' /></svg></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h2 id="ellipses">Ellipses<a class="headerlink" href="#ellipses" title="Permanent link">#</a></h2>
+<p>You can draw ellipses using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_ellipse"><code>ellipse</code></a> method on a box. The
+position and size of the ellipse will be copied from the box. If you want to draw a <strong>circle</strong>,
+use a square parent box.</p>
+<p>You can also pass the following additional parameters:</p>
+<ul>
+<li><code>color=&lt;str or None&gt;</code>: <a href="../text/#colors">Color</a> used to draw the edges of the ellipse. If you
+pass <code>None</code> (the default), the edges will not be drawn.</li>
+<li><code>stroke_width=&lt;number&gt;</code>: Thickness of the ellipse.</li>
+<li><code>stroke_dasharray=&lt;str or None&gt;</code>: Pattern of dashes and gaps to used when drawing the edges of
+the ellipse. You can find more about this attribute
+<a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray">here</a>.</li>
+<li><code>bg_color=&lt;str or None&gt;</code>: Color used to fill the ellipse.</li>
+</ul>
+<p>An example of drawing an ellipse:</p>
+<pre><code class="language-python">box = slide.box(x=&quot;[50%]&quot;, y=&quot;[50%]&quot;, width=&quot;80%&quot;, height=200)
+box.ellipse(
+  bg_color=&quot;green&quot;, color=&quot;red&quot;,
+  stroke_width=10, stroke_dasharray=&quot;10 4&quot;
+)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-07893844c7b6454ca3c6f4baa8ddab57">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><ellipse cx='150.0' cy='150.0' rx='120.0' ry='100.0' style='fill:green;stroke:red;stroke-width:10;stroke-dasharray:10 4' /></svg></div>
 </div>
 </div>
 <style>
@@ -219,7 +263,7 @@ slide.box().polygon([
   box.p(&quot;50%&quot;, &quot;100%&quot;).add(0, 20)
 ], color=&quot;green&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-46fac4db73cb4928af65b5bb12debf91">
+<div class="elsie-wrapper elsie-wrapper-caf6c029a91944719ab40a67834dfd05">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><polyline points='100.0,83.2 150.0,133.2' style='fill:none;stroke:red;stroke-width:5' /><text x='150.0' y='211.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello</tspan></text><polygon points='96.66794999999999,200.0 150.0,163.2 203.33204999999998,200.0 150.0,236.79999999999998' style='fill:none;stroke:green;stroke-width:1' /></svg></div>
 </div>
@@ -267,7 +311,7 @@ is proportional to the size of the arrow.</li>
   end_arrow=elsie.Arrow(size=40),
 ) 
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-c2e08969b82740889991e21ac9a84650">
+<div class="elsie-wrapper elsie-wrapper-0ce70118e76249f79541360005ea509e">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><rect x='0' y='0' width='300' height='300' style='fill:none;stroke:black;stroke-width:1' /><polyline points='106.12372435695795,106.12372435695795 139.16649559160595,139.16649559160595' style='fill:none;stroke:red;stroke-width:5' /><polygon style='fill:red;stroke:none;' points='105.17638090205041,119.31851652578136 100.0,100.0 119.31851652578136,105.17638090205043 124.49489742783179,124.49489742783179' /><polygon style='fill:red;stroke:none;' points='146.51377029009367,110.15221207633019 150.0,150.0 110.15221207633019,146.51377029009367' /></svg></div>
 </div>
