@@ -11,7 +11,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8]
@@ -24,8 +24,8 @@ jobs:
     - name: Install dependencies
       run: |
         sudo add-apt-repository ppa:inkscape.dev/stable
-        sudo apt update
-        sudo apt-get install -y --no-install-recommends inkscape=1.0.1+r75~ubuntu18.04.1
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends inkscape=1.0.1+r74~ubuntu20.04.1
         python -m pip install --upgrade pip wheel setuptools
         python -m pip install -r requirements-dev.txt
         python -m pip install .
