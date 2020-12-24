@@ -105,112 +105,154 @@
 105
 106
 107
-108</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>uuid</span>
-<a name=line-2></a>
-<a name=line-3></a><span class=kn>from</span> <span class=nn>.slide</span> <span class=kn>import</span> <span class=n>Slide</span>
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>base64</span>
+<a name=line-2></a><span class=kn>import</span> <span class=nn>uuid</span>
+<a name=line-3></a><span class=kn>from</span> <span class=nn>typing</span> <span class=kn>import</span> <span class=n>List</span>
 <a name=line-4></a>
-<a name=line-5></a>
-<a name=line-6></a><span class=k>def</span> <span class=nf>get_javascript</span><span class=p>(</span><span class=n>max_step</span><span class=p>:</span> <span class=nb>int</span><span class=p>,</span> <span class=n>slide_id</span><span class=p>:</span> <span class=nb>str</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
-<a name=line-7></a>    <span class=c1># Divided into two parts for easier {} interpolation</span>
-<a name=line-8></a>    <span class=n>p1</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&quot;&quot;&quot;</span>
-<a name=line-9></a><span class=s2>var active_step = 1;</span>
-<a name=line-10></a><span class=s2>var max_step = </span><span class=si>{</span><span class=n>max_step</span><span class=si>}</span><span class=s2>;</span>
-<a name=line-11></a><span class=s2>var slide_id = &quot;.</span><span class=si>{</span><span class=n>slide_id</span><span class=si>}</span><span class=s2>&quot;;</span>
-<a name=line-12></a><span class=s2>&quot;&quot;&quot;</span>
-<a name=line-13></a>
-<a name=line-14></a>    <span class=n>p2</span> <span class=o>=</span> <span class=s2>&quot;&quot;&quot;</span>
-<a name=line-15></a><span class=s2>function getSelector(selector) {</span>
-<a name=line-16></a><span class=s2>    return slide_id + &quot; &quot; + selector;</span>
-<a name=line-17></a><span class=s2>}</span>
-<a name=line-18></a>
-<a name=line-19></a><span class=s2>function updateState(step) {</span>
-<a name=line-20></a><span class=s2>    var step_str = step.toString();</span>
-<a name=line-21></a>
-<a name=line-22></a><span class=s2>    document.querySelector(getSelector(&quot;.elsie-next&quot;)).disabled = step &gt;= max_step;</span>
-<a name=line-23></a><span class=s2>    document.querySelector(getSelector(&quot;.elsie-previous&quot;)).disabled = step &lt;= 1;</span>
-<a name=line-24></a><span class=s2>    document.querySelector(getSelector(&quot;.elsie-current-step&quot;)).innerText = &quot;Fragment: &quot; + step_str;</span>
-<a name=line-25></a>
-<a name=line-26></a><span class=s2>    var items = document.querySelectorAll(getSelector(&quot;.elsie-step&quot;));</span>
-<a name=line-27></a><span class=s2>    for (var i = 0; i &lt; items.length; i++) {</span>
-<a name=line-28></a><span class=s2>        items[i].style.display = &quot;none&quot;;</span>
-<a name=line-29></a><span class=s2>    }</span>
-<a name=line-30></a><span class=s2>    document.querySelector(getSelector(&quot;.elsie-step.step-&quot; + step_str)).style.display = &quot;block&quot;;</span>
-<a name=line-31></a><span class=s2>}</span>
-<a name=line-32></a><span class=s2>function moveStep(offset) {</span>
-<a name=line-33></a><span class=s2>    var new_step = active_step + offset;</span>
-<a name=line-34></a><span class=s2>    if (new_step &gt;= 1 &amp;&amp; new_step &lt;= max_step) {</span>
-<a name=line-35></a><span class=s2>        active_step = new_step;</span>
-<a name=line-36></a><span class=s2>    }</span>
-<a name=line-37></a><span class=s2>    updateState(active_step);</span>
-<a name=line-38></a><span class=s2>}</span>
-<a name=line-39></a><span class=s2>document.querySelector(getSelector(&quot;.elsie-next&quot;)).addEventListener(&#39;click&#39;, function() {</span>
-<a name=line-40></a><span class=s2>    moveStep(1);</span>
-<a name=line-41></a><span class=s2>});</span>
-<a name=line-42></a><span class=s2>document.querySelector(getSelector(&quot;.elsie-previous&quot;)).addEventListener(&#39;click&#39;, function() {</span>
-<a name=line-43></a><span class=s2>    moveStep(-1);</span>
-<a name=line-44></a><span class=s2>});</span>
-<a name=line-45></a><span class=s2>updateState(active_step);</span>
-<a name=line-46></a><span class=s2>&quot;&quot;&quot;</span>
-<a name=line-47></a>
-<a name=line-48></a>    <span class=k>return</span> <span class=s2>&quot;&lt;script type=&#39;text/javascript&#39;&gt;(function () {&quot;</span> <span class=o>+</span> <span class=n>p1</span> <span class=o>+</span> <span class=n>p2</span> <span class=o>+</span> <span class=s2>&quot;})()&lt;/script&gt;&quot;</span>
+<a name=line-5></a><span class=kn>from</span> <span class=nn>.slide</span> <span class=kn>import</span> <span class=n>Slide</span>
+<a name=line-6></a>
+<a name=line-7></a>
+<a name=line-8></a><span class=k>def</span> <span class=nf>get_javascript</span><span class=p>(</span><span class=n>max_step</span><span class=p>:</span> <span class=nb>int</span><span class=p>,</span> <span class=n>slide_id</span><span class=p>:</span> <span class=nb>str</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
+<a name=line-9></a>    <span class=c1># Divided into two parts for easier {} interpolation</span>
+<a name=line-10></a>    <span class=n>p1</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&quot;&quot;&quot;</span>
+<a name=line-11></a><span class=s2>var active_step = 1;</span>
+<a name=line-12></a><span class=s2>var max_step = </span><span class=si>{</span><span class=n>max_step</span><span class=si>}</span><span class=s2>;</span>
+<a name=line-13></a><span class=s2>var slide_id = &quot;.</span><span class=si>{</span><span class=n>slide_id</span><span class=si>}</span><span class=s2>&quot;;</span>
+<a name=line-14></a><span class=s2>&quot;&quot;&quot;</span>
+<a name=line-15></a>
+<a name=line-16></a>    <span class=n>p2</span> <span class=o>=</span> <span class=s2>&quot;&quot;&quot;</span>
+<a name=line-17></a><span class=s2>function getSelector(selector) {</span>
+<a name=line-18></a><span class=s2>    return slide_id + &quot; &quot; + selector;</span>
+<a name=line-19></a><span class=s2>}</span>
+<a name=line-20></a>
+<a name=line-21></a><span class=s2>function updateState(step) {</span>
+<a name=line-22></a><span class=s2>    var step_str = step.toString();</span>
+<a name=line-23></a>
+<a name=line-24></a><span class=s2>    document.querySelector(getSelector(&quot;.elsie-next&quot;)).disabled = step &gt;= max_step;</span>
+<a name=line-25></a><span class=s2>    document.querySelector(getSelector(&quot;.elsie-previous&quot;)).disabled = step &lt;= 1;</span>
+<a name=line-26></a><span class=s2>    document.querySelector(getSelector(&quot;.elsie-current-step&quot;)).innerText = &quot;Fragment: &quot; + step_str;</span>
+<a name=line-27></a>
+<a name=line-28></a><span class=s2>    var items = document.querySelectorAll(getSelector(&quot;.elsie-step&quot;));</span>
+<a name=line-29></a><span class=s2>    for (var i = 0; i &lt; items.length; i++) {</span>
+<a name=line-30></a><span class=s2>        items[i].style.display = &quot;none&quot;;</span>
+<a name=line-31></a><span class=s2>    }</span>
+<a name=line-32></a><span class=s2>    document.querySelector(getSelector(&quot;.elsie-step.step-&quot; + step_str)).style.display = &quot;block&quot;;</span>
+<a name=line-33></a><span class=s2>}</span>
+<a name=line-34></a><span class=s2>function moveStep(offset) {</span>
+<a name=line-35></a><span class=s2>    var new_step = active_step + offset;</span>
+<a name=line-36></a><span class=s2>    if (new_step &gt;= 1 &amp;&amp; new_step &lt;= max_step) {</span>
+<a name=line-37></a><span class=s2>        active_step = new_step;</span>
+<a name=line-38></a><span class=s2>    }</span>
+<a name=line-39></a><span class=s2>    updateState(active_step);</span>
+<a name=line-40></a><span class=s2>}</span>
+<a name=line-41></a><span class=s2>document.querySelector(getSelector(&quot;.elsie-next&quot;)).addEventListener(&#39;click&#39;, function() {</span>
+<a name=line-42></a><span class=s2>    moveStep(1);</span>
+<a name=line-43></a><span class=s2>});</span>
+<a name=line-44></a><span class=s2>document.querySelector(getSelector(&quot;.elsie-previous&quot;)).addEventListener(&#39;click&#39;, function() {</span>
+<a name=line-45></a><span class=s2>    moveStep(-1);</span>
+<a name=line-46></a><span class=s2>});</span>
+<a name=line-47></a><span class=s2>updateState(active_step);</span>
+<a name=line-48></a><span class=s2>&quot;&quot;&quot;</span>
 <a name=line-49></a>
-<a name=line-50></a>
-<a name=line-51></a><span class=n>CSS</span> <span class=o>=</span> <span class=s2>&quot;&quot;&quot;</span>
-<a name=line-52></a><span class=s2>.elsie-wrapper {</span>
-<a name=line-53></a><span class=s2>    margin-bottom: 20px;</span>
-<a name=line-54></a><span class=s2>}</span>
-<a name=line-55></a><span class=s2>.elsie-slide {</span>
-<a name=line-56></a><span class=s2>    margin-bottom: 10px;</span>
-<a name=line-57></a><span class=s2>}</span>
-<a name=line-58></a><span class=s2>.elsie-controls {</span>
-<a name=line-59></a><span class=s2>    display: flex;</span>
-<a name=line-60></a><span class=s2>    align-items: center;</span>
-<a name=line-61></a><span class=s2>}</span>
-<a name=line-62></a><span class=s2>.elsie-controls * {</span>
-<a name=line-63></a><span class=s2>    margin: 0 10px;</span>
-<a name=line-64></a><span class=s2>}</span>
-<a name=line-65></a><span class=s2>&quot;&quot;&quot;</span>
-<a name=line-66></a>
-<a name=line-67></a>
-<a name=line-68></a><span class=k>def</span> <span class=nf>render_slide</span><span class=p>(</span><span class=n>slide</span><span class=p>:</span> <span class=n>Slide</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
-<a name=line-69></a>    <span class=n>units</span> <span class=o>=</span> <span class=n>slide</span><span class=o>.</span><span class=n>slides</span><span class=o>.</span><span class=n>render</span><span class=p>(</span><span class=kc>None</span><span class=p>,</span> <span class=n>return_units</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>select_slides</span><span class=o>=</span><span class=p>[</span><span class=n>slide</span><span class=p>])</span>
-<a name=line-70></a>    <span class=n>svgs</span> <span class=o>=</span> <span class=nb>filter</span><span class=p>(</span><span class=kc>None</span><span class=p>,</span> <span class=p>(</span><span class=n>unit</span><span class=o>.</span><span class=n>get_svg</span><span class=p>()</span> <span class=k>for</span> <span class=n>unit</span> <span class=ow>in</span> <span class=n>units</span><span class=p>))</span>
-<a name=line-71></a>    <span class=n>fragments</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span>
-<a name=line-72></a>        <span class=sa>f</span><span class=s2>&quot;&lt;div class=&#39;elsie-step step-</span><span class=si>{</span><span class=n>index</span> <span class=o>+</span> <span class=mi>1</span><span class=si>}</span><span class=s2>&#39;&gt;</span><span class=si>{</span><span class=n>svg</span><span class=si>}</span><span class=s2>&lt;/div&gt;&quot;</span>
-<a name=line-73></a>        <span class=k>for</span> <span class=p>(</span><span class=n>index</span><span class=p>,</span> <span class=n>svg</span><span class=p>)</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>svgs</span><span class=p>)</span>
-<a name=line-74></a>    <span class=p>)</span>
-<a name=line-75></a>    <span class=n>fragments_text</span> <span class=o>=</span> <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>fragments</span><span class=p>)</span>
-<a name=line-76></a>
-<a name=line-77></a>    <span class=n>slide_id</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&quot;elsie-wrapper-</span><span class=si>{</span><span class=n>uuid</span><span class=o>.</span><span class=n>uuid4</span><span class=p>()</span><span class=o>.</span><span class=n>hex</span><span class=si>}</span><span class=s2>&quot;</span>
-<a name=line-78></a>    <span class=n>content</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&quot;&quot;&quot;</span>
-<a name=line-79></a><span class=s2>&lt;div class=&quot;elsie-wrapper </span><span class=si>{</span><span class=n>slide_id</span><span class=si>}</span><span class=s2>&quot;&gt;</span>
-<a name=line-80></a><span class=s2>&lt;div class=&quot;elsie-slide&quot;&gt;</span>
-<a name=line-81></a><span class=s2>    </span><span class=si>{</span><span class=n>fragments_text</span><span class=si>}</span><span class=s2></span>
-<a name=line-82></a><span class=s2>&lt;/div&gt;</span>
-<a name=line-83></a><span class=s2>&quot;&quot;&quot;</span>
-<a name=line-84></a>    <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>fragments</span><span class=p>)</span> <span class=o>&gt;</span> <span class=mi>1</span><span class=p>:</span>
-<a name=line-85></a>        <span class=n>content</span> <span class=o>+=</span> <span class=sa>f</span><span class=s2>&quot;&quot;&quot;</span>
-<a name=line-86></a><span class=s2>&lt;div class=&quot;elsie-controls&quot;&gt;</span>
-<a name=line-87></a><span class=s2>    &lt;button class=&quot;elsie-previous&quot;&gt;&lt;&lt;/button&gt;</span>
-<a name=line-88></a><span class=s2>    &lt;div class=&quot;elsie-current-step&quot;&gt;Fragment: 1&lt;/div&gt;</span>
-<a name=line-89></a><span class=s2>    &lt;button class=&quot;elsie-next&quot;&gt;&gt;&lt;/button&gt;</span>
-<a name=line-90></a><span class=s2>&lt;/div&gt;</span>
-<a name=line-91></a><span class=si>{</span><span class=n>get_javascript</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>fragments</span><span class=p>),</span> <span class=n>slide_id</span><span class=p>)</span><span class=si>}</span><span class=s2>&quot;&quot;&quot;</span>
-<a name=line-92></a>    <span class=n>content</span> <span class=o>+=</span> <span class=s2>&quot;&lt;/div&gt;&quot;</span>
-<a name=line-93></a>    <span class=k>return</span> <span class=n>content</span> <span class=o>+</span> <span class=sa>f</span><span class=s2>&quot;&lt;style&gt;</span><span class=si>{</span><span class=n>CSS</span><span class=si>}</span><span class=s2>&lt;/style&gt;&quot;</span>
-<a name=line-94></a>
-<a name=line-95></a>
-<a name=line-96></a><span class=c1># https://stackoverflow.com/a/22424821/1107768</span>
-<a name=line-97></a><span class=k>def</span> <span class=nf>is_inside_notebook</span><span class=p>():</span>
-<a name=line-98></a>    <span class=k>try</span><span class=p>:</span>
-<a name=line-99></a>        <span class=kn>from</span> <span class=nn>IPython</span> <span class=kn>import</span> <span class=n>get_ipython</span>
-<a name=line-100></a>
-<a name=line-101></a>        <span class=n>ipython</span> <span class=o>=</span> <span class=n>get_ipython</span><span class=p>()</span>
-<a name=line-102></a>        <span class=k>if</span> <span class=ow>not</span> <span class=n>ipython</span><span class=p>:</span>
-<a name=line-103></a>            <span class=k>return</span> <span class=kc>False</span>
-<a name=line-104></a>        <span class=k>if</span> <span class=s2>&quot;IPKernelApp&quot;</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>ipython</span><span class=o>.</span><span class=n>config</span><span class=p>:</span>
-<a name=line-105></a>            <span class=k>return</span> <span class=kc>False</span>
-<a name=line-106></a>    <span class=k>except</span> <span class=ne>ImportError</span><span class=p>:</span>
-<a name=line-107></a>        <span class=k>return</span> <span class=kc>False</span>
-<a name=line-108></a>    <span class=k>return</span> <span class=kc>True</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.8 at 2020-12-24 12:48 </p></div></div></body></html>
+<a name=line-50></a>    <span class=k>return</span> <span class=s2>&quot;&lt;script type=&#39;text/javascript&#39;&gt;(function () {&quot;</span> <span class=o>+</span> <span class=n>p1</span> <span class=o>+</span> <span class=n>p2</span> <span class=o>+</span> <span class=s2>&quot;})()&lt;/script&gt;&quot;</span>
+<a name=line-51></a>
+<a name=line-52></a>
+<a name=line-53></a><span class=n>CSS</span> <span class=o>=</span> <span class=s2>&quot;&quot;&quot;</span>
+<a name=line-54></a><span class=s2>.elsie-wrapper {</span>
+<a name=line-55></a><span class=s2>    margin-bottom: 20px;</span>
+<a name=line-56></a><span class=s2>}</span>
+<a name=line-57></a><span class=s2>.elsie-slide {</span>
+<a name=line-58></a><span class=s2>    margin-bottom: 10px;</span>
+<a name=line-59></a><span class=s2>}</span>
+<a name=line-60></a><span class=s2>.elsie-controls {</span>
+<a name=line-61></a><span class=s2>    display: flex;</span>
+<a name=line-62></a><span class=s2>    align-items: center;</span>
+<a name=line-63></a><span class=s2>}</span>
+<a name=line-64></a><span class=s2>.elsie-controls * {</span>
+<a name=line-65></a><span class=s2>    margin: 0 10px;</span>
+<a name=line-66></a><span class=s2>}</span>
+<a name=line-67></a><span class=s2>&quot;&quot;&quot;</span>
+<a name=line-68></a>
+<a name=line-69></a>
+<a name=line-70></a><span class=k>def</span> <span class=nf>get_slide_repr_steps</span><span class=p>(</span><span class=n>slide</span><span class=p>:</span> <span class=n>Slide</span><span class=p>,</span> <span class=nb>format</span><span class=p>:</span> <span class=nb>str</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>List</span><span class=p>[</span><span class=nb>str</span><span class=p>]:</span>
+<a name=line-71></a>    <span class=k>if</span> <span class=nb>format</span> <span class=ow>not</span> <span class=ow>in</span> <span class=p>(</span><span class=s2>&quot;svg&quot;</span><span class=p>,</span> <span class=s2>&quot;png&quot;</span><span class=p>):</span>
+<a name=line-72></a>        <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Slide can be rendered only to SVG or PNG&quot;</span><span class=p>)</span>
+<a name=line-73></a>
+<a name=line-74></a>    <span class=n>return_units</span> <span class=o>=</span> <span class=nb>format</span> <span class=o>==</span> <span class=s2>&quot;svg&quot;</span>
+<a name=line-75></a>    <span class=n>units</span> <span class=o>=</span> <span class=n>slide</span><span class=o>.</span><span class=n>slides</span><span class=o>.</span><span class=n>render</span><span class=p>(</span><span class=n>output</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>return_units</span><span class=o>=</span><span class=n>return_units</span><span class=p>,</span> <span class=n>select_slides</span><span class=o>=</span><span class=p>[</span><span class=n>slide</span><span class=p>],</span>
+<a name=line-76></a>                                <span class=n>export_type</span><span class=o>=</span><span class=nb>format</span><span class=p>,</span> <span class=n>prune_cache</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
+<a name=line-77></a>    <span class=k>if</span> <span class=nb>format</span> <span class=o>==</span> <span class=s2>&quot;svg&quot;</span><span class=p>:</span>
+<a name=line-78></a>        <span class=k>return</span> <span class=p>[</span><span class=n>unit</span><span class=o>.</span><span class=n>svg</span> <span class=k>for</span> <span class=n>unit</span> <span class=ow>in</span> <span class=n>units</span><span class=p>]</span>
+<a name=line-79></a>    <span class=k>elif</span> <span class=nb>format</span> <span class=o>==</span> <span class=s2>&quot;png&quot;</span><span class=p>:</span>
+<a name=line-80></a>        <span class=n>images</span> <span class=o>=</span> <span class=p>[]</span>
+<a name=line-81></a>        <span class=k>for</span> <span class=n>png</span> <span class=ow>in</span> <span class=n>units</span><span class=p>:</span>
+<a name=line-82></a>            <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>png</span><span class=p>,</span> <span class=s2>&quot;rb&quot;</span><span class=p>)</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span>
+<a name=line-83></a>                <span class=n>data</span> <span class=o>=</span> <span class=n>base64</span><span class=o>.</span><span class=n>encodebytes</span><span class=p>(</span><span class=n>f</span><span class=o>.</span><span class=n>read</span><span class=p>())</span>
+<a name=line-84></a>                <span class=n>images</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;&quot;&quot;&lt;img src=&quot;data:image/png;base64, </span><span class=si>{</span><span class=n>data</span><span class=o>.</span><span class=n>decode</span><span class=p>()</span><span class=si>}</span><span class=s2>&quot; /&gt;&quot;&quot;&quot;</span><span class=p>)</span>
+<a name=line-85></a>        <span class=k>return</span> <span class=n>images</span>
+<a name=line-86></a>    <span class=k>else</span><span class=p>:</span>
+<a name=line-87></a>        <span class=k>assert</span> <span class=kc>False</span>
+<a name=line-88></a>
+<a name=line-89></a>
+<a name=line-90></a><span class=k>def</span> <span class=nf>render_slide_html</span><span class=p>(</span><span class=n>slide</span><span class=p>:</span> <span class=n>Slide</span><span class=p>,</span> <span class=nb>format</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s2>&quot;svg&quot;</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
+<a name=line-91></a>    <span class=n>step_items</span> <span class=o>=</span> <span class=n>get_slide_repr_steps</span><span class=p>(</span><span class=n>slide</span><span class=p>,</span> <span class=nb>format</span><span class=p>)</span>
+<a name=line-92></a>    <span class=n>fragments</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span>
+<a name=line-93></a>        <span class=sa>f</span><span class=s2>&quot;&lt;div class=&#39;elsie-step step-</span><span class=si>{</span><span class=n>index</span> <span class=o>+</span> <span class=mi>1</span><span class=si>}</span><span class=s2>&#39;&gt;</span><span class=si>{</span><span class=n>content</span><span class=si>}</span><span class=s2>&lt;/div&gt;&quot;</span>
+<a name=line-94></a>        <span class=k>for</span> <span class=p>(</span><span class=n>index</span><span class=p>,</span> <span class=n>content</span><span class=p>)</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>step_items</span><span class=p>)</span>
+<a name=line-95></a>    <span class=p>)</span>
+<a name=line-96></a>    <span class=n>fragments_text</span> <span class=o>=</span> <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>fragments</span><span class=p>)</span>
+<a name=line-97></a>
+<a name=line-98></a>    <span class=n>slide_id</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&quot;elsie-wrapper-</span><span class=si>{</span><span class=n>uuid</span><span class=o>.</span><span class=n>uuid4</span><span class=p>()</span><span class=o>.</span><span class=n>hex</span><span class=si>}</span><span class=s2>&quot;</span>
+<a name=line-99></a>    <span class=n>content</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&quot;&quot;&quot;</span>
+<a name=line-100></a><span class=s2>&lt;div class=&quot;elsie-wrapper </span><span class=si>{</span><span class=n>slide_id</span><span class=si>}</span><span class=s2>&quot;&gt;</span>
+<a name=line-101></a><span class=s2>&lt;div class=&quot;elsie-slide&quot;&gt;</span>
+<a name=line-102></a><span class=s2>    </span><span class=si>{</span><span class=n>fragments_text</span><span class=si>}</span><span class=s2></span>
+<a name=line-103></a><span class=s2>&lt;/div&gt;</span>
+<a name=line-104></a><span class=s2>&quot;&quot;&quot;</span>
+<a name=line-105></a>    <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>fragments</span><span class=p>)</span> <span class=o>&gt;</span> <span class=mi>1</span><span class=p>:</span>
+<a name=line-106></a>        <span class=n>content</span> <span class=o>+=</span> <span class=sa>f</span><span class=s2>&quot;&quot;&quot;</span>
+<a name=line-107></a><span class=s2>&lt;div class=&quot;elsie-controls&quot;&gt;</span>
+<a name=line-108></a><span class=s2>    &lt;button class=&quot;elsie-previous&quot;&gt;&lt;&lt;/button&gt;</span>
+<a name=line-109></a><span class=s2>    &lt;div class=&quot;elsie-current-step&quot;&gt;Fragment: 1&lt;/div&gt;</span>
+<a name=line-110></a><span class=s2>    &lt;button class=&quot;elsie-next&quot;&gt;&gt;&lt;/button&gt;</span>
+<a name=line-111></a><span class=s2>&lt;/div&gt;</span>
+<a name=line-112></a><span class=si>{</span><span class=n>get_javascript</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>fragments</span><span class=p>),</span> <span class=n>slide_id</span><span class=p>)</span><span class=si>}</span><span class=s2>&quot;&quot;&quot;</span>
+<a name=line-113></a>    <span class=n>content</span> <span class=o>+=</span> <span class=s2>&quot;&lt;/div&gt;&quot;</span>
+<a name=line-114></a>    <span class=k>return</span> <span class=n>content</span> <span class=o>+</span> <span class=sa>f</span><span class=s2>&quot;&lt;style&gt;</span><span class=si>{</span><span class=n>CSS</span><span class=si>}</span><span class=s2>&lt;/style&gt;&quot;</span>
+<a name=line-115></a>
+<a name=line-116></a>
+<a name=line-117></a><span class=c1># https://stackoverflow.com/a/22424821/1107768</span>
+<a name=line-118></a><span class=k>def</span> <span class=nf>is_inside_notebook</span><span class=p>():</span>
+<a name=line-119></a>    <span class=k>try</span><span class=p>:</span>
+<a name=line-120></a>        <span class=kn>from</span> <span class=nn>IPython</span> <span class=kn>import</span> <span class=n>get_ipython</span>
+<a name=line-121></a>
+<a name=line-122></a>        <span class=n>ipython</span> <span class=o>=</span> <span class=n>get_ipython</span><span class=p>()</span>
+<a name=line-123></a>        <span class=k>if</span> <span class=ow>not</span> <span class=n>ipython</span><span class=p>:</span>
+<a name=line-124></a>            <span class=k>return</span> <span class=kc>False</span>
+<a name=line-125></a>        <span class=k>if</span> <span class=s2>&quot;IPKernelApp&quot;</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>ipython</span><span class=o>.</span><span class=n>config</span><span class=p>:</span>
+<a name=line-126></a>            <span class=k>return</span> <span class=kc>False</span>
+<a name=line-127></a>    <span class=k>except</span> <span class=ne>ImportError</span><span class=p>:</span>
+<a name=line-128></a>        <span class=k>return</span> <span class=kc>False</span>
+<a name=line-129></a>    <span class=k>return</span> <span class=kc>True</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.8 at 2020-12-24 15:27 </p></div></div></body></html>
