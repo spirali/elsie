@@ -1,4 +1,4 @@
-from .geom import apply_rotation
+from .svg import apply_rotation
 from .textstyle import TextStyle
 
 

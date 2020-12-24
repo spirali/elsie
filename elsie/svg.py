@@ -1,3 +1,9 @@
+from typing import TYPE_CHECKING, Tuple
+
+if TYPE_CHECKING:
+    from .sxml import Xml
+
+
 def svg_begin(xml, width=None, height=None, view_box=None, inkscape_namespace=False):
     xml.element("svg")
     xml.set("xmlns", "http://www.w3.org/2000/svg")
@@ -45,3 +51,7 @@ def rename_ids(root, suffix):
             for e_id in ids:
                 if e_id in value:
                     e.set(name, value.replace(e_id, e_id + suffix))
+
+
+def apply_rotation(xml: "Xml", rotation: float, center: Tuple[float, float]):
+    xml.set("transform", f"rotate({rotation} {center[0]} {center[1]})")

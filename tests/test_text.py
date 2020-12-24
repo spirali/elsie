@@ -599,3 +599,13 @@ def test_text_style_compose():
     assert style.font == "Y"
     assert style.size == 10
     assert style.align is None
+
+
+def test_rotated_text(test_env):
+    slide = test_env.slide
+
+    slide.box(x=100, y=100).text("Hello world!", rotation=90)
+    slide.box(x=100, y=300).text("Hello world!", rotation=180)
+    slide.box(x=100, y=500).code("Python", "a = 5", rotation=45)
+
+    test_env.check("text-rotated")

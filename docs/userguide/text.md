@@ -139,6 +139,13 @@ slide.box(width=200, height=80).text("Hello world!", scale_to_fit=True)
 slide.box(width=80, height=200).text("Hello world!", scale_to_fit=True)
 ```
 
+## Text rotation
+You can use the `rotation` parameter to rotate the text by the given angle (in degrees) clockwise
+around its center.
+```elsie
+slide.box().text("Hello world!", rotation=45)
+```
+
 ## Colors
 You can define the color of text, [shapes](shapes.md) and other things using a string that is
 compatible with SVG. You can be one of the following variants of color definitions:

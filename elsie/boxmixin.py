@@ -7,7 +7,7 @@ import lxml.etree as et
 from PIL import Image
 
 from .draw import draw_bitmap, set_paint_style
-from .geom import apply_rotation, find_centroid
+from .geom import find_centroid
 from .highlight import highlight_code
 from .image import get_image_steps, create_image_data
 from .lazy import eval_value, unpack_point, eval_pair
@@ -19,7 +19,7 @@ from .path import (
 )
 
 from .show import ShowInfo
-from .svg import svg_size_to_pixels
+from .svg import apply_rotation, svg_size_to_pixels
 from .textparser import (
     parse_text,
     add_line_numbers,
@@ -562,7 +562,9 @@ class BoxMixin:
 
         return self._create_simple_box_item(draw)
 
-    def _image_ora(self, filename, scale, fragments, show_begin, select_fragments, rotation):
+    def _image_ora(
+        self, filename, scale, fragments, show_begin, select_fragments, rotation
+    ):
         key = (filename, "svg")
         slide = self._get_box().slide
         if key not in slide.temp_cache:
@@ -574,7 +576,9 @@ class BoxMixin:
 
             cache_file = slide.fs_cache.ensure_by_file(filename, "svg", constructor)
             self._get_box().slide.temp_cache[key] = et.parse(cache_file).getroot()
-        return self._image_svg(filename, scale, fragments, show_begin, select_fragments, rotation)
+        return self._image_svg(
+            filename, scale, fragments, show_begin, select_fragments, rotation
+        )
 
     def _image_svg(
         self,
@@ -671,6 +675,7 @@ class BoxMixin:
         use_styles=False,
         escape_char="~",
         scale_to_fit=False,
+        rotation: float = None,
     ) -> "textboxitem.TextBoxItem":
         """
         Draws a code snippet with syntax highlighting.
@@ -693,6 +698,9 @@ class BoxMixin:
             Escape character for creating inline styles in the code snippet.
         scale_to_fit: bool
             If True, scales the code snippet to fit its parent box.
+        rotation: float
+            Rotate the code snippet by the given amount of degrees clockwise around the center
+            of the snippet.
         """
         text = text.replace("\t", " " * tabsize)
 
@@ -724,10 +732,16 @@ class BoxMixin:
             parsed_text = add_line_numbers(parsed_text)
 
         style = self._get_box().get_style(style, full_style=True)
-        return self._text_helper(parsed_text, style, scale_to_fit)
+        return self._text_helper(parsed_text, style, scale_to_fit, rotation)
 
     def text(
-        self, text: str, style="default", *, escape_char="~", scale_to_fit=False
+        self,
+        text: str,
+        style="default",
+        *,
+        escape_char="~",
+        scale_to_fit=False,
+        rotation: float = None,
     ) -> "textboxitem.TextBoxItem":
         """
         Draws text.
@@ -743,14 +757,17 @@ class BoxMixin:
             Escape character for creating inline styles in the text.
         scale_to_fit:
             If True, scales the text to fit its parent box.
+        rotation: float
+            Rotate the text by the given amount of degrees clockwise around the center of the
+            text.
         """
         result_style = self._get_box().get_style(style, full_style=True)
         parsed_text = parse_text(text, escape_char=escape_char)
-        return self._text_helper(parsed_text, result_style, scale_to_fit)
+        return self._text_helper(parsed_text, result_style, scale_to_fit, rotation)
 
-    def _text_helper(self, parsed_text, style, scale_to_fit):
+    def _text_helper(self, parsed_text, style, scale_to_fit, rotation=None):
         box = self._get_box()
-        item = TextBoxItem(box, parsed_text, style, box._styles, scale_to_fit)
+        item = TextBoxItem(box, parsed_text, style, box._styles, scale_to_fit, rotation)
         box.add_child(item)
         return item
 

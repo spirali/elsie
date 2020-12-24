@@ -23,11 +23,12 @@ def text_x_in_rect(rect, style):
 
 
 class TextBoxItem(BoxItem):
-    def __init__(self, box, parsed_text, style, styles, scale_to_fit):
+    def __init__(self, box, parsed_text, style, styles, scale_to_fit, rotation):
         super().__init__(box)
         self._text_size = None
         self._text_scale = 1
         self._scale_to_fit = scale_to_fit
+        self.rotation = rotation
         self._style = style
         self._styles = styles
         self._parsed_text = parsed_text
@@ -52,10 +53,13 @@ class TextBoxItem(BoxItem):
 
         y = rect.y + (rect.height - self._text_size[1]) / 2 + style.size * scale
 
+        transforms = []
+        if self.rotation:
+            transforms.append(
+                f"rotate({self.rotation} {rect.mid_point[0]} {rect.mid_point[1]})"
+            )
         if self._scale_to_fit:
-            transform = "scale({})".format(scale)
-        else:
-            transform = None
+            transforms.append(f"scale({scale})")
         if scale > 0.00001:
             draw_text(
                 ctx.xml,
@@ -64,7 +68,7 @@ class TextBoxItem(BoxItem):
                 self._parsed_text,
                 style,
                 self._styles,
-                transform=transform,
+                transform=" ".join(transforms) if transforms else None,
             )
 
     def _make_query(self):
