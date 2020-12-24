@@ -242,3 +242,29 @@ def test_draw_relative_to_box(test_env):
     box.path([("M", (0, 50)), ("L", ("50%", "100%"))], color="green")
 
     test_env.check("draw-boxrel")
+
+
+def test_draw_rotated(test_env):
+    slide = test_env.slide
+
+    slide.box(width=50, height=50).rect(bg_color="red", rotation=10)
+    slide.box(width=50, height=50).rect(bg_color="purple", rotation=45)
+    slide.box(width=150, height=50).ellipse(bg_color="blue", rotation=45)
+    slide.box(width=50, height=50).polygon(
+        [
+            (100, 100),
+            (150, 50),
+            (200, 100),
+            (150, 150),
+        ],
+        bg_color="green",
+        rotation=45,
+    )
+    slide.box(width=200, height=200).image(
+        test_env.assets_path("test.png"), scale=0.5, rotation=180
+    )
+    slide.box(width=200, height=400).image(
+        test_env.assets_path("arrows.svg"), rotation=180
+    )
+
+    test_env.check("draw-rotated")

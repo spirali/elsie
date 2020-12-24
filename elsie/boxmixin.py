@@ -7,6 +7,7 @@ import lxml.etree as et
 from PIL import Image
 
 from .draw import draw_bitmap, set_paint_style
+from .geom import apply_rotation, find_centroid
 from .highlight import highlight_code
 from .image import get_image_steps, create_image_data
 from .lazy import eval_value, unpack_point, eval_pair
@@ -194,12 +195,13 @@ class BoxMixin:
 
     def rect(
         self,
-        color=None,
-        bg_color=None,
+        color: str = None,
+        bg_color: str = None,
         stroke_width=1,
-        stroke_dasharray=None,
-        rx=None,
-        ry=None,
+        stroke_dasharray: str = None,
+        rx: float = None,
+        ry: float = None,
+        rotation: float = None,
     ) -> "boxitem.BoxItem":
         """
         Draws a rectangle around the box.
@@ -218,6 +220,9 @@ class BoxMixin:
             x-axis radius of the rectangle. Use it if you want rounded corners.
         ry: float
             x-axis radius of the rectangle. Use it if you want rounded corners.
+        rotation: float
+            Rotate the rectangle by the given amount of degrees clockwise around the center of the
+            rectangle.
         """
 
         def draw(ctx):
@@ -232,6 +237,8 @@ class BoxMixin:
                 xml.set("rx", rx)
             if ry:
                 xml.set("ry", ry)
+            if rotation:
+                apply_rotation(xml, rotation, rect.mid_point)
             set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
             xml.close("rect")
 
@@ -243,6 +250,7 @@ class BoxMixin:
         bg_color=None,
         stroke_width=1,
         stroke_dasharray=None,
+        rotation: float = None,
     ) -> "boxitem.BoxItem":
         """
         Draws an ellipse. The dimensions of the ellipse will be set to the dimensions of its parent
@@ -258,6 +266,9 @@ class BoxMixin:
             Width of the ellipse edge.
         stroke_dasharray: str
             SVG dash effect of the ellipse edge.
+        rotation: float
+            Rotate the ellipse by the given amount of degrees clockwise around the center of the
+            ellipse.
         """
 
         def draw(ctx):
@@ -268,6 +279,8 @@ class BoxMixin:
             xml.set("cy", rect.mid_y)
             xml.set("rx", rect.width / 2)
             xml.set("ry", rect.height / 2)
+            if rotation:
+                apply_rotation(xml, rotation, rect.mid_point)
             set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
             xml.close("ellipse")
 
@@ -280,6 +293,7 @@ class BoxMixin:
         bg_color: str = None,
         stroke_width=1,
         stroke_dasharray: str = None,
+        rotation=None,
     ) -> "boxitem.BoxItem":
         """
         Draws a polygon.
@@ -298,17 +312,21 @@ class BoxMixin:
             Width of the edge of the polygon.
         stroke_dasharray: str
             SVG dash effect of the edge of the polygon.
+        rotation: float
+            Rotate the polygon by the given amount of degrees clockwise around the centroid of the
+            polygon.
         """
 
         def draw(ctx):
             xml = ctx.xml
             xml.element("polygon")
+            point_values = [(eval_value(x), eval_value(y)) for x, y in points]
             xml.set(
                 "points",
-                " ".join(
-                    "{},{}".format(eval_value(x), eval_value(y)) for x, y in points
-                ),
+                " ".join(f"{x},{y}" for x, y in point_values),
             )
+            if rotation:
+                apply_rotation(xml, rotation, find_centroid(point_values))
             set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
             xml.close("polygon")
 
@@ -427,14 +445,24 @@ class BoxMixin:
         box.add_child(item)
         return item
 
-    def _render_svg(self, ctx, x, y, scale, data):
+    def _render_svg(self, ctx, x, y, scale, data, rotation=None, rotation_center=None):
         ctx.xml.element("g")
-        transform = ["translate({}, {})".format(x, y)]
+        transform = []
+
+        # First scale, then rotate (https://gamedev.stackexchange.com/a/16721/73578).
+        # Applied in opposite order in transform.
+        if rotation is not None:
+            assert rotation_center is not None
+            transform.append(
+                f"rotate({rotation} {rotation_center[0]} {rotation_center[1]})"
+            )
+
+        transform.append(f"translate({x}, {y})")
         if scale != 1.0:
-            transform.append("scale({})".format(scale))
+            transform.append(f"scale({scale})")
         ctx.xml.set("transform", " ".join(transform))
         ctx.xml.raw_text(data)
-        ctx.xml.close()
+        ctx.xml.close("g")
 
     def image(
         self,
@@ -443,6 +471,7 @@ class BoxMixin:
         fragments=True,
         show_begin=1,
         select_fragments: List[Union[int, None]] = None,
+        rotation: float = None,
     ) -> "boxitem.BoxItem":
         """Draws an SVG/PNG/JPEG/ORA image, detected by the extension of the `filename`.
 
@@ -468,21 +497,24 @@ class BoxMixin:
             Would render the first image fragment in the first slide fragment, the third image
             fragment in the second slide fragment, no image fragment in the third slide fragment
             and the second image fragment in the fourth slide fragment.
+        rotation: float
+            Rotate the image by the given amount of degrees clockwise around the center of the
+            image.
         """
         if filename.endswith(".svg"):
             return self._image_svg(
-                filename, scale, fragments, show_begin, select_fragments
+                filename, scale, fragments, show_begin, select_fragments, rotation
             )
         elif filename.endswith(".ora"):
             return self._image_ora(
-                filename, scale, fragments, show_begin, select_fragments
+                filename, scale, fragments, show_begin, select_fragments, rotation
             )
         elif any(filename.endswith(ext) for ext in [".png", ".jpeg", ".jpg"]):
-            return self._image_bitmap(filename, scale)
+            return self._image_bitmap(filename, scale, rotation)
         else:
             raise Exception("Unkown image extension")
 
-    def _image_bitmap(self, filename, scale):
+    def _image_bitmap(self, filename: str, scale: float, rotation: float):
         key = (filename, "bitmap")
         entry = self._get_box().slide.temp_cache.get(key)
 
@@ -526,11 +558,11 @@ class BoxMixin:
             h = image_height * s
             x = rect.x + (rect.width - w) / 2
             y = rect.y + (rect.height - h) / 2
-            draw_bitmap(ctx.xml, x, y, w, h, mime, data)
+            draw_bitmap(ctx.xml, x, y, w, h, mime, data, rotation)
 
         return self._create_simple_box_item(draw)
 
-    def _image_ora(self, filename, scale, fragments, show_begin, select_fragments):
+    def _image_ora(self, filename, scale, fragments, show_begin, select_fragments, rotation):
         key = (filename, "svg")
         slide = self._get_box().slide
         if key not in slide.temp_cache:
@@ -542,7 +574,7 @@ class BoxMixin:
 
             cache_file = slide.fs_cache.ensure_by_file(filename, "svg", constructor)
             self._get_box().slide.temp_cache[key] = et.parse(cache_file).getroot()
-        return self._image_svg(filename, scale, fragments, show_begin, select_fragments)
+        return self._image_svg(filename, scale, fragments, show_begin, select_fragments, rotation)
 
     def _image_svg(
         self,
@@ -551,9 +583,8 @@ class BoxMixin:
         fragments=True,
         show_begin=1,
         select_fragments: List[int] = None,
+        rotation: float = None,
     ):
-        """ Draw an svg image """
-
         key = (filename, "svg")
         root = self._get_box().slide.temp_cache.get(key)
         if root is None:
@@ -617,7 +648,15 @@ class BoxMixin:
             h = image_height * s
             x = rect.x + (rect.width - w) / 2
             y = rect.y + (rect.height - h) / 2
-            self._render_svg(ctx, x, y, s, data)
+            self._render_svg(
+                ctx,
+                x,
+                y,
+                s,
+                data,
+                rotation,
+                (x + w / 2, y + h / 2),
+            )
 
         return self._create_simple_box_item(draw)
 

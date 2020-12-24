@@ -1,4 +1,8 @@
 import math
+from typing import TYPE_CHECKING, Tuple
+
+if TYPE_CHECKING:
+    from .sxml import Xml
 
 
 class Rect:
@@ -17,20 +21,24 @@ class Rect:
             self.width, self.height = size
 
     @property
-    def size(self):
+    def size(self) -> Tuple[float, float]:
         return self.width, self.height
 
     @property
-    def position(self):
+    def position(self) -> Tuple[float, float]:
         return self.x, self.y
 
     @property
-    def mid_x(self):
+    def mid_x(self) -> float:
         return self.x + self.width / 2
 
     @property
-    def mid_y(self):
+    def mid_y(self) -> float:
         return self.y + self.height / 2
+
+    @property
+    def mid_point(self) -> Tuple[float, float]:
+        return self.mid_x, self.mid_y
 
     @property
     def x2(self):
@@ -76,3 +84,13 @@ def segment_resize(p1, p2, len_change):
     ln = segment_len(p1, p2)
     t = 1 + (len_change / ln)
     return p1[0] + dx * t, p1[1] + dy * t
+
+
+def find_centroid(points) -> Tuple[float, float]:
+    xs = sum([p[0] for p in points])
+    ys = sum([p[1] for p in points])
+    return (xs / len(points), ys / len(points))
+
+
+def apply_rotation(xml: "Xml", rotation: float, center: Tuple[float, float]):
+    xml.set("transform", f"rotate({rotation} {center[0]} {center[1]})")
