@@ -1,3 +1,5 @@
+import os
+
 import lxml.etree as et
 import pytest
 import re
@@ -6,9 +8,11 @@ numbers_split = re.compile(r"(-?[\d.]+)")
 
 
 VALUE_TOLERANCE = 0.85
+if os.environ.get("CI"):
+    VALUE_TOLERANCE *= 2
 
 
-def string_check(s1, s2, name):
+def string_check(s1, s2, name, tolerance):
     lst1 = numbers_split.split(s1)
     lst2 = numbers_split.split(s2)
     assert len(lst1) == len(lst2)
@@ -20,7 +24,7 @@ def string_check(s1, s2, name):
         try:
             tmp1 = float(a1)
             tmp2 = float(a2)
-            assert abs(tmp1 - tmp2) < VALUE_TOLERANCE, name
+            assert abs(tmp1 - tmp2) < tolerance, name
         except ValueError:
             print(s1)
             print(s2)
@@ -28,7 +32,7 @@ def string_check(s1, s2, name):
             assert a1 == a2
 
 
-def element_check(e1, e2):
+def element_check(e1, e2, tolerance):
     if e1.tag != e2.tag:
         raise Exception("Different tags: {} vs {}".format(e1.tag, e2.tag))
 
@@ -36,7 +40,7 @@ def element_check(e1, e2):
     c2 = list(e2)
 
     if e1.text != e2.text:
-        string_check(e1.text, e2.text, "element's text")
+        string_check(e1.text, e2.text, "element's text", tolerance)
 
     if frozenset(e1.keys()) != frozenset(e2.keys()):
         print(e1.items())
@@ -49,29 +53,32 @@ def element_check(e1, e2):
     for (name, v1) in e1.items():
         v2 = e2.get(name)
         if v1 != v2:
-            string_check(v1, v2, "{}/{}".format(e1.tag, name))
+            string_check(v1, v2, "{}/{}".format(e1.tag, name), tolerance)
 
     if len(c1) != len(c2):
         raise Exception("Different number of children for: {} {}".format(e1, e2))
 
     for child1, child2 in zip(c1, c2):
-        element_check(child1, child2)
+        element_check(child1, child2, tolerance)
 
 
-def svg_check(svg1, svg2):
+def svg_check(svg1, svg2, tolerance=VALUE_TOLERANCE):
     root1 = et.fromstring(svg1)
     root2 = et.fromstring(svg2)
-    element_check(root1, root2)
+    element_check(root1, root2, tolerance)
 
 
 def test_svg_compare():
+    tolerance = 0.85
 
     svg_check("<x/>", "<x/>")
     with pytest.raises(Exception, match="number of"):
         svg_check("<x></x>", "<x><y/></x>")
     svg_check("<x><y a='1' b='1'/></x>", "<x><y b='1' a='1'/></x>")
     with pytest.raises(AssertionError):
-        svg_check("<x><y a='1' b='1'/></x>", "<x><y b='1' a='2'/></x>")
+        svg_check(
+            "<x><y a='1' b='1'/></x>", "<x><y b='1' a='2'/></x>", tolerance=tolerance
+        )
     with pytest.raises(AssertionError):
         svg_check("<x><y a='a'/></x>", "<x><y/></x>")
     with pytest.raises(AssertionError):
@@ -79,16 +86,36 @@ def test_svg_compare():
     with pytest.raises(AssertionError):
         svg_check("<x><y a='1' b='1'/></x>", "<x><y b='1'/></x>")
 
-    svg_check("<x><y a='0.0001'/></x>", "<x><y a='0'/></x>")
+    svg_check("<x><y a='0.0001'/></x>", "<x><y a='0'/></x>", tolerance=tolerance)
     with pytest.raises(AssertionError):
-        svg_check("<x><y a='0.99'/></x>", "<x><y a='0'/></x>")
+        svg_check("<x><y a='0.99'/></x>", "<x><y a='0'/></x>", tolerance=tolerance)
 
-    svg_check("<x><y a='1.0001, 3.02'/></x>", "<x><y a='0.999, 3.01'/></x>")
+    svg_check(
+        "<x><y a='1.0001, 3.02'/></x>",
+        "<x><y a='0.999, 3.01'/></x>",
+        tolerance=tolerance,
+    )
     with pytest.raises(AssertionError):
-        svg_check("<x><y a='1.0001, 3.02'/></x>", "<x><y a='0.001, 3.01'/></x>")
+        svg_check(
+            "<x><y a='1.0001, 3.02'/></x>",
+            "<x><y a='0.001, 3.01'/></x>",
+            tolerance=tolerance,
+        )
 
-    svg_check("<x><y a='scale(10.1)'/></x>", "<x><y a='scale(10.2)'/></x>")
+    svg_check(
+        "<x><y a='scale(10.1)'/></x>",
+        "<x><y a='scale(10.2)'/></x>",
+        tolerance=tolerance,
+    )
     with pytest.raises(AssertionError):
-        svg_check("<x><y a='scale(11.1)'/></x>", "<x><y a='scale(10.0)'/></x>")
+        svg_check(
+            "<x><y a='scale(11.1)'/></x>",
+            "<x><y a='scale(10.0)'/></x>",
+            tolerance=tolerance,
+        )
     with pytest.raises(AssertionError):
-        svg_check("<x><y a='scale(11.1)'/></x>", "<x><y a='scalex(10.0)'/></x>")
+        svg_check(
+            "<x><y a='scale(11.1)'/></x>",
+            "<x><y a='scalex(10.0)'/></x>",
+            tolerance=tolerance,
+        )
