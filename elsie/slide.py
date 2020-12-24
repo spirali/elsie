@@ -76,7 +76,7 @@ class Slide:
     def _repr_html_(self):
         from . import jupyter
 
-        return jupyter.render_slide(self)
+        return jupyter.render_slide_html(self)
 
 
 class ExternPdfSlide:

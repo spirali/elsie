@@ -1,4 +1,6 @@
+import base64
 import uuid
+from typing import List
 
 from .slide import Slide
 
@@ -65,12 +67,31 @@ CSS = """
 """
 
 
-def render_slide(slide: Slide) -> str:
-    units = slide.slides.render(None, return_units=True, select_slides=[slide])
-    svgs = filter(None, (unit.get_svg() for unit in units))
+def get_slide_repr_steps(slide: Slide, format: str) -> List[str]:
+    if format not in ("svg", "png"):
+        raise Exception("Slide can be rendered only to SVG or PNG")
+
+    return_units = format == "svg"
+    units = slide.slides.render(output=None, return_units=return_units, select_slides=[slide],
+                                export_type=format, prune_cache=False)
+    if format == "svg":
+        return [unit.svg for unit in units]
+    elif format == "png":
+        images = []
+        for png in units:
+            with open(png, "rb") as f:
+                data = base64.encodebytes(f.read())
+                images.append(f"""<img src="data:image/png;base64, {data.decode()}" />""")
+        return images
+    else:
+        assert False
+
+
+def render_slide_html(slide: Slide, format: str = "svg") -> str:
+    step_items = get_slide_repr_steps(slide, format)
     fragments = tuple(
-        f"<div class='elsie-step step-{index + 1}'>{svg}</div>"
-        for (index, svg) in enumerate(svgs)
+        f"<div class='elsie-step step-{index + 1}'>{content}</div>"
+        for (index, content) in enumerate(step_items)
     )
     fragments_text = "\n".join(fragments)
 

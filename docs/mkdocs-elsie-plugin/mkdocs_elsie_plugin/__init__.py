@@ -84,28 +84,27 @@ def render_slide(code: List[str],
                  border: bool,
                  debug_boxes: bool,
                  skip: slice) -> str:
-    # TODO: render to PNG
     border_str = """slide.rect(color="black")""" if border else ""
 
     code = code[skip]
     code = "\n".join(trim_indent(code))
-    slide_args = ""
+    slide_args = {"bg_color": '"white"'}
     if debug_boxes:
-        slide_args = "debug_boxes=True"
+        slide_args["debug_boxes"] = True
 
     template = f"""
 import elsie
 from elsie.box import Box
-from elsie.jupyter import render_slide as elsie_render_slide
+from elsie.jupyter import render_slide_html as elsie_render_slide
 
 {ctx.get_lib_code()}
 
 slides = elsie.Slides(width={width}, height={height}, name_policy="ignore")
-slide = slides.new_slide({slide_args})
+slide = slides.new_slide({', '.join(f"{k}={v}" for (k, v) in slide_args.items())})
 {border_str}
 {code}
 
-result = elsie_render_slide(slides._slides[-1])
+result = elsie_render_slide(slides._slides[-1], format="png")
 """.strip()
 
     locals = {}
