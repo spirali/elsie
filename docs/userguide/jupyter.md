@@ -29,7 +29,7 @@ slide.box(show="next+").text("Box 2")
 slide
 ```
 
-You can combine this feature with [ipywidgets](https://ipywidgets.readthedocs.io/en/latest/) to
+If you use something like [ipywidgets](https://ipywidgets.readthedocs.io/en/latest/), you can
 create fully interactive slides. For example, you can create something like this:
 
 ![Elsie Jupyter interactive example](../imgs/elsie-jupyter-interactive.gif)
