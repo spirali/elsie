@@ -56,7 +56,7 @@
                 <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href=".">Overview</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#hello-world">Hello world</a>
+    <li class="toctree-l2"><a class="reference internal" href="#elsie-example">Elsie example</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#features">Features</a>
     </li>
@@ -157,9 +157,15 @@ composable way and then render them to PDF. There is no DSL or GUI – presentat
 <p>It was created out of frustration of having to deal with
 <a href="#comparison-to-other-tools">existing tools</a> for creating presentations. We believe that creating
 presentations should be automated and programmable as much as possible.</p>
-<p>See <a href="getting_started/">Getting started</a> for a short intro tutorial or the <a href="gallery/">Gallery</a>
-for presentations that were created using <em>Elsie</em>. </p>
-<h2 id="hello-world">Hello world<a class="headerlink" href="#hello-world" title="Permanent link">#</a></h2>
+<p><strong>Quick links</strong></p>
+<ul>
+<li><a href="installation/">Installation</a></li>
+<li><a href="getting_started/">Getting started</a></li>
+<li><a href="userguide/basics/">User guide</a></li>
+<li><a href="gallery/">Gallery</a></li>
+<li><a href="apidoc">API Reference</a></li>
+</ul>
+<h2 id="elsie-example">Elsie example<a class="headerlink" href="#elsie-example" title="Permanent link">#</a></h2>
 <pre><code class="language-python">import elsie
 slides = elsie.Slides()
 
@@ -178,7 +184,7 @@ def hello_world(slide):
 
 slides.render(&quot;slides.pdf&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-65d39b57b2184464aa368b403af6084a">
+<div class="elsie-wrapper elsie-wrapper-a7208b4007d842028b326e0849e9bae8">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'><text x='150.0' y='131.2' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:black;'><tspan font-variant-numeric='lining-nums'>Hello&#160;from</tspan></text><rect x='70.0' y='156.79999999999998' width='40' height='40' style='fill:black;stroke:black;stroke-width:1' /><text x='90.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>2</tspan></text><rect x='110.0' y='156.79999999999998' width='40' height='40' style='fill:white;stroke:black;stroke-width:1' /><text x='130.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>0</tspan></text><rect x='150.0' y='156.79999999999998' width='40' height='40' style='fill:black;stroke:black;stroke-width:1' /><text x='170.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>2</tspan></text><rect x='190.0' y='156.79999999999998' width='40' height='40' style='fill:white;stroke:black;stroke-width:1' /><text x='210.0' y='187.99999999999997' text-anchor='middle' font-family='sans-serif' font-size='28' style='fill:red;'><tspan font-variant-numeric='lining-nums'>0</tspan></text></svg></div>
 </div>
@@ -202,7 +208,7 @@ slides.render(&quot;slides.pdf&quot;)
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">#</a></h2>
 <ul>
 <li>
-<p><strong>Automatic layout</strong> <em>Elsie</em> provides a simple, yet powerful layout model. Need rows? Columns?
+<p><strong>Layout model</strong> <em>Elsie</em> provides a simple, yet powerful layout model. Need rows? Columns?
 Padding? Aligned text? Relative/absolute positioning? Automatic scaling? We got you covered.</p>
 </li>
 <li>
@@ -300,7 +306,7 @@ embedding SVG images into slides with Cairo, which is something that we use a lo
 possible that <em>Elsie</em> will not require <code>Inkscape</code> sometime in the future.</li>
 <li><strong>Why don't you use an existing layout model, e.g. <code>flexbox</code>?</strong>
 We made the <a href="userguide/layout/">layout model</a> tailored for presentations, which might not be
-so easy with a general layout model. But honestly, we also haven't found any usable binding of
+so easy with a general layout model. And honestly, we couldn't find any usable binding of
 a standalone and sane layout model in Python. If you know of any, please
 <a href="https://github.com/spirali/elsie/issues">let us know</a>.</li>
 <li><strong>Why is there no built-in support for lists (bullet items etc.) in <code>Elsie</code>?</strong>
@@ -368,5 +374,5 @@ which you can copy and modify for your use case. </li>
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2020-12-24 10:08:07.812069+00:00
+Build Date UTC : 2020-12-24 10:46:31.459261+00:00
 -->
