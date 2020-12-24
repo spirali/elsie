@@ -154,7 +154,7 @@
 on a box. The first parameter is the path to the image.</p>
 <pre><code class="language-python">slide.image(&quot;imgs/python.png&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-e5a6a003c2c2485f93851b8dd7452c91">
+<div class="elsie-wrapper elsie-wrapper-ca1d5fc2b6d1419581701c12b38557f6">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAB4CAYAAABIFc8gAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAHIVJREFUeJztnXlsXHWe4D/16vZd
@@ -310,7 +310,7 @@ TkSuQmCC
 ratio. Image scale can be set explicitly with the <code>scale</code> parameter.</p>
 <pre><code class="language-python">slide.image(&quot;imgs/python.png&quot;, scale=0.2)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-85aae424c1eb47f0b7e96cb5286033d7">
+<div class="elsie-wrapper elsie-wrapper-3520da0c0b624b21b06db72e980f12d8">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAB4CAYAAABIFc8gAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADAhJREFUeJzt3W1s1NWCx/Hvf2Y6
@@ -417,12 +417,13 @@ of the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.h
 <li><code>show_begin=&lt;x&gt;</code>: Shifts all fragments in the image forward so that <code>x</code> will be the first fragment
 from the perspective of the image. This will cause the image to appear at fragment <code>x</code>, a layer
 named <code>Foo**2</code> would appear at fragment <code>x + 1</code>, etc.</li>
-<li><code>select_steps=&lt;list&gt;</code> (each element of the list is either an integer or <code>None</code>): This allows to
-completely rearrange the fragments of the image. For example, <code>[3, 7, None, 3]</code> would show:<ul>
-<li>in the 1st slide fragment: the 3rd image fragment</li>
-<li>in the 2nd slide fragment: the 7th image fragment</li>
-<li>in the 3rd slide fragment: no image fragment</li>
-<li>in the 4rd slide fragment: again the 3rd image fragment</li>
+<li><code>select_fragments=&lt;list&gt;</code> (each element of the list is either an integer or <code>None</code>): This
+parameter allows you to completely rearrange the fragments of the image. For example,
+<code>[3, 7, None, 3]</code> would show:<ul>
+<li>In the 1st slide fragment: the 3rd image fragment</li>
+<li>In the 2nd slide fragment: the 7th image fragment</li>
+<li>In the 3rd slide fragment: no image fragment</li>
+<li>In the 4rd slide fragment: again the 3rd image fragment</li>
 </ul>
 </li>
 </ul>
