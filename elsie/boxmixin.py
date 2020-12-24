@@ -55,11 +55,11 @@ class BoxMixin:
 
     def box(
         self,
+        *,
         x: float = None,
         y: float = None,
         width: float = None,
         height: float = None,
-        *,
         show: str = None,
         p_left: float = None,
         p_right: float = None,
