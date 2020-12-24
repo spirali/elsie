@@ -1,8 +1,5 @@
 import math
-from typing import TYPE_CHECKING, Tuple
-
-if TYPE_CHECKING:
-    from .sxml import Xml
+from typing import Tuple
 
 
 class Rect:
@@ -90,7 +87,3 @@ def find_centroid(points) -> Tuple[float, float]:
     xs = sum([p[0] for p in points])
     ys = sum([p[1] for p in points])
     return (xs / len(points), ys / len(points))
-
-
-def apply_rotation(xml: "Xml", rotation: float, center: Tuple[float, float]):
-    xml.set("transform", f"rotate({rotation} {center[0]} {center[1]})")
