@@ -175,6 +175,8 @@ the rectangle. You can find more about this attribute
 <li><code>bg_color=&lt;str or None&gt;</code>: Color used to fill the rectangle.</li>
 <li><code>rx</code>, <code>ry</code>: Radius of
 <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/rect">rounded corners</a> of the rectangle.</li>
+<li><code>rotation=&lt;number&gt;</code>: Rotate the rectangle by the given number of degrees clockwise around its
+center.</li>
 </ul>
 <p>An example of drawing a rectangle:</p>
 <pre><code class="language-python">box = slide.box(x=&quot;[50%]&quot;, y=&quot;[50%]&quot;, width=&quot;80%&quot;, height=200)
@@ -184,7 +186,7 @@ box.rect(
   rx=20, ry=20
 )
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-e183cb791268483aa5ae7b3959439f6d">
+<div class="elsie-wrapper elsie-wrapper-b3299234ac704a8b8655e85d7e73fcd7">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAD5ZJREFUeJzt3X1wFPUdx/HPHYEg
@@ -291,6 +293,8 @@ pass <code>None</code> (the default), the edges will not be drawn.</li>
 the ellipse. You can find more about this attribute
 <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray">here</a>.</li>
 <li><code>bg_color=&lt;str or None&gt;</code>: Color used to fill the ellipse.</li>
+<li><code>rotation=&lt;number&gt;</code>: Rotate the ellipse by the given number of degrees clockwise around its
+center.</li>
 </ul>
 <p>An example of drawing an ellipse:</p>
 <pre><code class="language-python">box = slide.box(x=&quot;[50%]&quot;, y=&quot;[50%]&quot;, width=&quot;80%&quot;, height=200)
@@ -299,7 +303,7 @@ box.ellipse(
   stroke_width=10, stroke_dasharray=&quot;10 4&quot;
 )
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-db88a1e9e87544c8a8e1698a1b385715">
+<div class="elsie-wrapper elsie-wrapper-1af926ae9b514b4c9ad2ab0aec286e47">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xd0VNUWwOFfKgmE
@@ -577,7 +581,7 @@ slide.box().polygon([
   box.p(&quot;50%&quot;, &quot;100%&quot;).add(0, 20)
 ], color=&quot;green&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-40018b083f514babb60d62be0338b149">
+<div class="elsie-wrapper elsie-wrapper-684bccf01dde46fb82ef242c886d8080">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAFVBJREFUeJzt3XtQ1XX+x/GXgOaV
@@ -723,7 +727,7 @@ is proportional to the size of the arrow.</li>
   end_arrow=elsie.Arrow(size=40),
 ) 
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-f1b256fe8f2148268f69f87d2903f425">
+<div class="elsie-wrapper elsie-wrapper-36f32344a3d046dba6cbc775689d66f6">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAACEhJREFUeJzt3U1rXGUDxvGr9bUI

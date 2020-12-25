@@ -93,6 +93,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#text-scaling">Text scaling</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#text-rotation">Text rotation</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#colors">Colors</a>
     </li>
     </ul>
@@ -168,7 +170,7 @@
 By default, it will create a box item that will draw the specified text in the middle of the box:</p>
 <pre><code class="language-python">slide.box().text(&quot;Hello world!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-13b068991e08434ebaa479419d28c3e7">
+<div class="elsie-wrapper elsie-wrapper-01f5f2dff1d44930b9c51b16f6da1d37">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAD51JREFUeJzt3HtMU3cfx/FPoVSQ
@@ -293,7 +295,7 @@ from its parent style (see below).</p>
 <p>You can pass a text style as a second argument to the <code>text</code> method:</p>
 <pre><code class="language-python">slide.text(&quot;Hello world!&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-94a08ecc81cb44a0b91a4cc75c88681f">
+<div class="elsie-wrapper elsie-wrapper-8faf124acff54581898cec2e4dab09f6">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGTNJREFUeJzt3Xl4VNX5B/BvQlgC
@@ -444,7 +446,7 @@ slides.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&q
 slide = slides.new_slide(name=&quot;slide1&quot;)
 slide.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-3231498f05c04b15b46b55b37c35d56a">
+<div class="elsie-wrapper elsie-wrapper-ca3e0cbaffc8412b898fc19ca43c57ff">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAFcRJREFUeJzt3Xm0pEV5x/FvDYsO
@@ -571,7 +573,7 @@ IiIiIiIiIiIiIiIiIiIiIiIiIiIyrv4PmWJ0hAtY5XEAAAAASUVORK5CYII=
 box.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 box.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-1d1416fcc3dc42b2a8ea1bb7fe9950aa">
+<div class="elsie-wrapper elsie-wrapper-8699c5a84c994033aff7ca1707ce5d43">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGTNJREFUeJzt3Xl4VNX5B/BvQlgC
@@ -730,7 +732,7 @@ slides.set_style(&quot;default&quot;, default_style)
 slide = slides.new_slide(&quot;slide&quot;)
 slide.text(&quot;Hello world!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-17f8350b0c2348da87a187dbe499ad8d">
+<div class="elsie-wrapper elsie-wrapper-8651ac7c6a38434890bb57c2b07467c8">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADQpJREFUeJzt3X+Q3GV9wPH3s3uX
@@ -834,7 +836,7 @@ the <code>text</code> method. To do this, wrap a section of text that you want t
 <pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
 slide.text(&quot;Normal text ~red{red text} ~tt{Typewriter text}&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-174445145b9d4b1bb7cfd7c2c308e265">
+<div class="elsie-wrapper elsie-wrapper-79a8281622284ad39ce5ab50d1ac7b39">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAlgAAADICAYAAAA0n5+2AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xl4FFW6BvC3OyEJ
@@ -1049,7 +1051,7 @@ S9S9AAAAAElFTkSuQmCC
 <pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
 slide.text(&quot;~red{text1 ~tt{text2}}&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-758cd67f1d8d4f38be60d3572766336d">
+<div class="elsie-wrapper elsie-wrapper-891ab1c133ea4b0abdd1fe76ef172d00">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAADICAYAAABS39xVAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADiBJREFUeJzt3HlsFOUfx/FPDymH
@@ -1147,7 +1149,7 @@ box.</p>
 <pre><code class="language-python">slide.box(width=200, height=80).text(&quot;Hello world!&quot;, scale_to_fit=True)
 slide.box(width=80, height=200).text(&quot;Hello world!&quot;, scale_to_fit=True)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-11768ed84bd6459ba7ab2e02e3f5781f">
+<div class="elsie-wrapper elsie-wrapper-954825b3fe5a42f197b2a09fee6f0557">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xl8VNX9+P/XnUlm
@@ -1425,6 +1427,144 @@ FqZRfXs1Excen2WmL05nW/A2LO9YCBkUQvPSZtIu82UFQ+whRC6P5Mj/O4J6VdE5upORT4zUt3Uk
 O/A2Hz/NzXo8iy2eLVhWWLDZbNQtqSP9Ol9AMplMJL6VyKEnD2FaasI03ET8O/E9LngV4kKjKdRp
 XdHNI49RjKKQQoIIIpNTn5GdK2tYQxBBTGPaue7KKckhBzduRjKSYIKJJfZcd0mIr9T/D3EXcPH/
 5t9WAAAAAElFTkSuQmCC
+" /></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
+<h2 id="text-rotation">Text rotation<a class="headerlink" href="#text-rotation" title="Permanent link">#</a></h2>
+<p>You can use the <code>rotation</code> parameter to rotate the text by the given angle (in degrees) clockwise
+around its center.</p>
+<pre><code class="language-python">slide.box().text(&quot;Hello world!&quot;, rotation=45)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-e65fed51afb545099bb74e3665508f01">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><img src="data:image/png;base64, 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
+C29+xbJNkGYAAAAASUVORK5CYII=
 " /></div>
 </div>
 </div>

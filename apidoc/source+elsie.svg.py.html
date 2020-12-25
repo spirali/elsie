@@ -44,51 +44,71 @@
 44
 45
 46
-47</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=k>def</span> <span class=nf>svg_begin</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>width</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>height</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>view_box</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>inkscape_namespace</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<a name=line-2></a>    <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;svg&quot;</span><span class=p>)</span>
-<a name=line-3></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xmlns&quot;</span><span class=p>,</span> <span class=s2>&quot;http://www.w3.org/2000/svg&quot;</span><span class=p>)</span>
-<a name=line-4></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xmlns:xlink&quot;</span><span class=p>,</span> <span class=s2>&quot;http://www.w3.org/1999/xlink&quot;</span><span class=p>)</span>
-<a name=line-5></a>    <span class=k>if</span> <span class=n>inkscape_namespace</span><span class=p>:</span>
-<a name=line-6></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xmlns:inkscape&quot;</span><span class=p>,</span> <span class=s2>&quot;http://www.inkscape.org/namespaces/inkscape&quot;</span><span class=p>)</span>
-<a name=line-7></a>    <span class=k>if</span> <span class=n>width</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-8></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;width&quot;</span><span class=p>,</span> <span class=n>width</span><span class=p>)</span>
-<a name=line-9></a>    <span class=k>if</span> <span class=n>height</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-10></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;height&quot;</span><span class=p>,</span> <span class=n>height</span><span class=p>)</span>
-<a name=line-11></a>    <span class=k>if</span> <span class=n>view_box</span><span class=p>:</span>
-<a name=line-12></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;viewBox&quot;</span><span class=p>,</span> <span class=s2>&quot; &quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>v</span><span class=p>)</span> <span class=k>for</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>view_box</span><span class=p>))</span>
-<a name=line-13></a>
-<a name=line-14></a>
-<a name=line-15></a><span class=k>def</span> <span class=nf>svg_end</span><span class=p>(</span><span class=n>xml</span><span class=p>):</span>
-<a name=line-16></a>    <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;svg&quot;</span><span class=p>)</span>
-<a name=line-17></a>
-<a name=line-18></a>
-<a name=line-19></a><span class=k>def</span> <span class=nf>svg_size_to_pixels</span><span class=p>(</span><span class=n>text</span><span class=p>):</span>
-<a name=line-20></a>    <span class=n>suffix</span> <span class=o>=</span> <span class=s2>&quot;&quot;</span>
-<a name=line-21></a>    <span class=k>while</span> <span class=n>text</span> <span class=ow>and</span> <span class=n>text</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>isalpha</span><span class=p>():</span>
-<a name=line-22></a>        <span class=n>suffix</span> <span class=o>=</span> <span class=n>text</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=o>+</span> <span class=n>suffix</span>
-<a name=line-23></a>        <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=p>[:</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
-<a name=line-24></a>    <span class=k>if</span> <span class=n>suffix</span> <span class=o>==</span> <span class=s2>&quot;mm&quot;</span><span class=p>:</span>
-<a name=line-25></a>        <span class=n>factor</span> <span class=o>=</span> <span class=mf>3.77953</span>
-<a name=line-26></a>    <span class=k>elif</span> <span class=n>suffix</span> <span class=o>==</span> <span class=s2>&quot;cm&quot;</span><span class=p>:</span>
-<a name=line-27></a>        <span class=n>factor</span> <span class=o>=</span> <span class=mf>37.7953</span>
-<a name=line-28></a>    <span class=k>elif</span> <span class=n>suffix</span> <span class=o>==</span> <span class=s2>&quot;pt&quot;</span><span class=p>:</span>
-<a name=line-29></a>        <span class=n>factor</span> <span class=o>=</span> <span class=mf>1.33333</span>
-<a name=line-30></a>    <span class=k>else</span><span class=p>:</span>
-<a name=line-31></a>        <span class=n>factor</span> <span class=o>=</span> <span class=mf>1.0</span>
-<a name=line-32></a>    <span class=k>return</span> <span class=nb>float</span><span class=p>(</span><span class=n>text</span><span class=p>)</span> <span class=o>*</span> <span class=n>factor</span>
-<a name=line-33></a>
-<a name=line-34></a>
-<a name=line-35></a><span class=k>def</span> <span class=nf>rename_ids</span><span class=p>(</span><span class=n>root</span><span class=p>,</span> <span class=n>suffix</span><span class=p>):</span>
-<a name=line-36></a>    <span class=n>ids</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-37></a>    <span class=k>for</span> <span class=n>e</span> <span class=ow>in</span> <span class=n>root</span><span class=o>.</span><span class=n>iter</span><span class=p>():</span>
-<a name=line-38></a>        <span class=n>e_id</span> <span class=o>=</span> <span class=n>e</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;id&quot;</span><span class=p>)</span>
-<a name=line-39></a>        <span class=k>if</span> <span class=n>e_id</span><span class=p>:</span>
-<a name=line-40></a>            <span class=n>ids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;#&quot;</span> <span class=o>+</span> <span class=n>e_id</span><span class=p>)</span>
-<a name=line-41></a>            <span class=n>e</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;id&quot;</span><span class=p>,</span> <span class=n>e_id</span> <span class=o>+</span> <span class=n>suffix</span><span class=p>)</span>
-<a name=line-42></a>
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>from</span> <span class=nn>typing</span> <span class=kn>import</span> <span class=n>TYPE_CHECKING</span><span class=p>,</span> <span class=n>Tuple</span>
+<a name=line-2></a>
+<a name=line-3></a><span class=k>if</span> <span class=n>TYPE_CHECKING</span><span class=p>:</span>
+<a name=line-4></a>    <span class=kn>from</span> <span class=nn>.sxml</span> <span class=kn>import</span> <span class=n>Xml</span>
+<a name=line-5></a>
+<a name=line-6></a>
+<a name=line-7></a><span class=k>def</span> <span class=nf>svg_begin</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>width</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>height</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>view_box</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>inkscape_namespace</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
+<a name=line-8></a>    <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;svg&quot;</span><span class=p>)</span>
+<a name=line-9></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xmlns&quot;</span><span class=p>,</span> <span class=s2>&quot;http://www.w3.org/2000/svg&quot;</span><span class=p>)</span>
+<a name=line-10></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xmlns:xlink&quot;</span><span class=p>,</span> <span class=s2>&quot;http://www.w3.org/1999/xlink&quot;</span><span class=p>)</span>
+<a name=line-11></a>    <span class=k>if</span> <span class=n>inkscape_namespace</span><span class=p>:</span>
+<a name=line-12></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xmlns:inkscape&quot;</span><span class=p>,</span> <span class=s2>&quot;http://www.inkscape.org/namespaces/inkscape&quot;</span><span class=p>)</span>
+<a name=line-13></a>    <span class=k>if</span> <span class=n>width</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-14></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;width&quot;</span><span class=p>,</span> <span class=n>width</span><span class=p>)</span>
+<a name=line-15></a>    <span class=k>if</span> <span class=n>height</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-16></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;height&quot;</span><span class=p>,</span> <span class=n>height</span><span class=p>)</span>
+<a name=line-17></a>    <span class=k>if</span> <span class=n>view_box</span><span class=p>:</span>
+<a name=line-18></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;viewBox&quot;</span><span class=p>,</span> <span class=s2>&quot; &quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>v</span><span class=p>)</span> <span class=k>for</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>view_box</span><span class=p>))</span>
+<a name=line-19></a>
+<a name=line-20></a>
+<a name=line-21></a><span class=k>def</span> <span class=nf>svg_end</span><span class=p>(</span><span class=n>xml</span><span class=p>):</span>
+<a name=line-22></a>    <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;svg&quot;</span><span class=p>)</span>
+<a name=line-23></a>
+<a name=line-24></a>
+<a name=line-25></a><span class=k>def</span> <span class=nf>svg_size_to_pixels</span><span class=p>(</span><span class=n>text</span><span class=p>):</span>
+<a name=line-26></a>    <span class=n>suffix</span> <span class=o>=</span> <span class=s2>&quot;&quot;</span>
+<a name=line-27></a>    <span class=k>while</span> <span class=n>text</span> <span class=ow>and</span> <span class=n>text</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>isalpha</span><span class=p>():</span>
+<a name=line-28></a>        <span class=n>suffix</span> <span class=o>=</span> <span class=n>text</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=o>+</span> <span class=n>suffix</span>
+<a name=line-29></a>        <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=p>[:</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+<a name=line-30></a>    <span class=k>if</span> <span class=n>suffix</span> <span class=o>==</span> <span class=s2>&quot;mm&quot;</span><span class=p>:</span>
+<a name=line-31></a>        <span class=n>factor</span> <span class=o>=</span> <span class=mf>3.77953</span>
+<a name=line-32></a>    <span class=k>elif</span> <span class=n>suffix</span> <span class=o>==</span> <span class=s2>&quot;cm&quot;</span><span class=p>:</span>
+<a name=line-33></a>        <span class=n>factor</span> <span class=o>=</span> <span class=mf>37.7953</span>
+<a name=line-34></a>    <span class=k>elif</span> <span class=n>suffix</span> <span class=o>==</span> <span class=s2>&quot;pt&quot;</span><span class=p>:</span>
+<a name=line-35></a>        <span class=n>factor</span> <span class=o>=</span> <span class=mf>1.33333</span>
+<a name=line-36></a>    <span class=k>else</span><span class=p>:</span>
+<a name=line-37></a>        <span class=n>factor</span> <span class=o>=</span> <span class=mf>1.0</span>
+<a name=line-38></a>    <span class=k>return</span> <span class=nb>float</span><span class=p>(</span><span class=n>text</span><span class=p>)</span> <span class=o>*</span> <span class=n>factor</span>
+<a name=line-39></a>
+<a name=line-40></a>
+<a name=line-41></a><span class=k>def</span> <span class=nf>rename_ids</span><span class=p>(</span><span class=n>root</span><span class=p>,</span> <span class=n>suffix</span><span class=p>):</span>
+<a name=line-42></a>    <span class=n>ids</span> <span class=o>=</span> <span class=p>[]</span>
 <a name=line-43></a>    <span class=k>for</span> <span class=n>e</span> <span class=ow>in</span> <span class=n>root</span><span class=o>.</span><span class=n>iter</span><span class=p>():</span>
-<a name=line-44></a>        <span class=k>for</span> <span class=n>name</span><span class=p>,</span> <span class=n>value</span> <span class=ow>in</span> <span class=n>e</span><span class=o>.</span><span class=n>attrib</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-<a name=line-45></a>            <span class=k>for</span> <span class=n>e_id</span> <span class=ow>in</span> <span class=n>ids</span><span class=p>:</span>
-<a name=line-46></a>                <span class=k>if</span> <span class=n>e_id</span> <span class=ow>in</span> <span class=n>value</span><span class=p>:</span>
-<a name=line-47></a>                    <span class=n>e</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=n>value</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=n>e_id</span><span class=p>,</span> <span class=n>e_id</span> <span class=o>+</span> <span class=n>suffix</span><span class=p>))</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.8 at 2020-12-25 09:49 </p></div></div></body></html>
+<a name=line-44></a>        <span class=n>e_id</span> <span class=o>=</span> <span class=n>e</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;id&quot;</span><span class=p>)</span>
+<a name=line-45></a>        <span class=k>if</span> <span class=n>e_id</span><span class=p>:</span>
+<a name=line-46></a>            <span class=n>ids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;#&quot;</span> <span class=o>+</span> <span class=n>e_id</span><span class=p>)</span>
+<a name=line-47></a>            <span class=n>e</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;id&quot;</span><span class=p>,</span> <span class=n>e_id</span> <span class=o>+</span> <span class=n>suffix</span><span class=p>)</span>
+<a name=line-48></a>
+<a name=line-49></a>    <span class=k>for</span> <span class=n>e</span> <span class=ow>in</span> <span class=n>root</span><span class=o>.</span><span class=n>iter</span><span class=p>():</span>
+<a name=line-50></a>        <span class=k>for</span> <span class=n>name</span><span class=p>,</span> <span class=n>value</span> <span class=ow>in</span> <span class=n>e</span><span class=o>.</span><span class=n>attrib</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
+<a name=line-51></a>            <span class=k>for</span> <span class=n>e_id</span> <span class=ow>in</span> <span class=n>ids</span><span class=p>:</span>
+<a name=line-52></a>                <span class=k>if</span> <span class=n>e_id</span> <span class=ow>in</span> <span class=n>value</span><span class=p>:</span>
+<a name=line-53></a>                    <span class=n>e</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=n>value</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=n>e_id</span><span class=p>,</span> <span class=n>e_id</span> <span class=o>+</span> <span class=n>suffix</span><span class=p>))</span>
+<a name=line-54></a>
+<a name=line-55></a>
+<a name=line-56></a><span class=k>def</span> <span class=nf>apply_rotation</span><span class=p>(</span><span class=n>xml</span><span class=p>:</span> <span class=s2>&quot;Xml&quot;</span><span class=p>,</span> <span class=n>rotation</span><span class=p>:</span> <span class=nb>float</span><span class=p>,</span> <span class=n>center</span><span class=p>:</span> <span class=n>Tuple</span><span class=p>[</span><span class=nb>float</span><span class=p>,</span> <span class=nb>float</span><span class=p>]):</span>
+<a name=line-57></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;transform&quot;</span><span class=p>,</span> <span class=sa>f</span><span class=s2>&quot;rotate(</span><span class=si>{</span><span class=n>rotation</span><span class=si>}</span><span class=s2> </span><span class=si>{</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=si>}</span><span class=s2> </span><span class=si>{</span><span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>}</span><span class=s2>)&quot;</span><span class=p>)</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.8 at 2020-12-25 09:51 </p></div></div></body></html>

@@ -115,122 +115,128 @@
 115
 116
 117
-118</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>from</span> <span class=nn>.textstyle</span> <span class=kn>import</span> <span class=n>TextStyle</span>
-<a name=line-2></a>
+118
+119
+120
+121</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>from</span> <span class=nn>.svg</span> <span class=kn>import</span> <span class=n>apply_rotation</span>
+<a name=line-2></a><span class=kn>from</span> <span class=nn>.textstyle</span> <span class=kn>import</span> <span class=n>TextStyle</span>
 <a name=line-3></a>
-<a name=line-4></a><span class=k>def</span> <span class=nf>set_font_from_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>style</span><span class=p>):</span>
-<a name=line-5></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>font</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-6></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;font-family&quot;</span><span class=p>,</span> <span class=n>style</span><span class=o>.</span><span class=n>font</span><span class=p>)</span>
-<a name=line-7></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>size</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-8></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;font-size&quot;</span><span class=p>,</span> <span class=n>style</span><span class=o>.</span><span class=n>size</span><span class=p>)</span>
-<a name=line-9></a>
-<a name=line-10></a>    <span class=n>s</span> <span class=o>=</span> <span class=s2>&quot;&quot;</span>
-<a name=line-11></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>color</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-12></a>        <span class=n>s</span> <span class=o>+=</span> <span class=s2>&quot;fill:</span><span class=si>{}</span><span class=s2>;&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>style</span><span class=o>.</span><span class=n>color</span><span class=p>)</span>
-<a name=line-13></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>bold</span><span class=p>:</span>
-<a name=line-14></a>        <span class=n>s</span> <span class=o>+=</span> <span class=s2>&quot;font-weight: bold;&quot;</span>
-<a name=line-15></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>italic</span><span class=p>:</span>
-<a name=line-16></a>        <span class=n>s</span> <span class=o>+=</span> <span class=s2>&quot;font-style: italic;&quot;</span>
-<a name=line-17></a>    <span class=k>if</span> <span class=n>s</span><span class=p>:</span>
-<a name=line-18></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;style&quot;</span><span class=p>,</span> <span class=n>s</span><span class=p>)</span>
-<a name=line-19></a>
+<a name=line-4></a>
+<a name=line-5></a><span class=k>def</span> <span class=nf>set_font_from_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>style</span><span class=p>):</span>
+<a name=line-6></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>font</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-7></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;font-family&quot;</span><span class=p>,</span> <span class=n>style</span><span class=o>.</span><span class=n>font</span><span class=p>)</span>
+<a name=line-8></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>size</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-9></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;font-size&quot;</span><span class=p>,</span> <span class=n>style</span><span class=o>.</span><span class=n>size</span><span class=p>)</span>
+<a name=line-10></a>
+<a name=line-11></a>    <span class=n>s</span> <span class=o>=</span> <span class=s2>&quot;&quot;</span>
+<a name=line-12></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>color</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-13></a>        <span class=n>s</span> <span class=o>+=</span> <span class=s2>&quot;fill:</span><span class=si>{}</span><span class=s2>;&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>style</span><span class=o>.</span><span class=n>color</span><span class=p>)</span>
+<a name=line-14></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>bold</span><span class=p>:</span>
+<a name=line-15></a>        <span class=n>s</span> <span class=o>+=</span> <span class=s2>&quot;font-weight: bold;&quot;</span>
+<a name=line-16></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>italic</span><span class=p>:</span>
+<a name=line-17></a>        <span class=n>s</span> <span class=o>+=</span> <span class=s2>&quot;font-style: italic;&quot;</span>
+<a name=line-18></a>    <span class=k>if</span> <span class=n>s</span><span class=p>:</span>
+<a name=line-19></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;style&quot;</span><span class=p>,</span> <span class=n>s</span><span class=p>)</span>
 <a name=line-20></a>
-<a name=line-21></a><span class=k>def</span> <span class=nf>set_paint_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>color</span><span class=p>,</span> <span class=n>bg_color</span><span class=p>,</span> <span class=n>stroke_width</span><span class=p>,</span> <span class=n>stroke_dasharray</span><span class=p>):</span>
-<a name=line-22></a>    <span class=n>styles</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-23></a>    <span class=k>if</span> <span class=n>bg_color</span><span class=p>:</span>
-<a name=line-24></a>        <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;fill:</span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>bg_color</span><span class=p>))</span>
-<a name=line-25></a>    <span class=k>else</span><span class=p>:</span>
-<a name=line-26></a>        <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;fill:none&quot;</span><span class=p>)</span>
-<a name=line-27></a>
-<a name=line-28></a>    <span class=k>if</span> <span class=n>color</span><span class=p>:</span>
-<a name=line-29></a>        <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;stroke:</span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>color</span><span class=p>))</span>
-<a name=line-30></a>        <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;stroke-width:</span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>stroke_width</span><span class=p>))</span>
-<a name=line-31></a>        <span class=k>if</span> <span class=n>stroke_dasharray</span><span class=p>:</span>
-<a name=line-32></a>            <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;stroke-dasharray:</span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>stroke_dasharray</span><span class=p>))</span>
-<a name=line-33></a>    <span class=k>else</span><span class=p>:</span>
-<a name=line-34></a>        <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;stroke:none&quot;</span><span class=p>)</span>
-<a name=line-35></a>
-<a name=line-36></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;style&quot;</span><span class=p>,</span> <span class=s2>&quot;;&quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>styles</span><span class=p>))</span>
-<a name=line-37></a>
+<a name=line-21></a>
+<a name=line-22></a><span class=k>def</span> <span class=nf>set_paint_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>color</span><span class=p>,</span> <span class=n>bg_color</span><span class=p>,</span> <span class=n>stroke_width</span><span class=p>,</span> <span class=n>stroke_dasharray</span><span class=p>):</span>
+<a name=line-23></a>    <span class=n>styles</span> <span class=o>=</span> <span class=p>[]</span>
+<a name=line-24></a>    <span class=k>if</span> <span class=n>bg_color</span><span class=p>:</span>
+<a name=line-25></a>        <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;fill:</span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>bg_color</span><span class=p>))</span>
+<a name=line-26></a>    <span class=k>else</span><span class=p>:</span>
+<a name=line-27></a>        <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;fill:none&quot;</span><span class=p>)</span>
+<a name=line-28></a>
+<a name=line-29></a>    <span class=k>if</span> <span class=n>color</span><span class=p>:</span>
+<a name=line-30></a>        <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;stroke:</span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>color</span><span class=p>))</span>
+<a name=line-31></a>        <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;stroke-width:</span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>stroke_width</span><span class=p>))</span>
+<a name=line-32></a>        <span class=k>if</span> <span class=n>stroke_dasharray</span><span class=p>:</span>
+<a name=line-33></a>            <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;stroke-dasharray:</span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>stroke_dasharray</span><span class=p>))</span>
+<a name=line-34></a>    <span class=k>else</span><span class=p>:</span>
+<a name=line-35></a>        <span class=n>styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;stroke:none&quot;</span><span class=p>)</span>
+<a name=line-36></a>
+<a name=line-37></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;style&quot;</span><span class=p>,</span> <span class=s2>&quot;;&quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>styles</span><span class=p>))</span>
 <a name=line-38></a>
-<a name=line-39></a><span class=k>def</span> <span class=nf>draw_text</span><span class=p>(</span>
-<a name=line-40></a>    <span class=n>xml</span><span class=p>,</span> <span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>,</span> <span class=n>parsed_text</span><span class=p>,</span> <span class=n>style</span><span class=p>,</span> <span class=n>styles</span><span class=p>,</span> <span class=nb>id</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>id_index</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>transform</span><span class=o>=</span><span class=kc>None</span>
-<a name=line-41></a><span class=p>):</span>
-<a name=line-42></a>    <span class=k>assert</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>style</span><span class=p>,</span> <span class=n>TextStyle</span><span class=p>)</span>
-<a name=line-43></a>    <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;text&quot;</span><span class=p>)</span>
-<a name=line-44></a>
-<a name=line-45></a>    <span class=k>if</span> <span class=nb>id</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span> <span class=ow>and</span> <span class=n>id_index</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-46></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;id&quot;</span><span class=p>,</span> <span class=nb>id</span><span class=p>)</span>
-<a name=line-47></a>
-<a name=line-48></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;x&quot;</span><span class=p>,</span> <span class=n>x</span><span class=p>)</span>
-<a name=line-49></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;y&quot;</span><span class=p>,</span> <span class=n>y</span><span class=p>)</span>
-<a name=line-50></a>
-<a name=line-51></a>    <span class=k>if</span> <span class=n>transform</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-52></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;transform&quot;</span><span class=p>,</span> <span class=n>transform</span><span class=p>)</span>
-<a name=line-53></a>
-<a name=line-54></a>    <span class=n>anchor</span> <span class=o>=</span> <span class=p>{</span><span class=s2>&quot;left&quot;</span><span class=p>:</span> <span class=s2>&quot;start&quot;</span><span class=p>,</span> <span class=s2>&quot;middle&quot;</span><span class=p>:</span> <span class=s2>&quot;middle&quot;</span><span class=p>,</span> <span class=s2>&quot;right&quot;</span><span class=p>:</span> <span class=s2>&quot;end&quot;</span><span class=p>}</span>
-<a name=line-55></a>
-<a name=line-56></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;text-anchor&quot;</span><span class=p>,</span> <span class=n>anchor</span><span class=p>[</span><span class=n>style</span><span class=o>.</span><span class=n>align</span><span class=p>])</span>
-<a name=line-57></a>
-<a name=line-58></a>    <span class=n>set_font_from_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>style</span><span class=p>)</span>
-<a name=line-59></a>
-<a name=line-60></a>    <span class=n>line_size</span> <span class=o>=</span> <span class=n>style</span><span class=o>.</span><span class=n>size</span> <span class=o>*</span> <span class=n>style</span><span class=o>.</span><span class=n>line_spacing</span>
-<a name=line-61></a>    <span class=n>active_styles</span> <span class=o>=</span> <span class=p>[</span><span class=n>style</span><span class=p>]</span>
-<a name=line-62></a>
-<a name=line-63></a>    <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>
-<a name=line-64></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>variant_numeric</span><span class=p>:</span>
-<a name=line-65></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;font-variant-numeric&quot;</span><span class=p>,</span> <span class=n>style</span><span class=o>.</span><span class=n>variant_numeric</span><span class=p>)</span>
-<a name=line-66></a>
-<a name=line-67></a>    <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=p>(</span><span class=n>token_type</span><span class=p>,</span> <span class=n>value</span><span class=p>)</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>parsed_text</span><span class=p>):</span>
-<a name=line-68></a>        <span class=k>if</span> <span class=n>token_type</span> <span class=o>==</span> <span class=s2>&quot;text&quot;</span><span class=p>:</span>
-<a name=line-69></a>            <span class=n>xml</span><span class=o>.</span><span class=n>text</span><span class=p>(</span><span class=n>value</span><span class=p>)</span>
-<a name=line-70></a>        <span class=k>elif</span> <span class=n>token_type</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span><span class=p>:</span>
-<a name=line-71></a>            <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=n>active_styles</span><span class=p>:</span>
-<a name=line-72></a>                <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>  <span class=c1># tspan</span>
-<a name=line-73></a>            <span class=k>for</span> <span class=n>j</span><span class=p>,</span> <span class=n>s</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>active_styles</span><span class=p>):</span>
-<a name=line-74></a>                <span class=k>if</span> <span class=n>s</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-75></a>                    <span class=k>continue</span>
-<a name=line-76></a>                <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>
-<a name=line-77></a>                <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xml:space&quot;</span><span class=p>,</span> <span class=s2>&quot;preserve&quot;</span><span class=p>)</span>
-<a name=line-78></a>                <span class=k>if</span> <span class=n>j</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
-<a name=line-79></a>                    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;x&quot;</span><span class=p>,</span> <span class=n>x</span><span class=p>)</span>
-<a name=line-80></a>                    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;dy&quot;</span><span class=p>,</span> <span class=n>line_size</span> <span class=o>*</span> <span class=n>value</span><span class=p>)</span>
-<a name=line-81></a>                <span class=n>set_font_from_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>s</span><span class=p>)</span>
-<a name=line-82></a>        <span class=k>elif</span> <span class=n>token_type</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span><span class=p>:</span>
-<a name=line-83></a>            <span class=n>is_dummy</span> <span class=o>=</span> <span class=n>value</span> <span class=ow>and</span> <span class=n>value</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=s2>&quot;#&quot;</span>
-<a name=line-84></a>            <span class=n>s</span> <span class=o>=</span> <span class=n>styles</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>value</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
-<a name=line-85></a>            <span class=k>if</span> <span class=n>s</span> <span class=ow>is</span> <span class=kc>None</span> <span class=ow>and</span> <span class=ow>not</span> <span class=n>is_dummy</span><span class=p>:</span>
-<a name=line-86></a>                <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Style &#39;</span><span class=si>{}</span><span class=s2>&#39; not found&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>value</span><span class=p>))</span>
-<a name=line-87></a>            <span class=n>active_styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>s</span><span class=p>)</span>
-<a name=line-88></a>            <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>
-<a name=line-89></a>            <span class=k>if</span> <span class=nb>id</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span> <span class=ow>and</span> <span class=n>id_index</span> <span class=o>==</span> <span class=n>i</span><span class=p>:</span>
-<a name=line-90></a>                <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;id&quot;</span><span class=p>,</span> <span class=nb>id</span><span class=p>)</span>
-<a name=line-91></a>            <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xml:space&quot;</span><span class=p>,</span> <span class=s2>&quot;preserve&quot;</span><span class=p>)</span>
-<a name=line-92></a>            <span class=k>if</span> <span class=ow>not</span> <span class=n>is_dummy</span><span class=p>:</span>
-<a name=line-93></a>                <span class=n>set_font_from_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>s</span><span class=p>)</span>
-<a name=line-94></a>        <span class=k>elif</span> <span class=n>token_type</span> <span class=o>==</span> <span class=s2>&quot;end&quot;</span><span class=p>:</span>
-<a name=line-95></a>            <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>
-<a name=line-96></a>            <span class=n>active_styles</span><span class=o>.</span><span class=n>pop</span><span class=p>()</span>
-<a name=line-97></a>        <span class=k>else</span><span class=p>:</span>
-<a name=line-98></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Invalid token&quot;</span><span class=p>)</span>
-<a name=line-99></a>
-<a name=line-100></a>    <span class=k>for</span> <span class=n>s</span> <span class=ow>in</span> <span class=n>active_styles</span><span class=p>:</span>
-<a name=line-101></a>        <span class=k>if</span> <span class=n>s</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-102></a>            <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>
-<a name=line-103></a>    <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;text&quot;</span><span class=p>)</span>
-<a name=line-104></a>
+<a name=line-39></a>
+<a name=line-40></a><span class=k>def</span> <span class=nf>draw_text</span><span class=p>(</span>
+<a name=line-41></a>    <span class=n>xml</span><span class=p>,</span> <span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>,</span> <span class=n>parsed_text</span><span class=p>,</span> <span class=n>style</span><span class=p>,</span> <span class=n>styles</span><span class=p>,</span> <span class=nb>id</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>id_index</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>transform</span><span class=o>=</span><span class=kc>None</span>
+<a name=line-42></a><span class=p>):</span>
+<a name=line-43></a>    <span class=k>assert</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>style</span><span class=p>,</span> <span class=n>TextStyle</span><span class=p>)</span>
+<a name=line-44></a>    <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;text&quot;</span><span class=p>)</span>
+<a name=line-45></a>
+<a name=line-46></a>    <span class=k>if</span> <span class=nb>id</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span> <span class=ow>and</span> <span class=n>id_index</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-47></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;id&quot;</span><span class=p>,</span> <span class=nb>id</span><span class=p>)</span>
+<a name=line-48></a>
+<a name=line-49></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;x&quot;</span><span class=p>,</span> <span class=n>x</span><span class=p>)</span>
+<a name=line-50></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;y&quot;</span><span class=p>,</span> <span class=n>y</span><span class=p>)</span>
+<a name=line-51></a>
+<a name=line-52></a>    <span class=k>if</span> <span class=n>transform</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-53></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;transform&quot;</span><span class=p>,</span> <span class=n>transform</span><span class=p>)</span>
+<a name=line-54></a>
+<a name=line-55></a>    <span class=n>anchor</span> <span class=o>=</span> <span class=p>{</span><span class=s2>&quot;left&quot;</span><span class=p>:</span> <span class=s2>&quot;start&quot;</span><span class=p>,</span> <span class=s2>&quot;middle&quot;</span><span class=p>:</span> <span class=s2>&quot;middle&quot;</span><span class=p>,</span> <span class=s2>&quot;right&quot;</span><span class=p>:</span> <span class=s2>&quot;end&quot;</span><span class=p>}</span>
+<a name=line-56></a>
+<a name=line-57></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;text-anchor&quot;</span><span class=p>,</span> <span class=n>anchor</span><span class=p>[</span><span class=n>style</span><span class=o>.</span><span class=n>align</span><span class=p>])</span>
+<a name=line-58></a>
+<a name=line-59></a>    <span class=n>set_font_from_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>style</span><span class=p>)</span>
+<a name=line-60></a>
+<a name=line-61></a>    <span class=n>line_size</span> <span class=o>=</span> <span class=n>style</span><span class=o>.</span><span class=n>size</span> <span class=o>*</span> <span class=n>style</span><span class=o>.</span><span class=n>line_spacing</span>
+<a name=line-62></a>    <span class=n>active_styles</span> <span class=o>=</span> <span class=p>[</span><span class=n>style</span><span class=p>]</span>
+<a name=line-63></a>
+<a name=line-64></a>    <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>
+<a name=line-65></a>    <span class=k>if</span> <span class=n>style</span><span class=o>.</span><span class=n>variant_numeric</span><span class=p>:</span>
+<a name=line-66></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;font-variant-numeric&quot;</span><span class=p>,</span> <span class=n>style</span><span class=o>.</span><span class=n>variant_numeric</span><span class=p>)</span>
+<a name=line-67></a>
+<a name=line-68></a>    <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=p>(</span><span class=n>token_type</span><span class=p>,</span> <span class=n>value</span><span class=p>)</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>parsed_text</span><span class=p>):</span>
+<a name=line-69></a>        <span class=k>if</span> <span class=n>token_type</span> <span class=o>==</span> <span class=s2>&quot;text&quot;</span><span class=p>:</span>
+<a name=line-70></a>            <span class=n>xml</span><span class=o>.</span><span class=n>text</span><span class=p>(</span><span class=n>value</span><span class=p>)</span>
+<a name=line-71></a>        <span class=k>elif</span> <span class=n>token_type</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span><span class=p>:</span>
+<a name=line-72></a>            <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=n>active_styles</span><span class=p>:</span>
+<a name=line-73></a>                <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>  <span class=c1># tspan</span>
+<a name=line-74></a>            <span class=k>for</span> <span class=n>j</span><span class=p>,</span> <span class=n>s</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>active_styles</span><span class=p>):</span>
+<a name=line-75></a>                <span class=k>if</span> <span class=n>s</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-76></a>                    <span class=k>continue</span>
+<a name=line-77></a>                <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>
+<a name=line-78></a>                <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xml:space&quot;</span><span class=p>,</span> <span class=s2>&quot;preserve&quot;</span><span class=p>)</span>
+<a name=line-79></a>                <span class=k>if</span> <span class=n>j</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+<a name=line-80></a>                    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;x&quot;</span><span class=p>,</span> <span class=n>x</span><span class=p>)</span>
+<a name=line-81></a>                    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;dy&quot;</span><span class=p>,</span> <span class=n>line_size</span> <span class=o>*</span> <span class=n>value</span><span class=p>)</span>
+<a name=line-82></a>                <span class=n>set_font_from_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>s</span><span class=p>)</span>
+<a name=line-83></a>        <span class=k>elif</span> <span class=n>token_type</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span><span class=p>:</span>
+<a name=line-84></a>            <span class=n>is_dummy</span> <span class=o>=</span> <span class=n>value</span> <span class=ow>and</span> <span class=n>value</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=s2>&quot;#&quot;</span>
+<a name=line-85></a>            <span class=n>s</span> <span class=o>=</span> <span class=n>styles</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>value</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
+<a name=line-86></a>            <span class=k>if</span> <span class=n>s</span> <span class=ow>is</span> <span class=kc>None</span> <span class=ow>and</span> <span class=ow>not</span> <span class=n>is_dummy</span><span class=p>:</span>
+<a name=line-87></a>                <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Style &#39;</span><span class=si>{}</span><span class=s2>&#39; not found&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>value</span><span class=p>))</span>
+<a name=line-88></a>            <span class=n>active_styles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>s</span><span class=p>)</span>
+<a name=line-89></a>            <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>
+<a name=line-90></a>            <span class=k>if</span> <span class=nb>id</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span> <span class=ow>and</span> <span class=n>id_index</span> <span class=o>==</span> <span class=n>i</span><span class=p>:</span>
+<a name=line-91></a>                <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;id&quot;</span><span class=p>,</span> <span class=nb>id</span><span class=p>)</span>
+<a name=line-92></a>            <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xml:space&quot;</span><span class=p>,</span> <span class=s2>&quot;preserve&quot;</span><span class=p>)</span>
+<a name=line-93></a>            <span class=k>if</span> <span class=ow>not</span> <span class=n>is_dummy</span><span class=p>:</span>
+<a name=line-94></a>                <span class=n>set_font_from_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>s</span><span class=p>)</span>
+<a name=line-95></a>        <span class=k>elif</span> <span class=n>token_type</span> <span class=o>==</span> <span class=s2>&quot;end&quot;</span><span class=p>:</span>
+<a name=line-96></a>            <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>
+<a name=line-97></a>            <span class=n>active_styles</span><span class=o>.</span><span class=n>pop</span><span class=p>()</span>
+<a name=line-98></a>        <span class=k>else</span><span class=p>:</span>
+<a name=line-99></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Invalid token&quot;</span><span class=p>)</span>
+<a name=line-100></a>
+<a name=line-101></a>    <span class=k>for</span> <span class=n>s</span> <span class=ow>in</span> <span class=n>active_styles</span><span class=p>:</span>
+<a name=line-102></a>        <span class=k>if</span> <span class=n>s</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-103></a>            <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;tspan&quot;</span><span class=p>)</span>
+<a name=line-104></a>    <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;text&quot;</span><span class=p>)</span>
 <a name=line-105></a>
-<a name=line-106></a><span class=k>def</span> <span class=nf>draw_bitmap</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>,</span> <span class=n>width</span><span class=p>,</span> <span class=n>height</span><span class=p>,</span> <span class=n>mime</span><span class=p>,</span> <span class=n>data</span><span class=p>,</span> <span class=n>extra_args</span><span class=o>=</span><span class=kc>None</span><span class=p>):</span>
-<a name=line-107></a>    <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;image&quot;</span><span class=p>)</span>
-<a name=line-108></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;x&quot;</span><span class=p>,</span> <span class=n>x</span><span class=p>)</span>
-<a name=line-109></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;y&quot;</span><span class=p>,</span> <span class=n>y</span><span class=p>)</span>
-<a name=line-110></a>    <span class=k>if</span> <span class=n>width</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-111></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;width&quot;</span><span class=p>,</span> <span class=n>width</span><span class=p>)</span>
-<a name=line-112></a>    <span class=k>if</span> <span class=n>height</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-113></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;height&quot;</span><span class=p>,</span> <span class=n>height</span><span class=p>)</span>
-<a name=line-114></a>    <span class=k>if</span> <span class=n>extra_args</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-115></a>        <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>extra_args</span><span class=p>:</span>
-<a name=line-116></a>            <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=n>v</span><span class=p>)</span>
-<a name=line-117></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xlink:href&quot;</span><span class=p>,</span> <span class=s2>&quot;data:</span><span class=si>{}</span><span class=s2>;base64,</span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>mime</span><span class=p>,</span> <span class=n>data</span><span class=p>),</span> <span class=n>escape</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
-<a name=line-118></a>    <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;image&quot;</span><span class=p>)</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.8 at 2020-12-25 09:49 </p></div></div></body></html>
+<a name=line-106></a>
+<a name=line-107></a><span class=k>def</span> <span class=nf>draw_bitmap</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>,</span> <span class=n>width</span><span class=p>,</span> <span class=n>height</span><span class=p>,</span> <span class=n>mime</span><span class=p>,</span> <span class=n>data</span><span class=p>,</span> <span class=n>rotation</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>extra_args</span><span class=o>=</span><span class=kc>None</span><span class=p>):</span>
+<a name=line-108></a>    <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;image&quot;</span><span class=p>)</span>
+<a name=line-109></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;x&quot;</span><span class=p>,</span> <span class=n>x</span><span class=p>)</span>
+<a name=line-110></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;y&quot;</span><span class=p>,</span> <span class=n>y</span><span class=p>)</span>
+<a name=line-111></a>    <span class=k>if</span> <span class=n>width</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-112></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;width&quot;</span><span class=p>,</span> <span class=n>width</span><span class=p>)</span>
+<a name=line-113></a>    <span class=k>if</span> <span class=n>height</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-114></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;height&quot;</span><span class=p>,</span> <span class=n>height</span><span class=p>)</span>
+<a name=line-115></a>    <span class=k>if</span> <span class=n>rotation</span><span class=p>:</span>
+<a name=line-116></a>        <span class=n>apply_rotation</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>rotation</span><span class=p>,</span> <span class=p>(</span><span class=n>x</span> <span class=o>+</span> <span class=n>width</span> <span class=o>/</span> <span class=mi>2</span><span class=p>,</span> <span class=n>y</span> <span class=o>+</span> <span class=n>height</span> <span class=o>/</span> <span class=mi>2</span><span class=p>))</span>
+<a name=line-117></a>    <span class=k>if</span> <span class=n>extra_args</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-118></a>        <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>extra_args</span><span class=p>:</span>
+<a name=line-119></a>            <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=n>v</span><span class=p>)</span>
+<a name=line-120></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;xlink:href&quot;</span><span class=p>,</span> <span class=s2>&quot;data:</span><span class=si>{}</span><span class=s2>;base64,</span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>mime</span><span class=p>,</span> <span class=n>data</span><span class=p>),</span> <span class=n>escape</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
+<a name=line-121></a>    <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;image&quot;</span><span class=p>)</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.8 at 2020-12-25 09:51 </p></div></div></body></html>
