@@ -12,7 +12,7 @@ Elsie is a framework for **creating slides programmatically** using Python.
 ```python
 import elsie
 
-slides = elsie.Slides()
+slides = elsie.SlideDeck()
 
 @slides.slide()
 def hello(slide):

@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from ..render.render import RenderUnit
 
 
-class Slides:
+class SlideDeck:
     """
     Presentation containing slides.
     """
@@ -53,7 +53,7 @@ class Slides:
             Directory where slide cache will be stored.
         name_policy: {"auto", "ignore", "replace", "unique"}
             Policy used to handle slides with the same name.
-            "unique" -> Slides with the same name are not allowed.
+            "unique" -> SlideDeck with the same name are not allowed.
             "replace" -> If there was a slide with the same name, it will be removed prior to
             adding the new slide.
             "ignore" -> Slide names are ignored.
@@ -201,7 +201,7 @@ class Slides:
         Decorator which creates a new slide and passes its root box to the decorated function.
 
         Examples:
-        slides = elsie.Slides()
+        slides = elsie.SlideDeck()
 
         @slides.slide()
         def slide1(slide: elsie.Box):
@@ -466,7 +466,7 @@ class Slides:
             merger.write(output, self.debug)
             if prune_cache:
                 self.fs_cache.remove_unused()
-            print("Slides written into '{}'".format(output))
+            print("SlideDeck written into '{}'".format(output))
         else:
             if prune_cache:
                 self.fs_cache.remove_unused()

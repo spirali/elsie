@@ -1,18 +1,18 @@
 # Basics
-A presentation (set of slides) is represented in *Elsie* with the [`Slides`](elsie.slides.slides.Slides)
-class. The most important parameters of the presentation is the width and height of the resulting
-PDF pages, which also affects the resulting aspect ratio. The default size if `1024x768`, which
-corresponds to aspect ratio `4:3`.
+A presentation (set of slides) is represented in *Elsie* with the
+[`SlideDeck`](elsie.slides.slidedeck.SlideDeck) class. The most important parameters of the
+presentation is the width and height of the resulting PDF pages, which also affects the resulting
+aspect ratio. The default size if `1024x768`, which corresponds to aspect ratio `4:3`.
 
 Here is an example of creating a new presentation:
 ```python
 import elsie
-slides = elsie.Slides(width=1024, height=768)
+slides = elsie.SlideDeck(width=1024, height=768)
 ```
-Once you have a `Slides` object, you can create new slides from it.
+Once you have a `SlideDeck` object, you can create new slides from it.
 
 ## Creating slides
-You can create new slides in two ways, either using the [`new_slide`](elsie.slides.slides.Slides.new_slide)
+You can create new slides in two ways, either using the [`new_slide`](elsie.slides.slidedeck.SlideDeck.new_slide)
 method or via a [decorator](#decorator). The `new_slide` method will create a new slide, but for
 convenience, it will not return the slide itself, but its [root box](layout.md), so that you can
 use the returned object immediately for adding things to the slide. Except for some advanced usage,
@@ -26,7 +26,7 @@ Once you have a slide, you can add content to it, for example [text](text.md), [
 [shapes](shapes.md) or [source code](syntax_highlighting.md).
 
 ### Decorator
-A more convenient way of creating a slide is using the [`slide`](elsie.slides.slides.Slides.slide)
+A more convenient way of creating a slide is using the [`slide`](elsie.slides.slidedeck.SlideDeck.slide)
 decorator. If you apply it to a function, it will create a new slide and pass its root box as a
 parameter to the function. It will also set the name of the slide according to the name of the
 decorated function.
@@ -43,7 +43,7 @@ its name (see [below](#name-policy)) or enable [debug draw mode](layout.md#debug
 
 ## Rendering slides
 After you have created all of your desired slides and filled them with content, you can render your
-presentation using the [`render`](elsie.slides.slides.Slides.render) method. There are several useful
+presentation using the [`render`](elsie.slides.slidedeck.SlideDeck.render) method. There are several useful
 parameters of this method:
 
 - `output`: Change the output filename of the rendered PDF (default is `slides.pdf`).
@@ -74,10 +74,10 @@ Each time you would execute the cell, a new slide would be added to the presenta
 probably not what you want.
 
 To solve this issue, *Elsie* contains a so-called *name policy*, which decides how to react to the
-situation where the same slide is created repeatedly. Slides are identified by their name, which you
+situation where the same slide is created repeatedly. SlideDeck are identified by their name, which you
 either pass to `new_slide` or it is determined automatically if the [decorator](#decorator) is used.
 
-The `Slides` instance has one of the following name policies, which decides what to do when a new
+The `SlideDeck` instance has one of the following name policies, which decides what to do when a new
 slide is created:
 
 - `unique`: Creating two slides with the same name will result in an error. This is to stop you from

@@ -4,7 +4,7 @@ import elsie
 COLOR1 = "#328cc1"
 COLOR2 = "#d9b310"
 
-slides = elsie.Slides()
+slides = elsie.SlideDeck()
 
 # Modify text styles
 slides.update_style("default", elsie.TextStyle(color=COLOR1))  # Default font
@@ -29,7 +29,7 @@ def first_slide(slide):
 
     # Put text into a box with style "header"
     title_box2.text(
-        "Elsie: Slides in Python in Programmable Way",
+        "Elsie: SlideDeck in Python in Programmable Way",
         elsie.TextStyle(size=35, color="white"),
     )
 
@@ -73,7 +73,7 @@ def hello_world(slide):
         """
     import elsie
 
-    slides = elsie.Slides()
+    slides = elsie.SlideDeck()
 
     @slides.slide()
     def hello(slide):
@@ -766,7 +766,7 @@ def debugging_slides(slide):
     title_box2.rect(bg_color=COLOR1)
 
     title_box2.text(
-        "Elsie: Slides in Python in Programmable Way",
+        "Elsie: SlideDeck in Python in Programmable Way",
         elsie.TextStyle(size=35, color="white"),
     )
 

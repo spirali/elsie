@@ -4,7 +4,7 @@
 rendered directly inside the notebook:
 ```python
 import elsie
-slides = elsie.Slides()
+slides = elsie.SlideDeck()
 slide = slides.new_slide()
 slide.box().text("Hello world")
 slide
@@ -13,7 +13,7 @@ If you create slides using the [decorator](basics.md#decorator) approach, you ne
 decorated function from the cell:
 ```python
 import elsie
-slides = elsie.Slides()
+slides = elsie.SlideDeck()
 
 @slides.slide()
 def hello(slide):

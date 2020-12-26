@@ -1,7 +1,7 @@
 # Slide postprocessing
 Sometimes you may want to add some global data to your slides, for example a footer, license
 information or [slide numbers](#slide-numbering). To make it easier, you can pass a function to
-the `slide_postprocessing` parameter of the [`render`](elsie.slides.slides.Slides.render) method. The
+the `slide_postprocessing` parameter of the [`render`](elsie.slides.slidedeck.SlideDeck.render) method. The
 function will receive a list of root boxes of each slide in the presentation. You can then go
 through the list and modify the slides, for example by adding some text to them.
 
@@ -9,7 +9,7 @@ through the list and modify the slides, for example by adding some text to them.
 It is quite easy to add numbers to each slide using slide postprocessing. Here is an example:
 ```python
 import elsie
-slides = elsie.Slides()
+slides = elsie.SlideDeck()
 
 @slides.slide()
 def slide1(slide):

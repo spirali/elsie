@@ -12,13 +12,13 @@ from ..utils.sxml import Xml
 from .show import ShowInfo
 
 if TYPE_CHECKING:
-    from . import slides
+    from . import slidedeck
 
 
 class Slide:
     def __init__(
         self,
-        slides: "slides.Slides",
+        slides: "slidedeck.SlideDeck",
         index: int,
         width: int,
         height: int,

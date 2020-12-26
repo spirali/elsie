@@ -18,7 +18,7 @@ from elsie.render.inkscape import InkscapeShell  # noqa
 
 class SlideTester:
     def __init__(self, inkscape_shell=None):
-        self.slides = elsie.Slides(name_policy="ignore", inkscape=inkscape_shell)
+        self.slides = elsie.SlideDeck(name_policy="ignore", inkscape=inkscape_shell)
         self._slide = None
 
     @property

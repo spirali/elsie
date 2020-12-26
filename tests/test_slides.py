@@ -1,11 +1,11 @@
 import pytest
 
-from elsie import Slides
+from elsie import SlideDeck
 
 
 @pytest.mark.parametrize("policy", ["auto", "unique"])
 def test_name_policy_unique(policy):
-    slides = Slides(name_policy=policy)
+    slides = SlideDeck(name_policy=policy)
     slides.new_slide()
     slides.new_slide()
     slides.new_slide(name="xxx")
@@ -19,11 +19,11 @@ def test_name_policy_unique(policy):
 
 def test_invalid_name_policy():
     with pytest.raises(Exception, match="Invalid"):
-        Slides(name_policy="xxx")
+        SlideDeck(name_policy="xxx")
 
 
 def test_name_policy_ignore():
-    slides = Slides(name_policy="ignore")
+    slides = SlideDeck(name_policy="ignore")
     slides.new_slide(name="xxx")
     slides.new_slide(name="xxx")
     slides.new_slide(name="yyy")
@@ -31,7 +31,7 @@ def test_name_policy_ignore():
 
 
 def test_name_policy_replace():
-    slides = Slides(name_policy="replace")
+    slides = SlideDeck(name_policy="replace")
     slides.new_slide(name="xxx")
     slides.new_slide(name="yyy")
     b2 = slides.new_slide(name="xxx")
