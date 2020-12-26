@@ -1,7 +1,7 @@
 # Zooming
 SVG defines a [viewbox](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox)
 attribute, which allows you to change from which view point is the SVG image rendered. *Elsie* also
-supports this attribute via the [`view_box`](elsie.slides.Slides.slide) parameter.
+supports this attribute via the [`view_box`](elsie.slides.slides.Slides.slide) parameter.
 
 Using a specific viewbox, you can for example create "zoomed" slides. This might be useful if you
 first want to show an overview of something and then later zoom-in to show some details.

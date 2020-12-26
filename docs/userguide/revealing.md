@@ -1,7 +1,7 @@
 # Revealing
 Presentations often contain slides that are revealed gradually in several steps (usually called
 *fragments*). *Elsie* allows you to create multiple fragments per slide and selectively show
-individual [boxes](layout.md) in specific fragments using the [`show`](elsie.boxmixin.BoxMixin.box)
+individual [boxes](layout.md) in specific fragments using the [`show`](elsie.boxtree.boxmixin.BoxMixin.box)
 parameter.
 
 Fragments on a slide are counted from `1` and there is always at least a single fragment in each
@@ -53,7 +53,7 @@ manually and keep them in sync when you make changes to the slide. To make this 
 you can use placeholders to refer to the current fragment.
 
 The *current* fragment is the fragment with the largest number defined on a slide so far. You can
-access its number using the [`current_fragment`](elsie.box.Box.current_fragment) method. This
+access its number using the [`current_fragment`](elsie.boxtree.box.Box.current_fragment) method. This
 value changes dynamically as you add more fragments to the slide:
 ```python
 # slide.current_fragment() == 1
@@ -104,7 +104,7 @@ in that fragment (if you know CSS, fragment visibility behaves like `visibility:
 not `display: none`).
 
 If you instead want to show boxes gradually on top of one another, you can use the
-[`overlay`](elsie.boxmixin.BoxMixin.overlay) shortcut to render a box at the same location and size
+[`overlay`](elsie.boxtree.boxmixin.BoxMixin.overlay) shortcut to render a box at the same location and size
 as another box.
 ```elsie
 slide.overlay(show="1").text("Box 1")

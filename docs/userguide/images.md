@@ -1,5 +1,5 @@
 # Images
-Images can be inserted into a slide by calling the [`image`](elsie.boxmixin.BoxMixin.image) method
+Images can be inserted into a slide by calling the [`image`](elsie.boxtree.boxmixin.BoxMixin.image) method
 on a box. The first parameter is the path to the image.
 
 ```elsie,height=120,border=no
@@ -48,7 +48,7 @@ Here are some examples of how it works:
 All elements that do not use the `**`-suffixed name will be interpreted as having `show="1+"`.
 
 You can further control how fragments of an image will be displayed using the following parameters
-of the [`image`](elsie.boxmixin.BoxMixin.image) method:
+of the [`image`](elsie.boxtree.boxmixin.BoxMixin.image) method:
 
 - `fragments=False`: Fragment annotations will be ignored.
 - `show_begin=<x>`: Shifts all fragments in the image forward so that `x` will be the first fragment

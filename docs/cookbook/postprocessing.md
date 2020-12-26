@@ -1,7 +1,7 @@
 # Slide postprocessing
 Sometimes you may want to add some global data to your slides, for example a footer, license
 information or [slide numbers](#slide-numbering). To make it easier, you can pass a function to
-the `slide_postprocessing` parameter of the [`render`](elsie.slides.Slides.render) method. The
+the `slide_postprocessing` parameter of the [`render`](elsie.slides.slides.Slides.render) method. The
 function will receive a list of root boxes of each slide in the presentation. You can then go
 through the list and modify the slides, for example by adding some text to them.
 
@@ -37,4 +37,4 @@ You can find the rendered PDF with slide numbers
 [here](https://github.com/spirali/elsie/raw/master/examples/page_numbers/page_numbers.pdf).
 
 You could also easily create a fragment number for each fragment of each slide by iterating numbers
-up to the [`current_fragment()`](elsie.slide.Slide.current_fragment) of each slide.
+up to the [`current_fragment()`](elsie.slides.slide.Slide.current_fragment) of each slide.

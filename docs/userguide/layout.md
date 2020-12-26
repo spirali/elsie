@@ -12,11 +12,11 @@ such as text, images, shapes, etc. Anything that can be rendered by *Elsie* thus
 parent box which decides its size and position on a slide.
 
 ## Creating boxes
-To create a new box, you can call the [`box`](elsie.boxmixin.BoxMixin.box) method on an existing
+To create a new box, you can call the [`box`](elsie.boxtree.boxmixin.BoxMixin.box) method on an existing
 `Box`. This will return a new box which will be a child of the box object
 on which you call the `box` method. The root box of the slide layout hierarchy is available to you
-as the return value of the [`new_slide`](elsie.slides.Slides.new_slide) method or the
-[`slide`](elsie.slides.Slides.slide) decorator.
+as the return value of the [`new_slide`](elsie.slides.slides.Slides.new_slide) method or the
+[`slide`](elsie.slides.slides.Slides.slide) decorator.
 
 Here we create three boxes as children of the top-level slide box and create a child text item
 in each box.
@@ -36,7 +36,7 @@ they will be displayed consistently on each device.
 The boxes themselves are invisible, but they have caused the three text items to be rendered
 below one another. If you are fine-tuning or debugging the layout of your slide, and you want to see
 the extents and bounds of your boxes, you can use the
-[`debug_boxes`](elsie.slides.Slides.slide) parameter when creating a slide:
+[`debug_boxes`](elsie.slides.slides.Slides.slide) parameter when creating a slide:
 ```elsie,width=200,height=200,debug,skip=2
 @slides.slide(debug_boxes=True)
 def three_boxes_debug(slide):
@@ -94,9 +94,9 @@ col_b = row.box()
 col_b.box().text("Col. B/1")
 ```
 
-Note that almost all methods on a box will create a new box ([`box`](elsie.boxmixin.BoxMixin.box))
-or an item (e.g. [`text`](elsie.boxmixin.BoxMixin.text) or
-[`rect`](elsie.boxmixin.BoxMixin.rect)). Leaf items cannot contain children, but for
+Note that almost all methods on a box will create a new box ([`box`](elsie.boxtree.boxmixin.BoxMixin.box))
+or an item (e.g. [`text`](elsie.boxtree.boxmixin.BoxMixin.text) or
+[`rect`](elsie.boxtree.boxmixin.BoxMixin.rect)). Leaf items cannot contain children, but for
 convenience they also offer most of the methods available on boxes, which they delegate to their
 parent. Therefore, the following two snippets will create the same slide content:
 ```elsie,skip=4
@@ -111,7 +111,7 @@ slide.box().rect(bg_color="#aaf").text("Hello!")
 
 ## Sizing boxes
 You can change the width and height of a box by using the `width` and `height` parameters of the
-[`box`](elsie.boxmixin.BoxMixin.box) method.
+[`box`](elsie.boxtree.boxmixin.BoxMixin.box) method.
 
 Here we create three boxes (`A`, `B` and `C`). Box `A` has a default size, which is set according
 to the required size of its text child. Box `B` has a width of `300` pixels and height of `100`
@@ -153,11 +153,11 @@ slide.box(height="fill").text("Box 4")
 ### Aliases for commonly sized boxes
 *Elsie* contains three shortcuts for creating boxes with common minimal size requirements:
 
-- [`fbox`](elsie.boxmixin.BoxMixin.fbox) (fill-box): shortcut for `box(width="fill", height="fill")`.
-- [`sbox`](elsie.boxmixin.BoxMixin.sbox) (stretch-box): shortcut for `box(width="fill")` if the
+- [`fbox`](elsie.boxtree.boxmixin.BoxMixin.fbox) (fill-box): shortcut for `box(width="fill", height="fill")`.
+- [`sbox`](elsie.boxtree.boxmixin.BoxMixin.sbox) (stretch-box): shortcut for `box(width="fill")` if the
 parent box has a vertical layout or `box(height="fill")` if the parent box has a
 [horizontal](#box-axis) layout. In other words, it fills the box in the cross axis.
-- [`overlay`](elsie.boxmixin.BoxMixin.overlay): shortcut for
+- [`overlay`](elsie.boxtree.boxmixin.BoxMixin.overlay): shortcut for
 `box(x=0, y=0, width="100%", height="100%)`. This can be used if you want to overlay several boxes
 on top of each other, which is useful especially in combination with
 [revealing](revealing.md#overlaying-boxes).
@@ -166,7 +166,7 @@ on top of each other, which is useful especially in combination with
 By default, each box gives all of its space to its children. This can be modified by padding.
 There are four padding values: `left`, `right`, `top`, and `bottom`. They can be modified with the
 `p_left`, `p_right`, `p_top`, and `p_bottom` parameters of the
-[`box`](elsie.boxmixin.BoxMixin.box) method.
+[`box`](elsie.boxtree.boxmixin.BoxMixin.box) method.
 
 After the layout of the parent box is computed and the final size and position of a box is known,
 the padding will shrink its size in the specified directions.
@@ -238,8 +238,8 @@ row.box().text("Box 3")
 
 ### Dynamic positions
 Box position can also be defined dynamically with respect to other boxes. You can get a position
-that is relative to the final position of a box using the [`x`](elsie.boxmixin.BoxMixin.x) or
-[`y`](elsie.boxmixin.BoxMixin.y) methods. The returned value of these methods will be a proxy
+that is relative to the final position of a box using the [`x`](elsie.boxtree.boxmixin.BoxMixin.x) or
+[`y`](elsie.boxtree.boxmixin.BoxMixin.y) methods. The returned value of these methods will be a proxy
 object that will resolve the actual final position after layout is computed.
 
 The reference point of these two methods is the top-left corner of the target box. The parameter
@@ -264,9 +264,9 @@ slide.box(x=0, y=b.y("100%"), width="100%", height=200, name="Third")
 ```
 
 In addition to using the individual `x` and `y` methods, you can also use the
-[`p`](elsie.boxmixin.BoxMixin.p) method to create a dynamic point, which will again be resolved
+[`p`](elsie.boxtree.boxmixin.BoxMixin.p) method to create a dynamic point, which will again be resolved
 after the layout is fully computed. You can also further move this point via the
-[`add`](elsie.lazy.LazyPoint.add) method. This is mostly useful for defining points of
+[`add`](elsie.boxtree.lazy.LazyPoint.add) method. This is mostly useful for defining points of
 [lines and polygons](shapes.md#lines-and-polygons).
 
 ## Modifying render order
