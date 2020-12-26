@@ -11,7 +11,7 @@ DATA_DIR = os.path.join(PYTEST_DIR, "data")
 sys.path.insert(0, ROOT_DIR)
 
 import elsie  # noqa
-from elsie.inkscape import InkscapeShell  # noqa
+from elsie.render.inkscape import InkscapeShell  # noqa
 import test_utils  # noqa
 
 

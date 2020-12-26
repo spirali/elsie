@@ -1,4 +1,4 @@
-from .lazy import eval_pair, unpack_point
+from ..boxtree.lazy import eval_pair, unpack_point
 
 COMMAND_NARGS = {"M": 1, "L": 1, "C": 3, "S": 2, "Q": 2, "T": 1}
 

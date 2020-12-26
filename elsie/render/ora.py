@@ -3,9 +3,9 @@ import lxml.etree as et
 from PIL import Image
 import io
 import base64
-from .sxml import Xml
-from .svg import svg_begin, svg_end
-from .draw import draw_bitmap
+from ..utils.sxml import Xml
+from ..svg.svg import svg_begin, svg_end
+from ..svg.draw import draw_bitmap
 
 
 def convert_ora_to_svg(filename):

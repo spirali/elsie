@@ -1,4 +1,4 @@
-from .geom import Rect
+from ..geom import Rect
 from .lazy import LazyValue, LazyPoint
 from .value import SizeValue, PosValue
 

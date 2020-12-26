@@ -5,7 +5,7 @@ from tempfile import TemporaryDirectory
 
 import lxml.etree as et
 
-from .svg import rename_ids
+from ..svg.svg import rename_ids
 
 
 def render_latex(text):

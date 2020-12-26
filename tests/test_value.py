@@ -1,8 +1,8 @@
 import pytest
 
-from elsie.lazy import LazyValue
+from elsie.boxtree.lazy import LazyValue
 from elsie.show import ShowInfo
-from elsie.value import SizeValue, PosValue
+from elsie.boxtree.value import SizeValue, PosValue
 
 
 def test_size_parse_value():

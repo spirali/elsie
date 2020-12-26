@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import lxml.etree as et
 
-from .show import ShowInfo
+from ..slides.show import ShowInfo
 
 
 def parse_show_info_from_label(element):

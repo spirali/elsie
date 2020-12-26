@@ -2,7 +2,7 @@ import base64
 import uuid
 from typing import List
 
-from .slide import Slide
+from ..slides.slide import Slide
 
 
 def get_javascript(max_step: int, slide_id: str) -> str:

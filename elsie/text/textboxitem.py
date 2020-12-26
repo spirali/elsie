@@ -1,13 +1,13 @@
 from typing import TYPE_CHECKING
 
-from .boxitem import BoxItem
-from .draw import draw_text
-from .lazy import LazyValue
-from .sxml import Xml
+from ..boxtree.boxitem import BoxItem
+from ..svg.draw import draw_text
+from ..boxtree.lazy import LazyValue
+from ..utils.sxml import Xml
 from .textparser import number_of_lines, extract_line
 
 if TYPE_CHECKING:
-    from . import box
+    from ..boxtree import box
 
 
 def text_x_in_rect(rect, style):
