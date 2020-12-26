@@ -19,7 +19,7 @@ presentations should be automated and programmable as much as possible.
 ## Elsie example
 ```elsie,skip=3:-1
 import elsie
-slides = elsie.Slides()
+slides = elsie.SlideDeck()
 
 @slides.slide()
 def hello_world(slide):

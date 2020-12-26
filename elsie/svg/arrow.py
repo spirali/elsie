@@ -1,6 +1,6 @@
 import math
 
-from ..geom import segment_delta, segment_resize
+from ..utils.geom import segment_delta, segment_resize
 
 
 class Arrow:

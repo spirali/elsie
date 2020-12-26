@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, List, Union
 import lxml.etree as et
 from PIL import Image
 
-from ..geom import find_centroid
 from ..render.image import create_image_data, get_image_steps
 from ..render.ora import convert_ora_to_svg
 from ..slides.show import ShowInfo
@@ -26,6 +25,7 @@ from ..text.textparser import (
     tokens_merge,
     tokens_to_text_without_style,
 )
+from ..utils.geom import find_centroid
 from .lazy import eval_pair, eval_value, unpack_point
 
 if TYPE_CHECKING:

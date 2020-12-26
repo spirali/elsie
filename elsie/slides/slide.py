@@ -3,22 +3,22 @@ from typing import TYPE_CHECKING
 
 from ..boxtree.box import Box
 from ..boxtree.layout import Layout
-from ..geom import Rect
 from ..render import jupyter
 from ..render.rcontext import RenderingContext
 from ..render.render import PdfRenderUnit, SvgRenderUnit
 from ..svg.svg import svg_begin, svg_end
+from ..utils.geom import Rect
 from ..utils.sxml import Xml
 from .show import ShowInfo
 
 if TYPE_CHECKING:
-    from . import slides
+    from . import slidedeck
 
 
 class Slide:
     def __init__(
         self,
-        slides: "slides.Slides",
+        slides: "slidedeck.SlideDeck",
         index: int,
         width: int,
         height: int,

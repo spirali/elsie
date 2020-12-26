@@ -99,7 +99,7 @@ from elsie.render.jupyter import render_slide_html as elsie_render_slide
 
 {ctx.get_lib_code()}
 
-slides = elsie.Slides(width={width}, height={height}, name_policy="ignore")
+slides = elsie.SlideDeck(width={width}, height={height}, name_policy="ignore")
 slide = slides.new_slide({', '.join(f"{k}={v}" for (k, v) in slide_args.items())})
 {border_str}
 {code}

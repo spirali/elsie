@@ -26,7 +26,7 @@ canvas is used as the default. However, as long everything is processed as
 vector graphics, the exact numbers only influences numeric values of
 coordinates, not the resulting resolution.
 
-Another usefull argument is ``Slides`` is ``bg_color`` that allows to change default
+Another usefull argument is ``SlideDeck`` is ``bg_color`` that allows to change default
 background of the slides. The default color is white.
 
 You can change this by the following code:
@@ -36,11 +36,11 @@ You can change this by the following code:
 
 import elsie
 
-slides = elsie.Slides(width=1920, height=1035)
+slides = elsie.SlideDeck(width=1920, height=1035)
 elsie.set_global_slides(slides)
 ```
 
-Slides are created in Elsie by creating a function and decorating it by
+SlideDeck are created in Elsie by creating a function and decorating it by
 decorator ``@elsie.slide()``. It will create a slides in the same order as the
 functions were defined. The decorated function should take a single parameter
 that is the root box (see below) that represents the whole are of the slide.
