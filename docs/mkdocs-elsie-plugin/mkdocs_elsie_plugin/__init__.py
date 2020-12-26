@@ -94,8 +94,8 @@ def render_slide(code: List[str],
 
     template = f"""
 import elsie
-from elsie.box import Box
-from elsie.jupyter import render_slide_html as elsie_render_slide
+from elsie.boxtree.box import Box
+from elsie.render.jupyter import render_slide_html as elsie_render_slide
 
 {ctx.get_lib_code()}
 

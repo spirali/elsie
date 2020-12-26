@@ -4,7 +4,7 @@ generic paths. On top of that, it offers an abstraction for arrow heads that can
 ends of lines or paths.
 
 ## Rectangles
-You can draw rectangles using the [`rect`](elsie.boxmixin.BoxMixin.rect) method on a box. The
+You can draw rectangles using the [`rect`](elsie.boxtree.boxmixin.BoxMixin.rect) method on a box. The
 position and size of the rectangle will be copied from the box. You can pass the following
 additional parameters:
 
@@ -31,7 +31,7 @@ box.rect(
 ```
 
 ## Ellipses
-You can draw ellipses using the [`ellipse`](elsie.boxmixin.BoxMixin.ellipse) method on a box. The
+You can draw ellipses using the [`ellipse`](elsie.boxtree.boxmixin.BoxMixin.ellipse) method on a box. The
 position and size of the ellipse will be copied from the box. If you want to draw a **circle**,
 use a square parent box.
 
@@ -57,8 +57,8 @@ box.ellipse(
 ```
 
 ## Lines and polygons
-You can draw lines using the [`line`](elsie.boxmixin.BoxMixin.line) method and polygons using the
-[`polygon`](elsie.boxmixin.BoxMixin.polygon). Both of these methods take a list of poinst as their
+You can draw lines using the [`line`](elsie.boxtree.boxmixin.BoxMixin.line) method and polygons using the
+[`polygon`](elsie.boxtree.boxmixin.BoxMixin.polygon). Both of these methods take a list of poinst as their
 first argument. Each point can be defined as one of the following variants:
 
 - A tuple `(x_value, y_value)`: Both values will be interpreted as locations relative to the top-left
@@ -78,11 +78,11 @@ slide.box().polygon([
 ], color="green")
 ```
 
-You can pass [`style attributes`](elsie.boxmixin.BoxMixin.line) to lines and polygons, similarly
+You can pass [`style attributes`](elsie.boxtree.boxmixin.BoxMixin.line) to lines and polygons, similarly
 to rectangles.
 
 ## Arrow heads
-An arrow head is defined using the [`Arrow`](elsie.arrow.Arrow) class. It takes the following
+An arrow head is defined using the [`Arrow`](elsie.svg.arrow.Arrow) class. It takes the following
 attributes:
 
 - `size`: Size of the arrow head.
@@ -99,7 +99,7 @@ Arrow attributes reference image:
 ![Arrow reference](../imgs/arrows.png)
 
 You can attach an arrow head to a line using the `start_arrow` and `end_arrow` parameters of the
-[`line`](elsie.boxmixin.BoxMixin.line) method. Here is an example of using arrow heads:
+[`line`](elsie.boxtree.boxmixin.BoxMixin.line) method. Here is an example of using arrow heads:
 ```elsie
 slide.box(width=100, height=100).line(
   [(0, 0), (50, 50)],
@@ -116,4 +116,4 @@ which the arrow head is attached.
 ## Paths
 You can also draw arbitrary
 [SVG paths](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) using the
-[`path`](elsie.boxmixin.BoxMixin.path) method.
+[`path`](elsie.boxtree.boxmixin.BoxMixin.path) method.

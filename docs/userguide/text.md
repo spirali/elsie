@@ -1,5 +1,5 @@
 # Text
-You can render text by calling the [`text`](elsie.boxmixin.BoxMixin.text) method on a box.
+You can render text by calling the [`text`](elsie.boxtree.boxmixin.BoxMixin.text) method on a box.
 By default, it will create a box item that will draw the specified text in the middle of the box:
 ```elsie,width=200,height=200
 slide.box().text("Hello world!")
@@ -8,7 +8,7 @@ slide.box().text("Hello world!")
 ## Text style
 *Elsie* draws text using SVG, so you can use common SVG attributes (such as size, color, font) to
 modify the appearance of the rendered text. The style of a text is defined by a
-[`TextStyle`](elsie.textstyle.TextStyle) object. Its constructor takes the following parameters:
+[`TextStyle`](elsie.text.textstyle.TextStyle) object. Its constructor takes the following parameters:
 
 - `font`: Name of the used font.
 - `size`: Size of the used font.
@@ -93,7 +93,7 @@ slide.text("Hello world!")
 
 ### Updating text style
 Getting some text style by name and updating it is a common pattern. Therefore, *Elsie* provides
-a shortcut method for this: [`update_style`](elsie.box.Box.update_style):
+a shortcut method for this: [`update_style`](elsie.boxtree.box.Box.update_style):
 ```python
 slides.update_style("default", elsie.TextStyle(color="orange"))
 # ^ the same as v
@@ -102,7 +102,7 @@ default_style.color = "orange"
 slides.set_style("default", default_style)
 ```
 If you work with individual `TextStyle` instances, you can compose them together using the
-[`compose`](elsie.textstyle.TextStyle.compose) method:
+[`compose`](elsie.text.textstyle.TextStyle.compose) method:
 ```python
 style_a = elsie.TextStyle(color="red")
 style_b = style_a.compose(elsie.TestStyle(size=20))
@@ -128,7 +128,7 @@ slide.text("~red{text1 ~tt{text2}}")
 You can escape the inline style character (by default `~`) by repeating it (e.g. `"~~"`).
 If you need to use the `~` character a lot in your text, you can change it to a different
 character using the `escape_character` parameter of the
-[`text`](elsie.boxmixin.BoxMixin.text) method.
+[`text`](elsie.boxtree.boxmixin.BoxMixin.text) method.
 
 ## Text scaling
 By default, the size of text is determined by the size defined in its text style. This can be

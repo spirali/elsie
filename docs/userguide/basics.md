@@ -1,5 +1,5 @@
 # Basics
-A presentation (set of slides) is represented in *Elsie* with the [`Slides`](elsie.slides.Slides)
+A presentation (set of slides) is represented in *Elsie* with the [`Slides`](elsie.slides.slides.Slides)
 class. The most important parameters of the presentation is the width and height of the resulting
 PDF pages, which also affects the resulting aspect ratio. The default size if `1024x768`, which
 corresponds to aspect ratio `4:3`.
@@ -12,11 +12,11 @@ slides = elsie.Slides(width=1024, height=768)
 Once you have a `Slides` object, you can create new slides from it.
 
 ## Creating slides
-You can create new slides in two ways, either using the [`new_slide`](elsie.slides.Slides.new_slide)
+You can create new slides in two ways, either using the [`new_slide`](elsie.slides.slides.Slides.new_slide)
 method or via a [decorator](#decorator). The `new_slide` method will create a new slide, but for
 convenience, it will not return the slide itself, but its [root box](layout.md), so that you can
 use the returned object immediately for adding things to the slide. Except for some advanced usage,
-you shouldn't ever need to deal with the [`Slide`](elsie.slide.Slide) instance itself.
+you shouldn't ever need to deal with the [`Slide`](elsie.slides.slide.Slide) instance itself.
 
 ```python
 slide = slides.new_slide(bg_color="blue")
@@ -26,7 +26,7 @@ Once you have a slide, you can add content to it, for example [text](text.md), [
 [shapes](shapes.md) or [source code](syntax_highlighting.md).
 
 ### Decorator
-A more convenient way of creating a slide is using the [`slide`](elsie.slides.Slides.slide)
+A more convenient way of creating a slide is using the [`slide`](elsie.slides.slides.Slides.slide)
 decorator. If you apply it to a function, it will create a new slide and pass its root box as a
 parameter to the function. It will also set the name of the slide according to the name of the
 decorated function.
@@ -43,7 +43,7 @@ its name (see [below](#name-policy)) or enable [debug draw mode](layout.md#debug
 
 ## Rendering slides
 After you have created all of your desired slides and filled them with content, you can render your
-presentation using the [`render`](elsie.slides.Slides.render) method. There are several useful
+presentation using the [`render`](elsie.slides.slides.Slides.render) method. There are several useful
 parameters of this method:
 
 - `output`: Change the output filename of the rendered PDF (default is `slides.pdf`).

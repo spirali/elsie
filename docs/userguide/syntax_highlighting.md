@@ -2,7 +2,7 @@
 *Elsie* uses `Pygments` to provide syntax highlighting. You can use any supported language from
 this [list](https://pygments.org/languages).
 
-You can use the [`code`](elsie.boxmixin.BoxMixin.code) function on a
+You can use the [`code`](elsie.boxtree.boxmixin.BoxMixin.code) function on a
 box to render text with syntax highlighting. The first parameter of the function is the language
 syntax that should be highlighted.
 ```elsie,height=150
@@ -36,11 +36,11 @@ c = 3
 ```
 
 ## Line and inline boxes
-The [`text`](elsie.boxmixin.BoxMixin.text) and [`code`](elsie.boxmixin.BoxMixin.code) methods
-return a special [`TextBoxItem`](elsie.textboxitem.TextBoxItem) item that offers the following two
+The [`text`](elsie.boxtree.boxmixin.BoxMixin.text) and [`code`](elsie.boxtree.boxmixin.BoxMixin.code) methods
+return a special [`TextBoxItem`](elsie.text.textboxitem.TextBoxItem) item that offers the following two
 methods:
 
-- [`line_box`](elsie.textboxitem.TextBoxItem.line_box) creates a box around a specified line (line
+- [`line_box`](elsie.text.textboxitem.TextBoxItem.line_box) creates a box around a specified line (line
 numbers are counted from 0). Other arguments are forwarded to the box. You can use this to create
 e.g. colored boxes around selected code lines.
 
@@ -53,7 +53,7 @@ print("Hello", name)
 box.line_box(1, z_level=-1).rect(bg_color="orange")
 ```
 
-- [`inline_box`](elsie.textboxitem.TextBoxItem.inline_box) creates a box around text which is
+- [`inline_box`](elsie.text.textboxitem.TextBoxItem.inline_box) creates a box around text which is
 wrapped with the given style. If there are multiple occurrences of the specified inline style, you
 can specify which one do you want by the `nth` argument. `style_name` can be any existing style
 name or a dummy style that starts with the `"#"` character. Dummy styles do not have to be defined
