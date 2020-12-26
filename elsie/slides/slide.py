@@ -1,14 +1,15 @@
 import os.path
 from typing import TYPE_CHECKING
 
-from .box import Box
-from .geom import Rect
-from .layout import Layout
-from .rcontext import RenderingContext
-from .render import SvgRenderUnit, PdfRenderUnit
+from ..boxtree.box import Box
+from ..geom import Rect
+from ..boxtree.layout import Layout
+from ..render.rcontext import RenderingContext
+from ..render.render import SvgRenderUnit, PdfRenderUnit
+from ..render import jupyter
 from .show import ShowInfo
-from .svg import svg_begin, svg_end
-from .sxml import Xml
+from ..svg.svg import svg_begin, svg_end
+from ..utils.sxml import Xml
 
 if TYPE_CHECKING:
     from . import slides
@@ -74,8 +75,6 @@ class Slide:
         return SvgRenderUnit(self, step, xml.to_string())
 
     def _repr_html_(self):
-        from . import jupyter
-
         return jupyter.render_slide_html(self)
 
 

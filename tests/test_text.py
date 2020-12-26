@@ -1,5 +1,5 @@
-from elsie.highlight import highlight_code
-from elsie.textparser import (
+from elsie.text.highlight import highlight_code
+from elsie.text.textparser import (
     number_of_lines,
     parse_text,
     extract_line,

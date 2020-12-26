@@ -3,20 +3,20 @@ import os
 import sys
 from typing import Callable, List, TYPE_CHECKING, Tuple, Union
 
-from .highlight import make_highlight_styles
-from .jupyter import is_inside_notebook
-from .pdfmerge import get_pdf_merger_by_name
-from .query import compute_query
-from .render import per_page_groupping
+from ..text.highlight import make_highlight_styles
+from ..render.jupyter import is_inside_notebook
+from ..render.pdfmerge import get_pdf_merger_by_name
+from ..boxtree.query import compute_query
+from ..render.render import per_page_groupping
 from .slide import Slide, ExternPdfSlide
-from .inkscape import InkscapeShell
-from .textstyle import TextStyle, compose_style
-from .version import VERSION
-from .cache import FsCache
+from ..render.inkscape import InkscapeShell
+from ..text.textstyle import TextStyle, compose_style
+from ..version import VERSION
+from ..utils.cache import FsCache
 
 if TYPE_CHECKING:
-    from . import box
-    from .render import RenderUnit
+    from ..boxtree import box
+    from ..render.render import RenderUnit
 
 
 class Slides:

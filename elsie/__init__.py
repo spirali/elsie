@@ -22,6 +22,6 @@ slides.render("slides.pdf")
 Note: Undocumented functions and classes are not part of the public API.
 """
 
-from .arrow import Arrow  # noqa
-from .slides import Slides  # noqa
-from .textstyle import TextStyle  # noqa
+from .svg.arrow import Arrow  # noqa
+from .slides.slides import Slides  # noqa
+from .text.textstyle import TextStyle  # noqa

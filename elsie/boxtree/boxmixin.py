@@ -6,30 +6,32 @@ from typing import List, TYPE_CHECKING, Union
 import lxml.etree as et
 from PIL import Image
 
-from .draw import draw_bitmap, set_paint_style
-from .geom import find_centroid
-from .highlight import highlight_code
-from .image import get_image_steps, create_image_data
+from ..svg.draw import draw_bitmap, set_paint_style
+from ..geom import find_centroid
+from ..text.highlight import highlight_code
+from ..render.image import get_image_steps, create_image_data
 from .lazy import eval_value, unpack_point, eval_pair
-from .path import (
+from ..svg.path import (
     check_and_unpack_path_commands,
     eval_path_commands,
     path_points_for_end_arrow,
     path_update_end_point,
 )
 
-from .show import ShowInfo
-from .svg import apply_rotation, svg_size_to_pixels
-from .textparser import (
+from ..slides.show import ShowInfo
+from ..svg import arrow
+from ..svg.svg import apply_rotation, svg_size_to_pixels
+from ..text.textparser import (
     parse_text,
     add_line_numbers,
     tokens_merge,
     tokens_to_text_without_style,
 )
-from .ora import convert_ora_to_svg
+from ..render.ora import convert_ora_to_svg
 
 if TYPE_CHECKING:
-    from . import arrow, lazy, boxitem, textboxitem
+    from ..text import textboxitem
+    from . import boxitem, lazy
     from .box import Box
 
 
@@ -840,5 +842,5 @@ class BoxMixin:
         return self.p("50%", "50%")
 
 
-from .boxitem import SimpleBoxItem  # noqa
-from .textboxitem import TextBoxItem  # noqa
+from elsie.boxtree.boxitem import SimpleBoxItem  # noqa
+from elsie.text.textboxitem import TextBoxItem  # noqa
