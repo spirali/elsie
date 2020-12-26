@@ -3,7 +3,7 @@ from pygments.formatter import Formatter
 from pygments.lexers import get_lexer_by_name
 from pygments.styles import get_style_by_name
 
-from .textparser import normalize_tokens, NEWLINE_1
+from .textparser import NEWLINE_1, normalize_tokens
 from .textstyle import TextStyle
 
 

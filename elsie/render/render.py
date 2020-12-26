@@ -1,8 +1,8 @@
 import os
 
-from .inkscape import export_by_inkscape
-from ..svg.svg import svg_end, svg_begin
+from ..svg.svg import svg_begin, svg_end
 from ..utils.sxml import Xml
+from .inkscape import export_by_inkscape
 
 
 class RenderUnit:

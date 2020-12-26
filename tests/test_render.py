@@ -1,6 +1,5 @@
 from elsie import TextStyle
 
-
 """
 def test_drop_same_consecutive_slides(test_env):
     slide = test_env.slide

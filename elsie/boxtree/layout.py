@@ -1,6 +1,6 @@
 from ..geom import Rect
-from .lazy import LazyValue, LazyPoint
-from .value import SizeValue, PosValue
+from .lazy import LazyPoint, LazyValue
+from .value import PosValue, SizeValue
 
 
 def _set_padding(a, b, c):

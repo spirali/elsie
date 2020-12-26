@@ -1,8 +1,8 @@
 import os
+import re
 
 import lxml.etree as et
 import pytest
-import re
 
 numbers_split = re.compile(r"(-?[\d.]+)")
 

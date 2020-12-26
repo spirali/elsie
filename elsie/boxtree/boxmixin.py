@@ -1,33 +1,32 @@
 import base64
 import io
 import logging
-from typing import List, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, List, Union
 
 import lxml.etree as et
 from PIL import Image
 
-from ..svg.draw import draw_bitmap, set_paint_style
 from ..geom import find_centroid
-from ..text.highlight import highlight_code
-from ..render.image import get_image_steps, create_image_data
-from .lazy import eval_value, unpack_point, eval_pair
+from ..render.image import create_image_data, get_image_steps
+from ..render.ora import convert_ora_to_svg
+from ..slides.show import ShowInfo
+from ..svg import arrow
+from ..svg.draw import draw_bitmap, set_paint_style
 from ..svg.path import (
     check_and_unpack_path_commands,
     eval_path_commands,
     path_points_for_end_arrow,
     path_update_end_point,
 )
-
-from ..slides.show import ShowInfo
-from ..svg import arrow
 from ..svg.svg import apply_rotation, svg_size_to_pixels
+from ..text.highlight import highlight_code
 from ..text.textparser import (
-    parse_text,
     add_line_numbers,
+    parse_text,
     tokens_merge,
     tokens_to_text_without_style,
 )
-from ..render.ora import convert_ora_to_svg
+from .lazy import eval_pair, eval_value, unpack_point
 
 if TYPE_CHECKING:
     from ..text import textboxitem
