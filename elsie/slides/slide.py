@@ -2,14 +2,14 @@ import os.path
 from typing import TYPE_CHECKING
 
 from ..boxtree.box import Box
-from ..geom import Rect
 from ..boxtree.layout import Layout
-from ..render.rcontext import RenderingContext
-from ..render.render import SvgRenderUnit, PdfRenderUnit
+from ..geom import Rect
 from ..render import jupyter
-from .show import ShowInfo
+from ..render.rcontext import RenderingContext
+from ..render.render import PdfRenderUnit, SvgRenderUnit
 from ..svg.svg import svg_begin, svg_end
 from ..utils.sxml import Xml
+from .show import ShowInfo
 
 if TYPE_CHECKING:
     from . import slides

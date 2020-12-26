@@ -6,7 +6,6 @@ import tempfile
 from pathlib import Path
 
 import click
-
 from conftest import DATA_DIR
 
 CHECKS = os.path.join(DATA_DIR, "checks")

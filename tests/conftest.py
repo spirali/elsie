@@ -10,9 +10,10 @@ DATA_DIR = os.path.join(PYTEST_DIR, "data")
 
 sys.path.insert(0, ROOT_DIR)
 
+import test_utils  # noqa
+
 import elsie  # noqa
 from elsie.render.inkscape import InkscapeShell  # noqa
-import test_utils  # noqa
 
 
 class SlideTester:

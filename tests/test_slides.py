@@ -1,5 +1,6 @@
-from elsie import Slides
 import pytest
+
+from elsie import Slides
 
 
 @pytest.mark.parametrize("policy", ["auto", "unique"])

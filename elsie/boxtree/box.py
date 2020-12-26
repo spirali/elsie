@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING
 
-from .boxmixin import BoxMixin
 from ..svg.draw import set_paint_style
 from ..text.textstyle import TextStyle, compose_style
+from .boxmixin import BoxMixin
 
 if TYPE_CHECKING:
-    from ..slides import slide, show
+    from ..slides import show, slide
     from . import layout
 
 

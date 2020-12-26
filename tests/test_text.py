@@ -1,13 +1,14 @@
+import pytest
+
+import elsie
 from elsie.text.highlight import highlight_code
 from elsie.text.textparser import (
+    extract_line,
     number_of_lines,
     parse_text,
-    extract_line,
-    tokens_to_text_without_style,
     tokens_merge,
+    tokens_to_text_without_style,
 )
-import elsie
-import pytest
 
 
 def test_line_highlight_1(test_env):

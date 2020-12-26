@@ -1,18 +1,18 @@
 import json
 import os
 import sys
-from typing import Callable, List, TYPE_CHECKING, Tuple, Union
+from typing import TYPE_CHECKING, Callable, List, Tuple, Union
 
-from ..text.highlight import make_highlight_styles
+from ..boxtree.query import compute_query
+from ..render.inkscape import InkscapeShell
 from ..render.jupyter import is_inside_notebook
 from ..render.pdfmerge import get_pdf_merger_by_name
-from ..boxtree.query import compute_query
 from ..render.render import per_page_groupping
-from .slide import Slide, ExternPdfSlide
-from ..render.inkscape import InkscapeShell
+from ..text.highlight import make_highlight_styles
 from ..text.textstyle import TextStyle, compose_style
-from ..version import VERSION
 from ..utils.cache import FsCache
+from ..version import VERSION
+from .slide import ExternPdfSlide, Slide
 
 if TYPE_CHECKING:
     from ..boxtree import box

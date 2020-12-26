@@ -1,5 +1,5 @@
-from .svg import apply_rotation
 from ..text.textstyle import TextStyle
+from .svg import apply_rotation
 
 
 def set_font_from_style(xml, style):

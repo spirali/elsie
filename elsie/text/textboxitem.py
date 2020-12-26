@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING
 
 from ..boxtree.boxitem import BoxItem
-from ..svg.draw import draw_text
 from ..boxtree.lazy import LazyValue
+from ..svg.draw import draw_text
 from ..utils.sxml import Xml
-from .textparser import number_of_lines, extract_line
+from .textparser import extract_line, number_of_lines
 
 if TYPE_CHECKING:
     from ..boxtree import box
