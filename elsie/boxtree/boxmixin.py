@@ -58,10 +58,10 @@ class BoxMixin:
     def box(
         self,
         *,
-        x: float = None,
-        y: float = None,
-        width: float = None,
-        height: float = None,
+        x: Union[float, str] = None,
+        y: Union[float, str] = None,
+        width: Union[float, str] = None,
+        height: Union[float, str] = None,
         show: str = None,
         p_left: float = None,
         p_right: float = None,
@@ -82,16 +82,16 @@ class BoxMixin:
 
         Parameters
         ----------
-        x: float
+        x: Union[float, str]
             X position of the box.
-        y: float
+        y: Union[float, str]
             Y position of the box.
 
             Possible values: None, number, "NN", "NN%", "[NN%]", or a dynamic coordinate,
             where NN is a number.
-        width: float
+        width: Union[float, str]
             Width of the box.
-        height: float
+        height: Union[float, str]
             Height of the box.
 
             Possible values: None, number, "NN", "NN%", "fill", "fill(NN)".
