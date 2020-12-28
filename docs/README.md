@@ -131,12 +131,6 @@ We made the [layout model](userguide/layout.md) tailored for presentations, whic
 so easy with a general layout model. And honestly, we couldn't find any usable binding of
 a standalone and sane layout model in Python. If you know of any, please
 [let us know](https://github.com/spirali/elsie/issues).
-- **Why is there no built-in support for lists (bullet items etc.) in `Elsie`?**
-Even though a list might sound like a simple feature, it would be difficult to create an abstraction
-that would match everyone's needs. The general theme of *Elsie* is to provide a set of compact
-building blocks that can be used to build more advanced features that can be fully customized to
-your needs. [Here](cookbook/lists.md) you can find an example function for creating list items
-which you can copy and modify for your use case. 
 
 ## License
 [MIT](https://github.com/spirali/elsie/blob/master/LICENSE).
