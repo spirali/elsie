@@ -18,7 +18,7 @@ def test_list_override(test_env):
     lst.item(show="next+", height=200).text("Item 2")
     lst.item().text("Item 3")
 
-    test_env.check("list-override")
+    test_env.check("list-override", expect_count=2)
 
 
 def test_list_no_bullet(test_env):
