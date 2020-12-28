@@ -5,7 +5,6 @@ import pytest
 
 PYTEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(PYTEST_DIR)
-# WORK_DIR = os.path.join(PYTEST_DIR, "work")
 DATA_DIR = os.path.join(PYTEST_DIR, "data")
 
 sys.path.insert(0, ROOT_DIR)
@@ -33,7 +32,7 @@ class SlideTester:
     def assets_path(self, subpath):
         return os.path.join(DATA_DIR, "assets", subpath)
 
-    def check(self, expected, expect_count=1, render_args=None):
+    def check(self, expected, expect_count=1, render_args=None, bless=False):
         if render_args is None:
             render_args = {}
         done = False
@@ -57,6 +56,13 @@ class SlideTester:
                     with open("{}-{}.svg".format(expected, i), "w") as f:
                         f.write(unit.get_svg())
                 print(f"Units written to {os.getcwd()}", file=sys.stderr)
+            if bless:
+                for i, unit in enumerate(units):
+                    path = self.data_path(
+                        os.path.join("checks", "{}-{}.svg".format(expected, i))
+                    )
+                    with open(path, "w") as f:
+                        f.write(unit.get_svg())
 
 
 @pytest.yield_fixture(autouse=True, scope="session")
