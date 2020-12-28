@@ -1,38 +1,82 @@
 # Lists
-It is very common to use lists of items in presentations. Although there is no direct
-support in *Elsie* for creating lists, it is easy to create your own function for it
-and customize it for your use case.
+Lists of items are very common in presentations, and they come in all sorts of forms and shapes.
+That makes it quite difficult to find a general abstraction that could be used to create an
+arbitrary list. At the same time, often you just a quick way to create a simple list.
 
-For example, here is a simple function that will create a new list item in the given
-parent [box](../userguide/layout.md). The `level` parameter selects the nesting level of the list
-item.
+For that reason, *Elsie* does not have list handling support in its core, but it provides a set of
+helper utilities for creating lists. They are located in the [`elsie.ext`](elsie.ext) module, which
+contains opinionated extensions on top of the *Elsie* core. If the helper utilities fit your needs,
+feel free to use them. If not, you can just implement your own functions for creating lists in
+your presentations.
 
 ```elsie,type=lib
-def list_item(parent: Box, level=0, show="last+", **box_args) -> Box:
-    b = parent.box(x=level * 25, horizontal=True, show=show, **box_args)
-    b.box(width=25, y=0).text("•")  # A bullet point
-    return b.box(width="fill")
+from elsie.ext import ListBuilder
 ```
 
-With a function like this, it becomes easy to create lists:
+## Unordered lists
+To create an unordered list, you can use the [`ListBuilder`](elsie.ext.list.ListBuilder) class.
+Pass it a parent box which will contain the list and default parameters for each list item. Then
+create new items with the [`item`](elsie.ext.list.ListBuilder.item) method:
+
 ```elsie,width=400,height=200
-l = slide.box()
-list_item(l).text("Item 1")
-list_item(l).text("Item 2")
-list_item(l, level=1).text("(nested) Item 3")
-list_item(l).text("Item 4")
+from elsie.ext import ListBuilder
+
+lst = ListBuilder(slide.box())
+lst.item().text("Item 1")
+lst.item().text("Item 2")
+lst.item().text("Item 3")
 ```
 
-Using [revealing](../userguide/revealing.md), you can then easily create a list of items that will
-be revealed gradually:
-```elsie,width=500,height=200
-l = slide.box()
-list_item(l).text("Appears in fragment 1")
-list_item(l, show="next+").text("Appears in fragment 2")
-list_item(l, level=1).text("(nested) Appears in fragment 2")
-list_item(l, show="next+").text("Appears in fragment 3")
+### Nesting lists
+The `ListBuilder` gives you several options of setting the indentation level of individual list
+items. It remembers its current indentation level, which can be changed with the
+[`indent`](elsie.ext.list.ListBuilder.indent) and [`dedent`](elsie.ext.list.ListBuilder.dedent)
+methods, and it will apply it newly created items. You can also override the indentation level of
+an individual item with the `level` parameter of the [`item`](elsie.ext.list.ListBuilder.item)
+method or use the [`indent_scope`](elsie.ext.list.ListBuilder.indent_scope) context manager to
+change the indentation level of multiple items in the given soure code scope. You can also combine
+these methods together if you want, choose the style that fits you.
+
+As a demonstration, the following three code snippets will produce the same list.
+
+- Manual indentation using the level parameter
+```python
+lst = ListBuilder(slide.box())
+lst.item().text("Item 1")
+lst.item(level=1).text("Item 2")
+lst.item(level=2).text("Item 3")
+lst.item().text("Item 4")
+```
+- Stateful indentation using the `indent` and `dedent` methods
+```python
+lst = ListBuilder(slide.box())
+lst.item().text("Item 1")
+lst.indent()
+lst.item().text("Item 2")
+lst.indent()
+lst.item().text("Item 3")
+lst.dedent(2)
+lst.item().text("Item 4")
+```
+- Identation using `with` scopes.
+```elsie
+lst = ListBuilder(slide.box())
+lst.item().text("Item 1")
+with lst.indent_scope():
+    lst.item().text("Item 2")
+    with lst.indent_scope():
+        lst.item().text("Item 3")
+lst.item().text("Item 4")
 ```
 
-If that's still too unwieldy, you can for example put your individual lines into a Python `list`
-and write a function that will render it as a set of lines with bullet points using the `list_item`
-function.
+#### Revealing
+Using [revealing](../userguide/revealing.md), you can easily create a list of items that will
+be revealed gradually. The default fragment selector for list items is `last+`, which is handy for
+showing indented items at the same time as their parent item:
+```elsie,width=600,height=200
+lst = ListBuilder(slide.box())
+lst.item().text("Appears in fragment 1")
+lst.item(show="next+").text("Appears in fragment 2")
+lst.item(level=1).text("(nested) Appears in fragment 2")
+lst.item(show="next+").text("Appears in fragment 3")
+```
