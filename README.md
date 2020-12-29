@@ -3,10 +3,11 @@ Elsie is a framework for **creating slides programmatically** using Python.
 
 **Quick links**
 - [Documentation](https://spirali.github.io/elsie)
-- Presentation demonstrating features of Elsie ([PDF](examples/bigdemo/bigdemo.pdf),
-[source code](examples/bigdemo/bigdemo.py)).
+- Demonstration of features:
+   * [PDF](examples/bigdemo/bigdemo.pdf)
+   * [source code](examples/bigdemo/bigdemo.py)
 - [Gallery of Elsie presentations](https://spirali.github.io/elsie/gallery)
-- [API reference](https://spirali.github.io/elsie/apidoc) (created with [nedoc](https://github.com/spirali/nedoc))
+- [API reference](https://spirali.github.io/elsie/apidoc)
 
 ## Hello world
 ```python
