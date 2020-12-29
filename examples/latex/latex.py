@@ -1,13 +1,14 @@
 import elsie
+from elsie.ext.latex import latex
 
 slides = elsie.SlideDeck()
 
 
 @slides.slide()
 def latex_demo(slide):
-    slide.box().latex("\TeX{} demo", scale=5.0)
+    latex(slide.box(), "\TeX{} demo", scale=5.0)
     slide.box(height="50")
-    slide.box().latex(
+    latex(slide.box(),
         """
     $$
         \\begin{bmatrix}

@@ -772,58 +772,6 @@ class BoxMixin:
         box.add_child(item)
         return item
 
-    def latex(
-        self, text: str, scale=1.0, header: str = None, tail: str = None
-    ) -> "boxitem.BoxItem":
-        """
-        Renders LaTeX.
-
-        Parameters
-        ----------
-        text: str
-            Source code of the LaTeX snippet.
-        scale: float
-            Scale of the rendered output.
-        header: str
-            Prelude of the LaTeX source (for example package imports).
-            Will be included at the beginning of the source code.
-        tail: str
-            End of the LaTeX source (for example end the document).
-            Will be included at the end of the source code.
-        """
-
-        if header is None:
-            header = """
-\\documentclass[varwidth,border=1pt]{standalone}
-\\usepackage[utf8x]{inputenc}
-\\usepackage{ucs}
-\\usepackage{amsmath}
-\\usepackage{amsfonts}
-\\usepackage{amssymb}
-\\usepackage{graphicx}
-\\begin{document}"""
-
-        if tail is None:
-            tail = "\\end{document}"
-
-        tex_text = "\n".join((header, text, tail))
-
-        def draw(ctx):
-            rect = self._get_box().layout.rect
-            x = rect.x + (rect.width - svg_width) / 2
-            y = rect.y + (rect.height - svg_height) / 2
-            self._render_svg(ctx, x, y, scale, svg)
-
-        svg = self._get_box().slide.slides.process_query("latex", tex_text)
-        root = et.fromstring(svg)
-        svg_width = svg_size_to_pixels(root.get("width")) * scale
-        svg_height = svg_size_to_pixels(root.get("height")) * scale
-
-        self._get_box().layout.ensure_width(svg_width)
-        self._get_box().layout.ensure_height(svg_height)
-
-        return self._create_simple_box_item(draw)
-
     def x(self, value) -> "lazy.LazyValue":
         """Create a lazy value relative to the left edge of the box."""
         return self._get_box().layout.x(value)

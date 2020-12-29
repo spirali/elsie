@@ -21,6 +21,8 @@ class FsCache:
 
     def _get_filename(self, input_data, data_type):
         h = self.hasher.copy()
+        if isinstance(input_data, str):
+            input_data = input_data.encode()
         h.update(input_data)
         return "cache.{}.{}".format(h.hexdigest(), data_type)
 
@@ -70,7 +72,7 @@ class FsCache:
             with open(full_path, "r") as f:
                 return f.read()
 
-        result = constructor(input_data, full_path)
+        result = constructor(input_data)
         with open(full_path, "w") as f:
             f.write(result)
         self.cache_files.add(cache_file)
