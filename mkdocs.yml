@@ -26,6 +26,7 @@ nav:
     - userguide/jupyter.md
     - userguide/latex.md
   - Cookbook:
+    - cookbook/headers.md
     - cookbook/grids.md
     - cookbook/codestepping.md
     - cookbook/zoom.md
