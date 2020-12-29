@@ -27,6 +27,7 @@ nav:
     - userguide/latex.md
   - Cookbook:
     - cookbook/grids.md
+    - cookbook/codestepping.md
     - cookbook/zoom.md
     - cookbook/postprocessing.md
   - API reference:
