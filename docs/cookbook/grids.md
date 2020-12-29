@@ -12,7 +12,7 @@ for r in range(row_count):
     row = slide.box(horizontal=True, p_bottom=10)
     for c in range(column_count):
         color = "#FF2400" if c % 2 == 0 else "#16A085"
-        box = row.box(width=50, height=50, p_right=10)
+        box = row.box(width=100, height=100, p_right=10)
         box.rect(color="black", bg_color=color)
         box.text(f"({r}, {c})", elsie.TextStyle(color="white"))
 ```
@@ -26,7 +26,7 @@ fragment = 1
 for r in range(row_count):
     row = slide.box(horizontal=True, p_bottom=10)
     for c in range(column_count):
-        box = row.box(width=50, height=50, p_right=10, show=f"{fragment}+")
+        box = row.box(width=100, height=100, p_right=10, show=f"{fragment}+")
         box.rect(color="black")
         box.text(f"({r}, {c})")
         fragment += 1

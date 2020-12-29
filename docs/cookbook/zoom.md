@@ -28,8 +28,8 @@ def detail(slide):
 
     # Text label
     textbox = slide.box(x=130, y=80, z_level=2)
-    textbox.text("Circle edge", elsie.TextStyle(size=6))
     textbox.overlay(z_level=1).rect(bg_color="yellow")
+    textbox.box(padding=1).text("Circle edge", elsie.TextStyle(size=6))
 
     # Line with arrow
     slide.box().line([
