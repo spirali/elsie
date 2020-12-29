@@ -14,8 +14,8 @@ def test_list_basic(test_env):
 def test_list_with(test_env):
     slide = test_env.slide
     lst = unordered_list(slide.box())
-    with lst.ul() as l:
-        with l.ul():
+    with lst.ul() as ul:
+        with ul.ul():
             pass
 
 
@@ -26,13 +26,14 @@ def test_list_override(test_env):
     lst.item(show="next+", height=200).text("Item 2")
     lst.ul().item().text("Item 3")
     lst.ul(indent=5).item().text("Text 4")
+    lst.item(label=lambda b, _: b.text("-"), label_padding=10).text("Item 5")
 
     test_env.check("list-override", expect_count=2)
 
 
 def test_list_no_bullet(test_env):
     slide = test_env.slide
-    lst = unordered_list(slide.box(), label_render_fn=lambda _: None)
+    lst = unordered_list(slide.box(), label=lambda b, l: None)
     lst.item().text("Item 1")
     lst.item().text("Item 2")
     lst.item().text("Item 3")
@@ -91,7 +92,7 @@ def test_ordered_list_explicit_level(test_env):
     test_env.check("list-ordered-explicit-level")
 
 
-def test_combine_ordered_unordered(test_env):
+def test_combine_ordered_unordered_list(test_env):
     slide = test_env.slide
     lst = ordered_list(slide.box())
     lst.item().text("Item 1")
@@ -107,3 +108,13 @@ def test_combine_ordered_unordered(test_env):
     lst.item().text("Item 7")
 
     test_env.check("list-combine-ordered-unordered")
+
+
+def test_list_horizontal_parent(test_env):
+    slide = test_env.slide
+    lst = ordered_list(slide.box(horizontal=True))
+    lst.item().text("Item 1")
+    lst.item().text("Item 2")
+    lst.item().text("Item 3")
+
+    test_env.check("list-horizontal-parent")

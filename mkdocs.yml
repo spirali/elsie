@@ -22,10 +22,10 @@ nav:
     - userguide/syntax_highlighting.md
     - userguide/images.md
     - userguide/shapes.md
+    - userguide/lists.md
     - userguide/jupyter.md
     - userguide/latex.md
   - Cookbook:
-    - cookbook/lists.md
     - cookbook/grids.md
     - cookbook/zoom.md
     - cookbook/postprocessing.md
