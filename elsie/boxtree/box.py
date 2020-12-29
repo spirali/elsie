@@ -95,6 +95,10 @@ class Box(BoxMixin):
             )
         return painters
 
+    def has_style(self, style_name: str) -> bool:
+        """Returns True if the box has a style with the given name."""
+        return style_name in self._styles
+
     def update_style(self, style_name: str, style: TextStyle):
         """Updates the style associated with the given name."""
         assert isinstance(style_name, str)

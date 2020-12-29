@@ -306,3 +306,10 @@ def _tokens_merge_helper(tokens1, tokens2):
             read(1)
             last[0] = ("text", v1[len(v2) :])
     return result
+
+
+def trim_indent(text: str) -> str:
+    """Find the smallest common indent from the left in the text and remove it from the text."""
+    lines = text.splitlines(keepends=False)
+    min_indent = min(len(line) - len(line.lstrip()) for line in lines if line.strip())
+    return "\n".join(line[min_indent:] for line in lines)
