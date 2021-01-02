@@ -93,6 +93,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../shapes/">Shapes</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../lists/">Lists</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../jupyter/">Jupyter integration</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../latex/">Latex</a>
@@ -100,9 +102,11 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/headers/">Headers and footers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/grids/">Grids</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/codestepping/">Code stepping</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/zoom/">Zooming</a>
                     </li>
@@ -156,7 +160,7 @@
                 <h1 id="revealing">Revealing<a class="headerlink" href="#revealing" title="Permanent link">#</a></h1>
 <p>Presentations often contain slides that are revealed gradually in several steps (usually called
 <em>fragments</em>). <em>Elsie</em> allows you to create multiple fragments per slide and selectively show
-individual <a href="../layout/">boxes</a> in specific fragments using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_box"><code>show</code></a>
+individual <a href="../layout/">boxes</a> in specific fragments using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_box"><code>show</code></a>
 parameter.</p>
 <p>Fragments on a slide are counted from <code>1</code> and there is always at least a single fragment in each
 slide. The number of fragments of a slide is determined by the highest fragment number in which some
@@ -165,7 +169,7 @@ box is visible.</p>
 <pre><code class="language-python">slide.box().text(&quot;Box 1&quot;)
 slide.box(show=&quot;2&quot;).text(&quot;Box 2&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-f6ac048418884fec9f6661b68094f606">
+<div class="elsie-wrapper elsie-wrapper-b170af930a914f43834db6d607cfcf73">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAC8hJREFUeJzt3FuIVfUewPHfzNho
@@ -326,7 +330,7 @@ mOGJi4tz4uPjm3seAFCvXbt26X83nEjE4UcE3wAAAABJRU5ErkJggg==
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 2;
-var slide_id = ".elsie-wrapper-f6ac048418884fec9f6661b68094f606";
+var slide_id = ".elsie-wrapper-b170af930a914f43834db6d607cfcf73";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -384,7 +388,7 @@ as well:</p>
 box.box().text(&quot;Box 1&quot;)
 box.box().text(&quot;Box 2&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-7f99e12158a14c2ca5eea7abc379cc53">
+<div class="elsie-wrapper elsie-wrapper-52e5bea5286d4a27990addab9639df2f">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAABA1JREFUeJzt1EFtQzEUAEGnCi8/
@@ -511,7 +515,7 @@ mOGJi4tz4uPjm3seAFCvXbt26X83nEjE4UcE3wAAAABJRU5ErkJggg==
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 2;
-var slide_id = ".elsie-wrapper-7f99e12158a14c2ca5eea7abc379cc53";
+var slide_id = ".elsie-wrapper-52e5bea5286d4a27990addab9639df2f";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -578,7 +582,7 @@ slide.box(show=&quot;2-3&quot;).text(&quot;Box 2&quot;)
 slide.box(show=&quot;2+&quot;).text(&quot;Box 3&quot;)
 slide.box(show=&quot;4&quot;).text(&quot;Box 4&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-0993898372de476f8615253154752f4a">
+<div class="elsie-wrapper elsie-wrapper-9b2fc17471a84308aa8537ab107973bd">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADANJREFUeJzt3H1oVfUDx/HP5sxW
@@ -1033,7 +1037,7 @@ f4pIfGyHebInAAAAAElFTkSuQmCC
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 4;
-var slide_id = ".elsie-wrapper-0993898372de476f8615253154752f4a";
+var slide_id = ".elsie-wrapper-9b2fc17471a84308aa8537ab107973bd";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -1090,7 +1094,7 @@ largest fragment number present in the slide is <code>4</code>, so the slide wil
 manually and keep them in sync when you make changes to the slide. To make this process easier,
 you can use placeholders to refer to the current fragment.</p>
 <p>The <em>current</em> fragment is the fragment with the largest number defined on a slide so far. You can
-access its number using the <a href="https://spirali.github.io/elsie/apidoc/elsie.box.Box.html#f_current_fragment"><code>current_fragment</code></a> method. This
+access its number using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.box.Box.html#f_current_fragment"><code>current_fragment</code></a> method. This
 value changes dynamically as you add more fragments to the slide:</p>
 <pre><code class="language-python"># slide.current_fragment() == 1
 slide.box().text(&quot;Box 1&quot;)
@@ -1120,7 +1124,7 @@ slide.box(show=&quot;last&quot;).text(&quot;Box 3&quot;)
 # Moves current fragment to 3 and shows the box in fragment 3
 slide.box(show=&quot;next&quot;).text(&quot;Box 4&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-afac3241f3524f768c89b3f6f1b0c7b1">
+<div class="elsie-wrapper elsie-wrapper-8085911c8ee74da69f55ea038b4cdddc">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADANJREFUeJzt3H1oVfUDx/HP5sxW
@@ -1411,7 +1415,7 @@ FBTo/wD6PhudMK85tQAAAABJRU5ErkJggg==
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 3;
-var slide_id = ".elsie-wrapper-afac3241f3524f768c89b3f6f1b0c7b1";
+var slide_id = ".elsie-wrapper-8085911c8ee74da69f55ea038b4cdddc";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -1469,7 +1473,7 @@ slide.box(show=&quot;last+&quot;, p_left=20).text(&quot;Subitem 2&quot;)
 slide.box(show=&quot;next+&quot;).text(&quot;List item 3&quot;)
 slide.box(show=&quot;last+&quot;, p_left=20).text(&quot;Subitem 1&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-9c01edab2a6946bcb8334a8c7003591b">
+<div class="elsie-wrapper elsie-wrapper-810a5977fe834af6944442cafcf24ef6">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADnZJREFUeJzt3H9MVfUfx/HX5adX
@@ -2077,7 +2081,7 @@ BiUsQghvUMIihPCGwN3dnXl4eOg7DkII0erKlSv4f+xVF9G9PJB+AAAAAElFTkSuQmCC
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 3;
-var slide_id = ".elsie-wrapper-9c01edab2a6946bcb8334a8c7003591b";
+var slide_id = ".elsie-wrapper-810a5977fe834af6944442cafcf24ef6";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -2133,13 +2137,13 @@ layout. Therefore, the space for a box is allocated in each fragment, even if th
 in that fragment (if you know CSS, fragment visibility behaves like <code>visibility: hidden</code>,
 not <code>display: none</code>).</p>
 <p>If you instead want to show boxes gradually on top of one another, you can use the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_overlay"><code>overlay</code></a> shortcut to render a box at the same location and size
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_overlay"><code>overlay</code></a> shortcut to render a box at the same location and size
 as another box.</p>
 <pre><code class="language-python">slide.overlay(show=&quot;1&quot;).text(&quot;Box 1&quot;)
 slide.overlay(show=&quot;2&quot;).text(&quot;Box 2&quot;)
 slide.overlay(show=&quot;3&quot;).text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-0ea53bd9ec81480cbfd8ad53a9512edb">
+<div class="elsie-wrapper elsie-wrapper-84080b5c3e61477fbfca75850c10d2fa">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADERJREFUeJzt3X1oVfUDx/HP3VbZ
@@ -2338,7 +2342,7 @@ SUO9DgDoU2Fhof4PNq2q+hLXheQAAAAASUVORK5CYII=
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 3;
-var slide_id = ".elsie-wrapper-0ea53bd9ec81480cbfd8ad53a9512edb";
+var slide_id = ".elsie-wrapper-84080b5c3e61477fbfca75850c10d2fa";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -2394,7 +2398,7 @@ fragment when you want it to be overlaid. For example, this may not work as expe
 box.overlay(show=&quot;2&quot;).text(&quot;Box 2&quot;)
 box.overlay(show=&quot;3&quot;).text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-6c23ed5ddb984e958bb5b7523c880591">
+<div class="elsie-wrapper elsie-wrapper-c63e1549e56a4f0cbfb41cc2acd70727">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADERJREFUeJzt3X1oVfUDx/HP3VbZ
@@ -2509,7 +2513,7 @@ AAAAAElFTkSuQmCC
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 3;
-var slide_id = ".elsie-wrapper-6c23ed5ddb984e958bb5b7523c880591";
+var slide_id = ".elsie-wrapper-c63e1549e56a4f0cbfb41cc2acd70727";
 
 function getSelector(selector) {
     return slide_id + " " + selector;

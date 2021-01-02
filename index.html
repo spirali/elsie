@@ -97,6 +97,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="userguide/shapes/">Shapes</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="userguide/lists/">Lists</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="userguide/jupyter/">Jupyter integration</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="userguide/latex/">Latex</a>
@@ -104,9 +106,11 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="cookbook/lists/">Lists</a>
+                    <li class="toctree-l1"><a class="reference internal" href="cookbook/headers/">Headers and footers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="cookbook/grids/">Grids</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="cookbook/codestepping/">Code stepping</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="cookbook/zoom/">Zooming</a>
                     </li>
@@ -171,7 +175,7 @@ presentations should be automated and programmable as much as possible.</p>
 </ul>
 <h2 id="elsie-example">Elsie example<a class="headerlink" href="#elsie-example" title="Permanent link">#</a></h2>
 <pre><code class="language-python">import elsie
-slides = elsie.Slides()
+slides = elsie.SlideDeck()
 
 @slides.slide()
 def hello_world(slide):
@@ -188,71 +192,74 @@ def hello_world(slide):
 
 slides.render(&quot;slides.pdf&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-d29c9dabf22c403a90886dbf183b69ca">
+<div class="elsie-wrapper elsie-wrapper-efdcc3a6f11e490496a664f550657084">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
-GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADXFJREFUeJzt3X2MHOV9wPHvnU18
-9jmYlyMq5S0YYuNCCBatE4PBUQRxgBoRJRVBVf6gdVVBX5SmErLdVraqENKmgNqqiRSSQpJWRiGl
-kJqYFEpqIEmhcYHUvMV2bSDHS3Hj2PjlbO5u+sdvVjs+78zu3u3u7OLvR1rN3M4zM7977ua3z8zz
-zCxIkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJ
-kiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJ
-kiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJ
-kiRJkiRJkiRJkiRJkiRJkiRJkiRJ6oi+sgNQ28wCZgAJ8Isay48FpgFvA3s7GFc97wIG0/lR4K0S
-Y5HeceYDF6avRi1My5/TlojCl4lk9WbO8qfT5d9pYwyNmgGsBbYQMVVej5QYk7rQ9LIDeAf4KrAE
-GCdaLI34ITAAPAl8sE1x9ZJ/Aq4qOwh1v/6yA9BRbwnVZPUN4L3AMcTlio+UFJO6lC0sle3DmfnP
-ALtKikM9wBaWyvaedPoWJivVYQur+/UDvwacBwwBu4GfAE8AYx2K4VRgKZFcxoBXgO9Tu/exUXPT
-6YnpdDzzXsVL6f4GgF9O33sd2J/OfxA4FziJ6ET4Xo39nEfU3xCwD3gReBw4WBDbDOCUdP6NdL0+
-4KJ0ezOBrcC/AocmrNsPXEJ0qAwSHQkPASMF+5M65jGiR6uZ5HEgXeeJOuV+m0gOSY3XduCagnVb
-0Us4N11ea/+HgL8F3l3nd8hTa5sTX0Np2Usz711B9LD+94SyGyZsfwnwXznb/Tnwx+SfYXwoU/Ya
-4Hxgc43tvEwkp+w+J/Z0JsAOImlKpWtHwuoD7qD6Dz9CtAq+BWxMf06IVskNOduYasI6j2hdVGJ4
-BbifSAy7M+//GDguZxtFtqWvyrbGMu9VXsenZbMJ6yaihZUArxE9rT8FHsxs++NEC6qyzmaiJ/Lf
-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
-YAz4NLC/kwHs3x99awAzZtQvP2tWTEdHqxeaS2T9CUxYHXEc8CAx2BHgD4GNnQ5iemaM8Ph4/fKj
-mSGZ08sdX2z9qcKE1WaDwHeI++IAVgFfKiOQgYHqgbO/gbbJgQMxnTmz1APO+lOWCauNZgEPUP2+
-sJuBL5QXDpx4YkzfeKN+2ddfj+nQUPviqcP600QmrDYZAO4DlqY/fxH40/LCCeekX8P3s5/B22/n
-lzt0CIaHD1+nw6w/1WLCaoN3EV3ulaGFfwPcVF44VQsXxvTgQXjqqfxymzbFQZddp4OsP+UxYbXY
-McTB9uvpz18FPlNeOIfLfnHovffml/v2t6vzV1/dvnhqsP5UxITVQtOAbwKVf9E7gd8l7rbtCpde
-CmedFfNf+Qq8+uqRZYaH4Wtfi/kFC2Dx4o6FZ/2pHrsvWujvgWvT+a3A94hnPBVZDxxoZ1BZ06fD
-zTfDpz4Fu3bFc5zuvrt6neX552NZZbDj5z/f0SdnWn+qx4TVQtnP0rOBuxtY51RguD3h1HbttfDE
-E3D77fDMM3DuudFqSJK4jaQyOHLlynjcbwdZf6rH9H80uu02uOMOOPnkGAS5ZQts3RoH2ymnwJ13
-wi23lB1l97L+SmMLq4XmlR1AM1asgOuvhyefhB074r0zz4RFi0o7jbH+VI8J62g2bVpcFPbC8ORY
-fx3nR4GknmHCktQzTFiSeoYJS1LPMGFJ6hkmLEk9w2EN+Q4C3fps29l33XVX8uijj+4rO5Bann76
-6dnELYBdGR9dXn/bt28fqF/q6NRXdgBdah4wv+wgCpySTjt6V0oTjG/qXgR+WnYQkiRJkiRJkiRJ
-kiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJ
-kiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJ
-kiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJktrt
-/wE4bxqbsO8zKwAAAABJRU5ErkJggg==
+GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADgtJREFUeJzt3X2wFeV9wPHvvWC4
+cImIXjNVUSMakGoIjC0JvpHJaIgaHFOTGNPJH7akHe1L7HTGQdoOpo2aNlWnNk1mNIkmaYITjdUE
+X1JpLGBitaFii28BCoYAWmkQ5OUC93L6x29Pz3I5e8653HPO7pHvZ2Zn95x9dvd3n3vP7z67z7N7
+QJIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIk
+SZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIk
+SZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIk
+SZIkSZIkSZIkSZIkSZIkSZIkSVJbdOUdgFpmHDAGKAFvVll/NDAK2A/sbGNc9bwD6E2WB4C3coxF
+etuZCpyTTI2amZQ/syURha8SyeqNjPWrkvU/aGEMjRoD3ASsIWIqTz/OMSYV0Oi8A3gb+BpwPnCA
+aLE04qdAD/As8P4WxdVJvg9clncQKr7uvAPQEe98KsnqW8C7gaOIyxUfyikmFZQtLOXtg6nl64Ft
+OcWhDmALS3l7VzJ/C5OV6rCFVXzdwG8CZwN9wHbgP4FngME2xTAJmEMkl0FgI/Ak1XsfGzU5mR+X
+zA+k3it7NTleD3Bi8t5rwO5k+f3AWcDxRCfCj6oc52yi/vqAXcArwFPA3hqxjQFOSpZfT7brAs5N
+9jcWWAv8M7BvyLbdwAVEh0ov0ZHwBNBf43hS26wgerSGkzz2JNs8U6fc7xLJoVRlWg9cUWPbZvQS
+Tk7WVzv+PuDvgXfW+RmyVNvn0KkvKXth6r1LiB7W/xpS9rEh+z8f+I+M/f4K+FOyzzA+kCp7BTAd
+WF1lP78gklP6mEN7OkvABiJpSrlrRcLqAu6m8gffT7QKvgcsS16XiFbJtRn7GGnCOptoXZRj2Ag8
+TCSG7an3fwYck7GPWtYlU3lfg6n3ytPEpGw6Yd1AtLBKwBaip/XnwOOpfX+MaEGVt1lN9ET+K5Fo
+y+9/m+pjEdMJ64ZUjC8QraWXU+t3AGcAFxG/l0HgOaIFuiVVbiuV018pN61IWDdQ+UP/Dof+oU9K
+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
+RK5CYII=
 " /></div>
 </div>
 </div>
@@ -376,12 +383,6 @@ We made the <a href="userguide/layout/">layout model</a> tailored for presentati
 so easy with a general layout model. And honestly, we couldn't find any usable binding of
 a standalone and sane layout model in Python. If you know of any, please
 <a href="https://github.com/spirali/elsie/issues">let us know</a>.</li>
-<li><strong>Why is there no built-in support for lists (bullet items etc.) in <code>Elsie</code>?</strong>
-Even though a list might sound like a simple feature, it would be difficult to create an abstraction
-that would match everyone's needs. The general theme of <em>Elsie</em> is to provide a set of compact
-building blocks that can be used to build more advanced features that can be fully customized to
-your needs. <a href="cookbook/lists/">Here</a> you can find an example function for creating list items
-which you can copy and modify for your use case. </li>
 </ul>
 <h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">#</a></h2>
 <p><a href="https://github.com/spirali/elsie/blob/master/LICENSE">MIT</a>.</p>
@@ -441,5 +442,5 @@ which you can copy and modify for your use case. </li>
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2020-12-25 09:51:55.454956+00:00
+Build Date UTC : 2021-01-02 21:28:17.842119+00:00
 -->

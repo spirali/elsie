@@ -121,6 +121,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../shapes/">Shapes</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../lists/">Lists</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../jupyter/">Jupyter integration</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../latex/">Latex</a>
@@ -128,9 +130,11 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/headers/">Headers and footers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/grids/">Grids</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/codestepping/">Code stepping</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/zoom/">Zooming</a>
                     </li>
@@ -192,18 +196,18 @@ they dictate how are their children laid out on a slide. Box items are individua
 such as text, images, shapes, etc. Anything that can be rendered by <em>Elsie</em> thus has an accompanied
 parent box which decides its size and position on a slide.</p>
 <h2 id="creating-boxes">Creating boxes<a class="headerlink" href="#creating-boxes" title="Permanent link">#</a></h2>
-<p>To create a new box, you can call the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_box"><code>box</code></a> method on an existing
+<p>To create a new box, you can call the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_box"><code>box</code></a> method on an existing
 <code>Box</code>. This will return a new box which will be a child of the box object
 on which you call the <code>box</code> method. The root box of the slide layout hierarchy is available to you
-as the return value of the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_new_slide"><code>new_slide</code></a> method or the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_slide"><code>slide</code></a> decorator.</p>
+as the return value of the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_new_slide"><code>new_slide</code></a> method or the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_slide"><code>slide</code></a> decorator.</p>
 <p>Here we create three boxes as children of the top-level slide box and create a child text item
 in each box.</p>
 <pre><code class="language-python">slide.box().text(&quot;Box 1&quot;)
 slide.box().text(&quot;Box 2&quot;)
 slide.box().text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-e8a1ebcd48ff48fb8249035c28754b67">
+<div class="elsie-wrapper elsie-wrapper-079d0550ddbf4c15a0fc3e57fd780759">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAACtBJREFUeJzt3H9MVfUfx/HXhZs/
@@ -276,7 +280,7 @@ UFAw1usAxp1Dhw7pf7c+PwypSWL6AAAAAElFTkSuQmCC
 </style>
 
 <p>Note: for brevity, most code snippets in this user guide assume that there is a <code>slides</code> variable
-containing a <code>Slides</code> object and a <code>slide</code> variable containing a <code>Slide</code> object. The <code>render</code>
+containing a <code>SlideDeck</code> object and a <code>slide</code> variable containing a <code>Slide</code> object. The <code>render</code>
 method call is also omitted from most of the examples that display rendered slide output.
 The output from the code snippets is rendered into PNG images instead of SVG images to ensure that
 they will be displayed consistently on each device.</p>
@@ -284,14 +288,14 @@ they will be displayed consistently on each device.</p>
 <p>The boxes themselves are invisible, but they have caused the three text items to be rendered
 below one another. If you are fine-tuning or debugging the layout of your slide, and you want to see
 the extents and bounds of your boxes, you can use the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_slide"><code>debug_boxes</code></a> parameter when creating a slide:</p>
+<a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_slide"><code>debug_boxes</code></a> parameter when creating a slide:</p>
 <pre><code class="language-python">@slides.slide(debug_boxes=True)
 def three_boxes_debug(slide):
     slide.box().text(&quot;Box 1&quot;)
     slide.box().text(&quot;Box 2&quot;)
     slide.box().text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-282e5f400b9b45d5833b9163f5878711">
+<div class="elsie-wrapper elsie-wrapper-52955f6458d54c25b7a7178b3b664d32">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJztnXlcVOX6wL9nBgYY
@@ -636,7 +640,7 @@ parameter when creating a box:</p>
 box.box().text(&quot;Box 1&quot;)
 box.box().text(&quot;Box 2&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-af957c88f34048af827f2519a7e5022f">
+<div class="elsie-wrapper elsie-wrapper-31821899d0b94fe6a3416993d201afdd">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAD4lJREFUeJzt3H9MlVX8B/D3RRAQ
@@ -738,7 +742,7 @@ col_a.box().text(&quot;Col. A/2&quot;)
 col_b = row.box()
 col_b.box().text(&quot;Col. B/1&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-0b15f7ad60794525b23246a84b1cd329">
+<div class="elsie-wrapper elsie-wrapper-eac062e13e8a4e4486192ec5e741c2de">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAADICAYAAABS39xVAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAHUxJREFUeJzt3XlUFEfiB/DvACJ4
@@ -893,9 +897,9 @@ GBhY2fUgIjLp8OHD+D9R36Z8Xp6DzgAAAABJRU5ErkJggg==
 }
 </style>
 
-<p>Note that almost all methods on a box will create a new box (<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_box"><code>box</code></a>)
-or an item (e.g. <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_text"><code>text</code></a> or
-<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_rect"><code>rect</code></a>). Leaf items cannot contain children, but for
+<p>Note that almost all methods on a box will create a new box (<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_box"><code>box</code></a>)
+or an item (e.g. <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_text"><code>text</code></a> or
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_rect"><code>rect</code></a>). Leaf items cannot contain children, but for
 convenience they also offer most of the methods available on boxes, which they delegate to their
 parent. Therefore, the following two snippets will create the same slide content:</p>
 <pre><code class="language-python"># A: create text on its parent box
@@ -906,7 +910,7 @@ box.text(&quot;Hello!&quot;)
 # B: create text on its sibling rectangle
 slide.box().rect(bg_color=&quot;#aaf&quot;).text(&quot;Hello!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-3de61f90052c4ca4b117ba8ebf7b53ca">
+<div class="elsie-wrapper elsie-wrapper-5166ee448e104d8a8f0dd6fbe351b972">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAC5RJREFUeJzt3XuMVvWdx/HPIHcW
@@ -984,7 +988,7 @@ gg==
 
 <h2 id="sizing-boxes">Sizing boxes<a class="headerlink" href="#sizing-boxes" title="Permanent link">#</a></h2>
 <p>You can change the width and height of a box by using the <code>width</code> and <code>height</code> parameters of the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_box"><code>box</code></a> method.</p>
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_box"><code>box</code></a> method.</p>
 <p>Here we create three boxes (<code>A</code>, <code>B</code> and <code>C</code>). Box <code>A</code> has a default size, which is set according
 to the required size of its text child. Box <code>B</code> has a width of <code>300</code> pixels and height of <code>100</code>
 pixels. Box <code>C</code> has width equal to the full width of its parent and height is again set to the height
@@ -993,7 +997,7 @@ of its child text item.</p>
 slide.box(name=&quot;B&quot;, width=300, height=100).text(&quot;Box 2&quot;)
 slide.box(name=&quot;C&quot;, width=&quot;100%&quot;).text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-ea72ddd846c042f1bc642d475be88909">
+<div class="elsie-wrapper elsie-wrapper-992086da6bcd43bebe59538e4bce04d3">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzs3Xd8VFX6+PHPnZpO
@@ -1373,7 +1377,7 @@ box.box(height=&quot;fill(1)&quot;).text(&quot;Box 2&quot;)
 box.box(height=&quot;fill(2)&quot;).text(&quot;Box 3&quot;)
 slide.box(height=&quot;fill&quot;).text(&quot;Box 4&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-243858c136a04054a1282372afab414b">
+<div class="elsie-wrapper elsie-wrapper-81ec3b5c98d4491f973a9a8f4edc568a">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAZAAAAEsCAYAAADtt+XCAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzsnXl8VNXd/9+zJGSZ
@@ -1833,11 +1837,11 @@ SUVORK5CYII=
 <h3 id="aliases-for-commonly-sized-boxes">Aliases for commonly sized boxes<a class="headerlink" href="#aliases-for-commonly-sized-boxes" title="Permanent link">#</a></h3>
 <p><em>Elsie</em> contains three shortcuts for creating boxes with common minimal size requirements:</p>
 <ul>
-<li><a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_fbox"><code>fbox</code></a> (fill-box): shortcut for <code>box(width="fill", height="fill")</code>.</li>
-<li><a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_sbox"><code>sbox</code></a> (stretch-box): shortcut for <code>box(width="fill")</code> if the
+<li><a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_fbox"><code>fbox</code></a> (fill-box): shortcut for <code>box(width="fill", height="fill")</code>.</li>
+<li><a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_sbox"><code>sbox</code></a> (stretch-box): shortcut for <code>box(width="fill")</code> if the
 parent box has a vertical layout or <code>box(height="fill")</code> if the parent box has a
 <a href="#box-axis">horizontal</a> layout. In other words, it fills the box in the cross axis.</li>
-<li><a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_overlay"><code>overlay</code></a>: shortcut for
+<li><a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_overlay"><code>overlay</code></a>: shortcut for
 <code>box(x=0, y=0, width="100%", height="100%)</code>. This can be used if you want to overlay several boxes
 on top of each other, which is useful especially in combination with
 <a href="../revealing/#overlaying-boxes">revealing</a>.</li>
@@ -1846,13 +1850,13 @@ on top of each other, which is useful especially in combination with
 <p>By default, each box gives all of its space to its children. This can be modified by padding.
 There are four padding values: <code>left</code>, <code>right</code>, <code>top</code>, and <code>bottom</code>. They can be modified with the
 <code>p_left</code>, <code>p_right</code>, <code>p_top</code>, and <code>p_bottom</code> parameters of the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_box"><code>box</code></a> method.</p>
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_box"><code>box</code></a> method.</p>
 <p>After the layout of the parent box is computed and the final size and position of a box is known,
 the padding will shrink its size in the specified directions.</p>
 <pre><code class="language-python">slide.box(width=160, height=100, p_left=40, name=&quot;Top box&quot;)
 slide.box(width=160, height=150, p_y=50, name=&quot;Bottom box&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-1bb4a5c096014838ba459ed2b121a17c">
+<div class="elsie-wrapper elsie-wrapper-0ee556afd4074218a922d0065fbad76b">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAZAAAAEsCAYAAADtt+XCAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xd8W/W9//HXkWwt
@@ -2137,7 +2141,7 @@ row = slide.box(width=&quot;fill&quot;)
 row.box(x=&quot;20%&quot;).text(&quot;Box 2&quot;)
 row.box(x=&quot;60%&quot;).text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-93493e1185074b1a9ba8497cde07f014">
+<div class="elsie-wrapper elsie-wrapper-2fd5bfad94a24752863a5c17f242ddf7">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAG85JREFUeJzt3XlQVFfCNvCnWWVf
@@ -2300,7 +2304,7 @@ its <em>main</em> axis one-by-one. In addition, it also centers all of its child
 slide.box().text(&quot;Box 2&quot;)
 slide.box().text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-4a327c3a10544afbb46fcaca8e10bc09">
+<div class="elsie-wrapper elsie-wrapper-54b4a334ac654c5baac679243b59692b">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAHGZJREFUeJzt3XlQFGfixvFnBoiC
@@ -2459,7 +2463,7 @@ row.box().text(&quot;Box 1&quot;)
 row.box().text(&quot;Box 2&quot;)
 row.box().text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-002d9d6a643a4ae9ba26f51bde2c5182">
+<div class="elsie-wrapper elsie-wrapper-d239c1f611ea4d7090be00883757c42e">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGJxJREFUeJzt3XlQlPf9wPHPcsqh
@@ -2595,8 +2599,8 @@ S68HANRp586d8n9fpSTZ3ls35QAAAABJRU5ErkJggg==
 
 <h3 id="dynamic-positions">Dynamic positions<a class="headerlink" href="#dynamic-positions" title="Permanent link">#</a></h3>
 <p>Box position can also be defined dynamically with respect to other boxes. You can get a position
-that is relative to the final position of a box using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_x"><code>x</code></a> or
-<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_y"><code>y</code></a> methods. The returned value of these methods will be a proxy
+that is relative to the final position of a box using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_x"><code>x</code></a> or
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_y"><code>y</code></a> methods. The returned value of these methods will be a proxy
 object that will resolve the actual final position after layout is computed.</p>
 <p>The reference point of these two methods is the top-left corner of the target box. The parameter
 can be either:</p>
@@ -2617,7 +2621,7 @@ be negative.</li>
 slide.box(x=b.x(&quot;50%&quot;), y=b.y(&quot;50%&quot;), width=100, height=100, name=&quot;Second&quot;)
 slide.box(x=0, y=b.y(&quot;100%&quot;), width=&quot;100%&quot;, height=200, name=&quot;Third&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-6cfc6d7e058648eb802d5cf108424075">
+<div class="elsie-wrapper elsie-wrapper-05a1a5d5fad24221a31395eaef3debe4">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Hl8XHW9//HXmTUz
@@ -2908,9 +2912,9 @@ UxLibfX/AVclOdY6Ak3AAAAAAElFTkSuQmCC
 </style>
 
 <p>In addition to using the individual <code>x</code> and <code>y</code> methods, you can also use the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_p"><code>p</code></a> method to create a dynamic point, which will again be resolved
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_p"><code>p</code></a> method to create a dynamic point, which will again be resolved
 after the layout is fully computed. You can also further move this point via the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.lazy.LazyPoint.html#f_add"><code>add</code></a> method. This is mostly useful for defining points of
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.lazy.LazyPoint.html#f_add"><code>add</code></a> method. This is mostly useful for defining points of
 <a href="../shapes/#lines-and-polygons">lines and polygons</a>.</p>
 <h2 id="modifying-render-order">Modifying render order<a class="headerlink" href="#modifying-render-order" title="Permanent link">#</a></h2>
 <p>By default, boxes are rendered by performing a depth-first walk through the layout tree. Each child
@@ -2921,7 +2925,7 @@ the last.</p>
 slide.box(x=50, y=30, width=80, height=80).rect(bg_color=&quot;green&quot;)
 slide.box(x=60, y=40, width=80, height=80).rect(bg_color=&quot;blue&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-fd27d28089e54264b90c552947194b42">
+<div class="elsie-wrapper elsie-wrapper-2d27cc75e4a8482bb8a1ff9325c550d7">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAolJREFUeJzt2zGOnEAQQFGw5l70
@@ -2965,7 +2969,7 @@ parent box, instead of the last.</li>
 slide.box(x=50, y=30, width=80, height=80).rect(bg_color=&quot;green&quot;)
 slide.box(x=60, y=40, width=80, height=80, prepend=True).rect(bg_color=&quot;blue&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-fbba9af09df842878542025482909334">
+<div class="elsie-wrapper elsie-wrapper-87654ab535e344ae8c0803a8f314503b">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAoFJREFUeJzt28Fpw0AQQFEpuC9t
@@ -3008,7 +3012,7 @@ a.rect(bg_color=&quot;red&quot;)
 slide.box(x=50, y=30, width=80, height=80, below=a).rect(bg_color=&quot;green&quot;)
 slide.box(x=60, y=40, width=80, height=80).rect(bg_color=&quot;blue&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-838a0f718a97488d9fc8c1c016bca3a9">
+<div class="elsie-wrapper elsie-wrapper-1f3d1b9f3e5545ab85e95744bcf48532">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAn1JREFUeJzt2zFq5EAQQFG1mXup
@@ -3052,7 +3056,7 @@ specified, it is inherited from the parent box. The root box has <code>z_level</
 slide.box(x=50, y=30, width=80, height=80, z_level=2).rect(bg_color=&quot;green&quot;)
 slide.box(x=60, y=40, width=80, height=80, z_level=1).rect(bg_color=&quot;blue&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-cd7b8589b4754e95b54d6f8aab3dfe67">
+<div class="elsie-wrapper elsie-wrapper-a1ded266df604a9a824f125ff39db3e6">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAnRJREFUeJzt28FNxTAQQEEH/b7i

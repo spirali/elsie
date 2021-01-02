@@ -97,6 +97,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../shapes/">Shapes</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../lists/">Lists</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../jupyter/">Jupyter integration</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../latex/">Latex</a>
@@ -104,9 +106,11 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/headers/">Headers and footers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/grids/">Grids</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/codestepping/">Code stepping</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/zoom/">Zooming</a>
                     </li>
@@ -158,27 +162,27 @@
             <div class="section">
               
                 <h1 id="basics">Basics<a class="headerlink" href="#basics" title="Permanent link">#</a></h1>
-<p>A presentation (set of slides) is represented in <em>Elsie</em> with the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html"><code>Slides</code></a>
-class. The most important parameters of the presentation is the width and height of the resulting
-PDF pages, which also affects the resulting aspect ratio. The default size if <code>1024x768</code>, which
-corresponds to aspect ratio <code>4:3</code>.</p>
+<p>A presentation (set of slides) is represented in <em>Elsie</em> with the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html"><code>SlideDeck</code></a> class. The most important parameters of the
+presentation is the width and height of the resulting PDF pages, which also affects the resulting
+aspect ratio. The default size if <code>1024x768</code>, which corresponds to aspect ratio <code>4:3</code>.</p>
 <p>Here is an example of creating a new presentation:</p>
 <pre><code class="language-python">import elsie
-slides = elsie.Slides(width=1024, height=768)
+slides = elsie.SlideDeck(width=1024, height=768)
 </code></pre>
-<p>Once you have a <code>Slides</code> object, you can create new slides from it.</p>
+<p>Once you have a <code>SlideDeck</code> object, you can create new slides from it.</p>
 <h2 id="creating-slides">Creating slides<a class="headerlink" href="#creating-slides" title="Permanent link">#</a></h2>
-<p>You can create new slides in two ways, either using the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_new_slide"><code>new_slide</code></a>
+<p>You can create new slides in two ways, either using the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_new_slide"><code>new_slide</code></a>
 method or via a <a href="#decorator">decorator</a>. The <code>new_slide</code> method will create a new slide, but for
 convenience, it will not return the slide itself, but its <a href="../layout/">root box</a>, so that you can
 use the returned object immediately for adding things to the slide. Except for some advanced usage,
-you shouldn't ever need to deal with the <a href="https://spirali.github.io/elsie/apidoc/elsie.slide.Slide.html"><code>Slide</code></a> instance itself.</p>
+you shouldn't ever need to deal with the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slide.Slide.html"><code>Slide</code></a> instance itself.</p>
 <pre><code class="language-python">slide = slides.new_slide(bg_color=&quot;blue&quot;)
 </code></pre>
 <p>Once you have a slide, you can add content to it, for example <a href="../text/">text</a>, <a href="../images/">images</a>,
 <a href="../shapes/">shapes</a> or <a href="../syntax_highlighting/">source code</a>.</p>
 <h3 id="decorator">Decorator<a class="headerlink" href="#decorator" title="Permanent link">#</a></h3>
-<p>A more convenient way of creating a slide is using the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_slide"><code>slide</code></a>
+<p>A more convenient way of creating a slide is using the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_slide"><code>slide</code></a>
 decorator. If you apply it to a function, it will create a new slide and pass its root box as a
 parameter to the function. It will also set the name of the slide according to the name of the
 decorated function.</p>
@@ -191,7 +195,7 @@ viewbox of the slide (see example usage <a href="../../cookbook/zoom/">here</a>)
 its name (see <a href="#name-policy">below</a>) or enable <a href="../layout/#debug-draw-mode">debug draw mode</a>.</p>
 <h2 id="rendering-slides">Rendering slides<a class="headerlink" href="#rendering-slides" title="Permanent link">#</a></h2>
 <p>After you have created all of your desired slides and filled them with content, you can render your
-presentation using the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_render"><code>render</code></a> method. There are several useful
+presentation using the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_render"><code>render</code></a> method. There are several useful
 parameters of this method:</p>
 <ul>
 <li><code>output</code>: Change the output filename of the rendered PDF (default is <code>slides.pdf</code>).</li>
@@ -218,9 +222,9 @@ def slide1(slide):
 <p>Each time you would execute the cell, a new slide would be added to the presentation, which is
 probably not what you want.</p>
 <p>To solve this issue, <em>Elsie</em> contains a so-called <em>name policy</em>, which decides how to react to the
-situation where the same slide is created repeatedly. Slides are identified by their name, which you
+situation where the same slide is created repeatedly. SlideDeck are identified by their name, which you
 either pass to <code>new_slide</code> or it is determined automatically if the <a href="#decorator">decorator</a> is used.</p>
-<p>The <code>Slides</code> instance has one of the following name policies, which decides what to do when a new
+<p>The <code>SlideDeck</code> instance has one of the following name policies, which decides what to do when a new
 slide is created:</p>
 <ul>
 <li><code>unique</code>: Creating two slides with the same name will result in an error. This is to stop you from

@@ -93,6 +93,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../shapes/">Shapes</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../lists/">Lists</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../jupyter/">Jupyter integration</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../latex/">Latex</a>
@@ -100,9 +102,11 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/headers/">Headers and footers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/grids/">Grids</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/codestepping/">Code stepping</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/zoom/">Zooming</a>
                     </li>
@@ -156,7 +160,7 @@
                 <h1 id="syntax-highlighting">Syntax highlighting<a class="headerlink" href="#syntax-highlighting" title="Permanent link">#</a></h1>
 <p><em>Elsie</em> uses <code>Pygments</code> to provide syntax highlighting. You can use any supported language from
 this <a href="https://pygments.org/languages">list</a>.</p>
-<p>You can use the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_code"><code>code</code></a> function on a
+<p>You can use the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_code"><code>code</code></a> function on a
 box to render text with syntax highlighting. The first parameter of the function is the language
 syntax that should be highlighted.</p>
 <pre><code class="language-python">slide.box().code(&quot;python&quot;, &quot;&quot;&quot;
@@ -164,7 +168,7 @@ name = &quot;Elsie&quot;
 print(&quot;Hello&quot;, name)
 &quot;&quot;&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-6dc72605052b491a9bdc7d49a1cf523f">
+<div class="elsie-wrapper elsie-wrapper-c6ca5051a2e9484dbe13fe129579807f">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAACWCAYAAABkW7XSAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGytJREFUeJzt3XlUVOX/B/D3bOyL
@@ -331,7 +335,7 @@ b = 2
 c = 3
 &quot;&quot;&quot;, line_numbers=True)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-0f3137cd114f4700b0d50319fd94a65b">
+<div class="elsie-wrapper elsie-wrapper-0f62edc872764824b3cfae54547f1307">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAEGZJREFUeJzt3W1QlWUex/EfHkCD
@@ -429,11 +433,11 @@ TJjgmjhxYqDXAQDXVVRUpP8B24YCgLl2YgUAAAAASUVORK5CYII=
 </style>
 
 <h2 id="line-and-inline-boxes">Line and inline boxes<a class="headerlink" href="#line-and-inline-boxes" title="Permanent link">#</a></h2>
-<p>The <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_text"><code>text</code></a> and <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_code"><code>code</code></a> methods
-return a special <a href="https://spirali.github.io/elsie/apidoc/elsie.textboxitem.TextBoxItem.html"><code>TextBoxItem</code></a> item that offers the following two
+<p>The <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_text"><code>text</code></a> and <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_code"><code>code</code></a> methods
+return a special <a href="https://spirali.github.io/elsie/apidoc/elsie.text.textboxitem.TextBoxItem.html"><code>TextBoxItem</code></a> item that offers the following two
 methods:</p>
 <ul>
-<li><a href="https://spirali.github.io/elsie/apidoc/elsie.textboxitem.TextBoxItem.html#f_line_box"><code>line_box</code></a> creates a box around a specified line (line
+<li><a href="https://spirali.github.io/elsie/apidoc/elsie.text.textboxitem.TextBoxItem.html#f_line_box"><code>line_box</code></a> creates a box around a specified line (line
 numbers are counted from 0). Other arguments are forwarded to the box. You can use this to create
 e.g. colored boxes around selected code lines.</li>
 </ul>
@@ -444,7 +448,7 @@ print(&quot;Hello&quot;, name)
 
 box.line_box(1, z_level=-1).rect(bg_color=&quot;orange&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-90888600850f46a283b925234bb191ed">
+<div class="elsie-wrapper elsie-wrapper-b1550e947b6d4658a25515fad276892a">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAACWCAYAAABkW7XSAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGrJJREFUeJzt3Xt8E3W+//HXTC5t
@@ -588,7 +592,7 @@ ZkhgCSE0QwJLCKEZytSpU335+fmR3g4hhOhRQUEB/wezu4orZFaxyQAAAABJRU5ErkJggg==
 </style>
 
 <ul>
-<li><a href="https://spirali.github.io/elsie/apidoc/elsie.textboxitem.TextBoxItem.html#f_inline_box"><code>inline_box</code></a> creates a box around text which is
+<li><a href="https://spirali.github.io/elsie/apidoc/elsie.text.textboxitem.TextBoxItem.html#f_inline_box"><code>inline_box</code></a> creates a box around text which is
 wrapped with the given style. If there are multiple occurrences of the specified inline style, you
 can specify which one do you want by the <code>nth</code> argument. <code>style_name</code> can be any existing style
 name or a dummy style that starts with the <code>"#"</code> character. Dummy styles do not have to be defined
@@ -601,7 +605,7 @@ text ~#A{that} takes
 
 text_item.inline_box(&quot;#A&quot;, z_level=-1).rect(bg_color=&quot;green&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-c0031a2bd5424e3bbd278ed23877f4c1">
+<div class="elsie-wrapper elsie-wrapper-ed4ea59c5bcd4da8b29edba011f60348">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3XdYFNfCBvB36aBI

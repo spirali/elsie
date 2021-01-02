@@ -24,6 +24,7 @@ import contextlib
 import os
 from typing import List
 
+from mkdocs.config.config_options import Choice
 from mkdocs.plugins import BasePlugin
 
 
@@ -83,7 +84,8 @@ def render_slide(code: List[str],
                  height: int,
                  border: bool,
                  debug_boxes: bool,
-                 skip: slice) -> str:
+                 skip: slice,
+                 render_format: str) -> str:
     border_str = """slide.rect(color="black")""" if border else ""
 
     code = code[skip]
@@ -94,17 +96,17 @@ def render_slide(code: List[str],
 
     template = f"""
 import elsie
-from elsie.box import Box
-from elsie.jupyter import render_slide_html as elsie_render_slide
+from elsie.boxtree.box import Box
+from elsie.render.jupyter import render_slide_html as elsie_render_slide
 
 {ctx.get_lib_code()}
 
-slides = elsie.Slides(width={width}, height={height}, name_policy="ignore")
+slides = elsie.SlideDeck(width={width}, height={height}, name_policy="ignore")
 slide = slides.new_slide({', '.join(f"{k}={v}" for (k, v) in slide_args.items())})
 {border_str}
 {code}
 
-result = elsie_render_slide(slides._slides[-1], format="png")
+result = elsie_render_slide(slides._slides[-1], format="{render_format}")
 """.strip()
 
     locals = {}
@@ -147,9 +149,14 @@ def iterate_fences(src: str, handle_fence):
 
 
 class ElsiePlugin(BasePlugin):
+    config_scheme = (
+        ("render_format", Choice(("svg", "png"))),
+    )
+
     def on_page_markdown(self, src: str, page, config, *args, **kwargs):
         # TODO: use Markdown parser
 
+        render_format = self.config.get("render_format", "svg")
         docs_dir = config["docs_dir"]
         ctx = CodeContext()
 
@@ -180,7 +187,8 @@ class ElsiePlugin(BasePlugin):
                                          height=height,
                                          border=border == "yes",
                                          skip=skip_slice,
-                                         debug_boxes=debug_boxes == "yes").splitlines(
+                                         debug_boxes=debug_boxes == "yes",
+                                         render_format=render_format).splitlines(
                         keepends=False)
                 return elsie_to_python_header(header), lines
             return header, []

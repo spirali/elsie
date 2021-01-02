@@ -97,6 +97,8 @@
     </li>
     </ul>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../lists/">Lists</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../jupyter/">Jupyter integration</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../latex/">Latex</a>
@@ -104,9 +106,11 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/headers/">Headers and footers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/grids/">Grids</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/codestepping/">Code stepping</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/zoom/">Zooming</a>
                     </li>
@@ -162,7 +166,7 @@
 generic paths. On top of that, it offers an abstraction for arrow heads that can be placed on the
 ends of lines or paths.</p>
 <h2 id="rectangles">Rectangles<a class="headerlink" href="#rectangles" title="Permanent link">#</a></h2>
-<p>You can draw rectangles using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_rect"><code>rect</code></a> method on a box. The
+<p>You can draw rectangles using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_rect"><code>rect</code></a> method on a box. The
 position and size of the rectangle will be copied from the box. You can pass the following
 additional parameters:</p>
 <ul>
@@ -186,7 +190,7 @@ box.rect(
   rx=20, ry=20
 )
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-b3299234ac704a8b8655e85d7e73fcd7">
+<div class="elsie-wrapper elsie-wrapper-1462c7e193b84f81a7ee807644b8cd97">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAD5ZJREFUeJzt3X1wFPUdx/HPHYEg
@@ -281,7 +285,7 @@ gg==
 </style>
 
 <h2 id="ellipses">Ellipses<a class="headerlink" href="#ellipses" title="Permanent link">#</a></h2>
-<p>You can draw ellipses using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_ellipse"><code>ellipse</code></a> method on a box. The
+<p>You can draw ellipses using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_ellipse"><code>ellipse</code></a> method on a box. The
 position and size of the ellipse will be copied from the box. If you want to draw a <strong>circle</strong>,
 use a square parent box.</p>
 <p>You can also pass the following additional parameters:</p>
@@ -303,7 +307,7 @@ box.ellipse(
   stroke_width=10, stroke_dasharray=&quot;10 4&quot;
 )
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-1af926ae9b514b4c9ad2ab0aec286e47">
+<div class="elsie-wrapper elsie-wrapper-b623c334bc424af9a426dfb7a604f335">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xd0VNUWwOFfKgmE
@@ -562,8 +566,8 @@ RU5ErkJggg==
 </style>
 
 <h2 id="lines-and-polygons">Lines and polygons<a class="headerlink" href="#lines-and-polygons" title="Permanent link">#</a></h2>
-<p>You can draw lines using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_line"><code>line</code></a> method and polygons using the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_polygon"><code>polygon</code></a>. Both of these methods take a list of poinst as their
+<p>You can draw lines using the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_line"><code>line</code></a> method and polygons using the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_polygon"><code>polygon</code></a>. Both of these methods take a list of poinst as their
 first argument. Each point can be defined as one of the following variants:</p>
 <ul>
 <li>A tuple <code>(x_value, y_value)</code>: Both values will be interpreted as locations relative to the top-left
@@ -581,7 +585,7 @@ slide.box().polygon([
   box.p(&quot;50%&quot;, &quot;100%&quot;).add(0, 20)
 ], color=&quot;green&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-684bccf01dde46fb82ef242c886d8080">
+<div class="elsie-wrapper elsie-wrapper-7f6cabb2e9534c6f89a9469190bbcd31">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAFVBJREFUeJzt3XtQ1XX+x/GXgOaV
@@ -700,10 +704,10 @@ BcAYdQYNGlQUEhLi6jkA4LbS0tL0/yojwS6hIgpHAAAAAElFTkSuQmCC
 }
 </style>
 
-<p>You can pass <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_line"><code>style attributes</code></a> to lines and polygons, similarly
+<p>You can pass <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_line"><code>style attributes</code></a> to lines and polygons, similarly
 to rectangles.</p>
 <h2 id="arrow-heads">Arrow heads<a class="headerlink" href="#arrow-heads" title="Permanent link">#</a></h2>
-<p>An arrow head is defined using the <a href="https://spirali.github.io/elsie/apidoc/elsie.arrow.Arrow.html"><code>Arrow</code></a> class. It takes the following
+<p>An arrow head is defined using the <a href="https://spirali.github.io/elsie/apidoc/elsie.svg.arrow.Arrow.html"><code>Arrow</code></a> class. It takes the following
 attributes:</p>
 <ul>
 <li><code>size</code>: Size of the arrow head.</li>
@@ -718,7 +722,7 @@ is proportional to the size of the arrow.</li>
 <p>Arrow attributes reference image:</p>
 <p><img alt="Arrow reference" src="../../imgs/arrows.png" /></p>
 <p>You can attach an arrow head to a line using the <code>start_arrow</code> and <code>end_arrow</code> parameters of the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_line"><code>line</code></a> method. Here is an example of using arrow heads:</p>
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_line"><code>line</code></a> method. Here is an example of using arrow heads:</p>
 <pre><code class="language-python">slide.box(width=100, height=100).line(
   [(0, 0), (50, 50)],
   color=&quot;red&quot;,
@@ -727,7 +731,7 @@ is proportional to the size of the arrow.</li>
   end_arrow=elsie.Arrow(size=40),
 ) 
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-36f32344a3d046dba6cbc775689d66f6">
+<div class="elsie-wrapper elsie-wrapper-8b38c3bdc11549688e1162d18dfd5301">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAACEhJREFUeJzt3U1rXGUDxvGr9bUI
@@ -793,7 +797,7 @@ which the arrow head is attached.</p>
 <h2 id="paths">Paths<a class="headerlink" href="#paths" title="Permanent link">#</a></h2>
 <p>You can also draw arbitrary
 <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths">SVG paths</a> using the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_path"><code>path</code></a> method.</p>
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_path"><code>path</code></a> method.</p>
               
             </div>
           </div>
@@ -801,7 +805,7 @@ which the arrow head is attached.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../jupyter/" class="btn btn-neutral float-right" title="Jupyter integration">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../lists/" class="btn btn-neutral float-right" title="Lists">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../images/" class="btn btn-neutral" title="Images"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -835,7 +839,7 @@ which the arrow head is attached.</p>
         <span><a href="../images/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../jupyter/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../lists/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

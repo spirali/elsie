@@ -89,6 +89,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../shapes/">Shapes</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../lists/">Lists</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../jupyter/">Jupyter integration</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../latex/">Latex</a>
@@ -96,9 +98,11 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/headers/">Headers and footers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/grids/">Grids</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/codestepping/">Code stepping</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/zoom/">Zooming</a>
                     </li>
@@ -150,11 +154,11 @@
             <div class="section">
               
                 <h1 id="images">Images<a class="headerlink" href="#images" title="Permanent link">#</a></h1>
-<p>Images can be inserted into a slide by calling the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_image"><code>image</code></a> method
+<p>Images can be inserted into a slide by calling the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_image"><code>image</code></a> method
 on a box. The first parameter is the path to the image.</p>
 <pre><code class="language-python">slide.image(&quot;imgs/python.png&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-a1c3a49b3fc84b38b021f839f03e54fa">
+<div class="elsie-wrapper elsie-wrapper-eb1b8c68f3ce4674921234bd1b6e33ed">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAB4CAYAAABIFc8gAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAHIVJREFUeJztnXlsXHWe4D/16vZd
@@ -310,7 +314,7 @@ TkSuQmCC
 ratio. Image scale can be set explicitly with the <code>scale</code> parameter.</p>
 <pre><code class="language-python">slide.image(&quot;imgs/python.png&quot;, scale=0.2)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-b420f484aee845acab281cdf87ea4c34">
+<div class="elsie-wrapper elsie-wrapper-6b2944bcedda4994b07527439c38db98">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAB4CAYAAABIFc8gAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADAhJREFUeJzt3W1s1NWCx/Hvf2Y6
@@ -392,7 +396,7 @@ QmCC
 the image clockwise around its center.</p>
 <pre><code class="language-python">slide.image(&quot;imgs/python.png&quot;, rotation=180)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-d06103b3aac54ad7b8354dabe66ae7e0">
+<div class="elsie-wrapper elsie-wrapper-6216a2d182244c09a9ad2db791683ee6">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAB4CAYAAABIFc8gAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAHK1JREFUeJztnXtwU/e94D/n6GXL
@@ -567,7 +571,7 @@ context.</p>
 </ul>
 <p>All elements that do not use the <code>**</code>-suffixed name will be interpreted as having <code>show="1+"</code>.</p>
 <p>You can further control how fragments of an image will be displayed using the following parameters
-of the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_image"><code>image</code></a> method:</p>
+of the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_image"><code>image</code></a> method:</p>
 <ul>
 <li><code>fragments=False</code>: Fragment annotations will be ignored.</li>
 <li><code>show_begin=&lt;x&gt;</code>: Shifts all fragments in the image forward so that <code>x</code> will be the first fragment

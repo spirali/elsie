@@ -91,6 +91,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../userguide/shapes/">Shapes</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../userguide/lists/">Lists</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../userguide/jupyter/">Jupyter integration</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../userguide/latex/">Latex</a>
@@ -98,9 +100,11 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../cookbook/lists/">Lists</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../cookbook/headers/">Headers and footers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../cookbook/grids/">Grids</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../cookbook/codestepping/">Code stepping</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../cookbook/zoom/">Zooming</a>
                     </li>
@@ -169,17 +173,17 @@ above.</p>
 canvas is used as the default. However, as long everything is processed as
 vector graphics, the exact numbers only influences numeric values of
 coordinates, not the resulting resolution.</p>
-<p>Another usefull argument is <code>Slides</code> is <code>bg_color</code> that allows to change default
+<p>Another usefull argument is <code>SlideDeck</code> is <code>bg_color</code> that allows to change default
 background of the slides. The default color is white.</p>
 <p>You can change this by the following code:</p>
 <pre><code class="language-python"># Setup slide size as 192x1035, i.e. 16:9
 
 import elsie
 
-slides = elsie.Slides(width=1920, height=1035)
+slides = elsie.SlideDeck(width=1920, height=1035)
 elsie.set_global_slides(slides)
 </code></pre>
-<p>Slides are created in Elsie by creating a function and decorating it by
+<p>SlideDeck are created in Elsie by creating a function and decorating it by
 decorator <code>@elsie.slide()</code>. It will create a slides in the same order as the
 functions were defined. The decorated function should take a single parameter
 that is the root box (see below) that represents the whole are of the slide.</p>

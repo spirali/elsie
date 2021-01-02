@@ -105,6 +105,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../shapes/">Shapes</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../lists/">Lists</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../jupyter/">Jupyter integration</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../latex/">Latex</a>
@@ -112,9 +114,11 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/lists/">Lists</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/headers/">Headers and footers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/grids/">Grids</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cookbook/codestepping/">Code stepping</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../cookbook/zoom/">Zooming</a>
                     </li>
@@ -166,11 +170,11 @@
             <div class="section">
               
                 <h1 id="text">Text<a class="headerlink" href="#text" title="Permanent link">#</a></h1>
-<p>You can render text by calling the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_text"><code>text</code></a> method on a box.
+<p>You can render text by calling the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_text"><code>text</code></a> method on a box.
 By default, it will create a box item that will draw the specified text in the middle of the box:</p>
 <pre><code class="language-python">slide.box().text(&quot;Hello world!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-01f5f2dff1d44930b9c51b16f6da1d37">
+<div class="elsie-wrapper elsie-wrapper-b9c053d5c4594c26af301475eb73d7e9">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAD51JREFUeJzt3HtMU3cfx/FPoVSQ
@@ -267,7 +271,7 @@ SUVORK5CYII=
 <h2 id="text-style">Text style<a class="headerlink" href="#text-style" title="Permanent link">#</a></h2>
 <p><em>Elsie</em> draws text using SVG, so you can use common SVG attributes (such as size, color, font) to
 modify the appearance of the rendered text. The style of a text is defined by a
-<a href="https://spirali.github.io/elsie/apidoc/elsie.textstyle.TextStyle.html"><code>TextStyle</code></a> object. Its constructor takes the following parameters:</p>
+<a href="https://spirali.github.io/elsie/apidoc/elsie.text.textstyle.TextStyle.html"><code>TextStyle</code></a> object. Its constructor takes the following parameters:</p>
 <ul>
 <li><code>font</code>: Name of the used font.</li>
 <li><code>size</code>: Size of the used font.</li>
@@ -295,7 +299,7 @@ from its parent style (see below).</p>
 <p>You can pass a text style as a second argument to the <code>text</code> method:</p>
 <pre><code class="language-python">slide.text(&quot;Hello world!&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-8faf124acff54581898cec2e4dab09f6">
+<div class="elsie-wrapper elsie-wrapper-ff10716683ae4a1483237c1234dd8c6e">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGTNJREFUeJzt3Xl4VNX5B/BvQlgC
@@ -446,7 +450,7 @@ slides.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&q
 slide = slides.new_slide(name=&quot;slide1&quot;)
 slide.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-ca3e0cbaffc8412b898fc19ca43c57ff">
+<div class="elsie-wrapper elsie-wrapper-2271a34e4c344c999bed7ca32d5b4063">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAFcRJREFUeJzt3Xm0pEV5x/FvDYsO
@@ -573,7 +577,7 @@ IiIiIiIiIiIiIiIiIiIiIiIiIiIyrv4PmWJ0hAtY5XEAAAAASUVORK5CYII=
 box.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 box.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-8699c5a84c994033aff7ca1707ce5d43">
+<div class="elsie-wrapper elsie-wrapper-43591bf36c7e4df6b8b1680d63af422a">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGTNJREFUeJzt3Xl4VNX5B/BvQlgC
@@ -732,7 +736,7 @@ slides.set_style(&quot;default&quot;, default_style)
 slide = slides.new_slide(&quot;slide&quot;)
 slide.text(&quot;Hello world!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-8651ac7c6a38434890bb57c2b07467c8">
+<div class="elsie-wrapper elsie-wrapper-c4c9d36cfba54fab8023e1552494d5b5">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADQpJREFUeJzt3X+Q3GV9wPH3s3uX
@@ -816,7 +820,7 @@ JEmSJEmSJEnSG8T/AzYAW6Egv6psAAAAAElFTkSuQmCC
 
 <h3 id="updating-text-style">Updating text style<a class="headerlink" href="#updating-text-style" title="Permanent link">#</a></h3>
 <p>Getting some text style by name and updating it is a common pattern. Therefore, <em>Elsie</em> provides
-a shortcut method for this: <a href="https://spirali.github.io/elsie/apidoc/elsie.box.Box.html#f_update_style"><code>update_style</code></a>:</p>
+a shortcut method for this: <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.box.Box.html#f_update_style"><code>update_style</code></a>:</p>
 <pre><code class="language-python">slides.update_style(&quot;default&quot;, elsie.TextStyle(color=&quot;orange&quot;))
 # ^ the same as v
 default_style = slides.get_style(&quot;default&quot;)
@@ -824,7 +828,7 @@ default_style.color = &quot;orange&quot;
 slides.set_style(&quot;default&quot;, default_style)
 </code></pre>
 <p>If you work with individual <code>TextStyle</code> instances, you can compose them together using the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.textstyle.TextStyle.html#f_compose"><code>compose</code></a> method:</p>
+<a href="https://spirali.github.io/elsie/apidoc/elsie.text.textstyle.TextStyle.html#f_compose"><code>compose</code></a> method:</p>
 <pre><code class="language-python">style_a = elsie.TextStyle(color=&quot;red&quot;)
 style_b = style_a.compose(elsie.TestStyle(size=20))
 # style_b has color=&quot;red&quot; and size=20
@@ -836,7 +840,7 @@ the <code>text</code> method. To do this, wrap a section of text that you want t
 <pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
 slide.text(&quot;Normal text ~red{red text} ~tt{Typewriter text}&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-79a8281622284ad39ce5ab50d1ac7b39">
+<div class="elsie-wrapper elsie-wrapper-4a29a9f1641242d59d87e65b1c145ec9">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAlgAAADICAYAAAA0n5+2AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xl4FFW6BvC3OyEJ
@@ -1051,7 +1055,7 @@ S9S9AAAAAElFTkSuQmCC
 <pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
 slide.text(&quot;~red{text1 ~tt{text2}}&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-891ab1c133ea4b0abdd1fe76ef172d00">
+<div class="elsie-wrapper elsie-wrapper-0a35a9ca821e47b1891c073bef2f1e1e">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAADICAYAAABS39xVAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADiBJREFUeJzt3HlsFOUfx/FPDymH
@@ -1141,7 +1145,7 @@ VUNDg/4Lf/k2vBnSLWgAAAAASUVORK5CYII=
 <p>You can escape the inline style character (by default <code>~</code>) by repeating it (e.g. <code>"~~"</code>).
 If you need to use the <code>~</code> character a lot in your text, you can change it to a different
 character using the <code>escape_character</code> parameter of the
-<a href="https://spirali.github.io/elsie/apidoc/elsie.boxmixin.BoxMixin.html#f_text"><code>text</code></a> method.</p>
+<a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_text"><code>text</code></a> method.</p>
 <h2 id="text-scaling">Text scaling<a class="headerlink" href="#text-scaling" title="Permanent link">#</a></h2>
 <p>By default, the size of text is determined by the size defined in its text style. This can be
 changed by the parameter <code>scale_to_fit</code>, which will scale the text to fit the size of its parent
@@ -1149,7 +1153,7 @@ box.</p>
 <pre><code class="language-python">slide.box(width=200, height=80).text(&quot;Hello world!&quot;, scale_to_fit=True)
 slide.box(width=80, height=200).text(&quot;Hello world!&quot;, scale_to_fit=True)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-954825b3fe5a42f197b2a09fee6f0557">
+<div class="elsie-wrapper elsie-wrapper-a86131728872488db2ec4c1944e2044f">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xl8VNX9+P/XnUlm
@@ -1451,7 +1455,7 @@ XdHNI49RjKKQQoIIIpNTn5GdK2tYQxBBTGPaue7KKckhBzduRjKSYIKJJfZcd0mIr9T/D3EXcPH/
 around its center.</p>
 <pre><code class="language-python">slide.box().text(&quot;Hello world!&quot;, rotation=45)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-e65fed51afb545099bb74e3665508f01">
+<div class="elsie-wrapper elsie-wrapper-c8e540e40dac46d09a790063acb32052">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGFhJREFUeJzt3XtQVOfBx/Hf7nIR

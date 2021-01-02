@@ -49,6 +49,16 @@ a:link.symbol, a:visited.symbol {
   font-weight: bold;
 }
 
+a:link.symbol-no-doc, a:visited.symbol-no-doc {
+  color: rgb(127, 160, 167);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+ul.params {
+    list-style-type: none;
+}
+
 .tree ul {
   list-style-type: none;
   margin-left: 1em;
@@ -99,7 +109,8 @@ a {
 }
 
 a:link.sourcelink, a:visited.sourcelink {
-  color: black;
+  color: gray;
+  font-size: 12px;
 }
 
 .decl .kw {

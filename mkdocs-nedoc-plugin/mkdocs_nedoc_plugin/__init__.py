@@ -53,6 +53,6 @@ class NedocPlugin(BasePlugin):
                     start, end = match.span(1)
                     line = line[:start] + url + line[end:]
                 else:
-                    print(f"WARNING: link key {link_key} not found")
+                    raise Exception(f"Link key {link_key} not found")
             lines.append(line)
         return "\n".join(lines)

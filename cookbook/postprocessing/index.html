@@ -85,6 +85,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../userguide/shapes/">Shapes</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../userguide/lists/">Lists</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../userguide/jupyter/">Jupyter integration</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../userguide/latex/">Latex</a>
@@ -92,9 +94,11 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Cookbook</span></p>
                 <ul class="current">
-                    <li class="toctree-l1"><a class="reference internal" href="../lists/">Lists</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../headers/">Headers and footers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../grids/">Grids</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../codestepping/">Code stepping</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../zoom/">Zooming</a>
                     </li>
@@ -152,13 +156,13 @@
                 <h1 id="slide-postprocessing">Slide postprocessing<a class="headerlink" href="#slide-postprocessing" title="Permanent link">#</a></h1>
 <p>Sometimes you may want to add some global data to your slides, for example a footer, license
 information or <a href="#slide-numbering">slide numbers</a>. To make it easier, you can pass a function to
-the <code>slide_postprocessing</code> parameter of the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.Slides.html#f_render"><code>render</code></a> method. The
+the <code>slide_postprocessing</code> parameter of the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_render"><code>render</code></a> method. The
 function will receive a list of root boxes of each slide in the presentation. You can then go
 through the list and modify the slides, for example by adding some text to them.</p>
 <h2 id="slide-numbering">Slide numbering<a class="headerlink" href="#slide-numbering" title="Permanent link">#</a></h2>
 <p>It is quite easy to add numbers to each slide using slide postprocessing. Here is an example:</p>
 <pre><code class="language-python">import elsie
-slides = elsie.Slides()
+slides = elsie.SlideDeck()
 
 @slides.slide()
 def slide1(slide):
@@ -185,7 +189,7 @@ slides.render(slide_postprocessing=page_numbering)
 <p>You can find the rendered PDF with slide numbers
 <a href="https://github.com/spirali/elsie/raw/master/examples/page_numbers/page_numbers.pdf">here</a>.</p>
 <p>You could also easily create a fragment number for each fragment of each slide by iterating numbers
-up to the <a href="https://spirali.github.io/elsie/apidoc/elsie.slide.Slide.html#f_current_fragment"><code>current_fragment()</code></a> of each slide.</p>
+up to the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slide.Slide.html#f_current_fragment"><code>current_fragment()</code></a> of each slide.</p>
               
             </div>
           </div>
