@@ -2,7 +2,7 @@
 
 import sys
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 if sys.version_info.major < 3 or (
     sys.version_info.major == 3 and sys.version_info.minor < 6
@@ -29,7 +29,7 @@ Check out its documentation at https://spirali.github.io/elsie.
     author="Stanislav Böhm",
     author_email="spirali@kreatrix.org",
     url="https://github.com/spirali/elsie",
-    packages=["elsie"],
+    packages=find_packages(),
     install_requires=dependencies,
     classifiers=(
         "Programming Language :: Python :: 3",
