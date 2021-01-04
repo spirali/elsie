@@ -29,11 +29,17 @@ from mkdocs.plugins import BasePlugin
 
 
 def is_fence_delimiter(line):
-    return line.strip().startswith("```")
+    line = line.strip()
+    return line.startswith("```") or line.startswith("~~~")
+
+
+def get_fence_char(header):
+    return "`" if header[0] == "`" else "~"
 
 
 def parse_fence_header(header):
-    items = header.strip(" `").split(",")
+    fence_char = get_fence_char(header)
+    items = header.strip(f" {fence_char}").split(",")
     lang = items[0]
 
     def get_kv(item):
@@ -47,8 +53,9 @@ def parse_fence_header(header):
 
 
 def elsie_to_python_header(header):
-    start = header.index("```elsie")
-    return header[:start] + "```python"
+    fence_char = get_fence_char(header) * 3
+    start = header.index(f"{fence_char}elsie")
+    return header[:start] + f"{fence_char}python"
 
 
 class CodeContext:
@@ -122,11 +129,21 @@ def iterate_fences(src: str, handle_fence):
     fence_content = []
     inside_fence = False
     fence_header = None
+    nested = 0
 
     for line in src.splitlines(keepends=False):
         if is_fence_delimiter(line):
             if inside_fence:
-                assert line.strip() == "```"
+                # Handle nested fenced code blocks
+                if len(line.strip()) != 3:
+                    nested += 1
+                    fence_content.append(line)
+                    continue
+                elif nested > 0:
+                    nested -= 1
+                    fence_content.append(line)
+                    continue
+                assert nested == 0
                 assert fence_header is not None
                 header, after = handle_fence(fence_header, fence_content)
                 lines.append(header)

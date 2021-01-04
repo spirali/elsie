@@ -6,3 +6,4 @@ Elsie.
 """
 
 from .list import ordered_list, unordered_list  # noqa
+from .markdown import markdown  # noqa
