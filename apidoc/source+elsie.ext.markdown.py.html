@@ -1,0 +1,356 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.ext.markdown</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.0 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9662; ext</a> </li><li><ul><li><a href=elsie.ext.latex.html>&#9656; latex</a> </li><li><a href=elsie.ext.list.html>&#9656; list</a> </li><li><div class=select><a href=elsie.ext.markdown.html>&#9662; markdown</a> </div></li><li><ul><li><a href=elsie.ext.markdown.MarkdownContext.html> <i>class</i> MarkdownContext</a> </li></ul></li><li><a href=elsie.render.html>&#9656; render</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.svg.html>&#9656; svg</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/ext/markdown.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.ext.html>ext</a>.<a class=symbol href=elsie.ext.markdown.html>markdown</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>marko</span>
+<a name=line-2></a><span class=kn>from</span> <span class=nn>marko.block</span> <span class=kn>import</span> <span class=n>BlankLine</span><span class=p>,</span> <span class=n>FencedCode</span><span class=p>,</span> <span class=n>Heading</span><span class=p>,</span> <span class=n>List</span><span class=p>,</span> <span class=n>ListItem</span><span class=p>,</span> <span class=n>Paragraph</span><span class=p>,</span> <span class=n>Quote</span>
+<a name=line-3></a><span class=kn>from</span> <span class=nn>marko.inline</span> <span class=kn>import</span> <span class=n>Emphasis</span><span class=p>,</span> <span class=n>LineBreak</span><span class=p>,</span> <span class=n>Link</span><span class=p>,</span> <span class=n>RawText</span><span class=p>,</span> <span class=n>StrongEmphasis</span>
+<a name=line-4></a>
+<a name=line-5></a><span class=kn>from</span> <span class=nn>..boxtree.box</span> <span class=kn>import</span> <span class=n>Box</span>
+<a name=line-6></a><span class=kn>from</span> <span class=nn>..text.textparser</span> <span class=kn>import</span> <span class=n>trim_indent</span>
+<a name=line-7></a><span class=kn>from</span> <span class=nn>..text.textstyle</span> <span class=kn>import</span> <span class=n>TextStyle</span> <span class=k>as</span> <span class=n>s</span>
+<a name=line-8></a><span class=kn>from</span> <span class=nn>.</span> <span class=kn>import</span> <span class=n>ordered_list</span><span class=p>,</span> <span class=n>unordered_list</span>
+<a name=line-9></a>
+<a name=line-10></a>
+<a name=line-11></a><span class=k>def</span> <span class=nf>md_heading_style_name</span><span class=p>(</span><span class=n>level</span><span class=p>:</span> <span class=nb>int</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
+<a name=line-12></a>    <span class=sd>&quot;&quot;&quot;Returns the name of the text style used for Markdown headings of the given level.&quot;&quot;&quot;</span>
+<a name=line-13></a>    <span class=k>assert</span> <span class=mi>1</span> <span class=o>&lt;=</span> <span class=n>level</span> <span class=o>&lt;=</span> <span class=mi>6</span>
+<a name=line-14></a>    <span class=k>return</span> <span class=sa>f</span><span class=s2>&quot;md-h</span><span class=si>{</span><span class=n>level</span><span class=si>}</span><span class=s2>&quot;</span>
+<a name=line-15></a>
+<a name=line-16></a>
+<a name=line-17></a><span class=n>MD_PARAGRAPH_STYLE</span> <span class=o>=</span> <span class=s2>&quot;md-paragraph&quot;</span>
+<a name=line-18></a><span class=n>MD_BOLD_STYLE</span> <span class=o>=</span> <span class=s2>&quot;md-bold&quot;</span>
+<a name=line-19></a><span class=n>MD_ITALIC_STYLE</span> <span class=o>=</span> <span class=s2>&quot;md-italic&quot;</span>
+<a name=line-20></a><span class=n>MD_LINK_STYLE</span> <span class=o>=</span> <span class=s2>&quot;md-link&quot;</span>
+<a name=line-21></a><span class=n>MD_BLOCKQUOTE_STYLE</span> <span class=o>=</span> <span class=s2>&quot;md-blockquote&quot;</span>
+<a name=line-22></a><span class=n>MD_HEADING_1_STYLE</span> <span class=o>=</span> <span class=n>md_heading_style_name</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+<a name=line-23></a><span class=n>MD_HEADING_2_STYLE</span> <span class=o>=</span> <span class=n>md_heading_style_name</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+<a name=line-24></a><span class=n>MD_HEADING_3_STYLE</span> <span class=o>=</span> <span class=n>md_heading_style_name</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
+<a name=line-25></a><span class=n>MD_HEADING_4_STYLE</span> <span class=o>=</span> <span class=n>md_heading_style_name</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span>
+<a name=line-26></a><span class=n>MD_HEADING_5_STYLE</span> <span class=o>=</span> <span class=n>md_heading_style_name</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+<a name=line-27></a><span class=n>MD_HEADING_6_STYLE</span> <span class=o>=</span> <span class=n>md_heading_style_name</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span>
+<a name=line-28></a>
+<a name=line-29></a>
+<a name=line-30></a><span class=k>class</span> <span class=nc>MarkdownContext</span><span class=p>:</span>
+<a name=line-31></a>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>box</span><span class=p>:</span> <span class=n>Box</span><span class=p>,</span> <span class=n>escape_char</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>active_list</span><span class=o>=</span><span class=kc>None</span><span class=p>):</span>
+<a name=line-32></a>        <span class=bp>self</span><span class=o>.</span><span class=n>box</span> <span class=o>=</span> <span class=n>box</span>
+<a name=line-33></a>        <span class=bp>self</span><span class=o>.</span><span class=n>escape_char</span> <span class=o>=</span> <span class=n>escape_char</span>
+<a name=line-34></a>        <span class=bp>self</span><span class=o>.</span><span class=n>text_kwargs</span> <span class=o>=</span> <span class=p>{</span><span class=s2>&quot;escape_char&quot;</span><span class=p>:</span> <span class=n>escape_char</span><span class=p>}</span>
+<a name=line-35></a>        <span class=bp>self</span><span class=o>.</span><span class=n>active_list</span> <span class=o>=</span> <span class=n>active_list</span>
+<a name=line-36></a>
+<a name=line-37></a>    <span class=k>def</span> <span class=nf>copy</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>):</span>
+<a name=line-38></a>        <span class=n>args</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>(</span>
+<a name=line-39></a>            <span class=n>box</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>box</span><span class=p>,</span> <span class=n>escape_char</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>escape_char</span><span class=p>,</span> <span class=n>active_list</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>active_list</span>
+<a name=line-40></a>        <span class=p>)</span>
+<a name=line-41></a>        <span class=n>args</span><span class=o>.</span><span class=n>update</span><span class=p>(</span><span class=n>kwargs</span><span class=p>)</span>
+<a name=line-42></a>        <span class=k>return</span> <span class=n>MarkdownContext</span><span class=p>(</span><span class=o>**</span><span class=n>args</span><span class=p>)</span>
+<a name=line-43></a>
+<a name=line-44></a>    <span class=k>def</span> <span class=nf>wrap_text_with_style</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>text</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>style</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
+<a name=line-45></a>        <span class=k>return</span> <span class=sa>f</span><span class=s2>&quot;</span><span class=si>{</span><span class=bp>self</span><span class=o>.</span><span class=n>escape_char</span><span class=si>}{</span><span class=n>style</span><span class=si>}</span><span class=se>{{</span><span class=si>{</span><span class=n>text</span><span class=si>}</span><span class=se>}}</span><span class=s2>&quot;</span>
+<a name=line-46></a>
+<a name=line-47></a>
+<a name=line-48></a><span class=k>def</span> <span class=nf>get_raw_text</span><span class=p>(</span><span class=n>ctx</span><span class=p>:</span> <span class=n>MarkdownContext</span><span class=p>,</span> <span class=n>node</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
+<a name=line-49></a>    <span class=n>text</span> <span class=o>=</span> <span class=s2>&quot;&quot;</span>
+<a name=line-50></a>    <span class=k>for</span> <span class=n>child</span> <span class=ow>in</span> <span class=n>node</span><span class=o>.</span><span class=n>children</span><span class=p>:</span>
+<a name=line-51></a>        <span class=k>if</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>child</span><span class=p>,</span> <span class=n>RawText</span><span class=p>):</span>
+<a name=line-52></a>            <span class=n>text</span> <span class=o>+=</span> <span class=n>child</span><span class=o>.</span><span class=n>children</span>
+<a name=line-53></a>        <span class=k>elif</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>child</span><span class=p>,</span> <span class=n>Emphasis</span><span class=p>):</span>
+<a name=line-54></a>            <span class=n>text</span> <span class=o>+=</span> <span class=n>ctx</span><span class=o>.</span><span class=n>wrap_text_with_style</span><span class=p>(</span><span class=n>get_raw_text</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=n>child</span><span class=p>),</span> <span class=n>MD_ITALIC_STYLE</span><span class=p>)</span>
+<a name=line-55></a>        <span class=k>elif</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>child</span><span class=p>,</span> <span class=n>StrongEmphasis</span><span class=p>):</span>
+<a name=line-56></a>            <span class=n>text</span> <span class=o>+=</span> <span class=n>ctx</span><span class=o>.</span><span class=n>wrap_text_with_style</span><span class=p>(</span><span class=n>get_raw_text</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=n>child</span><span class=p>),</span> <span class=n>MD_BOLD_STYLE</span><span class=p>)</span>
+<a name=line-57></a>        <span class=k>elif</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>child</span><span class=p>,</span> <span class=n>Link</span><span class=p>):</span>
+<a name=line-58></a>            <span class=n>text</span> <span class=o>+=</span> <span class=n>ctx</span><span class=o>.</span><span class=n>wrap_text_with_style</span><span class=p>(</span><span class=n>get_raw_text</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=n>child</span><span class=p>),</span> <span class=n>MD_LINK_STYLE</span><span class=p>)</span>
+<a name=line-59></a>        <span class=k>elif</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>child</span><span class=p>,</span> <span class=n>LineBreak</span><span class=p>):</span>
+<a name=line-60></a>            <span class=n>text</span> <span class=o>+=</span> <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span>
+<a name=line-61></a>    <span class=k>return</span> <span class=n>text</span>
+<a name=line-62></a>
+<a name=line-63></a>
+<a name=line-64></a><span class=k>def</span> <span class=nf>create_root_md_box</span><span class=p>(</span><span class=n>box</span><span class=p>:</span> <span class=n>Box</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>Box</span><span class=p>:</span>
+<a name=line-65></a>    <span class=n>box</span> <span class=o>=</span> <span class=n>box</span><span class=o>.</span><span class=n>box</span><span class=p>()</span>
+<a name=line-66></a>    <span class=n>default</span> <span class=o>=</span> <span class=n>s</span><span class=p>(</span><span class=n>align</span><span class=o>=</span><span class=s2>&quot;left&quot;</span><span class=p>)</span>
+<a name=line-67></a>    <span class=n>styles</span> <span class=o>=</span> <span class=p>{</span>
+<a name=line-68></a>        <span class=n>MD_PARAGRAPH_STYLE</span><span class=p>:</span> <span class=n>default</span><span class=o>.</span><span class=n>compose</span><span class=p>(</span><span class=n>s</span><span class=p>()),</span>
+<a name=line-69></a>        <span class=n>MD_BOLD_STYLE</span><span class=p>:</span> <span class=n>default</span><span class=o>.</span><span class=n>compose</span><span class=p>(</span><span class=n>s</span><span class=p>(</span><span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>)),</span>
+<a name=line-70></a>        <span class=n>MD_ITALIC_STYLE</span><span class=p>:</span> <span class=n>default</span><span class=o>.</span><span class=n>compose</span><span class=p>(</span><span class=n>s</span><span class=p>(</span><span class=n>italic</span><span class=o>=</span><span class=kc>True</span><span class=p>)),</span>
+<a name=line-71></a>        <span class=n>MD_LINK_STYLE</span><span class=p>:</span> <span class=n>default</span><span class=o>.</span><span class=n>compose</span><span class=p>(</span><span class=n>s</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=s2>&quot;#0EBFE9&quot;</span><span class=p>)),</span>
+<a name=line-72></a>        <span class=n>MD_BLOCKQUOTE_STYLE</span><span class=p>:</span> <span class=n>default</span><span class=o>.</span><span class=n>compose</span><span class=p>(</span><span class=n>s</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=s2>&quot;#A9A9A9&quot;</span><span class=p>)),</span>
+<a name=line-73></a>    <span class=p>}</span>
+<a name=line-74></a>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>6</span><span class=p>):</span>
+<a name=line-75></a>        <span class=n>styles</span><span class=p>[</span><span class=n>md_heading_style_name</span><span class=p>(</span><span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)]</span> <span class=o>=</span> <span class=n>default</span><span class=o>.</span><span class=n>compose</span><span class=p>(</span><span class=n>s</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=mi>40</span> <span class=o>-</span> <span class=n>i</span> <span class=o>*</span> <span class=mi>2</span><span class=p>))</span>
+<a name=line-76></a>
+<a name=line-77></a>    <span class=k>for</span> <span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=n>style</span><span class=p>)</span> <span class=ow>in</span> <span class=n>styles</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
+<a name=line-78></a>        <span class=k>if</span> <span class=ow>not</span> <span class=n>box</span><span class=o>.</span><span class=n>has_style</span><span class=p>(</span><span class=n>name</span><span class=p>):</span>
+<a name=line-79></a>            <span class=n>box</span><span class=o>.</span><span class=n>set_style</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=n>style</span><span class=p>)</span>
+<a name=line-80></a>
+<a name=line-81></a>    <span class=k>return</span> <span class=n>box</span>
+<a name=line-82></a>
+<a name=line-83></a>
+<a name=line-84></a><span class=k>def</span> <span class=nf>build_text</span><span class=p>(</span><span class=n>ctx</span><span class=p>:</span> <span class=n>MarkdownContext</span><span class=p>,</span> <span class=n>text</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>style</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
+<a name=line-85></a>    <span class=n>container</span> <span class=o>=</span> <span class=n>ctx</span><span class=o>.</span><span class=n>box</span><span class=o>.</span><span class=n>sbox</span><span class=p>()</span>
+<a name=line-86></a>    <span class=n>container</span><span class=o>.</span><span class=n>text</span><span class=p>(</span><span class=n>text</span><span class=p>,</span> <span class=n>style</span><span class=o>=</span><span class=n>style</span><span class=p>,</span> <span class=o>**</span><span class=n>ctx</span><span class=o>.</span><span class=n>text_kwargs</span><span class=p>)</span>
+<a name=line-87></a>
+<a name=line-88></a>
+<a name=line-89></a><span class=k>def</span> <span class=nf>build_heading</span><span class=p>(</span><span class=n>ctx</span><span class=p>:</span> <span class=n>MarkdownContext</span><span class=p>,</span> <span class=n>heading</span><span class=p>:</span> <span class=n>Heading</span><span class=p>):</span>
+<a name=line-90></a>    <span class=n>build_text</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=n>get_raw_text</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=n>heading</span><span class=p>),</span> <span class=n>md_heading_style_name</span><span class=p>(</span><span class=n>heading</span><span class=o>.</span><span class=n>level</span><span class=p>))</span>
+<a name=line-91></a>
+<a name=line-92></a>
+<a name=line-93></a><span class=k>def</span> <span class=nf>build_paragraph</span><span class=p>(</span><span class=n>ctx</span><span class=p>:</span> <span class=n>MarkdownContext</span><span class=p>,</span> <span class=n>paragraph</span><span class=p>:</span> <span class=n>Paragraph</span><span class=p>):</span>
+<a name=line-94></a>    <span class=n>build_text</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=n>get_raw_text</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=n>paragraph</span><span class=p>),</span> <span class=n>MD_PARAGRAPH_STYLE</span><span class=p>)</span>
+<a name=line-95></a>
+<a name=line-96></a>
+<a name=line-97></a><span class=k>def</span> <span class=nf>build_blank_line</span><span class=p>(</span><span class=n>ctx</span><span class=p>:</span> <span class=n>MarkdownContext</span><span class=p>,</span> <span class=n>blank_line</span><span class=p>:</span> <span class=n>BlankLine</span><span class=p>):</span>
+<a name=line-98></a>    <span class=n>build_text</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span><span class=p>,</span> <span class=n>MD_PARAGRAPH_STYLE</span><span class=p>)</span>
+<a name=line-99></a>
+<a name=line-100></a>
+<a name=line-101></a><span class=k>def</span> <span class=nf>build_quote</span><span class=p>(</span><span class=n>ctx</span><span class=p>:</span> <span class=n>MarkdownContext</span><span class=p>,</span> <span class=n>quote</span><span class=p>:</span> <span class=n>Quote</span><span class=p>):</span>
+<a name=line-102></a>    <span class=n>container</span> <span class=o>=</span> <span class=n>ctx</span><span class=o>.</span><span class=n>box</span><span class=o>.</span><span class=n>sbox</span><span class=p>()</span>
+<a name=line-103></a>    <span class=n>container</span><span class=o>.</span><span class=n>update_style</span><span class=p>(</span><span class=s2>&quot;default&quot;</span><span class=p>,</span> <span class=n>container</span><span class=o>.</span><span class=n>get_style</span><span class=p>(</span><span class=n>MD_BLOCKQUOTE_STYLE</span><span class=p>))</span>
+<a name=line-104></a>    <span class=n>parent_ctx</span> <span class=o>=</span> <span class=n>ctx</span><span class=o>.</span><span class=n>copy</span><span class=p>(</span><span class=n>box</span><span class=o>=</span><span class=n>container</span><span class=p>)</span>
+<a name=line-105></a>    <span class=k>for</span> <span class=n>child</span> <span class=ow>in</span> <span class=n>quote</span><span class=o>.</span><span class=n>children</span><span class=p>:</span>
+<a name=line-106></a>        <span class=n>build</span><span class=p>(</span><span class=n>parent_ctx</span><span class=p>,</span> <span class=n>child</span><span class=p>)</span>
+<a name=line-107></a>
+<a name=line-108></a>
+<a name=line-109></a><span class=k>def</span> <span class=nf>build_fenced_code</span><span class=p>(</span><span class=n>ctx</span><span class=p>:</span> <span class=n>MarkdownContext</span><span class=p>,</span> <span class=n>fenced_code</span><span class=p>:</span> <span class=n>FencedCode</span><span class=p>):</span>
+<a name=line-110></a>    <span class=n>container</span> <span class=o>=</span> <span class=n>ctx</span><span class=o>.</span><span class=n>box</span><span class=o>.</span><span class=n>sbox</span><span class=p>()</span>
+<a name=line-111></a>    <span class=n>container</span><span class=o>.</span><span class=n>code</span><span class=p>(</span><span class=n>fenced_code</span><span class=o>.</span><span class=n>lang</span><span class=p>,</span> <span class=n>get_raw_text</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=n>fenced_code</span><span class=p>))</span>
+<a name=line-112></a>
+<a name=line-113></a>
+<a name=line-114></a><span class=k>def</span> <span class=nf>build_list_top</span><span class=p>(</span><span class=n>ctx</span><span class=p>:</span> <span class=n>MarkdownContext</span><span class=p>,</span> <span class=n>list_node</span><span class=p>:</span> <span class=n>List</span><span class=p>):</span>
+<a name=line-115></a>    <span class=n>container</span> <span class=o>=</span> <span class=n>ctx</span><span class=o>.</span><span class=n>box</span><span class=o>.</span><span class=n>sbox</span><span class=p>()</span>
+<a name=line-116></a>    <span class=k>if</span> <span class=n>list_node</span><span class=o>.</span><span class=n>ordered</span><span class=p>:</span>
+<a name=line-117></a>        <span class=k>if</span> <span class=n>ctx</span><span class=o>.</span><span class=n>active_list</span><span class=p>:</span>
+<a name=line-118></a>            <span class=n>new_list</span> <span class=o>=</span> <span class=n>ctx</span><span class=o>.</span><span class=n>active_list</span><span class=o>.</span><span class=n>ol</span><span class=p>(</span><span class=n>start</span><span class=o>=</span><span class=n>list_node</span><span class=o>.</span><span class=n>start</span><span class=p>,</span> <span class=n>level</span><span class=o>=</span><span class=p>())</span>
+<a name=line-119></a>        <span class=k>else</span><span class=p>:</span>
+<a name=line-120></a>            <span class=n>new_list</span> <span class=o>=</span> <span class=n>ordered_list</span><span class=p>(</span><span class=n>container</span><span class=p>,</span> <span class=n>start</span><span class=o>=</span><span class=n>list_node</span><span class=o>.</span><span class=n>start</span><span class=p>)</span>
+<a name=line-121></a>    <span class=k>else</span><span class=p>:</span>
+<a name=line-122></a>        <span class=k>if</span> <span class=n>ctx</span><span class=o>.</span><span class=n>active_list</span><span class=p>:</span>
+<a name=line-123></a>            <span class=n>new_list</span> <span class=o>=</span> <span class=n>ctx</span><span class=o>.</span><span class=n>active_list</span><span class=o>.</span><span class=n>ul</span><span class=p>(</span><span class=n>label</span><span class=o>=</span><span class=n>list_node</span><span class=o>.</span><span class=n>bullet</span><span class=p>)</span>
+<a name=line-124></a>        <span class=k>else</span><span class=p>:</span>
+<a name=line-125></a>            <span class=n>new_list</span> <span class=o>=</span> <span class=n>unordered_list</span><span class=p>(</span><span class=n>container</span><span class=p>,</span> <span class=n>label</span><span class=o>=</span><span class=n>list_node</span><span class=o>.</span><span class=n>bullet</span><span class=p>)</span>
+<a name=line-126></a>    <span class=k>for</span> <span class=n>child</span> <span class=ow>in</span> <span class=n>list_node</span><span class=o>.</span><span class=n>children</span><span class=p>:</span>
+<a name=line-127></a>        <span class=k>assert</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>child</span><span class=p>,</span> <span class=n>ListItem</span><span class=p>)</span>
+<a name=line-128></a>        <span class=n>box</span> <span class=o>=</span> <span class=n>new_list</span><span class=o>.</span><span class=n>item</span><span class=p>()</span>
+<a name=line-129></a>        <span class=n>build_children</span><span class=p>(</span><span class=n>ctx</span><span class=o>.</span><span class=n>copy</span><span class=p>(</span><span class=n>box</span><span class=o>=</span><span class=n>box</span><span class=p>,</span> <span class=n>active_list</span><span class=o>=</span><span class=n>new_list</span><span class=p>),</span> <span class=n>child</span><span class=p>)</span>
+<a name=line-130></a>
+<a name=line-131></a>
+<a name=line-132></a><span class=n>MD_BUILD_FNS</span> <span class=o>=</span> <span class=p>{</span>
+<a name=line-133></a>    <span class=n>Heading</span><span class=p>:</span> <span class=n>build_heading</span><span class=p>,</span>
+<a name=line-134></a>    <span class=n>Paragraph</span><span class=p>:</span> <span class=n>build_paragraph</span><span class=p>,</span>
+<a name=line-135></a>    <span class=n>BlankLine</span><span class=p>:</span> <span class=n>build_blank_line</span><span class=p>,</span>
+<a name=line-136></a>    <span class=n>Quote</span><span class=p>:</span> <span class=n>build_quote</span><span class=p>,</span>
+<a name=line-137></a>    <span class=n>FencedCode</span><span class=p>:</span> <span class=n>build_fenced_code</span><span class=p>,</span>
+<a name=line-138></a>    <span class=n>List</span><span class=p>:</span> <span class=n>build_list_top</span><span class=p>,</span>
+<a name=line-139></a><span class=p>}</span>
+<a name=line-140></a>
+<a name=line-141></a>
+<a name=line-142></a><span class=k>def</span> <span class=nf>build</span><span class=p>(</span><span class=n>ctx</span><span class=p>:</span> <span class=n>MarkdownContext</span><span class=p>,</span> <span class=n>node</span><span class=p>):</span>
+<a name=line-143></a>    <span class=bp>cls</span> <span class=o>=</span> <span class=n>node</span><span class=o>.</span><span class=vm>__class__</span>
+<a name=line-144></a>    <span class=k>if</span> <span class=bp>cls</span> <span class=ow>in</span> <span class=n>MD_BUILD_FNS</span><span class=p>:</span>
+<a name=line-145></a>        <span class=n>MD_BUILD_FNS</span><span class=p>[</span><span class=bp>cls</span><span class=p>](</span><span class=n>ctx</span><span class=p>,</span> <span class=n>node</span><span class=p>)</span>
+<a name=line-146></a>    <span class=k>else</span><span class=p>:</span>
+<a name=line-147></a>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Warning: ignoring markdown node </span><span class=si>{</span><span class=n>node</span><span class=si>}</span><span class=s2>&quot;</span><span class=p>)</span>
+<a name=line-148></a>
+<a name=line-149></a>
+<a name=line-150></a><span class=k>def</span> <span class=nf>build_children</span><span class=p>(</span><span class=n>ctx</span><span class=p>:</span> <span class=n>MarkdownContext</span><span class=p>,</span> <span class=n>parent</span><span class=p>):</span>
+<a name=line-151></a>    <span class=k>for</span> <span class=n>node</span> <span class=ow>in</span> <span class=n>parent</span><span class=o>.</span><span class=n>children</span><span class=p>:</span>
+<a name=line-152></a>        <span class=n>build</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=n>node</span><span class=p>)</span>
+<a name=line-153></a>
+<a name=line-154></a>
+<a name=line-155></a><span class=k>def</span> <span class=nf>markdown</span><span class=p>(</span><span class=n>root</span><span class=p>:</span> <span class=n>Box</span><span class=p>,</span> <span class=n>markup</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>escape_char</span><span class=o>=</span><span class=s2>&quot;~&quot;</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>Box</span><span class=p>:</span>
+<a name=line-156></a>    <span class=sd>&quot;&quot;&quot;</span>
+<a name=line-157></a><span class=sd>    Render Markdown markup into the given box.</span>
+<a name=line-158></a>
+<a name=line-159></a><span class=sd>    The Markdown syntax has to adhere to the CommonMark spec, but only</span>
+<a name=line-160></a><span class=sd>    a subset of the Markdown syntax is supported (see user guide).</span>
+<a name=line-161></a>
+<a name=line-162></a><span class=sd>    Parameters</span>
+<a name=line-163></a><span class=sd>    ----------</span>
+<a name=line-164></a><span class=sd>    root: Box</span>
+<a name=line-165></a><span class=sd>        Parent box into which will the markup be rendered.</span>
+<a name=line-166></a><span class=sd>    markup: str</span>
+<a name=line-167></a><span class=sd>        Markdown markup.</span>
+<a name=line-168></a><span class=sd>    escape_char: str</span>
+<a name=line-169></a><span class=sd>        Escape character used for marking inline styles.</span>
+<a name=line-170></a><span class=sd>    &quot;&quot;&quot;</span>
+<a name=line-171></a>    <span class=n>markup</span> <span class=o>=</span> <span class=n>trim_indent</span><span class=p>(</span><span class=n>markup</span><span class=p>)</span><span class=o>.</span><span class=n>strip</span><span class=p>()</span>
+<a name=line-172></a>    <span class=n>document</span> <span class=o>=</span> <span class=n>marko</span><span class=o>.</span><span class=n>parse</span><span class=p>(</span><span class=n>markup</span><span class=p>)</span>
+<a name=line-173></a>
+<a name=line-174></a>    <span class=n>wrapper</span> <span class=o>=</span> <span class=n>create_root_md_box</span><span class=p>(</span><span class=n>root</span><span class=p>)</span>
+<a name=line-175></a>
+<a name=line-176></a>    <span class=n>ctx</span> <span class=o>=</span> <span class=n>MarkdownContext</span><span class=p>(</span><span class=n>wrapper</span><span class=p>,</span> <span class=n>escape_char</span><span class=p>)</span>
+<a name=line-177></a>    <span class=n>build_children</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=n>document</span><span class=p>)</span>
+<a name=line-178></a>    <span class=k>return</span> <span class=n>root</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-01-04 18:55 </p></div></div></body></html>
