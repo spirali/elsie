@@ -141,6 +141,76 @@ def test_md_list_simple(test_env):
     test_env.check("md-list-simple")
 
 
+def test_md_list_ul_nested(test_env):
+    slide = test_env.slide
+
+    markdown(
+        slide,
+        """
+    - Item A
+        * Subitem A
+            - Subitem X
+        * Subitem B
+    - Item B
+        - Subitem A
+    - Item C
+        - Subitem C
+    """,
+    )
+    test_env.check("md-list-ul-nested")
+
+
+def test_md_list_ol_nested(test_env):
+    slide = test_env.slide
+
+    markdown(
+        slide,
+        """
+    1. Item A
+        1. Subitem A
+        2. Subitem B
+    2. Item B
+        1. Subitem A
+        2. Subitem B
+    """,
+    )
+    test_env.check("md-list-ol-nested")
+
+
+def test_md_list_ul_ol_nested(test_env):
+    slide = test_env.slide
+
+    markdown(
+        slide,
+        """
+    - Item A
+        1. Subitem A
+        2. Subitem B
+    - Item B
+        1. Subitem A
+            - Subitem X
+        2. Subitem B
+    """)
+    test_env.check("md-list-ul-ol-nested")
+
+
+def test_md_list_ol_ul_nested(test_env):
+    slide = test_env.slide
+
+    markdown(
+        slide,
+        """
+    1. Item A
+        - Subitem A
+        - Subitem B
+    2. Item B
+        - Subitem A
+            1. Subitem X
+        - Subitem B
+    """)
+    test_env.check("md-list-ol-ul-nested")
+
+
 def test_md_ul_bullet_point(test_env):
     slide = test_env.slide
 
