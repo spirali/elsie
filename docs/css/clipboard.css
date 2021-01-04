@@ -1,0 +1,23 @@
+.code-block {
+    position: relative;
+}
+
+.md-clipboard {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    opacity: 0.5;
+}
+.md-clipboard:hover {
+    opacity: 1;
+}
+
+@media print {
+    .md-clipboard {
+        display: none;
+    }
+}

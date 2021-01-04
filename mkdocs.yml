@@ -35,7 +35,16 @@ nav:
   - API reference:
     - API documentation: apidoc
 
-theme: readthedocs
+theme:
+  name: readthedocs
+  prev_next_buttons_location: both
+  custom_dir: docs/template
+
+extra_javascript:
+  - js/clipboard.js
+
+extra_css:
+  - css/clipboard.css
 
 markdown_extensions:
   - toc:
