@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="../../css/theme.css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../../css/clipboard.css" rel="stylesheet" />
+
   
   <script>
     // Current page data
@@ -26,7 +28,9 @@
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
   <script src="../../js/modernizr-2.8.3.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script> 
+  <script>hljs.initHighlightingOnLoad();</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+ 
   
   <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -49,7 +53,11 @@
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href="../.." class="icon icon-home"> Elsie</a>
-        
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -148,6 +156,11 @@
     </li>
   </ul>
   
+    <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+        <a href="../grids/" class="btn btn-neutral float-right" title="Grids">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../userguide/latex/" class="btn btn-neutral" title="Latex"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+  
   <hr/>
 </div>
           <div role="main">
@@ -176,7 +189,7 @@ def slide1(slide):
     content = init_slide(slide, &quot;Welcome&quot;)
     content.text(&quot;Welcome to my presentation&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-5314fe889af54f50821a42e9ff87a820">
+<div class="elsie-wrapper elsie-wrapper-c5f3b134e384441e9c6f62adb7ba98f4">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAlgAAAEsCAYAAAAfPc2WAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3XecFdX9//H3FqrC
@@ -380,7 +393,7 @@ def slide2(slide):
     content = init_slide(slide, &quot;Outline&quot;)
     content.text(&quot;Here is the outline of my presentation&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-0269937165fa41bc93dd3ef5e986dbd5">
+<div class="elsie-wrapper elsie-wrapper-66c036c4428a47cba347acfb81d72739">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAlgAAAEsCAYAAAAfPc2WAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3XecFPX9x/H33cEV
@@ -620,6 +633,8 @@ AAAgN/8P8DNQ6esyPQ8AAAAASUVORK5CYII=
 </div>
     <script>var base_url = '../..';</script>
     <script src="../../js/theme.js" defer></script>
+      <script src="../../js/clipboard.js" defer></script>
+      <script src="../../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);

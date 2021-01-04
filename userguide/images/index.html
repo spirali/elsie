@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="../../css/theme.css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../../css/clipboard.css" rel="stylesheet" />
+
   
   <script>
     // Current page data
@@ -26,7 +28,9 @@
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
   <script src="../../js/modernizr-2.8.3.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script> 
+  <script>hljs.initHighlightingOnLoad();</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+ 
   
   <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -49,7 +53,11 @@
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href="../.." class="icon icon-home"> Elsie</a>
-        
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -150,6 +158,11 @@
     </li>
   </ul>
   
+    <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+        <a href="../shapes/" class="btn btn-neutral float-right" title="Shapes">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../syntax_highlighting/" class="btn btn-neutral" title="Syntax highlighting"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+  
   <hr/>
 </div>
           <div role="main">
@@ -160,7 +173,7 @@
 on a box. The first parameter is the path to the image.</p>
 <pre><code class="language-python">slide.image(&quot;imgs/python.png&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-d7d2ab92f4bc4f58b7c247d5e48d2ff2">
+<div class="elsie-wrapper elsie-wrapper-7c81bb9c29bc4721bfd04b94c9078af5">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAB4CAYAAABIFc8gAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAHIVJREFUeJztnXlsXHWe4D/16vZd
@@ -316,7 +329,7 @@ TkSuQmCC
 ratio. Image scale can be set explicitly with the <code>scale</code> parameter.</p>
 <pre><code class="language-python">slide.image(&quot;imgs/python.png&quot;, scale=0.2)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-437c5795ec5949f5aafebd81bfdaacd6">
+<div class="elsie-wrapper elsie-wrapper-6581c7910be1425bb2c6ccc479707e64">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAB4CAYAAABIFc8gAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADAhJREFUeJzt3W1s1NWCx/Hvf2Y6
@@ -398,7 +411,7 @@ QmCC
 the image clockwise around its center.</p>
 <pre><code class="language-python">slide.image(&quot;imgs/python.png&quot;, rotation=180)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-27a28e67d5624962832cc4a7846004e6">
+<div class="elsie-wrapper elsie-wrapper-4b6d259ee0b84fce884607f2286a589c">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAB4CAYAAABIFc8gAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAHK1JREFUeJztnXtwU/e94D/n6GXL
@@ -636,6 +649,8 @@ parameter allows you to completely rearrange the fragments of the image. For exa
 </div>
     <script>var base_url = '../..';</script>
     <script src="../../js/theme.js" defer></script>
+      <script src="../../js/clipboard.js" defer></script>
+      <script src="../../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);

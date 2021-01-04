@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="css/theme.css" />
   <link rel="stylesheet" href="css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="css/clipboard.css" rel="stylesheet" />
+
   
   <script>
     // Current page data
@@ -26,7 +28,9 @@
   <script src="js/jquery-2.1.1.min.js" defer></script>
   <script src="js/modernizr-2.8.3.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script> 
+  <script>hljs.initHighlightingOnLoad();</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+ 
   
   <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -49,7 +53,11 @@
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href="." class="icon icon-home"> Elsie</a>
-        
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -154,6 +162,10 @@
     </li>
   </ul>
   
+    <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+        <a href="installation/" class="btn btn-neutral float-right" title="Installation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+  
   <hr/>
 </div>
           <div role="main">
@@ -194,7 +206,7 @@ def hello_world(slide):
 
 slides.render(&quot;slides.pdf&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-b21ee8a38b4e48e0ac65905a32c85e7a">
+<div class="elsie-wrapper elsie-wrapper-4a7e2d3f08094cd1a79bf2101a95f27e">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADgtJREFUeJzt3X2wFeV9wPHvvWC4
@@ -447,6 +459,8 @@ sane layout model in Python. If you know of any, please
 </div>
     <script>var base_url = '.';</script>
     <script src="js/theme.js" defer></script>
+      <script src="js/clipboard.js" defer></script>
+      <script src="search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);
@@ -458,5 +472,5 @@ sane layout model in Python. If you know of any, please
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-01-04 18:55:56.111546+00:00
+Build Date UTC : 2021-01-04 19:46:34.664003+00:00
 -->

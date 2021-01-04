@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="../../css/theme.css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../../css/clipboard.css" rel="stylesheet" />
+
   
   <script>
     // Current page data
@@ -26,7 +28,9 @@
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
   <script src="../../js/modernizr-2.8.3.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script> 
+  <script>hljs.initHighlightingOnLoad();</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+ 
   
   <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -49,7 +53,11 @@
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href="../.." class="icon icon-home"> Elsie</a>
-        
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -164,6 +172,11 @@
     </li>
   </ul>
   
+    <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+        <a href="../jupyter/" class="btn btn-neutral float-right" title="Jupyter integration">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../lists/" class="btn btn-neutral" title="Lists"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+  
   <hr/>
 </div>
           <div role="main">
@@ -187,7 +200,7 @@ markdown(slide.box(), &quot;&quot;&quot;
 This text was rendered using **Markdown**
 &quot;&quot;&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-cedcb10ae72c427280cd77a18b35f4f3">
+<div class="elsie-wrapper elsie-wrapper-2b0b2d981eaf44e59268bf09733f6988">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAlgAAAEsCAYAAAAfPc2WAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xl4VOXB/vE7O1sC
@@ -483,7 +496,7 @@ markdown(slide.box(), &quot;&quot;&quot;
 **bold *and italic* text**
 &quot;&quot;&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-364a783f0c614ef38aeba81fe6617a29">
+<div class="elsie-wrapper elsie-wrapper-35c7e7558bf34589a8c8a143cb312bc8">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAZAAAAEsCAYAAADtt+XCAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzs3XdcFMf/P/DXUQ6k
@@ -879,7 +892,7 @@ markdown(slide.box(), &quot;&quot;&quot;
 This text is in ~tt{monospace}.
 &quot;&quot;&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-577eca82e1094776aafee1219e1a1d61">
+<div class="elsie-wrapper elsie-wrapper-8880396cd4a64c6f87f588e2f9227ced">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAZAAAAEsCAYAAADtt+XCAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xl0FFXi9vEnCwQS
@@ -1062,7 +1075,7 @@ def say_hello():
 ```
 &quot;&quot;&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-2f42a892dc464a0fbb524c2f4aa3ba1f">
+<div class="elsie-wrapper elsie-wrapper-08f9bfb4a0484c158c3b06ccbe2aa6c0">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3XlcFPX/B/DXch9y
@@ -1341,7 +1354,7 @@ markdown(slide.box(), &quot;&quot;&quot;
     * Item F
 &quot;&quot;&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-9bb7089c285a46baa75cc1f35ea264cf">
+<div class="elsie-wrapper elsie-wrapper-ec590d528e22474db5881b17a049f84c">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3XdUFFf7B/Dv0ntH
@@ -1600,7 +1613,7 @@ markdown(slide.box(), &quot;&quot;&quot;
 I am a [link](unused).
 &quot;&quot;&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-0b0b8e9e1df54aaea3d34bdfdefbb929">
+<div class="elsie-wrapper elsie-wrapper-900535c2ea174d2084a0dc0850de35fc">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADsxJREFUeJzt3H9slNWex/HPTDtt
@@ -1706,7 +1719,7 @@ slide.set_style(MD_PARAGRAPH_STYLE, TextStyle(color=&quot;red&quot;))
 
 markdown(slide.box(), &quot;This is a red paragraph.&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-006723f2811a46e196eb0604c7ba06f7">
+<div class="elsie-wrapper elsie-wrapper-180e925efbcd4a58a31e487d0f3d45bf">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAZAAAAEsCAYAAADtt+XCAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGXxJREFUeJzt3XlwFHX6x/FnkpCQ
@@ -1937,6 +1950,8 @@ Markdown.</p>
 </div>
     <script>var base_url = '../..';</script>
     <script src="../../js/theme.js" defer></script>
+      <script src="../../js/clipboard.js" defer></script>
+      <script src="../../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);

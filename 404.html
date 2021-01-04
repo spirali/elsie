@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="/elsie/css/theme.css" />
   <link rel="stylesheet" href="/elsie/css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="/elsie/css/clipboard.css" rel="stylesheet" />
   
   <script src="/elsie/js/jquery-2.1.1.min.js" defer></script>
   <script src="/elsie/js/modernizr-2.8.3.min.js" defer></script>
@@ -42,7 +43,11 @@
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href="/elsie/." class="icon icon-home"> Elsie</a>
-        
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="/elsie//search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -174,6 +179,8 @@
 </div>
     <script>var base_url = '/elsie/';</script>
     <script src="/elsie/js/theme.js" defer></script>
+      <script src="/elsie/js/clipboard.js" defer></script>
+      <script src="/elsie/search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);

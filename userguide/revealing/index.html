@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="../../css/theme.css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../../css/clipboard.css" rel="stylesheet" />
+
   
   <script>
     // Current page data
@@ -26,7 +28,9 @@
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
   <script src="../../js/modernizr-2.8.3.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script> 
+  <script>hljs.initHighlightingOnLoad();</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+ 
   
   <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -49,7 +53,11 @@
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href="../.." class="icon icon-home"> Elsie</a>
-        
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -154,6 +162,11 @@
     </li>
   </ul>
   
+    <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+        <a href="../text/" class="btn btn-neutral float-right" title="Text">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../layout/" class="btn btn-neutral" title="Layout"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+  
   <hr/>
 </div>
           <div role="main">
@@ -171,7 +184,7 @@ box is visible.</p>
 <pre><code class="language-python">slide.box().text(&quot;Box 1&quot;)
 slide.box(show=&quot;2&quot;).text(&quot;Box 2&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-29cbd1adc012464ba72a66cf0e5d566c">
+<div class="elsie-wrapper elsie-wrapper-350e53e407a24072a71d580a736ca13d">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAC8hJREFUeJzt3FuIVfUewPHfzNho
@@ -332,7 +345,7 @@ mOGJi4tz4uPjm3seAFCvXbt26X83nEjE4UcE3wAAAABJRU5ErkJggg==
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 2;
-var slide_id = ".elsie-wrapper-29cbd1adc012464ba72a66cf0e5d566c";
+var slide_id = ".elsie-wrapper-350e53e407a24072a71d580a736ca13d";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -390,7 +403,7 @@ as well:</p>
 box.box().text(&quot;Box 1&quot;)
 box.box().text(&quot;Box 2&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-42354e1780ca44ccac79d78f2a95fef4">
+<div class="elsie-wrapper elsie-wrapper-a36b7be1101f468a8d32b06c81a7bcf5">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAABA1JREFUeJzt1EFtQzEUAEGnCi8/
@@ -517,7 +530,7 @@ mOGJi4tz4uPjm3seAFCvXbt26X83nEjE4UcE3wAAAABJRU5ErkJggg==
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 2;
-var slide_id = ".elsie-wrapper-42354e1780ca44ccac79d78f2a95fef4";
+var slide_id = ".elsie-wrapper-a36b7be1101f468a8d32b06c81a7bcf5";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -584,7 +597,7 @@ slide.box(show=&quot;2-3&quot;).text(&quot;Box 2&quot;)
 slide.box(show=&quot;2+&quot;).text(&quot;Box 3&quot;)
 slide.box(show=&quot;4&quot;).text(&quot;Box 4&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-37e28b28b475433e8d4501e34672f7a4">
+<div class="elsie-wrapper elsie-wrapper-03d4a592fb4645ac9a66a4f85ef27d26">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADANJREFUeJzt3H1oVfUDx/HP5sxW
@@ -1039,7 +1052,7 @@ f4pIfGyHebInAAAAAElFTkSuQmCC
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 4;
-var slide_id = ".elsie-wrapper-37e28b28b475433e8d4501e34672f7a4";
+var slide_id = ".elsie-wrapper-03d4a592fb4645ac9a66a4f85ef27d26";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -1126,7 +1139,7 @@ slide.box(show=&quot;last&quot;).text(&quot;Box 3&quot;)
 # Moves current fragment to 3 and shows the box in fragment 3
 slide.box(show=&quot;next&quot;).text(&quot;Box 4&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-629957c6775b4985ba0749b39251cac8">
+<div class="elsie-wrapper elsie-wrapper-848bc586dcb242d794c2788bccca25f9">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADANJREFUeJzt3H1oVfUDx/HP5sxW
@@ -1417,7 +1430,7 @@ FBTo/wD6PhudMK85tQAAAABJRU5ErkJggg==
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 3;
-var slide_id = ".elsie-wrapper-629957c6775b4985ba0749b39251cac8";
+var slide_id = ".elsie-wrapper-848bc586dcb242d794c2788bccca25f9";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -1475,7 +1488,7 @@ slide.box(show=&quot;last+&quot;, p_left=20).text(&quot;Subitem 2&quot;)
 slide.box(show=&quot;next+&quot;).text(&quot;List item 3&quot;)
 slide.box(show=&quot;last+&quot;, p_left=20).text(&quot;Subitem 1&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-072bd3499cdd418087a0a181b79902c4">
+<div class="elsie-wrapper elsie-wrapper-1550c3cd5a1740b5ac38c80d46e116ee">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADnZJREFUeJzt3H9MVfUfx/HX5adX
@@ -2083,7 +2096,7 @@ BiUsQghvUMIihPCGwN3dnXl4eOg7DkII0erKlSv4f+xVF9G9PJB+AAAAAElFTkSuQmCC
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 3;
-var slide_id = ".elsie-wrapper-072bd3499cdd418087a0a181b79902c4";
+var slide_id = ".elsie-wrapper-1550c3cd5a1740b5ac38c80d46e116ee";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -2145,7 +2158,7 @@ as another box.</p>
 slide.overlay(show=&quot;2&quot;).text(&quot;Box 2&quot;)
 slide.overlay(show=&quot;3&quot;).text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-3a810e5870a54acdb5fb2b664bd1d53b">
+<div class="elsie-wrapper elsie-wrapper-c5dbe98647064fa0b485a030658b103d">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADERJREFUeJzt3X1oVfUDx/HP3VbZ
@@ -2344,7 +2357,7 @@ SUO9DgDoU2Fhof4PNq2q+hLXheQAAAAASUVORK5CYII=
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 3;
-var slide_id = ".elsie-wrapper-3a810e5870a54acdb5fb2b664bd1d53b";
+var slide_id = ".elsie-wrapper-c5dbe98647064fa0b485a030658b103d";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -2400,7 +2413,7 @@ fragment when you want it to be overlaid. For example, this may not work as expe
 box.overlay(show=&quot;2&quot;).text(&quot;Box 2&quot;)
 box.overlay(show=&quot;3&quot;).text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-d5fa925bdb4542c78a969fa58ffc3998">
+<div class="elsie-wrapper elsie-wrapper-49b78caf2f9e4b26893befec205bd3b7">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADERJREFUeJzt3X1oVfUDx/HP3VbZ
@@ -2515,7 +2528,7 @@ AAAAAElFTkSuQmCC
 <script type='text/javascript'>(function () {
 var active_step = 1;
 var max_step = 3;
-var slide_id = ".elsie-wrapper-d5fa925bdb4542c78a969fa58ffc3998";
+var slide_id = ".elsie-wrapper-49b78caf2f9e4b26893befec205bd3b7";
 
 function getSelector(selector) {
     return slide_id + " " + selector;
@@ -2612,6 +2625,8 @@ updateState(active_step);
 </div>
     <script>var base_url = '../..';</script>
     <script src="../../js/theme.js" defer></script>
+      <script src="../../js/clipboard.js" defer></script>
+      <script src="../../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);

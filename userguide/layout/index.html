@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="../../css/theme.css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../../css/clipboard.css" rel="stylesheet" />
+
   
   <script>
     // Current page data
@@ -26,7 +28,9 @@
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
   <script src="../../js/modernizr-2.8.3.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script> 
+  <script>hljs.initHighlightingOnLoad();</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+ 
   
   <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -49,7 +53,11 @@
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href="../.." class="icon icon-home"> Elsie</a>
-        
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -182,6 +190,11 @@
     </li>
   </ul>
   
+    <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+        <a href="../revealing/" class="btn btn-neutral float-right" title="Revealing">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../basics/" class="btn btn-neutral" title="Basics"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+  
   <hr/>
 </div>
           <div role="main">
@@ -209,7 +222,7 @@ in each box.</p>
 slide.box().text(&quot;Box 2&quot;)
 slide.box().text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-54b3ea3416694f9d8913a84db5b3bc55">
+<div class="elsie-wrapper elsie-wrapper-40a1ca41462e46afb6b70b27e5dd91df">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAACtBJREFUeJzt3H9MVfUfx/HXhZs/
@@ -297,7 +310,7 @@ def three_boxes_debug(slide):
     slide.box().text(&quot;Box 2&quot;)
     slide.box().text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-c284cd166f9f42c6a615ed7871505971">
+<div class="elsie-wrapper elsie-wrapper-56f756a80dc64f81a0953be9cc106e23">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJztnXlcVOX6wL9nBgYY
@@ -642,7 +655,7 @@ parameter when creating a box:</p>
 box.box().text(&quot;Box 1&quot;)
 box.box().text(&quot;Box 2&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-4c081009b7af404481131e95312f7466">
+<div class="elsie-wrapper elsie-wrapper-c420e10456704c5ebb8fb5b0e953e8cd">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAD4lJREFUeJzt3H9MlVX8B/D3RRAQ
@@ -744,7 +757,7 @@ col_a.box().text(&quot;Col. A/2&quot;)
 col_b = row.box()
 col_b.box().text(&quot;Col. B/1&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-ca535ecfd983476cb6021e8b18265e3c">
+<div class="elsie-wrapper elsie-wrapper-16679eb667b447ea908cf40a2e64fd75">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAADICAYAAABS39xVAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAHUxJREFUeJzt3XlUFEfiB/DvACJ4
@@ -912,7 +925,7 @@ box.text(&quot;Hello!&quot;)
 # B: create text on its sibling rectangle
 slide.box().rect(bg_color=&quot;#aaf&quot;).text(&quot;Hello!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-2a95f33e164e4387a40adc93cd3756e3">
+<div class="elsie-wrapper elsie-wrapper-d710092bc2194eb48406f458bfd25b28">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAC5RJREFUeJzt3XuMVvWdx/HPIHcW
@@ -999,7 +1012,7 @@ of its child text item.</p>
 slide.box(name=&quot;B&quot;, width=300, height=100).text(&quot;Box 2&quot;)
 slide.box(name=&quot;C&quot;, width=&quot;100%&quot;).text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-126b93bba79c4e2b9f9a7b264d9a8654">
+<div class="elsie-wrapper elsie-wrapper-85678938b09743ae96dacdbd38a42d63">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzs3Xd8VFX6+PHPnZpO
@@ -1379,7 +1392,7 @@ box.box(height=&quot;fill(1)&quot;).text(&quot;Box 2&quot;)
 box.box(height=&quot;fill(2)&quot;).text(&quot;Box 3&quot;)
 slide.box(height=&quot;fill&quot;).text(&quot;Box 4&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-27d5644b5d9740c8bf502a7e1edc9f7e">
+<div class="elsie-wrapper elsie-wrapper-12c7842b6db74aa2872a0e7005c3ea82">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAZAAAAEsCAYAAADtt+XCAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzsnXl8VNXd/9+zJGSZ
@@ -1858,7 +1871,7 @@ the padding will shrink its size in the specified directions.</p>
 <pre><code class="language-python">slide.box(width=160, height=100, p_left=40, name=&quot;Top box&quot;)
 slide.box(width=160, height=150, p_y=50, name=&quot;Bottom box&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-70086ce1d2234d988efe82c5b467ee1a">
+<div class="elsie-wrapper elsie-wrapper-533cb0b7e7ba47afb0b388d4132fcf5e">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAZAAAAEsCAYAAADtt+XCAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xd8W/W9//HXkWwt
@@ -2143,7 +2156,7 @@ row = slide.box(width=&quot;fill&quot;)
 row.box(x=&quot;20%&quot;).text(&quot;Box 2&quot;)
 row.box(x=&quot;60%&quot;).text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-85aa537805c84c6eb7a2f47f53644e9b">
+<div class="elsie-wrapper elsie-wrapper-522da74e4bbd4df093720ff8e3c5e2b4">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAG85JREFUeJzt3XlQVFfCNvCnWWVf
@@ -2306,7 +2319,7 @@ its <em>main</em> axis one-by-one. In addition, it also centers all of its child
 slide.box().text(&quot;Box 2&quot;)
 slide.box().text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-c0fe6b30893f45b1b6d084d05b6ec6e5">
+<div class="elsie-wrapper elsie-wrapper-e568069b8cc94f9aaa70c28df7903bb1">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAHGZJREFUeJzt3XlQFGfixvFnBoiC
@@ -2465,7 +2478,7 @@ row.box().text(&quot;Box 1&quot;)
 row.box().text(&quot;Box 2&quot;)
 row.box().text(&quot;Box 3&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-dfcb9cac44a74401a68397db25c7876a">
+<div class="elsie-wrapper elsie-wrapper-8744ba2ec9be44139ac9c2a28fe4d97e">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGJxJREFUeJzt3XlQlPf9wPHPcsqh
@@ -2623,7 +2636,7 @@ be negative.</li>
 slide.box(x=b.x(&quot;50%&quot;), y=b.y(&quot;50%&quot;), width=100, height=100, name=&quot;Second&quot;)
 slide.box(x=0, y=b.y(&quot;100%&quot;), width=&quot;100%&quot;, height=200, name=&quot;Third&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-bb3e56f366a04ddd967e3374493e5e5c">
+<div class="elsie-wrapper elsie-wrapper-da8fd8e9d72e41ab826435a4471dd44c">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Hl8XHW9//HXmTUz
@@ -2927,7 +2940,7 @@ the last.</p>
 slide.box(x=50, y=30, width=80, height=80).rect(bg_color=&quot;green&quot;)
 slide.box(x=60, y=40, width=80, height=80).rect(bg_color=&quot;blue&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-cadfc4efb61342aa9b1d9183671e9358">
+<div class="elsie-wrapper elsie-wrapper-7f653f9e9c194700aef44a463d5c7010">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAolJREFUeJzt2zGOnEAQQFGw5l70
@@ -2971,7 +2984,7 @@ parent box, instead of the last.</li>
 slide.box(x=50, y=30, width=80, height=80).rect(bg_color=&quot;green&quot;)
 slide.box(x=60, y=40, width=80, height=80, prepend=True).rect(bg_color=&quot;blue&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-f8d70ac377ab466bb858f5d79eb1b8f9">
+<div class="elsie-wrapper elsie-wrapper-3cedb76ba621469d86cac38a7b2455ab">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAoFJREFUeJzt28Fpw0AQQFEpuC9t
@@ -3014,7 +3027,7 @@ a.rect(bg_color=&quot;red&quot;)
 slide.box(x=50, y=30, width=80, height=80, below=a).rect(bg_color=&quot;green&quot;)
 slide.box(x=60, y=40, width=80, height=80).rect(bg_color=&quot;blue&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-1f59880980414a33afdc619fe4c9c229">
+<div class="elsie-wrapper elsie-wrapper-e9e5197b95514e4ca0f1acd319240e57">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAn1JREFUeJzt2zFq5EAQQFG1mXup
@@ -3058,7 +3071,7 @@ specified, it is inherited from the parent box. The root box has <code>z_level</
 slide.box(x=50, y=30, width=80, height=80, z_level=2).rect(bg_color=&quot;green&quot;)
 slide.box(x=60, y=40, width=80, height=80, z_level=1).rect(bg_color=&quot;blue&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-8274797913824fc0bae8908979496954">
+<div class="elsie-wrapper elsie-wrapper-2638fe7f22fd4c45945613b998ab8d88">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAnRJREFUeJzt28FNxTAQQEEH/b7i
@@ -3139,6 +3152,8 @@ YII=
 </div>
     <script>var base_url = '../..';</script>
     <script src="../../js/theme.js" defer></script>
+      <script src="../../js/clipboard.js" defer></script>
+      <script src="../../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);
