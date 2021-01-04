@@ -7,16 +7,24 @@ from ..text.textparser import trim_indent
 from ..text.textstyle import TextStyle as s
 from . import ordered_list, unordered_list
 
-MD_PARAGRAPH_STYLE = "md-p"
-MD_BOLD_STYLE = "md-b"
-MD_ITALIC_STYLE = "md-i"
-MD_LINK_STYLE = "md-a"
-MD_BLOCKQUOTE_STYLE = "md-blockquote"
-
 
 def md_heading_style_name(level: int) -> str:
+    """Returns the name of the text style used for Markdown headings of the given level."""
     assert 1 <= level <= 6
     return f"md-h{level}"
+
+
+MD_PARAGRAPH_STYLE = "md-paragraph"
+MD_BOLD_STYLE = "md-bold"
+MD_ITALIC_STYLE = "md-italic"
+MD_LINK_STYLE = "md-link"
+MD_BLOCKQUOTE_STYLE = "md-blockquote"
+MD_HEADING_1_STYLE = md_heading_style_name(1)
+MD_HEADING_2_STYLE = md_heading_style_name(2)
+MD_HEADING_3_STYLE = md_heading_style_name(3)
+MD_HEADING_4_STYLE = md_heading_style_name(4)
+MD_HEADING_5_STYLE = md_heading_style_name(5)
+MD_HEADING_6_STYLE = md_heading_style_name(6)
 
 
 class MarkdownContext:
@@ -37,7 +45,7 @@ class MarkdownContext:
         return f"{self.escape_char}{style}{{{text}}}"
 
 
-def get_raw_text(ctx: MarkdownContext, node):
+def get_raw_text(ctx: MarkdownContext, node) -> str:
     text = ""
     for child in node.children:
         if isinstance(child, RawText):
@@ -61,7 +69,7 @@ def create_root_md_box(box: Box) -> Box:
         MD_BOLD_STYLE: default.compose(s(bold=True)),
         MD_ITALIC_STYLE: default.compose(s(italic=True)),
         MD_LINK_STYLE: default.compose(s(color="#0EBFE9")),
-        MD_BLOCKQUOTE_STYLE: default.compose(s(color="#A9A9A9"))
+        MD_BLOCKQUOTE_STYLE: default.compose(s(color="#A9A9A9")),
     }
     for i in range(6):
         styles[md_heading_style_name(i + 1)] = default.compose(s(size=40 - i * 2))
@@ -145,6 +153,21 @@ def build_children(ctx: MarkdownContext, parent):
 
 
 def markdown(root: Box, markup: str, escape_char="~") -> Box:
+    """
+    Render Markdown markup into the given box.
+
+    The Markdown syntax has to adhere to the CommonMark spec, but only
+    a subset of the Markdown syntax is supported (see user guide).
+
+    Parameters
+    ----------
+    root: Box
+        Parent box into which will the markup be rendered.
+    markup: str
+        Markdown markup.
+    escape_char: str
+        Escape character used for marking inline styles.
+    """
     markup = trim_indent(markup).strip()
     document = marko.parse(markup)
 

@@ -23,6 +23,7 @@ nav:
     - userguide/images.md
     - userguide/shapes.md
     - userguide/lists.md
+    - userguide/markdown.md
     - userguide/jupyter.md
     - userguide/latex.md
   - Cookbook:

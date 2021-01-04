@@ -52,8 +52,9 @@ individual [line highlighting](userguide/syntax_highlighting.md#line-and-inline-
 [arrows](userguide/shapes.md#arrow-heads) pointing to specific code elements.
 
 - **Batteries included** Leverage familiar SVG features - fonts, colors, dashed line borders.
-Include `PNG/JPG/SVG/ORA` images directly into your slides. Render [LaTeX](userguide/latex.md)
-into your slides. Build your slides interactively in [Jupyter notebooks](userguide/jupyter.md).
+Include `PNG/JPG/SVG/ORA` images or render [Markdown](userguide/markdown.md) or
+[LaTeX](userguide/latex.md) directly into your slides. Build your slides interactively in
+[Jupyter notebooks](userguide/jupyter.md).
 
 - **Familiarity** At its heart, *Elsie* is a streamlined API for creating SVG images, optimized for
 making presentations. If you know the basics of Python and SVG, you'll be right at home.
