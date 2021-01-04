@@ -45,3 +45,4 @@ plugins:
   - elsie:
       render_format: png
   - nedoc
+  - search
