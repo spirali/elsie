@@ -163,8 +163,8 @@ that lets you build <a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graph
 composable way and then render them to PDF. There is no DSL or GUI – presentations created with
 <em>Elsie</em> are fully programmed with Python.</p>
 <p>It was created out of frustration of having to deal with
-<a href="#comparison-to-other-tools">existing tools</a> for creating presentations. We believe that creating
-presentations should be automated and programmable as much as possible.</p>
+<a href="#comparison-to-other-tools">existing tools</a> for creating technically oriented presentations. We
+believe that creating presentations should be automated and programmable as much as possible.</p>
 <p><strong>Quick links</strong></p>
 <ul>
 <li><a href="installation/">Installation</a></li>
@@ -192,7 +192,7 @@ def hello_world(slide):
 
 slides.render(&quot;slides.pdf&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-efdcc3a6f11e490496a664f550657084">
+<div class="elsie-wrapper elsie-wrapper-b1c4d0e3e4f64c4487b8cc2c8c28c332">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADgtJREFUeJzt3X2wFeV9wPHvvWC4
@@ -282,36 +282,43 @@ RK5CYII=
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">#</a></h2>
 <ul>
 <li>
-<p><strong>Layout model</strong> <em>Elsie</em> provides a simple, yet powerful layout model. Need rows? Columns?
-Padding? Aligned text? Relative/absolute positioning? Automatic scaling? We got you covered.</p>
+<p><strong>Layout model</strong> <em>Elsie</em> provides a simple, yet powerful layout model. Rows, columns, padding,
+text alignment, relative/absolute positioning and many other layout features are included.</p>
 </li>
 <li>
-<p><strong>Animations and fragments</strong> Reveal your slides gradually using fragments or create custom
-step-by-step animations using Python code. Or draw a fine-tuned SVG image by hand in <code>Inkscape</code> and
-let <em>Elsie</em> turn it into an animation using a handy
-<a href="userguide/images/#embedding-fragments-in-images">layer-naming convention</a>.</p>
+<p><strong>Animations and fragments</strong> Reveal your slides gradually using
+<a href="userguide/revealing/">fragments</a> and build complex step-by-step animations in Python. Or draw a
+fine-tuned SVG image by hand e.g. in <code>Inkscape</code> and let <em>Elsie</em> turn it into an animation using a
+handy <a href="userguide/images/#embedding-fragments-in-images">layer-naming convention</a>.</p>
 </li>
 <li>
 <p><strong>Source code highlighting</strong> Enjoy beautiful code snippets thanks to built-in
 <a href="userguide/syntax_highlighting/">source code highlighting</a>. Create code walkthroughs using
 individual <a href="userguide/syntax_highlighting/#line-and-inline-boxes">line highlighting</a> or
-<a href="userguide/shapes/#arrow-head">arrows</a> pointing to specific code elements.</p>
+<a href="userguide/shapes/#arrow-heads">arrows</a> pointing to specific code elements.</p>
 </li>
 <li>
 <p><strong>Batteries included</strong> Leverage familiar SVG features - fonts, colors, dashed line borders.
-Include <code>PNG/JPG/SVG/ORA</code> images directly into your slides. Render <a href="userguide/layout/">LaTeX</a>
-into your slides. Debug your slides interactively in <a href="userguide/jupyter/">Jupyter notebooks</a>.</p>
+Include <code>PNG/JPG/SVG/ORA</code> images directly into your slides. Render <a href="userguide/latex/">LaTeX</a>
+into your slides. Build your slides interactively in <a href="userguide/jupyter/">Jupyter notebooks</a>.</p>
 </li>
 <li>
 <p><strong>Familiarity</strong> At its heart, <em>Elsie</em> is a streamlined API for creating SVG images, optimized for
 making presentations. If you know the basics of Python and SVG, you'll be right at home.</p>
 </li>
 </ul>
+<p>The ultimate feature of <em>Elsie</em> is that it allows you to build slides using (an imperative)
+programming language. You can split a large presentation into several modules/files, parametrize
+animations or objects that appear often using functions, create arbitrarily complex slides and
+animations or interactively modify the font, aspect ratio or text color/size of your whole
+presentation by changing a single line of code.</p>
 <p><em>Every tool has its disadvantages though.</em></p>
 <ul>
 <li><em>Elsie</em> provides a rather low-level API. While that means that you can create a slide in almost
 any way you like, you will sometimes have to roll up your sleeves to achieve your desired goal.
-But once you implement it, you can just put it inside a function and reuse it the next time!</li>
+However, once you implement it, you can put it inside a function and reuse it the next time, or
+send us a <a href="https://github.com/spirali/elsie/pulls">Pull Request</a> to share the functionality with
+others.</li>
 <li><em>Elsie</em> produces PDF slides, so it can only create animations with a single frame per page.
 If you need 60 FPS animations or GIFs in your presentations, this tool is not for you.</li>
 <li><em>Elsie</em> currently renders SVG slides to PDF using <code>Inkscape</code>. Therefore, you must have it
@@ -332,17 +339,20 @@ pretty much have to go through all the slides and modify them by hand, one by on
 code with syntax highlighting is notoriously badly supported, so often you have to resort to
 exporting the highlighted code from <a href="https://carbon.sh">carbon.sh</a> or screenshotting it from your
 IDE, both of which are far from ideal. Also, you can't really use source control (e.g. <code>git</code>) to
-version your presentation, which is a shame.</p>
+version your slides, which is a shame.</p>
 <p>However, PowerPoint does allow you to create continuous animations (if you do not export to PDF
-of course), so if you need that, it might be a good choice.</p>
+of course), so if you need that, it might be a good choice. It also has a myriad of other
+useful features, like tables, charts, shared templates, spell checking, etc.</p>
 </li>
 <li>
 <p><strong>LaTeX/Beamer</strong>
-LaTeX (Beamer) produces fine-looking presentations, has good support for syntax highlighting and
-can be versioned easily. However, in our experience it is not that easy to create custom diagrams
-and animations using LaTeX, mainly because of its declarative nature. If you can speak in
-<a href="https://www.overleaf.com/learn/latex/TikZ_package">TikZ</a> and you understand the error messages of
-<code>pdflatex</code>, you are probably fine. If not, creating slides with complex animations, diagrams and
+LaTeX has a template called <a href="https://www.overleaf.com/learn/latex/beamer">Beamer</a>, which is
+designed for creating presentation slides. It produces fine-looking text, has good support for
+syntax highlighting and can be versioned easily. However, in our experience it is not that easy to
+create custom diagrams and animations using LaTeX, mainly because of its declarative nature
+(and somewhat confusing syntax). If you can speak fluently in
+<a href="https://www.overleaf.com/learn/latex/TikZ_package">TikZ</a> and you can understand the error messages
+of <code>pdflatex</code>, you are probably fine. If not, creating slides with complex animations, diagrams and
 source code snippets might be easier for you in Python.</p>
 <p>While <em>Elsie</em> also has basic support for rendering <a href="userguide/latex/">LaTeX</a>, if your
 presentation is mostly composed of math formulas, it might be easier to create it in LaTeX
@@ -358,20 +368,23 @@ objects in custom fragments is difficult. You can actually use JavaScript to cre
 animations, but it's not integrated very well, and the library itself does not offer you any API
 to make it easier.</p>
 <p>That being said, if you are fine with declarative description of slides, and you prefer
-HTML/CSS to Python/SVG, I would recommend you to use <code>reveal.js</code>.</p>
+HTML/CSS to Python/SVG, <code>reveal.js</code> is a fine choice.</p>
 </li>
 <li>
 <p><strong>Prezi</strong>
-If you want presentations with three or more dimensions, it's a good choice. Otherwise, the
+If you like presentations with three or more dimensions, it's a good choice. Otherwise, the
 disadvantages of PowerPoint also apply here.</p>
 </li>
+<li>
+<p><strong>python-pptx</strong>
+<a href="https://python-pptx.readthedocs.io/en/latest/">python-pptx</a> is an API for building PowerPoint
+presentations, which is great if you like PowerPoint (or you are forced to use it), because it
+gives you access to a lot of its features (like tables, charts, slide notes) for free. On the
+other hand, this also means that you are limited by what can PowerPoint do. Creating complex
+fragment animations, pretty syntax highlighted source code snippets or LaTeX equations will
+probably be nigh impossible using this library.</p>
+</li>
 </ul>
-<p>None of the above solutions allow you to build slides using (an imperative) programming language,
-which gives you a number of useful powers. You can split a large presentation into several
-modules/files, parametrize animations or objects that appear often using functions, create
-arbitrarily complex slides and animations or interactively modify the font, aspect ratio or text
-color/size of your whole presentation by changing a single line of code. This is the ultimate
-feature of <em>Elsie</em> that is not available in the other tools.</p>
 <h2 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">#</a></h2>
 <ul>
 <li><strong>Why do you use <code>Inkscape</code> instead of e.g. <code>Cairo</code> for rendering slides?</strong>
@@ -380,8 +393,8 @@ embedding SVG images into slides with Cairo, which is something that we use a lo
 possible that <em>Elsie</em> will not require <code>Inkscape</code> sometime in the future.</li>
 <li><strong>Why don't you use an existing layout model, e.g. <code>flexbox</code>?</strong>
 We made the <a href="userguide/layout/">layout model</a> tailored for presentations, which might not be
-so easy with a general layout model. And honestly, we couldn't find any usable binding of
-a standalone and sane layout model in Python. If you know of any, please
+so easy with a general layout model. We also couldn't find any usable binding of a standalone and
+sane layout model in Python. If you know of any, please
 <a href="https://github.com/spirali/elsie/issues">let us know</a>.</li>
 </ul>
 <h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">#</a></h2>
@@ -442,5 +455,5 @@ a standalone and sane layout model in Python. If you know of any, please
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-01-02 21:28:17.842119+00:00
+Build Date UTC : 2021-01-04 12:15:36.863433+00:00
 -->

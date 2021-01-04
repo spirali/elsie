@@ -64,9 +64,13 @@
                 <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Getting started</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#about-this-text">About this text</a>
+    <li class="toctree-l2"><a class="reference internal" href="#creating-a-slide-deck">Creating a slide deck</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#creating-slides">Creating slides</a>
+    <li class="toctree-l2"><a class="reference internal" href="#adding-slides">Adding slides</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#adding-slide-content">Adding slide content</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rendering-slides">Rendering slides</a>
     </li>
     </ul>
                     </li>
@@ -152,52 +156,75 @@
             <div class="section">
               
                 <h1 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">#</a></h1>
-<p>Want to reuse some slide multiple times, with slight variants? Create a function and parametrize it.
-Need to use the same font or color at multiple places, but you're not sure about its final value?
-Just create a variable and change it at any time!</p>
-<p>Elsie is a framework for making slides using Python.
-Its API allows you to build SVG slides programmatically.
-Inkscape is then used in the background to render SVG into PDF slides.</p>
-<p>Full demonstration:
-  * Result: <a href="../examples/bigdemo/example.pdf">example.pdf</a>
-  * Source code: <a href="../examples/bigdemo/example.py">example.py</a></p>
-<h2 id="about-this-text">About this text<a class="headerlink" href="#about-this-text" title="Permanent link">#</a></h2>
-<p>The main purpose of this text is to create a complete reference for Elsie, where
-you can find all the various features that Elsie offers. While this text prioritizes
-completeness, it tries to be accessible as much as possible. If you find
-something that you do not understand, please let me know.</p>
-<p>If you are looking for a more tutorial-like material, try to look at the example
-above.</p>
-<h2 id="creating-slides">Creating slides<a class="headerlink" href="#creating-slides" title="Permanent link">#</a></h2>
-<p>By default, slides are created with ratio 4:3. More precisly, canvas 1024x768px
-canvas is used as the default. However, as long everything is processed as
-vector graphics, the exact numbers only influences numeric values of
-coordinates, not the resulting resolution.</p>
-<p>Another usefull argument is <code>SlideDeck</code> is <code>bg_color</code> that allows to change default
-background of the slides. The default color is white.</p>
-<p>You can change this by the following code:</p>
-<pre><code class="language-python"># Setup slide size as 192x1035, i.e. 16:9
-
-import elsie
-
-slides = elsie.SlideDeck(width=1920, height=1035)
-elsie.set_global_slides(slides)
-</code></pre>
-<p>SlideDeck are created in Elsie by creating a function and decorating it by
-decorator <code>@elsie.slide()</code>. It will create a slides in the same order as the
-functions were defined. The decorated function should take a single parameter
-that is the root box (see below) that represents the whole are of the slide.</p>
+<p>This is a short tutorial that explains the basic of using <em>Elsie</em> and links to the user guide,
+which explains individual concepts in more detail.</p>
+<h2 id="creating-a-slide-deck">Creating a slide deck<a class="headerlink" href="#creating-a-slide-deck" title="Permanent link">#</a></h2>
+<p>To build a presentation with <em>Elsie</em>, you first have to import it and create an instance of a
+<a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html"><code>SlideDeck</code></a>:</p>
 <pre><code class="language-python">import elsie
-
-@elsie.slide()
+slides = elsie.SlideDeck()
+</code></pre>
+<p><code>SlideDeck</code> is used to add slides to your presentation and also to render the slides to PDF at the
+end. You can find more about if <a href="../userguide/basics/">here</a>.</p>
+<h2 id="adding-slides">Adding slides<a class="headerlink" href="#adding-slides" title="Permanent link">#</a></h2>
+<p>The easiest way of adding slides to the slide deck is to create a function for each slide and
+mark it with the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_slide"><code>slide</code></a> decorator:</p>
+<pre><code class="language-python">@slides.slide()
 def slide1(slide):
-    slide.text(&quot;First slide&quot;)
-
-@elsie.slide()
+    # ...
+</code></pre>
+<p>Each decorated function will receive a slide as its parameter. It should then fill the slide with
+the desired content.</p>
+<h2 id="adding-slide-content">Adding slide content<a class="headerlink" href="#adding-slide-content" title="Permanent link">#</a></h2>
+<p>You can add various things to slides, like <a href="../userguide/text/">text</a>,
+<a href="../userguide/images/">images</a>, <a href="../userguide/syntax_highlighting/">source code</a>,
+<a href="../userguide/shapes/">shapes</a>, etc. Each item added to a slide needs to be inside a
+<a href="../userguide/layout/">Box</a> which will decide its layout.</p>
+<p>You can create a new box by calling the <code>box</code> method on a slide. Inside a box you can then e.g.
+write some text and apply a style to it:</p>
+<pre><code class="language-python">@slides.slide()
+def slide1(slide):
+    slide.box().text(&quot;Hello world&quot;)
+    slide.box().text(&quot;This slide was created by Elsie&quot;, style=elsie.TextStyle(bold=True))
+</code></pre>
+<p>By default, multiple boxes will be stacked below one another and horizontally centered. You can
+change these properties by modifying the
+<a href="../userguide/layout/#default-box-layout-properties">box properties</a>.</p>
+<p><em>Elsie</em> has built-in support for fragments, which means that you can easily reveal individual boxes
+gradually, using the <code>show</code> parameter:</p>
+<pre><code class="language-python">@slides.slide()
 def slide2(slide):
-    slide.text(&quot;Second slide&quot;)
+    slide.box(show=&quot;1-2&quot;).text(&quot;I am shown in fragments 1 and 2&quot;)
+    slide.box(show=&quot;2+&quot;).text(&quot;I am shown in fragment 2 and 3&quot;)
+    slide.box(show=&quot;3&quot;).text(&quot;I am shown in fragment 3&quot;)
+</code></pre>
+<p>You can find more about revealing <a href="../userguide/revealing/">here</a>.</p>
+<h2 id="rendering-slides">Rendering slides<a class="headerlink" href="#rendering-slides" title="Permanent link">#</a></h2>
+<p>After you build all slides of your presentation, call the
+<a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_render"><code>render</code></a> method to build the resulting PDF file:</p>
+<pre><code class="language-python">slides.render(&quot;slides.pdf&quot;)
+</code></pre>
+<p>You can also e.g. return a list of slides in raw SVG form or postprocess all slides. See more
+details about rendering slides <a href="../userguide/basics/#rendering-slides">here</a>.</p>
+<p>You can check the user guide or the cookbook to find more detailed guides about individual concepts
+present in <em>Elsie</em>.</p>
+<p>For completeness, here is the full code that was shown in this tutorial:</p>
+<pre><code class="language-python">import elsie
+slides = elsie.SlideDeck()
 
-elsie.render()  # Creates two slide presentation.
+@slides.slide()
+def slide1(slide):
+    slide.box().text(&quot;Hello world&quot;)
+    slide.box().text(&quot;This slide was created by Elsie&quot;, style=elsie.TextStyle(bold=True))
+
+
+@slides.slide()
+def slide2(slide):
+    slide.box(show=&quot;1-2&quot;).text(&quot;I am shown in fragments 1 and 2&quot;)
+    slide.box(show=&quot;2+&quot;).text(&quot;I am shown in fragment 2 and 3&quot;)
+    slide.box(show=&quot;3&quot;).text(&quot;I am shown in fragment 3&quot;)
+
+slides.render(&quot;slides.pdf&quot;)
 </code></pre>
               
             </div>
