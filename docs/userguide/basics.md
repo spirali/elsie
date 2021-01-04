@@ -37,6 +37,22 @@ def slide1(slide: elsie.Box):
     slide.box().text("Hello")
 ```
 
+With this approach, the slide will be added to the slide deck immediately when you use the
+decorator. Therefore, you should not call the decorated function manually. The order of the slides
+will be the same as in the source code:
+
+```python
+@slides.slide()
+def slide1(slide):
+    slide.text("Slide 1")
+
+@slides.slide()
+def slide2(slide):
+    slide.text("Slide 2")
+```
+You can also combine the decorator and `new_slide`, although this is mostly discouraged, as it get
+be confusing to follow the order of the slides.
+
 Both `slide` and `new_slide` have parameters that allow you to change the background color and SVG
 viewbox of the slide (see example usage [here](../cookbook/zoom.md)). You can also choose
 its name (see [below](#name-policy)) or enable [debug draw mode](layout.md#debug-draw-mode).
