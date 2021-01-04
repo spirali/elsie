@@ -118,3 +118,12 @@ def test_list_horizontal_parent(test_env):
     lst.item().text("Item 3")
 
     test_env.check("list-horizontal-parent")
+
+
+def test_list_multiline(test_env):
+    slide = test_env.slide
+    lst = unordered_list(slide.box())
+    lst.item().text("Item 1\nItem looong 2\nItem 3")
+    lst.item().text("Item 1\nItem 2\nItem 3")
+
+    test_env.check("list-multi-line")
