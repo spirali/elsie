@@ -2,29 +2,34 @@ import marko
 from marko.block import BlankLine, FencedCode, Heading, List, ListItem, Paragraph, Quote
 from marko.inline import Emphasis, LineBreak, RawText, StrongEmphasis
 
+from . import ordered_list, unordered_list
 from ..boxtree.box import Box
 from ..text.textparser import trim_indent
 from ..text.textstyle import TextStyle as s
-from . import ordered_list, unordered_list
 
-MD_PARAGRAPH_STYLE = "md-paragraph"
-MD_BOLD_STYLE = "md-bold"
-MD_ITALIC_STYLE = "md-italic"
+MD_PARAGRAPH_STYLE = "md-p"
+MD_BOLD_STYLE = "md-b"
+MD_ITALIC_STYLE = "md-i"
 
 
 def md_heading_style_name(level: int) -> str:
     assert 1 <= level <= 6
-    return f"md-heading-{level}"
+    return f"md-h{level}"
 
 
 class MarkdownContext:
-    def __init__(self, box: Box, escape_char: str):
+    def __init__(self, box: Box, escape_char: str, active_list=None):
         self.box = box
         self.escape_char = escape_char
         self.text_kwargs = {"escape_char": escape_char}
+        self.active_list = active_list
 
     def copy(self, **kwargs):
-        args = dict(box=self.box, escape_char=self.escape_char)
+        args = dict(
+            box=self.box,
+            escape_char=self.escape_char,
+            active_list=self.active_list
+        )
         args.update(kwargs)
         return MarkdownContext(**args)
 
@@ -91,17 +96,23 @@ def build_fenced_code(ctx: MarkdownContext, fenced_code: FencedCode):
     container.code(fenced_code.lang, get_raw_text(ctx, fenced_code))
 
 
-# TODO: nested lists, alignment of multi-line paragraphs in a list item
+# TODO: alignment of multi-line paragraphs in a list item
 def build_list_top(ctx: MarkdownContext, list_node: List):
     container = ctx.box.sbox()
     if list_node.ordered:
-        list = ordered_list(container, start=list_node.start)
+        if ctx.active_list:
+            new_list = ctx.active_list.ol(start=list_node.start, level=())
+        else:
+            new_list = ordered_list(container, start=list_node.start)
     else:
-        list = unordered_list(container, label=list_node.bullet)
+        if ctx.active_list:
+            new_list = ctx.active_list.ul(label=list_node.bullet)
+        else:
+            new_list = unordered_list(container, label=list_node.bullet)
     for child in list_node.children:
         assert isinstance(child, ListItem)
-        box = list.item()
-        build_children(ctx.copy(box=box), child)
+        box = new_list.item()
+        build_children(ctx.copy(box=box, active_list=new_list), child)
 
 
 MD_BUILD_FNS = {
@@ -115,8 +126,9 @@ MD_BUILD_FNS = {
 
 
 def build(ctx: MarkdownContext, node):
-    if node.__class__ in MD_BUILD_FNS:
-        MD_BUILD_FNS[node.__class__](ctx, node)
+    cls = node.__class__
+    if cls in MD_BUILD_FNS:
+        MD_BUILD_FNS[cls](ctx, node)
     else:
         print(f"Warning: ignoring markdown node {node}")
 
@@ -128,9 +140,10 @@ def build_children(ctx: MarkdownContext, parent):
 
 def markdown(root: Box, markup: str, escape_char="~") -> Box:
     markup = trim_indent(markup).strip()
+    document = marko.parse(markup)
 
     wrapper = create_root_md_box(root)
-    document = marko.parse(markup)
+
     ctx = MarkdownContext(wrapper, escape_char)
     build_children(ctx, document)
     return root
