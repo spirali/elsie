@@ -1,5 +1,6 @@
 from typing import Callable, List, Union
 
+from ..text.textstyle import TextStyle
 from ..boxtree.box import Box
 
 LabelFnType = Callable[[Box, List[int]], None]
@@ -140,10 +141,11 @@ class ListBuilder:
         args.update(box_args)
         box_args["horizontal"] = True
         box, _ = self._create_box(self.parent, indent=0, **box_args)
+        box.update_style("default", TextStyle(align="left"))
 
         actual_label = label if label is not None else self.label
         if actual_label is not None:
-            label_box = box.box()
+            label_box = box.box(y="[0%]")
             if callable(actual_label):
                 actual_label(label_box, self.level)
             elif isinstance(actual_label, str):

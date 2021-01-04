@@ -211,6 +211,20 @@ def test_md_list_ol_ul_nested(test_env):
     test_env.check("md-list-ol-ul-nested")
 
 
+def test_md_list_item_multi_line(test_env):
+    slide = test_env.slide
+
+    markdown(
+        slide,
+        """
+    1. This item
+    has multiple lines
+    2. This item also has
+    multiple lines
+    """)
+    test_env.check("md-list-item-multi-line")
+
+
 def test_md_ul_bullet_point(test_env):
     slide = test_env.slide
 

@@ -96,7 +96,6 @@ def build_fenced_code(ctx: MarkdownContext, fenced_code: FencedCode):
     container.code(fenced_code.lang, get_raw_text(ctx, fenced_code))
 
 
-# TODO: alignment of multi-line paragraphs in a list item
 def build_list_top(ctx: MarkdownContext, list_node: List):
     container = ctx.box.sbox()
     if list_node.ordered:
