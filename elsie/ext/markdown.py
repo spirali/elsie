@@ -11,6 +11,7 @@ MD_PARAGRAPH_STYLE = "md-p"
 MD_BOLD_STYLE = "md-b"
 MD_ITALIC_STYLE = "md-i"
 MD_LINK_STYLE = "md-a"
+MD_BLOCKQUOTE_STYLE = "md-blockquote"
 
 
 def md_heading_style_name(level: int) -> str:
@@ -60,6 +61,7 @@ def create_root_md_box(box: Box) -> Box:
         MD_BOLD_STYLE: default.compose(s(bold=True)),
         MD_ITALIC_STYLE: default.compose(s(italic=True)),
         MD_LINK_STYLE: default.compose(s(color="#0EBFE9")),
+        MD_BLOCKQUOTE_STYLE: default.compose(s(color="#A9A9A9"))
     }
     for i in range(6):
         styles[md_heading_style_name(i + 1)] = default.compose(s(size=40 - i * 2))
@@ -89,8 +91,11 @@ def build_blank_line(ctx: MarkdownContext, blank_line: BlankLine):
 
 
 def build_quote(ctx: MarkdownContext, quote: Quote):
+    container = ctx.box.sbox()
+    container.update_style("default", container.get_style(MD_BLOCKQUOTE_STYLE))
+    parent_ctx = ctx.copy(box=container)
     for child in quote.children:
-        build(ctx, child)
+        build(parent_ctx, child)
 
 
 def build_fenced_code(ctx: MarkdownContext, fenced_code: FencedCode):

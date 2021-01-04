@@ -249,3 +249,14 @@ def test_md_link(test_env):
 
     markdown(slide, "Hello [link](https://foo.com).")
     test_env.check("md-link")
+
+
+def test_md_blockquote(test_env):
+    slide = test_env.slide
+
+    markdown(slide, """
+Normal text
+> quoted text
+> quoted *text* with **formatting**    
+""")
+    test_env.check("md-blockquote")
