@@ -93,8 +93,6 @@ def test_md_skip_invalid_elements(test_env):
     ![](image.png)
 
         code block
-
-    [link](todo)
     """,
     )
     test_env.check("md-skip-invalid-elements")
@@ -190,7 +188,8 @@ def test_md_list_ul_ol_nested(test_env):
         1. Subitem A
             - Subitem X
         2. Subitem B
-    """)
+    """,
+    )
     test_env.check("md-list-ul-ol-nested")
 
 
@@ -207,7 +206,8 @@ def test_md_list_ol_ul_nested(test_env):
         - Subitem A
             1. Subitem X
         - Subitem B
-    """)
+    """,
+    )
     test_env.check("md-list-ol-ul-nested")
 
 
@@ -221,7 +221,8 @@ def test_md_list_item_multi_line(test_env):
     has multiple lines
     2. This item also has
     multiple lines
-    """)
+    """,
+    )
     test_env.check("md-list-item-multi-line")
 
 
@@ -241,3 +242,10 @@ def test_md_ul_bullet_point(test_env):
     """,
     )
     test_env.check("md-ul-bullet-point")
+
+
+def test_md_link(test_env):
+    slide = test_env.slide
+
+    markdown(slide, "Hello [link](https://foo.com).")
+    test_env.check("md-link")

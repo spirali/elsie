@@ -1,7 +1,7 @@
 from typing import Callable, List, Union
 
-from ..text.textstyle import TextStyle
 from ..boxtree.box import Box
+from ..text.textstyle import TextStyle
 
 LabelFnType = Callable[[Box, List[int]], None]
 LabelType = Union[str, LabelFnType]
