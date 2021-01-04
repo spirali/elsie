@@ -1,15 +1,16 @@
 import marko
 from marko.block import BlankLine, FencedCode, Heading, List, ListItem, Paragraph, Quote
-from marko.inline import Emphasis, LineBreak, RawText, StrongEmphasis
+from marko.inline import Emphasis, LineBreak, Link, RawText, StrongEmphasis
 
-from . import ordered_list, unordered_list
 from ..boxtree.box import Box
 from ..text.textparser import trim_indent
 from ..text.textstyle import TextStyle as s
+from . import ordered_list, unordered_list
 
 MD_PARAGRAPH_STYLE = "md-p"
 MD_BOLD_STYLE = "md-b"
 MD_ITALIC_STYLE = "md-i"
+MD_LINK_STYLE = "md-a"
 
 
 def md_heading_style_name(level: int) -> str:
@@ -26,9 +27,7 @@ class MarkdownContext:
 
     def copy(self, **kwargs):
         args = dict(
-            box=self.box,
-            escape_char=self.escape_char,
-            active_list=self.active_list
+            box=self.box, escape_char=self.escape_char, active_list=self.active_list
         )
         args.update(kwargs)
         return MarkdownContext(**args)
@@ -46,6 +45,8 @@ def get_raw_text(ctx: MarkdownContext, node):
             text += ctx.wrap_text_with_style(get_raw_text(ctx, child), MD_ITALIC_STYLE)
         elif isinstance(child, StrongEmphasis):
             text += ctx.wrap_text_with_style(get_raw_text(ctx, child), MD_BOLD_STYLE)
+        elif isinstance(child, Link):
+            text += ctx.wrap_text_with_style(get_raw_text(ctx, child), MD_LINK_STYLE)
         elif isinstance(child, LineBreak):
             text += "\n"
     return text
@@ -58,6 +59,7 @@ def create_root_md_box(box: Box) -> Box:
         MD_PARAGRAPH_STYLE: default.compose(s()),
         MD_BOLD_STYLE: default.compose(s(bold=True)),
         MD_ITALIC_STYLE: default.compose(s(italic=True)),
+        MD_LINK_STYLE: default.compose(s(color="#0EBFE9")),
     }
     for i in range(6):
         styles[md_heading_style_name(i + 1)] = default.compose(s(size=40 - i * 2))
