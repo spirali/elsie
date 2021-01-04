@@ -1,61 +1,85 @@
 # Getting started
-Want to reuse some slide multiple times, with slight variants? Create a function and parametrize it.
-Need to use the same font or color at multiple places, but you're not sure about its final value?
-Just create a variable and change it at any time!
+This is a short tutorial that explains the basic of using *Elsie* and links to the user guide,
+which explains individual concepts in more detail.
 
-Elsie is a framework for making slides using Python.
-Its API allows you to build SVG slides programmatically.
-Inkscape is then used in the background to render SVG into PDF slides.
-
-Full demonstration:
-  * Result: [example.pdf](../examples/bigdemo/example.pdf)
-  * Source code: [example.py](../examples/bigdemo/example.py)
-
-## About this text
-The main purpose of this text is to create a complete reference for Elsie, where
-you can find all the various features that Elsie offers. While this text prioritizes
-completeness, it tries to be accessible as much as possible. If you find
-something that you do not understand, please let me know.
-
-If you are looking for a more tutorial-like material, try to look at the example
-above.
-
-## Creating slides
-By default, slides are created with ratio 4:3. More precisly, canvas 1024x768px
-canvas is used as the default. However, as long everything is processed as
-vector graphics, the exact numbers only influences numeric values of
-coordinates, not the resulting resolution.
-
-Another usefull argument is ``SlideDeck`` is ``bg_color`` that allows to change default
-background of the slides. The default color is white.
-
-You can change this by the following code:
-
+## Creating a slide deck
+To build a presentation with *Elsie*, you first have to import it and create an instance of a
+[`SlideDeck`](elsie.slides.slidedeck.SlideDeck):
 ```python
-# Setup slide size as 192x1035, i.e. 16:9
-
 import elsie
-
-slides = elsie.SlideDeck(width=1920, height=1035)
-elsie.set_global_slides(slides)
+slides = elsie.SlideDeck()
 ```
+`SlideDeck` is used to add slides to your presentation and also to render the slides to PDF at the
+end. You can find more about if [here](userguide/basics.md).
 
-SlideDeck are created in Elsie by creating a function and decorating it by
-decorator ``@elsie.slide()``. It will create a slides in the same order as the
-functions were defined. The decorated function should take a single parameter
-that is the root box (see below) that represents the whole are of the slide.
+## Adding slides
+The easiest way of adding slides to the slide deck is to create a function for each slide and
+mark it with the [`slide`](elsie.slides.slidedeck.SlideDeck.slide) decorator:
+```python
+@slides.slide()
+def slide1(slide):
+    # ...
+```
+Each decorated function will receive a slide as its parameter. It should then fill the slide with
+the desired content.
 
+## Adding slide content
+You can add various things to slides, like [text](userguide/text.md),
+[images](userguide/images.md), [source code](userguide/syntax_highlighting.md),
+[shapes](userguide/shapes.md), etc. Each item added to a slide needs to be inside a
+[Box](userguide/layout.md) which will decide its layout.
 
+You can create a new box by calling the `box` method on a slide. Inside a box you can then e.g.
+write some text and apply a style to it:
+```python
+@slides.slide()
+def slide1(slide):
+    slide.box().text("Hello world")
+    slide.box().text("This slide was created by Elsie", style=elsie.TextStyle(bold=True))
+```
+By default, multiple boxes will be stacked below one another and horizontally centered. You can
+change these properties by modifying the
+[box properties](userguide/layout.md#default-box-layout-properties).
+
+*Elsie* has built-in support for fragments, which means that you can easily reveal individual boxes
+gradually, using the `show` parameter:
+```python
+@slides.slide()
+def slide2(slide):
+    slide.box(show="1-2").text("I am shown in fragments 1 and 2")
+    slide.box(show="2+").text("I am shown in fragment 2 and 3")
+    slide.box(show="3").text("I am shown in fragment 3")
+```
+You can find more about revealing [here](userguide/revealing.md).
+
+## Rendering slides
+After you build all slides of your presentation, call the
+[`render`](elsie.slides.slidedeck.SlideDeck.render) method to build the resulting PDF file:
+```python
+slides.render("slides.pdf")
+```
+You can also e.g. return a list of slides in raw SVG form or postprocess all slides. See more
+details about rendering slides [here](userguide/basics.md#rendering-slides).
+
+You can check the user guide or the cookbook to find more detailed guides about individual concepts
+present in *Elsie*.
+
+For completeness, here is the full code that was shown in this tutorial:
 ```python
 import elsie
+slides = elsie.SlideDeck()
 
-@elsie.slide()
+@slides.slide()
 def slide1(slide):
-    slide.text("First slide")
+    slide.box().text("Hello world")
+    slide.box().text("This slide was created by Elsie", style=elsie.TextStyle(bold=True))
 
-@elsie.slide()
+    
+@slides.slide()
 def slide2(slide):
-    slide.text("Second slide")
+    slide.box(show="1-2").text("I am shown in fragments 1 and 2")
+    slide.box(show="2+").text("I am shown in fragment 2 and 3")
+    slide.box(show="3").text("I am shown in fragment 3")
 
-elsie.render()  # Creates two slide presentation.
+slides.render("slides.pdf")
 ```

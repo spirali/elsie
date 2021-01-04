@@ -35,7 +35,7 @@ def latex(
         Prelude of the LaTeX source (for example package imports).
         Will be included at the beginning of the source code.
     tail: str
-        End of the LaTeX source (for example end the document).
+        End of the LaTeX source (for example end of the document).
         Will be included at the end of the source code.
     """
 

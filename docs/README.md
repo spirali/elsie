@@ -5,8 +5,8 @@ composable way and then render them to PDF. There is no DSL or GUI – presentat
 *Elsie* are fully programmed with Python.
 
 It was created out of frustration of having to deal with
-[existing tools](#comparison-to-other-tools) for creating presentations. We believe that creating
-presentations should be automated and programmable as much as possible.
+[existing tools](#comparison-to-other-tools) for creating technically oriented presentations. We
+believe that creating presentations should be automated and programmable as much as possible.
 
 **Quick links**
 
@@ -38,31 +38,39 @@ slides.render("slides.pdf")
 ```
 
 ## Features
-- **Layout model** *Elsie* provides a simple, yet powerful layout model. Need rows? Columns?
-Padding? Aligned text? Relative/absolute positioning? Automatic scaling? We got you covered.
+- **Layout model** *Elsie* provides a simple, yet powerful layout model. Rows, columns, padding,
+text alignment, relative/absolute positioning and many other layout features are included.
 
-- **Animations and fragments** Reveal your slides gradually using fragments or create custom
-step-by-step animations using Python code. Or draw a fine-tuned SVG image by hand in `Inkscape` and
-let *Elsie* turn it into an animation using a handy
-[layer-naming convention](userguide/images.md#embedding-fragments-in-images).
+- **Animations and fragments** Reveal your slides gradually using
+[fragments](userguide/revealing.md) and build complex step-by-step animations in Python. Or draw a
+fine-tuned SVG image by hand e.g. in `Inkscape` and let *Elsie* turn it into an animation using a
+handy [layer-naming convention](userguide/images.md#embedding-fragments-in-images).
 
 - **Source code highlighting** Enjoy beautiful code snippets thanks to built-in
 [source code highlighting](userguide/syntax_highlighting.md). Create code walkthroughs using
 individual [line highlighting](userguide/syntax_highlighting.md#line-and-inline-boxes) or
-[arrows](userguide/shapes.md#arrow-head) pointing to specific code elements.
+[arrows](userguide/shapes.md#arrow-heads) pointing to specific code elements.
 
 - **Batteries included** Leverage familiar SVG features - fonts, colors, dashed line borders.
-Include `PNG/JPG/SVG/ORA` images directly into your slides. Render [LaTeX](userguide/layout.md)
-into your slides. Debug your slides interactively in [Jupyter notebooks](userguide/jupyter.md).
+Include `PNG/JPG/SVG/ORA` images directly into your slides. Render [LaTeX](userguide/latex.md)
+into your slides. Build your slides interactively in [Jupyter notebooks](userguide/jupyter.md).
 
 - **Familiarity** At its heart, *Elsie* is a streamlined API for creating SVG images, optimized for
 making presentations. If you know the basics of Python and SVG, you'll be right at home.
+
+The ultimate feature of *Elsie* is that it allows you to build slides using (an imperative)
+programming language. You can split a large presentation into several modules/files, parametrize
+animations or objects that appear often using functions, create arbitrarily complex slides and
+animations or interactively modify the font, aspect ratio or text color/size of your whole
+presentation by changing a single line of code.
 
 *Every tool has its disadvantages though.*
 
 - *Elsie* provides a rather low-level API. While that means that you can create a slide in almost
 any way you like, you will sometimes have to roll up your sleeves to achieve your desired goal.
-But once you implement it, you can just put it inside a function and reuse it the next time!
+However, once you implement it, you can put it inside a function and reuse it the next time, or
+send us a [Pull Request](https://github.com/spirali/elsie/pulls) to share the functionality with
+others.
 - *Elsie* produces PDF slides, so it can only create animations with a single frame per page.
 If you need 60 FPS animations or GIFs in your presentations, this tool is not for you.
 - *Elsie* currently renders SVG slides to PDF using `Inkscape`. Therefore, you must have it
@@ -81,17 +89,20 @@ pretty much have to go through all the slides and modify them by hand, one by on
 code with syntax highlighting is notoriously badly supported, so often you have to resort to
 exporting the highlighted code from [carbon.sh](https://carbon.sh) or screenshotting it from your
 IDE, both of which are far from ideal. Also, you can't really use source control (e.g. `git`) to
-version your presentation, which is a shame.
+version your slides, which is a shame.
 
     However, PowerPoint does allow you to create continuous animations (if you do not export to PDF
-    of course), so if you need that, it might be a good choice.
+    of course), so if you need that, it might be a good choice. It also has a myriad of other
+    useful features, like tables, charts, shared templates, spell checking, etc.
 
 - **LaTeX/Beamer**
-LaTeX (Beamer) produces fine-looking presentations, has good support for syntax highlighting and
-can be versioned easily. However, in our experience it is not that easy to create custom diagrams
-and animations using LaTeX, mainly because of its declarative nature. If you can speak in
-[TikZ](https://www.overleaf.com/learn/latex/TikZ_package) and you understand the error messages of
-`pdflatex`, you are probably fine. If not, creating slides with complex animations, diagrams and
+LaTeX has a template called [Beamer](https://www.overleaf.com/learn/latex/beamer), which is
+designed for creating presentation slides. It produces fine-looking text, has good support for
+syntax highlighting and can be versioned easily. However, in our experience it is not that easy to
+create custom diagrams and animations using LaTeX, mainly because of its declarative nature
+(and somewhat confusing syntax). If you can speak fluently in
+[TikZ](https://www.overleaf.com/learn/latex/TikZ_package) and you can understand the error messages
+of `pdflatex`, you are probably fine. If not, creating slides with complex animations, diagrams and
 source code snippets might be easier for you in Python.
 
     While *Elsie* also has basic support for rendering [LaTeX](userguide/latex.md), if your
@@ -108,18 +119,19 @@ animations, but it's not integrated very well, and the library itself does not o
 to make it easier.
 
     That being said, if you are fine with declarative description of slides, and you prefer
-    HTML/CSS to Python/SVG, I would recommend you to use `reveal.js`.
+    HTML/CSS to Python/SVG, `reveal.js` is a fine choice.
 
 - **Prezi**
-If you want presentations with three or more dimensions, it's a good choice. Otherwise, the
+If you like presentations with three or more dimensions, it's a good choice. Otherwise, the
 disadvantages of PowerPoint also apply here.
 
-None of the above solutions allow you to build slides using (an imperative) programming language,
-which gives you a number of useful powers. You can split a large presentation into several
-modules/files, parametrize animations or objects that appear often using functions, create
-arbitrarily complex slides and animations or interactively modify the font, aspect ratio or text
-color/size of your whole presentation by changing a single line of code. This is the ultimate
-feature of *Elsie* that is not available in the other tools.
+- **python-pptx**
+[python-pptx](https://python-pptx.readthedocs.io/en/latest/) is an API for building PowerPoint
+presentations, which is great if you like PowerPoint (or you are forced to use it), because it
+gives you access to a lot of its features (like tables, charts, slide notes) for free. On the
+other hand, this also means that you are limited by what can PowerPoint do. Creating complex
+fragment animations, pretty syntax highlighted source code snippets or LaTeX equations will
+probably be nigh impossible using this library.
 
 ## FAQ
 - **Why do you use `Inkscape` instead of e.g. `Cairo` for rendering slides?**
@@ -128,8 +140,8 @@ embedding SVG images into slides with Cairo, which is something that we use a lo
 possible that *Elsie* will not require `Inkscape` sometime in the future.
 - **Why don't you use an existing layout model, e.g. `flexbox`?**
 We made the [layout model](userguide/layout.md) tailored for presentations, which might not be
-so easy with a general layout model. And honestly, we couldn't find any usable binding of
-a standalone and sane layout model in Python. If you know of any, please
+so easy with a general layout model. We also couldn't find any usable binding of a standalone and
+sane layout model in Python. If you know of any, please
 [let us know](https://github.com/spirali/elsie/issues).
 
 ## License
