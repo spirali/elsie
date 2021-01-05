@@ -1,7 +1,7 @@
 import base64
 import io
 import logging
-from typing import TYPE_CHECKING, List, Union, BinaryIO
+from typing import TYPE_CHECKING, BinaryIO, List, Union
 
 import lxml.etree as et
 from PIL import Image
@@ -482,8 +482,8 @@ class BoxMixin:
         Parameters
         ----------
         source: str or BinaryIO or bytes
-            Filename of the image or file-like object. If file-like object is used, image_type has to
-            be defined.
+            Filename of the image or file-like object. If file-like object is used, image_type has
+            to be defined.
         image_type: str
             Possible values: "svg", "ora", "jpeg", "png" or None (= autodetect from filename).
         scale: float

@@ -1,6 +1,6 @@
 # Images
-Images can be inserted into a slide by calling the [`image`](elsie.boxtree.boxmixin.BoxMixin.image) method
-on a box. The first parameter is the path to the image.
+Images can be inserted into a slide by calling the [`image`](elsie.boxtree.boxmixin.BoxMixin.image)
+method on a box. The first parameter is the path to the image.
 
 ```elsie,height=120,border=no
 slide.image("imgs/python.png")
@@ -21,6 +21,8 @@ slide.image("imgs/python.png", rotation=180)
 ```
 
 `Elsie` supports the following image formats: SVG, PNG, JPEG, and ORA (Open Raster Format).
+You can also pass a binary image to the `image` method (for example `bytes` or `BinaryIO`)
+instead of a file path. In that case you have to specify the `image_type` of the image.
 
 ## Embedding fragments in images
 Sometimes you may want to create slides manually in e.g. Inkscape, for example if the slide is
