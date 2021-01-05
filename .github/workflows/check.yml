@@ -37,6 +37,8 @@ jobs:
       with:
         name: pytest results
         path: /tmp/pytest-*
+    - name: Build examples
+      run: ./examples/build-examples.sh
     - name: Lint
       run: flake8 elsie tests
     - name: Format

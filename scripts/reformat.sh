@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd `dirname $0`/..
 isort --profile black elsie tests
 black elsie tests
