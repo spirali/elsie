@@ -169,11 +169,11 @@
             <div class="section">
               
                 <h1 id="images">Images<a class="headerlink" href="#images" title="Permanent link">#</a></h1>
-<p>Images can be inserted into a slide by calling the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_image"><code>image</code></a> method
-on a box. The first parameter is the path to the image.</p>
+<p>Images can be inserted into a slide by calling the <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_image"><code>image</code></a>
+method on a box. The first parameter is the path to the image.</p>
 <pre><code class="language-python">slide.image(&quot;imgs/python.png&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-d467cd9f0616433d8574a274a91daa73">
+<div class="elsie-wrapper elsie-wrapper-f24fd33b52244049a128ea1bae7d4626">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAB4CAYAAABIFc8gAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAHIVJREFUeJztnXlsXHWe4D/16vZd
@@ -329,7 +329,7 @@ TkSuQmCC
 ratio. Image scale can be set explicitly with the <code>scale</code> parameter.</p>
 <pre><code class="language-python">slide.image(&quot;imgs/python.png&quot;, scale=0.2)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-89c3c1c7eba24f72878bddd608a05dde">
+<div class="elsie-wrapper elsie-wrapper-62ddc4240d2647f6a9b6581ccaa69567">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAB4CAYAAABIFc8gAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADAhJREFUeJzt3W1s1NWCx/Hvf2Y6
@@ -411,7 +411,7 @@ QmCC
 the image clockwise around its center.</p>
 <pre><code class="language-python">slide.image(&quot;imgs/python.png&quot;, rotation=180)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-de150c813ead4d248c421ef1c1d229f1">
+<div class="elsie-wrapper elsie-wrapper-19d0a7b8a29145f097bb20f2c73e68bf">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAB4CAYAAABIFc8gAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAHK1JREFUeJztnXtwU/e94D/n6GXL
@@ -563,7 +563,9 @@ whIIBLpBCEsgEOgGISyBQKAbhLAEAoFu+P+T4dD0NPXV9QAAAABJRU5ErkJggg==
 }
 </style>
 
-<p><code>Elsie</code> supports the following image formats: SVG, PNG, JPEG, and ORA (Open Raster Format).</p>
+<p><code>Elsie</code> supports the following image formats: SVG, PNG, JPEG, and ORA (Open Raster Format).
+You can also pass a binary image to the <code>image</code> method (for example <code>bytes</code> or <code>BinaryIO</code>)
+instead of a file path. In that case you have to specify the <code>image_type</code> of the image.</p>
 <h2 id="embedding-fragments-in-images">Embedding fragments in images<a class="headerlink" href="#embedding-fragments-in-images" title="Permanent link">#</a></h2>
 <p>Sometimes you may want to create slides manually in e.g. Inkscape, for example if the slide is
 drawn by hand or if it contains many finely-tuned objects. Using these manually created slides in
