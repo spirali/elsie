@@ -214,7 +214,7 @@ int main() {
     code.line_box(4, n_lines=4, show="4").rect(color="blue")
 
     # Creating a "commenting label"
-    label = slide.box(100, 400, 200, 130, show="5")
+    label = slide.box(x=100, y=400, width=200, height=130, show="5")
     label.rect(bg_color="green", rx=10, ry=10)
     label.text("Comment for\na line", elsie.TextStyle(color="white"))
 
@@ -316,7 +316,7 @@ def text_box_in_code_demo(slide):
     c.inline_box("#MAIN", z_level=-1, p_x=-2).rect(bg_color="#FBB", color="black")
 
     arrow = elsie.Arrow(10)
-    slide.line([p2.add(0, 40), p2], end_arrow=arrow, stroke_width=3)
+    slide.line([p2.add(0, 40), p2], stroke_width=3, end_arrow=arrow)
 
     c.line_box(4).box(x="100%", height="100%").text("← Inline highlight", "small")
     c.line_box(5).box(x="100%", height="100%").text("← Font style changed", "small")
@@ -419,15 +419,17 @@ def columns_demo(slide):
 
 @slides.slide()
 def shape_demo(slide):
-    slide.box(650, 350, 50, 50).ellipse(bg_color="green")
-    slide.box(720, 350, 150, 50).ellipse(bg_color="purple", color="yellow", stroke_width=10)
-    slide.box(900, 350, 50, 100).ellipse(bg_color="blue")
+    slide.box(x=650, y=350, width=50, height=50).ellipse(bg_color="green")
+    slide.box(x=720, y=350, width=150, height=50).ellipse(
+        bg_color="purple", color="yellow", stroke_width=10
+    )
+    slide.box(x=900, y=350, width=50, height=100).ellipse(bg_color="blue")
 
-    slide.box(100, 100, 200, 200).rect(color="green")
-    slide.box(120, 120, 160, 160).rect(bg_color="green")
+    slide.box(x=100, y=100, width=200, height=200).rect(color="green")
+    slide.box(x=120, y=120, width=160, height=160).rect(bg_color="green")
 
-    slide.box(320, 100, 200, 200).rect(color="blue", rx=20, ry=20)
-    slide.box(340, 120, 160, 160).rect(bg_color="blue", rx=20, ry=20)
+    slide.box(x=320, y=100, width=200, height=200).rect(color="blue", rx=20, ry=20)
+    slide.box(x=340, y=120, width=160, height=160).rect(bg_color="blue", rx=20, ry=20)
 
     slide.polygon([(540, 300), (740, 300), (640, 100)], color="red")
     slide.polygon([(570, 280), (710, 280), (640, 140)], bg_color="red")
@@ -552,7 +554,7 @@ def shape_demo(slide):
     slide.line([(100, 410), (500, 410)], stroke_width=10, stroke_dasharray="20 10 2 10")
 
     # dashed rectangle
-    slide.box(550, 350, 50, 50).rect(
+    slide.box(x=550, y=350, width=50, height=50).rect(
         stroke_width=5, stroke_dasharray="2", color="black", rx=5, ry=5
     )
 
@@ -679,21 +681,21 @@ def position_demo_helper(slide):
 
     b = slide.box(width="70%", height=40)
     b.rect(color=COLOR1)
-    bb = b.box(200, width="30%", height="fill")
+    bb = b.box(x=200, width="30%", height="fill")
     bb.rect(color=COLOR1, bg_color=COLOR2)
     bb.text("Fixed position (x=200)", "inner")
     slide.box(height=10)
 
     b = slide.box(width="70%", height=40)
     b.rect(color=COLOR1)
-    bb = b.box("50%", width="30%", height="fill")
+    bb = b.box(x="50%", width="30%", height="fill")
     bb.rect(color=COLOR1, bg_color=COLOR2)
     bb.text("Ratio (x='50%')", "inner")
     slide.box(height=10)
 
     b = slide.box(width="70%", height=40)
     b.rect(color=COLOR1)
-    bb = b.box("[50%]", width="30%", height="fill")
+    bb = b.box(x="[50%]", width="30%", height="fill")
     bb.rect(color=COLOR1, bg_color=COLOR2)
     bb.text("Align (x='[50%]')", "inner")
     slide.box(height=30)
@@ -703,14 +705,14 @@ def position_demo_helper(slide):
 
     b = slide.box(width="70%", height=40)
     b.rect(color=COLOR1)
-    bb = b.box(0, width="200", height="fill")
+    bb = b.box(x=0, width="200", height="fill")
     bb.rect(color=COLOR1, bg_color=COLOR2)
     bb.text("Fixed size (width=200)", "inner")
     slide.box(height=10)
 
     b = slide.box(width="70%", height=40)
     b.rect(color=COLOR1)
-    bb = b.box(0, width="50%", height="fill")
+    bb = b.box(x=0, width="50%", height="fill")
     bb.rect(color=COLOR1, bg_color=COLOR2)
     bb.text("Ratio (width='50%')", "inner")
     slide.box(height=10)
