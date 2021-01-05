@@ -1,7 +1,7 @@
 import base64
 import io
 import logging
-from typing import TYPE_CHECKING, List, Union
+from typing import TYPE_CHECKING, List, Union, BinaryIO
 
 import lxml.etree as et
 from PIL import Image
@@ -25,6 +25,7 @@ from ..text.textparser import (
     tokens_merge,
     tokens_to_text_without_style,
 )
+from ..utils.files import read_helper
 from ..utils.geom import find_centroid
 from .lazy import eval_pair, eval_value, unpack_point
 
@@ -467,7 +468,9 @@ class BoxMixin:
 
     def image(
         self,
-        filename: str,
+        source: Union[str, BinaryIO, bytes],
+        *,
+        image_type: str = None,
         scale: float = None,
         fragments=True,
         show_begin=1,
@@ -478,8 +481,11 @@ class BoxMixin:
 
         Parameters
         ----------
-        filename: str
-            Filename of the image.
+        source: str or BinaryIO or bytes
+            Filename of the image or file-like object. If file-like object is used, image_type has to
+            be defined.
+        image_type: str
+            Possible values: "svg", "ora", "jpeg", "png" or None (= autodetect from filename).
         scale: float
             Scale of the resulting image.
             < 1.0 -> Smaller size.
@@ -502,39 +508,64 @@ class BoxMixin:
             Rotate the image by the given amount of degrees clockwise around the center of the
             image.
         """
-        if filename.endswith(".svg"):
-            return self._image_svg(
-                filename, scale, fragments, show_begin, select_fragments, rotation
-            )
-        elif filename.endswith(".ora"):
-            return self._image_ora(
-                filename, scale, fragments, show_begin, select_fragments, rotation
-            )
-        elif any(filename.endswith(ext) for ext in [".png", ".jpeg", ".jpg"]):
-            return self._image_bitmap(filename, scale, rotation)
-        else:
-            raise Exception("Unkown image extension")
 
-    def _image_bitmap(self, filename: str, scale: float, rotation: float):
-        key = (filename, "bitmap")
-        entry = self._get_box().slide.temp_cache.get(key)
+        if image_type is None:
+            if not isinstance(source, str):
+                raise Exception(
+                    "When first argument of .image() is not a filename, "
+                    "then image_type has to be specified"
+                )
+            if source.endswith(".svg"):
+                image_type = "svg"
+            elif source.endswith(".ora"):
+                image_type = "ora"
+            elif source.endswith(".png"):
+                image_type = "png"
+            elif source.endswith(".jpeg") or source.endswith(".jpg"):
+                image_type = "jpeg"
+            else:
+                raise Exception("Cannot detect image type from extension")
+
+        if image_type == "svg":
+            if not isinstance(source, str):
+                raise Exception("In this version, source of SVG has to be filename")
+            return self._image_svg(
+                source, scale, fragments, show_begin, select_fragments, rotation
+            )
+        elif image_type == "ora":
+            if not isinstance(source, str):
+                raise Exception("In this version, source of ORA has to be filename")
+            return self._image_ora(
+                source, scale, fragments, show_begin, select_fragments, rotation
+            )
+        elif image_type == "png" or image_type == "jpeg":
+            return self._image_bitmap(source, scale, rotation)
+        else:
+            raise Exception("Unknown image type: {}".format(image_type))
+
+    def _image_bitmap(self, source, scale: float, rotation: float):
+        if isinstance(source, str) or isinstance(source, bytes):
+            key = (source, "bitmap")
+            entry = self._get_box().slide.temp_cache.get(key)
+        else:
+            key = None
+            entry = None
 
         if entry is None:
-            with open(filename, "rb") as f:
-                data = f.read()
-
+            data = read_helper(source)
             img = Image.open(io.BytesIO(data))
             mime = Image.MIME[img.format]
             image_width, image_height = img.size
             del img
 
             data = base64.b64encode(data).decode("ascii")
-            self._get_box().slide.temp_cache[key] = (
-                image_width,
-                image_height,
-                mime,
-                data,
-            )
+            if key is not None:
+                self._get_box().slide.temp_cache[key] = (
+                    image_width,
+                    image_height,
+                    mime,
+                    data,
+                )
         else:
             image_width, image_height, mime, data = entry
 
@@ -550,7 +581,7 @@ class BoxMixin:
                     s = 0
                     logging.warning(
                         "Scale of image {} is 0, set scale explicitly or set at least one "
-                        "dimension for the parent box".format(filename)
+                        "dimension for the parent box".format(source)
                     )
             else:
                 s = scale
