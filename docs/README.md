@@ -4,9 +4,10 @@ that lets you build [SVG](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics
 composable way and then render them to PDF. There is no DSL or GUI – presentations created with
 *Elsie* are fully programmed with Python.
 
-It was created out of frustration of having to deal with
-[existing tools](#comparison-to-other-tools) for creating technically oriented presentations. We
-believe that creating presentations should be automated and programmable as much as possible.
+It was created out of frustration of having to deal with [existing
+tools](#comparison-to-other-tools) for creating technically oriented
+presentations. We believe that creating presentations in a programmable way
+makes the slide making process more smooth and reliable.
 
 **Quick links**
 
