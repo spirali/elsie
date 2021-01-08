@@ -5,9 +5,9 @@ import zipfile
 import lxml.etree as et
 from PIL import Image
 
-from ..svg.draw import draw_bitmap
-from ..svg.svg import svg_begin, svg_end
+from ..render.backends.svg.utils import svg_begin, svg_end
 from ..utils.sxml import Xml
+from .backends.svg.draw import draw_bitmap
 
 
 def convert_ora_to_svg(filename):

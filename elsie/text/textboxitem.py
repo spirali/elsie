@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 from ..boxtree.boxitem import BoxItem
 from ..boxtree.lazy import LazyValue
-from ..svg.draw import draw_text
+from ..render.backends.svg.draw import draw_text
 from ..utils.sxml import Xml
 from .textparser import extract_line, number_of_lines
 
@@ -61,8 +61,7 @@ class TextBoxItem(BoxItem):
         if self._scale_to_fit:
             transforms.append(f"scale({scale})")
         if scale > 0.00001:
-            draw_text(
-                ctx.xml,
+            ctx.draw_text(
                 x / scale,
                 y / scale,
                 self._parsed_text,

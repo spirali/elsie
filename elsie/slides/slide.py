@@ -4,11 +4,9 @@ from typing import TYPE_CHECKING
 from ..boxtree.box import Box
 from ..boxtree.layout import Layout
 from ..render import jupyter
-from ..render.rcontext import RenderingContext
+from ..render.backends.svg.rcontext import SvgRenderingContext
 from ..render.render import PdfRenderUnit, SvgRenderUnit
-from ..svg.svg import svg_begin, svg_end
 from ..utils.geom import Rect
-from ..utils.sxml import Xml
 from .show import ShowInfo
 
 if TYPE_CHECKING:
@@ -64,15 +62,12 @@ class Slide:
         return max(value for value in shows if value)
 
     def make_render_unit(self, step):
-        xml = Xml()
-        svg_begin(xml, self.width, self.height, self.view_box)
-        ctx = RenderingContext(xml, step, self.debug_boxes)
+        ctx = SvgRenderingContext(self, self.fs_cache, step, self.debug_boxes)
         painters = self._box.get_painters(ctx, 0)
         painters.sort(key=lambda painter: painter.z_level)
         for p in painters:
             p.render(ctx)
-        svg_end(xml)
-        return SvgRenderUnit(self, step, xml.to_string())
+        return SvgRenderUnit(self, step, ctx.render())
 
     def _repr_html_(self):
         return jupyter.render_slide_html(self)

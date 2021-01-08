@@ -1,6 +1,6 @@
-from ..render.inkscape import InkscapeShell
-from ..svg.svg import svg_begin, svg_end
-from ..utils.sxml import Xml
+from ....utils.sxml import Xml
+from ...inkscape import InkscapeShell
+from .utils import svg_begin, svg_end
 
 
 def compute_query(inkscape: InkscapeShell, method: str, data: str):

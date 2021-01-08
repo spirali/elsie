@@ -1,5 +1,7 @@
-from ..text.textstyle import TextStyle
-from .svg import apply_rotation
+import base64
+
+from ....text.textstyle import TextStyle
+from .utils import apply_rotation
 
 
 def set_font_from_style(xml, style):
@@ -105,6 +107,9 @@ def draw_text(
 
 
 def draw_bitmap(xml, x, y, width, height, mime, data, rotation=None, extra_args=None):
+    # TODO: improve
+    if not isinstance(data, str):
+        data = base64.b64encode(data).decode("ascii")
     xml.element("image")
     xml.set("x", x)
     xml.set("y", y)

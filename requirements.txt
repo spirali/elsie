@@ -2,4 +2,4 @@ pillow>=8.0,<8.1
 pypdf2>=1.26,<1.27
 pygments>=2.7,<2.8
 lxml>=4.6,<4.7
-marko==1.0.0
+marko==1.0.1

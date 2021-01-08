@@ -1,4 +1,3 @@
-import base64
 import io
 import logging
 from typing import TYPE_CHECKING, BinaryIO, List, Union
@@ -6,18 +5,18 @@ from typing import TYPE_CHECKING, BinaryIO, List, Union
 import lxml.etree as et
 from PIL import Image
 
+from ..render.backends.svg.draw import set_paint_style
+from ..render.backends.svg.utils import apply_rotation, svg_size_to_pixels
 from ..render.image import create_image_data, get_image_steps
 from ..render.ora import convert_ora_to_svg
-from ..slides.show import ShowInfo
-from ..svg import arrow
-from ..svg.draw import draw_bitmap, set_paint_style
-from ..svg.path import (
+from ..shapes import arrow
+from ..shapes.path import (
     check_and_unpack_path_commands,
     eval_path_commands,
     path_points_for_end_arrow,
     path_update_end_point,
 )
-from ..svg.svg import apply_rotation, svg_size_to_pixels
+from ..slides.show import ShowInfo
 from ..text.highlight import highlight_code
 from ..text.textparser import (
     add_line_numbers,
@@ -229,20 +228,16 @@ class BoxMixin:
 
         def draw(ctx):
             rect = self._get_box().layout.rect
-            xml = ctx.xml
-            xml.element("rect")
-            xml.set("x", rect.x)
-            xml.set("y", rect.y)
-            xml.set("width", rect.width)
-            xml.set("height", rect.height)
-            if rx:
-                xml.set("rx", rx)
-            if ry:
-                xml.set("ry", ry)
-            if rotation:
-                apply_rotation(xml, rotation, rect.mid_point)
-            set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
-            xml.close("rect")
+            ctx.draw_rect(
+                rect,
+                rx,
+                ry,
+                color=color,
+                bg_color=bg_color,
+                stroke_width=stroke_width,
+                stroke_dasharray=stroke_dasharray,
+                rotation=rotation,
+            )
 
         return self._create_simple_box_item(draw)
 
@@ -558,7 +553,6 @@ class BoxMixin:
             image_width, image_height = img.size
             del img
 
-            data = base64.b64encode(data).decode("ascii")
             if key is not None:
                 self._get_box().slide.temp_cache[key] = (
                     image_width,
@@ -590,7 +584,7 @@ class BoxMixin:
             h = image_height * s
             x = rect.x + (rect.width - w) / 2
             y = rect.y + (rect.height - h) / 2
-            draw_bitmap(ctx.xml, x, y, w, h, mime, data, rotation)
+            ctx.draw_bitmap(x, y, w, h, mime, data, rotation)
 
         return self._create_simple_box_item(draw)
 
@@ -820,5 +814,5 @@ class BoxMixin:
         return self.p("50%", "50%")
 
 
-from elsie.boxtree.boxitem import SimpleBoxItem  # noqa
-from elsie.text.textboxitem import TextBoxItem  # noqa
+from ..text.textboxitem import TextBoxItem  # noqa
+from .boxitem import SimpleBoxItem  # noqa
