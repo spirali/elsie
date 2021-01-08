@@ -6,6 +6,10 @@ from .inkscape import export_by_inkscape
 
 
 class RenderUnit:
+    """
+    A single presentation page that can render itself using a backend.
+    """
+
     def __init__(self, slide, step):
         self.slide = slide
         self.step = step
@@ -18,9 +22,10 @@ class RenderUnit:
 
 
 class SvgRenderUnit(RenderUnit):
-    def __init__(self, slide, step, svg):
+    def __init__(self, slide, step, svg, inkscape):
         super().__init__(slide, step)
         self.svg = svg
+        self.inkscape = inkscape
 
     def write_debug(self, out_dir):
         svg_file = os.path.join(
@@ -29,11 +34,13 @@ class SvgRenderUnit(RenderUnit):
         with open(svg_file, "w") as f:
             f.write(self.svg)
 
-    def export(self, fs_cache, export_type, inkscape):
+    def export(self, fs_cache, export_type):
         return fs_cache.ensure(
             self.svg.encode(),
             export_type,
-            lambda source, target, et: export_by_inkscape(inkscape, source, target, et),
+            lambda source, target, et: export_by_inkscape(
+                self.inkscape, source, target, et
+            ),
         )
 
     def get_svg(self):
@@ -45,14 +52,19 @@ class PdfRenderUnit(RenderUnit):
         super().__init__(slide, step)
         self.filename = filename
 
-    def export(self, fs_cache, export_type, inkscape):
+    def export(self, fs_cache, export_type):
         if export_type == "pdf":
             return self.filename
         else:
             return None
 
 
-def per_page_groupping(units, count_x, count_y, width, height):
+def per_page_grouping(backend, units, count_x, count_y, width, height):
+    from .backends import InkscapeBackend
+
+    assert isinstance(backend, InkscapeBackend)
+
+    # TODO: reimplement using RenderingContext
     def new():
         tmp_xml = Xml()
         svg_begin(tmp_xml, width * count_x, height * count_y)
@@ -61,7 +73,9 @@ def per_page_groupping(units, count_x, count_y, width, height):
     def close():
         if idx > 0:
             svg_end(xml)
-            new_units.append(SvgRenderUnit(None, None, xml.to_string()))
+            new_units.append(
+                SvgRenderUnit(None, None, xml.to_string(), backend.inkscape)
+            )
 
     assert count_x > 0
     assert count_y > 0

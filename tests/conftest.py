@@ -12,12 +12,15 @@ sys.path.insert(0, ROOT_DIR)
 import test_utils  # noqa
 
 import elsie  # noqa
+from elsie.render.backends.svg.backend import InkscapeBackend  # noqa
 from elsie.render.inkscape import InkscapeShell  # noqa
 
 
 class SlideTester:
     def __init__(self, inkscape_shell=None):
-        self.slides = elsie.SlideDeck(name_policy="ignore", inkscape=inkscape_shell)
+        self.slides = elsie.SlideDeck(
+            name_policy="ignore", backend=InkscapeBackend(inkscape=inkscape_shell)
+        )
         self._slide = None
 
     @property

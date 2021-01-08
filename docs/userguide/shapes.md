@@ -82,7 +82,7 @@ You can pass [`style attributes`](elsie.boxtree.boxmixin.BoxMixin.line) to lines
 to rectangles.
 
 ## Arrow heads
-An arrow head is defined using the [`Arrow`](elsie.svg.arrow.Arrow) class. It takes the following
+An arrow head is defined using the [`Arrow`](elsie.shapes.arrow.Arrow) class. It takes the following
 attributes:
 
 - `size`: Size of the arrow head.

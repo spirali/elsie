@@ -12,14 +12,14 @@ class SvgRenderingContext(RenderingContext):
         svg_begin(self.xml, slide.width, slide.height, slide.view_box)
         self.fs_cache = fs_cache
 
-    def draw_polygon(self, points, rotation=None, **kwargs):
-        draw_polygon(self.xml, points, rotation=rotation, **kwargs)
-
     def draw_rect(self, rect: Rect, rx=None, ry=None, rotation=None, **kwargs):
         draw_rect(self.xml, rect, rx=rx, ry=ry, rotation=rotation, **kwargs)
 
     def draw_ellipse(self, rect: Rect, rotation=None, **kwargs):
         draw_ellipse(self.xml, rect, rotation=rotation, **kwargs)
+
+    def draw_polygon(self, points, rotation=None, **kwargs):
+        draw_polygon(self.xml, points, rotation=rotation, **kwargs)
 
     def draw_text(self, *args, **kwargs):
         draw_text(self.xml, *args, **kwargs)

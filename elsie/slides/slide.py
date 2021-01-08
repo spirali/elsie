@@ -4,8 +4,7 @@ from typing import TYPE_CHECKING
 from ..boxtree.box import Box
 from ..boxtree.layout import Layout
 from ..render import jupyter
-from ..render.backends.svg.rcontext import SvgRenderingContext
-from ..render.render import PdfRenderUnit, SvgRenderUnit
+from ..render.render import PdfRenderUnit
 from ..utils.geom import Rect
 from .show import ShowInfo
 
@@ -61,13 +60,8 @@ class Slide:
         self._box._traverse(lambda box: shows.append(box._min_steps()))
         return max(value for value in shows if value)
 
-    def make_render_unit(self, step):
-        ctx = SvgRenderingContext(self, self.fs_cache, step, self.debug_boxes)
-        painters = self._box.get_painters(ctx, 0)
-        painters.sort(key=lambda painter: painter.z_level)
-        for p in painters:
-            p.render(ctx)
-        return SvgRenderUnit(self, step, ctx.render())
+    def make_render_unit(self, backend, step):
+        return backend.create_render_unit(self, step)
 
     def _repr_html_(self):
         return jupyter.render_slide_html(self)
@@ -83,5 +77,5 @@ class ExternPdfSlide:
     def steps(self):
         return 1
 
-    def make_render_unit(self, step):
+    def make_render_unit(self, backend, step):
         return PdfRenderUnit(self, step, self.filename)

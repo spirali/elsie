@@ -1,13 +1,11 @@
-import json
-import os
 import sys
 from typing import TYPE_CHECKING, Callable, List, Tuple, Union
 
-from ..render.backends.svg.query import compute_query
-from ..render.inkscape import InkscapeShell
+from ..render.backends.backend import DEFAULT_CACHE_DIR
+from ..render.backends.svg.backend import InkscapeBackend
 from ..render.jupyter import is_inside_notebook
 from ..render.pdfmerge import get_pdf_merger_by_name
-from ..render.render import per_page_groupping
+from ..render.render import per_page_grouping
 from ..text.highlight import make_highlight_styles
 from ..text.stylecontainer import StyleContainer
 from ..text.textstyle import TextStyle
@@ -17,6 +15,7 @@ from .slide import ExternPdfSlide, Slide
 
 if TYPE_CHECKING:
     from ..boxtree import box
+    from ..render.backends import Backend
     from ..render.render import RenderUnit
 
 
@@ -33,9 +32,9 @@ class SlideDeck(StyleContainer):
         debug=False,
         pygments_theme="default",
         bg_color: str = None,
-        cache_dir="./elsie-cache",
+        backend: "Backend" = None,
+        cache_dir=DEFAULT_CACHE_DIR,
         name_policy="auto",
-        inkscape: Union[str, InkscapeShell] = None,
     ):
         """
         Parameters
@@ -60,20 +59,10 @@ class SlideDeck(StyleContainer):
             "ignore" -> Slide names are ignored.
             "auto" -> Uses "replace" behaviour when running inside Jupyter, otherwise uses
             "unique".
-        inkscape: Union[str, InkscapeShell]
-            Either a path to the Inkscape binary or an instance of the InkscapeShell class.
+        backend: Backend
+            Backend used for computating layout and rendering slides.
+            The default backend is InkscapeBackend.
         """
-        if isinstance(inkscape, InkscapeShell):
-            self.inkscape = inkscape
-        else:
-            inkscape_bin = (
-                inkscape or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
-            )
-            self.inkscape = InkscapeShell(inkscape_bin)
-        self.inkscape_version = self.inkscape.get_version()
-        assert "Inkscape" in self.inkscape_version
-        self.cache_dir = cache_dir
-
         if name_policy not in ("auto", "unique", "ignore", "replace"):
             raise Exception("Invalid value for name_policy")
         if name_policy == "auto":
@@ -82,10 +71,6 @@ class SlideDeck(StyleContainer):
             else:
                 name_policy = "unique"
         self.name_policy = name_policy
-
-        if not os.path.isdir(cache_dir):
-            print("Creating cache directory:", cache_dir)
-            os.makedirs(cache_dir)
 
         self.width = width
         self.height = height
@@ -116,9 +101,11 @@ class SlideDeck(StyleContainer):
         styles.update(make_highlight_styles(pygments_theme))
         StyleContainer.__init__(self, styles)
         self.temp_cache = {}
-        self.query_cache = self._load_query_cache()
-        self.used_query_cache = {}
-        self.fs_cache = FsCache(cache_dir, VERSION, self.inkscape_version)
+
+        if backend is None:
+            backend = InkscapeBackend(cache_dir=cache_dir)
+        self.backend = backend
+        self.fs_cache = FsCache(cache_dir, self.backend.get_version(VERSION))
 
     def get_slide_by_name(self, name: str) -> Union[Slide, None]:
         """Returns a slide with the given name."""
@@ -221,36 +208,6 @@ class SlideDeck(StyleContainer):
         """Adds raw PDF into the resulting slides."""
         self._slides.append(ExternPdfSlide(filename))
 
-    def _query_cache_file(self):
-        return os.path.join(self.cache_dir, "queries3.cache")
-
-    def _load_query_cache(self):
-        cache_file = self._query_cache_file()
-        if os.path.isfile(cache_file):
-            with open(cache_file) as f:
-                cache_config = json.load(f)
-            if cache_config.get("version") != VERSION:
-                print("Elsie version changed; cache dropped")
-                return {}
-            if cache_config.get("inkscape") != self.inkscape_version:
-                print("Inkscape version changed; cache dropped")
-                return {}
-            return dict(
-                (tuple(key), value) for key, value in cache_config.get("queries", ())
-            )
-        else:
-            return {}
-
-    def _save_query_cache(self, cache):
-        cache_file = self._query_cache_file()
-        cache_config = {
-            "version": VERSION,
-            "inkscape": self.inkscape_version,
-            "queries": list(cache.items()),
-        }
-        with open(cache_file, "w") as f:
-            json.dump(cache_config, f)
-
     def _show_progress(self, name, value=0, max_value=0, first=False, last=False):
         if not first:
             prefix = "\r"
@@ -271,32 +228,6 @@ class SlideDeck(StyleContainer):
         name = name.ljust(30, ".")
         sys.stdout.write("{}{} {}{}".format(prefix, name, progress, suffix))
         sys.stdout.flush()
-
-    """
-    def _process_queries(self, slides, prune):
-        cache = self.query_cache or self._load_query_cache()
-        queries = sum((s.get_queries() for s in slides), [])
-
-        self._show_progress("Preprocessing", first=True)
-        need_compute = list(set(q.key for q in queries if q.key not in cache))
-        if prune:
-            new_cache = dict((q.key, cache[q.key]) for q in queries if q.key in cache)
-        else:
-            new_cache = cache
-        for i, result in enumerate(
-            map(lambda q: compute_query(self.inkscape, q), need_compute)
-        ):
-            key = need_compute[i]
-            new_cache[key] = result
-            self._show_progress("Preprocessing", i, len(need_compute))
-        self._show_progress(
-            "Preprocessing", len(need_compute), len(need_compute), last=True
-        )
-
-        for q in queries:
-            q.callback(new_cache[q.key])
-        self.query_cache = new_cache
-    """
 
     def _apply_name_policy(self, name):
         if self.name_policy == "ignore":
@@ -321,15 +252,6 @@ class SlideDeck(StyleContainer):
                 self._slides.remove(slide)
             else:
                 assert 0
-
-    def process_query(self, method: str, data: str):
-        key = (method, data)
-        value = self.query_cache.get(key)
-        if value is None:
-            value = compute_query(self.inkscape, method, data)
-            self.query_cache[key] = value
-        self.used_query_cache[key] = value
-        return value
 
     def render(
         self,
@@ -405,25 +327,29 @@ class SlideDeck(StyleContainer):
             slide_postprocessing([slide.box() for slide in select_slides])
 
         if prune_cache:
-            self.query_cache = self.used_query_cache
-            self.used_query_cache = {}
+            self.backend.prune_cache()
 
         if save_cache:
-            self._save_query_cache(self.query_cache)
+            self.backend.save_cache()
 
         units = []
         for slide in select_slides:
             slide.prepare()
             for step in range(1, slide.steps() + 1):
-                units.append(slide.make_render_unit(step))
+                units.append(slide.make_render_unit(self.backend, step))
 
         if self.debug:
             for unit in units:
                 unit.write_debug(self.fs_cache.cache_dir)
 
         if slides_per_page is not None:
-            units = per_page_groupping(
-                units, slides_per_page[0], slides_per_page[1], self.width, self.height
+            units = per_page_grouping(
+                self.backend,
+                units,
+                slides_per_page[0],
+                slides_per_page[1],
+                self.width,
+                self.height,
             )
 
         if return_units:
@@ -436,7 +362,7 @@ class SlideDeck(StyleContainer):
 
         self._show_progress("Building", first=True)
         for i, unit in enumerate(units):
-            unit_output = unit.export(self.fs_cache, export_type, self.inkscape)
+            unit_output = unit.export(self.fs_cache, export_type)
             if unit_output is not None:
                 merger.append(unit_output)
             self._show_progress("Building", i, len(units))

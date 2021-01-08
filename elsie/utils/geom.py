@@ -45,6 +45,9 @@ class Rect:
     def y2(self):
         return self.y + self.height
 
+    def copy(self) -> "Rect":
+        return Rect(position=self.position, size=self.size)
+
     def shrink(self, left=0, right=0, top=0, bottom=0):
         return Rect(
             self.x + left,
