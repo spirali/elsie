@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING
 
-from ..render.backends.svg.draw import set_paint_style
 from ..text.stylecontainer import StyleContainer
 from .boxmixin import BoxMixin
 
 if TYPE_CHECKING:
+    from ..render.backends.rcontext import RenderingContext
     from ..slides import show, slide
     from . import layout
 
@@ -95,17 +95,19 @@ class Box(BoxMixin, StyleContainer):
             )
         return painters
 
-    def _debug_paint(self, ctx, depth):
+    def _debug_paint(self, ctx: "RenderingContext", depth):
+        rect = self.layout.rect.copy()
+        rect.width = max(rect.width, 0.1)
+        rect.height = max(rect.height, 0.1)
+        ctx.draw_rect(
+            rect,
+            color="#ff00ff",
+            stroke_width=2,
+            stroke_dasharray=[None, "4 2", "1 2"][depth % 3],
+        )
+
         # TODO: implement using RenderingContext
-        rect = self.layout.rect
         xml = ctx.xml
-        xml.element("rect")
-        xml.set("x", rect.x)
-        xml.set("y", rect.y)
-        xml.set("width", max(rect.width, 0.1))
-        xml.set("height", max(rect.height, 0.1))
-        set_paint_style(xml, "#ff00ff", None, 2, [None, "4 2", "1 2"][depth % 3])
-        xml.close("rect")
 
         text = " {}[{:.2f},{:.2f}]".format(
             self.name + " " if self.name else "", rect.width, rect.height

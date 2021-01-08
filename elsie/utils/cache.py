@@ -4,11 +4,10 @@ import threading
 
 
 class FsCache:
-    def __init__(self, cache_dir, version, inkscape_version):
-        start = ("elsie-{}/{}/".format(version, str(inkscape_version))).encode()
+    def __init__(self, cache_dir, version):
+        start = f"elsie-{version}/".encode()
         self.hasher = hashlib.sha1()
         self.hasher.update(start)
-        self.inkscape_version = inkscape_version
         self.cache_dir = cache_dir
         self.touched_files = set()
         self.cache_files = {

@@ -22,18 +22,21 @@ def set_font_from_style(xml, style):
         xml.set("style", s)
 
 
-def set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray):
+def set_paint_style(
+    xml, color=None, bg_color=None, stroke_width=None, stroke_dasharray=None
+):
     styles = []
     if bg_color:
-        styles.append("fill:{}".format(bg_color))
+        styles.append(f"fill:{bg_color}")
     else:
         styles.append("fill:none")
 
     if color:
-        styles.append("stroke:{}".format(color))
-        styles.append("stroke-width:{}".format(stroke_width))
+        stroke_width = stroke_width or 1
+        styles.append(f"stroke:{color}")
+        styles.append(f"stroke-width:{stroke_width}")
         if stroke_dasharray:
-            styles.append("stroke-dasharray:{}".format(stroke_dasharray))
+            styles.append(f"stroke-dasharray:{stroke_dasharray}")
     else:
         styles.append("stroke:none")
 
