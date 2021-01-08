@@ -88,12 +88,14 @@
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Text</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#text-style">Text style</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#naming-text-styles">Naming text styles</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#text-style-inheritance">Text style inheritance</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#predefined-text-styles">Predefined text styles</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#updating-text-style">Updating text style</a>
+    <li class="toctree-l3"><a class="reference internal" href="#updating-named-text-styles">Updating named text styles</a>
     </li>
         </ul>
     </li>
@@ -174,11 +176,6 @@
     </li>
   </ul>
   
-    <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
-        <a href="../syntax_highlighting/" class="btn btn-neutral float-right" title="Syntax highlighting">Next <span class="icon icon-circle-arrow-right"></span></a>
-        <a href="../revealing/" class="btn btn-neutral" title="Revealing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-    </div>
-  
   <hr/>
 </div>
           <div role="main">
@@ -189,7 +186,7 @@
 By default, it will create a box item that will draw the specified text in the middle of the box:</p>
 <pre><code class="language-python">slide.box().text(&quot;Hello world!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-ae2a6ae2b93340d2ba311d4684ab49dc">
+<div class="elsie-wrapper elsie-wrapper-4af5d74d06c74ccb8e3b8e595db92f4e">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAD51JREFUeJzt3HtMU3cfx/FPoVSQ
@@ -286,26 +283,44 @@ SUVORK5CYII=
 <h2 id="text-style">Text style<a class="headerlink" href="#text-style" title="Permanent link">#</a></h2>
 <p><em>Elsie</em> draws text using SVG, so you can use common SVG attributes (such as size, color, font) to
 modify the appearance of the rendered text. The style of a text is defined by a
-<a href="https://spirali.github.io/elsie/apidoc/elsie.text.textstyle.TextStyle.html"><code>TextStyle</code></a> object. Its constructor takes the following parameters:</p>
+<a href="https://spirali.github.io/elsie/apidoc/elsie.text.textstyle.TextStyle.html"><code>TextStyle</code></a> object. Its constructor takes the following
+parameters:</p>
 <ul>
-<li><code>font</code>: Name of the used font.</li>
-<li><code>size</code>: Size of the used font.</li>
-<li><code>align</code>: Alignment of the text. Allowed values are <code>"left"</code>, <code>"middle"</code> or <code>"right"</code>.</li>
-<li><code>line_spacing</code>: Spacing between lines. The value is relative to the <code>size</code> value.</li>
-<li><code>color</code>: Color of the text.</li>
-<li><code>bold</code>: Make the text bold.</li>
-<li><code>itelic</code>: Make the text italic.</li>
-<li><code>variant_numeric</code>: Specifies the style of rendering numbers. Allowed values are <code>"normal"</code>,
-        <code>"ordinal"</code>,
-        <code>"slashed-zero"</code>,
-        <code>"lining-nums"</code>,
-        <code>"oldstyle-nums"</code>,
-        <code>"proportinal-nums"</code>,
-        <code>"tabular-nums"</code>,
-        <code>"diagonal-fractions"</code> or
-        <code>"stacked-fractions"</code>.
-See <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-variant">SVG documentation</a>
-for its meaning.</li>
+<li><strong>font</strong>: Name of the used font.</li>
+<li><strong>size</strong>: Size of the used font.</li>
+<li>
+<p><strong>align</strong>: Alignment of the text. Allowed values are</p>
+<ul>
+<li><code>"left"</code></li>
+<li><code>"middle"</code></li>
+<li><code>"right"</code></li>
+</ul>
+<p>Make sure that the box is wide enough for the alignment to take effect. By default, the text
+box will only be as wide as the contained text, and text alignment might not have the desired
+effect in such case.</p>
+</li>
+<li>
+<p><strong>line_spacing</strong>: Spacing between lines. The value is relative to the <strong>size</strong> value.</p>
+</li>
+<li><strong>color</strong>: Color of the text.</li>
+<li><strong>bold</strong>: Make the text bold.</li>
+<li><strong>itelic</strong>: Make the text italic.</li>
+<li>
+<p><strong>variant_numeric</strong>: Specifies the style of rendering numbers. Allowed values are</p>
+<ul>
+<li><code>"normal"</code></li>
+<li><code>"ordinal"</code></li>
+<li><code>"slashed-zero"</code></li>
+<li><code>"lining-nums"</code></li>
+<li><code>"oldstyle-nums"</code></li>
+<li><code>"proportinal-nums"</code></li>
+<li><code>"tabular-nums"</code></li>
+<li><code>"diagonal-fractions"</code> </li>
+<li><code>"stacked-fractions"</code></li>
+</ul>
+<p>See <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-variant">SVG documentation</a>
+for their meaning.</p>
+</li>
 </ul>
 <p>Each parameter may also be <code>None</code> (the default value). This means that the value will be inherited
 from its parent style (see below).</p>
@@ -314,7 +329,7 @@ from its parent style (see below).</p>
 <p>You can pass a text style as a second argument to the <code>text</code> method:</p>
 <pre><code class="language-python">slide.text(&quot;Hello world!&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-a36405b981fb46739349c016b257eebf">
+<div class="elsie-wrapper elsie-wrapper-cc735986c8e14b21825a510ac3bf169c">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGTNJREFUeJzt3Xl4VNX5B/BvQlgC
@@ -453,19 +468,148 @@ AAAASUVORK5CYII=
 
 <p><em>Tip</em>: to avoid repeating the <code>TextStyle</code> class name, you can import it via some short alias:</p>
 <pre><code class="language-python">from elsie import TextStyle as s
+
 ...
 slide.box().text(&quot;Hello world!&quot;, s(color=&quot;red&quot;))
 </code></pre>
+<p>It might be useful to store a style shared by multiple text blocks into a variable, so that you can
+quickly change the style of multiple text blocks at once if you want to experiment with various
+styles.</p>
+<pre><code class="language-python">from elsie import TextStyle as s
+
+footnote = s(size=16)
+slide.box().text(&quot;1: Footnote 1&quot;, style=footnote)
+...
+slide.box().text(&quot;2: Footnote 2&quot;, style=footnote)
+</code></pre>
+<h2 id="naming-text-styles">Naming text styles<a class="headerlink" href="#naming-text-styles" title="Permanent link">#</a></h2>
+<p>The root <code>SlideDeck</code> object and also all boxes have a dictionary which maps string names to text
+styles. If you use a string instead of a <code>TextStyle</code> instance, <em>Elsie</em> will try to find a style
+with the given name in the corresponding box. You can use
+the <a href="https://spirali.github.io/elsie/apidoc/elsie.text.stylecontainer.StyleContainer.html#f_set_style"><code>set_style</code></a> method on a box to
+assign a style to a specific name:</p>
+<pre><code class="language-python">slide.set_style(&quot;text&quot;, elsie.TextStyle(bold=True)) 
+slide.box().text(&quot;Text 1&quot;, style=&quot;text&quot;)
+slide.box().text(&quot;Text 2&quot;, style=&quot;text&quot;)
+</code></pre>
+<div class="elsie-wrapper elsie-wrapper-bbc94c06236a45e49ad4cc8067d857e6">
+<div class="elsie-slide">
+    <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
+GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAEm5JREFUeJzt3XlQVfX/x/EXiOKK
+itlipYbpuJS2CRH5FbMyRsetTFIyLUBKyfZGy8AWq9GaydRcQs00JRvLySXbXDETrWyyjEmwdFJL
+JVEB1/P74/fz/r7Hc1HAm/DG52OGP/iczzn3c5nx6T2Xc7hBnTt3dmJjYwUAldnKlSsVEhsbq/T0
+9IpeCwCcUXp6uoIrehEAUFoEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZ
+BAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkE
+C4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQL
+gBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuA
+GQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZ
+BAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkE
+C4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQL
+gBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuA
+GQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZBAuAGQQLgBkEC4AZIRW9APiXkZGhxMTE
+gBxrwoQJSk1NDcixAmHv3r364YcfXGOXX3652rRpE5Dj79mzR9nZ2crOztbGjRuVnZ2tv//+2zUn
+LCxMBw4cCMjj4fwhWDjvNmzYoO7du7vGkpKSNG3atIAcv3v37tq0aVNAjoXKhVNCAGbwCquSCg0N
+VcOGDf1uKyws1JEjR1xjNWrUUJ06dfzOr1mzZsDXZ0Xz5s11/fXX6+OPP67opSAACFYllZCQoISE
+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
+pIULF1boDcWHDh3Svffeq2XLlrnGL730Ui1evPiCvPq/KiBYVVjLli3166+/usYeffTRc37PJjk5
+Wdu2bStx+yeffKKJEyf6PWWU5Ddk/uJXXrt371aPHj20adMm13jr1q21bNmySvMKEGXHdVhVWLdu
+3TxjM2bMOOt+f/zxh6ZNm+Z32/Tp05WZmekaGzBggO83gKc8/fTTfm/BkeT3uqzc3Nyzrqs0tm7d
+qltuucUTq06dOikrK4tYGccrrCrsgQce0Isvvug6Lfzggw8UHBys0aNHq1WrVr7xnTt3au3atZo/
+f76WLl2qyMhIJScnu473008/acSIEa6xiIgITZkyRVu3blVMTIzvt3BHjhxR//79tWnTJs8b8P6i
+sWLFCvXu3VvXXnut6tatK0lKSEjQ5ZdfXqbnnJqaqry8PM94Xl5eifdmnvLtt996LuNAJcOFo/aU
+5V7Cjz76yAkODvZ7r17t2rWdZs2aOfXq1fNsi4mJcR3n8OHDTtu2bV1zQkJCnHXr1vnmjB071nOc
+hIQEv+tq1arVWe8lzMrKKvPP5rbbbivT/Yr//cXFo5Ub9xJeAO6++27NnDnT758CLiws1O+//66D
+Bw+e9Tipqan6+eefXWOjRo1SdHS07/tnn31WnTt3ds2ZM2eOZs2a5TneuHHjSvz7VEBJCNYFYNCg
+Qdq8ebNSUlIUFhZW4rzQ0FDFxMToxRdfdF0KMHfuXM97X5GRkRo9erRrLDg4WLNnz1bDhg1d48OH
+D/fcm9izZ0+tXbtW8fHxatasmWrWrFnep4cLSFBaWpqTnp5e0evAeXLixAlt2bJF27dv1/79+xUS
+EqKwsDBFRESoZcuWpb7kATjf0tPTedP9QlOtWjW1b99e7du3r+ilAGXGKSEAMwgWADMIFgAzCBYA
+MwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAz
+CBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMI
+FgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgW
+ADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYA
+MwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAz
+CBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMI
+FgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgW
+ADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYAMwgWADMIFgAzCBYA
+MwgWADOCOnfu7MTGxlb0OgDgjFauXKn/Ab3c2p6tIjGqAAAAAElFTkSuQmCC
+" /></div>
+</div>
+</div>
+<style>
+.elsie-wrapper {
+    margin-bottom: 20px;
+}
+.elsie-slide {
+    margin-bottom: 10px;
+}
+.elsie-controls {
+    display: flex;
+    align-items: center;
+}
+.elsie-controls * {
+    margin: 0 10px;
+}
+</style>
+
 <h3 id="text-style-inheritance">Text style inheritance<a class="headerlink" href="#text-style-inheritance" title="Permanent link">#</a></h3>
-<p>Each box also inherits a list of named styles from its parent. If you use a string instead of a
-<code>TextStyle</code>, <em>Elsie</em> will try to find a style with the given name. The two following examples
-produce the same slide as the example above:</p>
+<p>When a new box is created, it inherits a copy of its parent's style dictionary, which can be used
+to scope the named styles. Therefore, if you create a named style in the root <code>SlideDeck</code>, it will
+be available globally to all new boxes created after you create the named style. If you create a
+named style inside a specific box, it will only be available to the box and its descendants.</p>
+<p>The two following examples produce the same slide as the <code>Hello world</code> example above:</p>
 <pre><code class="language-python"># Setting a style globally for all slides
 slides.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 slide = slides.new_slide(name=&quot;slide1&quot;)
 slide.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-059022fdc2bc45da8f60728c1429dd30">
+<div class="elsie-wrapper elsie-wrapper-1f6a81f0832347e093ca08e7a67deb16">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAFcRJREFUeJzt3Xm0pEV5x/FvDYsO
@@ -592,7 +736,7 @@ IiIiIiIiIiIiIiIiIiIiIiIiIiIyrv4PmWJ0hAtY5XEAAAAASUVORK5CYII=
 box.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 box.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-9d05e61288904bd7a2fce5330cb09f0a">
+<div class="elsie-wrapper elsie-wrapper-a31621017b6f494e9c813cd4d78a763a">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGTNJREFUeJzt3Xl4VNX5B/BvQlgC
@@ -730,19 +874,21 @@ AAAASUVORK5CYII=
 </style>
 
 <h3 id="predefined-text-styles">Predefined text styles<a class="headerlink" href="#predefined-text-styles" title="Permanent link">#</a></h3>
-<p>There are several predefined global styles available by default. You can use them by their name:</p>
+<p>There are several predefined global named styles available by default in the root <code>SlideDeck</code>
+object. You can use them by their name:</p>
 <ul>
-<li><em>"default"</em> - <code>TextStyle(font="sans-serif", color="black", size=28, line_spacing=1.20, align="middle", variant_numeric="lining-nums")</code></li>
-<li><em>"tt"</em> - <code>TextStyle(font="monospace")</code></li>
-<li><em>"emph"</em> - <code>TextStyle(italic=True)</code></li>
-<li><em>"alert"</em> - <code>TextStyle(bold=True, color="red")</code></li>
-<li><em>"code"</em> - <code>TextStyle(font="monospace", align="left", color="#222" line_spacing=1.20, size=20)</code></li>
-<li><em>"code_lineno"</em> - <code>TextStyle(color="gray")</code></li>
+<li><strong>"default"</strong> <code>TextStyle(font="sans-serif", color="black", size=28, line_spacing=1.20, align="middle", variant_numeric="lining-nums")</code></li>
+<li><strong>"tt"</strong> <code>TextStyle(font="monospace")</code></li>
+<li><strong>"emph"</strong> <code>TextStyle(italic=True)</code></li>
+<li><strong>"alert"</strong> <code>TextStyle(bold=True, color="red")</code></li>
+<li><strong>"code"</strong> <code>TextStyle(font="monospace", align="left", color="#222" line_spacing=1.20, size=20)</code></li>
+<li><strong>"code_lineno"</strong>  <code>TextStyle(color="gray")</code></li>
 </ul>
-<p>The <code>default</code> style is special, because it serves as a base text style for all text operations.
-In other words, if a property is not specified in the current text style nor in any of its parent
-styles, it is inherited from the <code>default</code> text style. Therefore, you can modify the <code>default</code>
-style to change the default style of all text items in your presentation.</p>
+<p>The <code>default</code> style serves as a base text style for all text operations. Text styles can have some
+properties unspecified. If a text style is used, and it has some property which is unspecified, the
+property will be inherited from the <code>default</code> text style. Therefore, you can
+<a href="#updating-named-text-styles">modify</a> the <code>default</code> style to change the default style of all text
+items in your presentation.</p>
 <p>For example, the default color of text can be changed globally like this:</p>
 <pre><code class="language-python">default_style = slides.get_style(&quot;default&quot;)
 default_style.color = &quot;orange&quot;
@@ -751,7 +897,7 @@ slides.set_style(&quot;default&quot;, default_style)
 slide = slides.new_slide(&quot;slide&quot;)
 slide.text(&quot;Hello world!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-eff62f56a5494df3a9d3e372a50ab877">
+<div class="elsie-wrapper elsie-wrapper-e3110ff624764d88b4117a91561e294f">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADQpJREFUeJzt3X+Q3GV9wPH3s3uX
@@ -833,11 +979,12 @@ JEmSJEmSJEnSG8T/AzYAW6Egv6psAAAAAElFTkSuQmCC
 }
 </style>
 
-<h3 id="updating-text-style">Updating text style<a class="headerlink" href="#updating-text-style" title="Permanent link">#</a></h3>
-<p>Getting some text style by name and updating it is a common pattern. Therefore, <em>Elsie</em> provides
-a shortcut method for this: <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.box.Box.html#f_update_style"><code>update_style</code></a>:</p>
+<h3 id="updating-named-text-styles">Updating named text styles<a class="headerlink" href="#updating-named-text-styles" title="Permanent link">#</a></h3>
+<p>Since it is a common pattern to get an existing text style by name and update it, <em>Elsie</em> provides
+a shortcut method for this
+scenario: <a href="https://spirali.github.io/elsie/apidoc/elsie.text.stylecontainer.StyleContainer.html#f_update_style"><code>update_style</code></a>:</p>
 <pre><code class="language-python">slides.update_style(&quot;default&quot;, elsie.TextStyle(color=&quot;orange&quot;))
-# ^ the same as v
+# is the same as
 default_style = slides.get_style(&quot;default&quot;)
 default_style.color = &quot;orange&quot;
 slides.set_style(&quot;default&quot;, default_style)
@@ -849,13 +996,14 @@ style_b = style_a.compose(elsie.TestStyle(size=20))
 # style_b has color=&quot;red&quot; and size=20
 </code></pre>
 <h2 id="inline-text-styles">Inline text styles<a class="headerlink" href="#inline-text-styles" title="Permanent link">#</a></h2>
-<p>You can also change the style of individual sections of text inside a single string passed to
-the <code>text</code> method. To do this, wrap a section of text that you want to be styled differently with
-<code>~&lt;style&gt;{&lt;text&gt;}</code> where <code>style</code> is a name of a style and <code>text</code> is some section of text.</p>
+<p>Named styles are especially useful for changing individual sections of text inside a single string
+passed to the <code>text</code> method. To do this, wrap a section of text that you want to be styled
+differently with <code>~&lt;style&gt;{&lt;text&gt;}</code> where <code>style</code> is a name of a style and <code>text</code> is some section
+of text.</p>
 <pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
 slide.text(&quot;Normal text ~red{red text} ~tt{Typewriter text}&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-273bae89c1564ccaa843c6dd108be7ae">
+<div class="elsie-wrapper elsie-wrapper-99829f9e658c4bfe9b9965f74af994b1">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAlgAAADICAYAAAA0n5+2AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xl4FFW6BvC3OyEJ
@@ -1066,11 +1214,12 @@ S9S9AAAAAElFTkSuQmCC
 }
 </style>
 
-<p>Inline styles can also be nested arbitrarily:</p>
+<p>Inline styles can also be nested arbitrarily. In this case the nested styles will be composed
+together:</p>
 <pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
 slide.text(&quot;~red{text1 ~tt{text2}}&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-57f5de7a58454f69a74f805d70f82a38">
+<div class="elsie-wrapper elsie-wrapper-7cfe29457dc943b4b2ee3b04bd136925">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAADICAYAAABS39xVAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADiBJREFUeJzt3HlsFOUfx/FPDymH
@@ -1157,9 +1306,9 @@ VUNDg/4Lf/k2vBnSLWgAAAAASUVORK5CYII=
 }
 </style>
 
-<p>You can escape the inline style character (by default <code>~</code>) by repeating it (e.g. <code>"~~"</code>).
-If you need to use the <code>~</code> character a lot in your text, you can change it to a different
-character using the <code>escape_character</code> parameter of the
+<p>You can escape the inline style character (by default <code>~</code>) by repeating it (e.g. <code>"~~"</code>). If you
+need to use the <code>~</code> character a lot in your text, you can change it to a different character using
+the <code>escape_character</code> parameter of the
 <a href="https://spirali.github.io/elsie/apidoc/elsie.boxtree.boxmixin.BoxMixin.html#f_text"><code>text</code></a> method.</p>
 <h2 id="text-scaling">Text scaling<a class="headerlink" href="#text-scaling" title="Permanent link">#</a></h2>
 <p>By default, the size of text is determined by the size defined in its text style. This can be
@@ -1168,7 +1317,7 @@ box.</p>
 <pre><code class="language-python">slide.box(width=200, height=80).text(&quot;Hello world!&quot;, scale_to_fit=True)
 slide.box(width=80, height=200).text(&quot;Hello world!&quot;, scale_to_fit=True)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-f51fb9f72a9e4512b355d1a611f620da">
+<div class="elsie-wrapper elsie-wrapper-7fe3209ad8d046fcb99f7b6da44e7341">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xl8VNX9+P/XnUlm
@@ -1470,7 +1619,7 @@ XdHNI49RjKKQQoIIIpNTn5GdK2tYQxBBTGPaue7KKckhBzduRjKSYIKJJfZcd0mIr9T/D3EXcPH/
 around its center.</p>
 <pre><code class="language-python">slide.box().text(&quot;Hello world!&quot;, rotation=45)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-2344bd2d7ee34c5b9b1640fece4e56ec">
+<div class="elsie-wrapper elsie-wrapper-35638916674e4f158332141f0e3812e8">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGFhJREFUeJzt3XtQVOfBx/Hf7nIR
@@ -1605,11 +1754,11 @@ C29+xbJNkGYAAAAASUVORK5CYII=
 
 <h2 id="colors">Colors<a class="headerlink" href="#colors" title="Permanent link">#</a></h2>
 <p>You can define the color of text, <a href="../shapes/">shapes</a> and other things using a string that is
-compatible with SVG. You can be one of the following variants of color definitions:</p>
+compatible with SVG. You can use one of the following variants of color definitions:</p>
 <ul>
 <li>Color name: e.g. <code>green</code>, <code>blue</code>. See list of
-<a href="https://upload.wikimedia.org/wikipedia/commons/2/2b/SVG_Recognized_color_keyword_names.svg">recognized</a>
-SVG color names.</li>
+  <a href="https://upload.wikimedia.org/wikipedia/commons/2/2b/SVG_Recognized_color_keyword_names.svg">recognized</a>
+  SVG color names.</li>
 <li>Hex color value: e.g. <code>#fff</code>, <code>#a0a0a0</code>.</li>
 <li>RGB values: e.g. <code>rgb(34, 12, 64, 0.6)</code>.</li>
 <li>HSL values: e.g. <code>hsl(30, 100%, 50%, 0.6)</code>.</li>
