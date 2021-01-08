@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from ..svg.draw import set_paint_style
-from ..text.textstyle import TextStyle, compose_style
+from ..text.stylecontainer import StyleContainer
 from .boxmixin import BoxMixin
 
 if TYPE_CHECKING:
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from . import layout
 
 
-class Box(BoxMixin):
+class Box(BoxMixin, StyleContainer):
     """
     Box is the main layout element of Elsie.
 
@@ -39,11 +39,11 @@ class Box(BoxMixin):
         z_level: int
             Z-level of the box (useful for changing render order).
         """
+        StyleContainer.__init__(self, styles)
         self.slide = slide
         self.layout = layout
         self.name = name
         self.children = []
-        self._styles = styles
         self._show_info = show_info
 
         self.z_level = z_level
@@ -94,33 +94,6 @@ class Box(BoxMixin):
                 SimpleBoxItem(self, lambda ctx: self._debug_paint(ctx, depth - 1))
             )
         return painters
-
-    def has_style(self, style_name: str) -> bool:
-        """Returns True if the box has a style with the given name."""
-        return style_name in self._styles
-
-    def update_style(self, style_name: str, style: TextStyle):
-        """Updates the style associated with the given name."""
-        assert isinstance(style_name, str)
-        old_style = self.get_style(style_name, full_style=False)
-        old_style.update(style)
-        self._styles = self._styles.copy()
-        self._styles[style_name] = old_style
-
-    def set_style(self, style_name: str, style: TextStyle, base="default"):
-        """Assigns the style to the given name."""
-        assert isinstance(style_name, str)
-        assert isinstance(style, TextStyle)
-        if base != "default":
-            base_style = self.get_style(base)
-            base_style.update(style)
-            style = base_style
-        self._styles = self._styles.copy()
-        self._styles[style_name] = style
-
-    def get_style(self, style: str, full_style=False):
-        """Returns a style associated with the given name."""
-        return compose_style(self._styles, style, full_style)
 
     def _debug_paint(self, ctx, depth):
         rect = self.layout.rect

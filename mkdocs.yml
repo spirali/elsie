@@ -37,7 +37,6 @@ nav:
 
 theme:
   name: readthedocs
-  prev_next_buttons_location: both
   custom_dir: docs/template
 
 extra_javascript:

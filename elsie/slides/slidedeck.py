@@ -9,7 +9,8 @@ from ..render.jupyter import is_inside_notebook
 from ..render.pdfmerge import get_pdf_merger_by_name
 from ..render.render import per_page_groupping
 from ..text.highlight import make_highlight_styles
-from ..text.textstyle import TextStyle, compose_style
+from ..text.stylecontainer import StyleContainer
+from ..text.textstyle import TextStyle
 from ..utils.cache import FsCache
 from ..version import VERSION
 from .slide import ExternPdfSlide, Slide
@@ -19,7 +20,7 @@ if TYPE_CHECKING:
     from ..render.render import RenderUnit
 
 
-class SlideDeck:
+class SlideDeck(StyleContainer):
     """
     Presentation containing slides.
     """
@@ -91,7 +92,7 @@ class SlideDeck:
         self.debug = debug
         self.bg_color = bg_color
         self._slides = []
-        self._styles = {
+        styles = {
             "default": TextStyle(
                 font="sans-serif",
                 color="black",
@@ -112,33 +113,12 @@ class SlideDeck:
             ),
             "code_lineno": TextStyle(color="gray"),
         }
+        styles.update(make_highlight_styles(pygments_theme))
+        StyleContainer.__init__(self, styles)
         self.temp_cache = {}
         self.query_cache = self._load_query_cache()
         self.used_query_cache = {}
-        self._styles.update(make_highlight_styles(pygments_theme))
         self.fs_cache = FsCache(cache_dir, VERSION, self.inkscape_version)
-
-    def update_style(self, style_name: str, style: TextStyle):
-        """Updates the style with the given name in-place."""
-        assert isinstance(style_name, str)
-        old_style = self.get_style(style_name, full_style=False)
-        old_style.update(style)
-        self._styles = self._styles.copy()
-        self._styles[style_name] = old_style
-
-    def set_style(self, style_name: str, style: TextStyle, base="default"):
-        """Sets the value of the style with the given name."""
-        assert isinstance(style_name, str)
-        assert isinstance(style, TextStyle)
-        if base != "default":
-            base_style = self.get_style(base)
-            base_style.update(style)
-            style = base_style
-        self._styles = self._styles.copy()
-        self._styles[style_name] = style
-
-    def get_style(self, style, full_style=False) -> TextStyle:
-        return compose_style(self._styles, style, full_style)
 
     def get_slide_by_name(self, name: str) -> Union[Slide, None]:
         """Returns a slide with the given name."""
