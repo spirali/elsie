@@ -2,8 +2,7 @@ from typing import TYPE_CHECKING
 
 from ..boxtree.boxitem import BoxItem
 from ..boxtree.lazy import LazyValue
-from ..render.backends.svg.draw import draw_text
-from ..utils.sxml import Xml
+from ..render.backends.backend import Backend
 from .textparser import extract_line, number_of_lines
 
 if TYPE_CHECKING:
@@ -32,7 +31,7 @@ class TextBoxItem(BoxItem):
         self._style = style
         self._styles = styles
         self._parsed_text = parsed_text
-        self._make_query()
+        self._make_query(box.slide.slides.backend)
 
         if scale_to_fit:
 
@@ -70,11 +69,8 @@ class TextBoxItem(BoxItem):
                 transform=" ".join(transforms) if transforms else None,
             )
 
-    def _make_query(self):
-        xml = Xml()
-        draw_text(xml, 0, 0, self._parsed_text, self._style, self._styles, id="target")
-        key = xml.to_string()
-        width = self._box.slide.slides.process_query("inkscape-w", key)
+    def _make_query(self, backend: Backend):
+        width = backend.compute_text_width(self._parsed_text, self._style, self._styles)
         layout = self._box.layout
         style = self._style
         line_height = style.size * style.line_spacing
@@ -160,23 +156,14 @@ class TextBoxItem(BoxItem):
             return self._text_size[1] / text_lines + 1
 
         line, index_in_line = extract_line(self._parsed_text, index)
-        xml = Xml()
-        draw_text(
-            xml,
-            0,
-            0,
-            line,
-            self._style,
-            self._styles,
-            id="target",
-            id_index=index_in_line,
-        )
-        text = xml.to_string()
-        del xml
 
-        slides = self._box.slide.slides
-        query_x = slides.process_query("inkscape-x", text)
-        query_w = slides.process_query("inkscape-w", text)
+        backend = self._box.slide.slides.backend
+        query_x = backend.compute_text_x(
+            line, self._style, self._styles, id_index=index_in_line
+        )
+        query_w = backend.compute_text_width(
+            line, self._style, self._styles, id_index=index_in_line
+        )
 
         box_args.setdefault(
             "x",

@@ -361,6 +361,7 @@ class BoxMixin:
             return name + " ".join("{},{}".format(p[0], p[1]) for p in pairs)
 
         def draw(ctx):
+            # TODO: reimplement using RenderingContext
             cmds = eval_path_commands(commands)
             if end_arrow:
                 end_p1, end_p2 = path_points_for_end_arrow(cmds)
@@ -407,6 +408,7 @@ class BoxMixin:
         """
 
         def draw(ctx):
+            # TODO: reimplement using RenderingContext
             p = [eval_pair(p) for p in points]
             p2 = p[:]
 
