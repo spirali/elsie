@@ -96,6 +96,7 @@ class Box(BoxMixin, StyleContainer):
         return painters
 
     def _debug_paint(self, ctx, depth):
+        # TODO: implement using RenderingContext
         rect = self.layout.rect
         xml = ctx.xml
         xml.element("rect")

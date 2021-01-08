@@ -1,6 +1,7 @@
 import base64
 
 from ....text.textstyle import TextStyle
+from ....utils.geom import Rect, find_centroid
 from .utils import apply_rotation
 
 
@@ -124,3 +125,43 @@ def draw_bitmap(xml, x, y, width, height, mime, data, rotation=None, extra_args=
             xml.set(k, v)
     xml.set("xlink:href", "data:{};base64,{}".format(mime, data), escape=False)
     xml.close("image")
+
+
+def draw_rect(xml, rect: Rect, rx=None, ry=None, rotation=None, **kwargs):
+    xml.element("rect")
+    xml.set("x", rect.x)
+    xml.set("y", rect.y)
+    xml.set("width", rect.width)
+    xml.set("height", rect.height)
+    if rx:
+        xml.set("rx", rx)
+    if ry:
+        xml.set("ry", ry)
+    if rotation:
+        apply_rotation(xml, rotation, rect.mid_point)
+    set_paint_style(xml, **kwargs)
+    xml.close("rect")
+
+
+def draw_ellipse(xml, rect: Rect, rotation=None, **kwargs):
+    xml.element("ellipse")
+    xml.set("cx", rect.mid_x)
+    xml.set("cy", rect.mid_y)
+    xml.set("rx", rect.width / 2)
+    xml.set("ry", rect.height / 2)
+    if rotation:
+        apply_rotation(xml, rotation, rect.mid_point)
+    set_paint_style(xml, **kwargs)
+    xml.close("ellipse")
+
+
+def draw_polygon(xml, points, rotation=None, **kwargs):
+    xml.element("polygon")
+    xml.set(
+        "points",
+        " ".join(f"{x},{y}" for x, y in points),
+    )
+    if rotation:
+        apply_rotation(xml, rotation, find_centroid(points))
+    set_paint_style(xml, **kwargs)
+    xml.close("polygon")

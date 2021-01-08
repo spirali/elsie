@@ -1,8 +1,8 @@
 from ....utils.geom import Rect
 from ....utils.sxml import Xml
 from ..rcontext import RenderingContext
-from .draw import draw_bitmap, draw_text, set_paint_style
-from .utils import apply_rotation, svg_begin, svg_end
+from .draw import draw_bitmap, draw_ellipse, draw_polygon, draw_rect, draw_text
+from .utils import svg_begin, svg_end
 
 
 class SvgRenderingContext(RenderingContext):
@@ -12,20 +12,14 @@ class SvgRenderingContext(RenderingContext):
         svg_begin(self.xml, slide.width, slide.height, slide.view_box)
         self.fs_cache = fs_cache
 
+    def draw_polygon(self, points, rotation=None, **kwargs):
+        draw_polygon(self.xml, points, rotation=rotation, **kwargs)
+
     def draw_rect(self, rect: Rect, rx=None, ry=None, rotation=None, **kwargs):
-        self.xml.element("rect")
-        self.xml.set("x", rect.x)
-        self.xml.set("y", rect.y)
-        self.xml.set("width", rect.width)
-        self.xml.set("height", rect.height)
-        if rx:
-            self.xml.set("rx", rx)
-        if ry:
-            self.xml.set("ry", ry)
-        if rotation:
-            apply_rotation(self.xml, rotation, rect.mid_point)
-        set_paint_style(self.xml, **kwargs)
-        self.xml.close("rect")
+        draw_rect(self.xml, rect, rx=rx, ry=ry, rotation=rotation, **kwargs)
+
+    def draw_ellipse(self, rect: Rect, rotation=None, **kwargs):
+        draw_ellipse(self.xml, rect, rotation=rotation, **kwargs)
 
     def draw_text(self, *args, **kwargs):
         draw_text(self.xml, *args, **kwargs)
