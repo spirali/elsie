@@ -6,7 +6,7 @@ import lxml.etree as et
 from PIL import Image
 
 from ..render.backends.svg.draw import set_paint_style
-from ..render.backends.svg.utils import apply_rotation, svg_size_to_pixels
+from ..render.backends.svg.utils import svg_size_to_pixels
 from ..render.image import create_image_data, get_image_steps
 from ..render.ora import convert_ora_to_svg
 from ..shapes import arrow
@@ -25,7 +25,6 @@ from ..text.textparser import (
     tokens_to_text_without_style,
 )
 from ..utils.files import read_helper
-from ..utils.geom import find_centroid
 from .lazy import eval_pair, eval_value, unpack_point
 
 if TYPE_CHECKING:
@@ -270,16 +269,14 @@ class BoxMixin:
 
         def draw(ctx):
             rect = self._get_box().layout.rect
-            xml = ctx.xml
-            xml.element("ellipse")
-            xml.set("cx", rect.mid_x)
-            xml.set("cy", rect.mid_y)
-            xml.set("rx", rect.width / 2)
-            xml.set("ry", rect.height / 2)
-            if rotation:
-                apply_rotation(xml, rotation, rect.mid_point)
-            set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
-            xml.close("ellipse")
+            ctx.draw_ellipse(
+                rect,
+                rotation=rotation,
+                color=color,
+                bg_color=bg_color,
+                stroke_width=stroke_width,
+                stroke_dasharray=stroke_dasharray,
+            )
 
         return self._create_simple_box_item(draw)
 
@@ -313,21 +310,19 @@ class BoxMixin:
             Rotate the polygon by the given amount of degrees clockwise around the centroid of the
             polygon.
         """
+        points = [unpack_point(p, self) for p in points]
 
         def draw(ctx):
-            xml = ctx.xml
-            xml.element("polygon")
-            point_values = [(eval_value(x), eval_value(y)) for x, y in points]
-            xml.set(
-                "points",
-                " ".join(f"{x},{y}" for x, y in point_values),
+            points_values = [(eval_value(x), eval_value(y)) for x, y in points]
+            ctx.draw_polygon(
+                points_values,
+                rotation=rotation,
+                color=color,
+                bg_color=bg_color,
+                stroke_width=stroke_width,
+                stroke_dasharray=stroke_dasharray,
             )
-            if rotation:
-                apply_rotation(xml, rotation, find_centroid(point_values))
-            set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
-            xml.close("polygon")
 
-        points = [unpack_point(p, self) for p in points]
         return self._create_simple_box_item(draw)
 
     def path(
