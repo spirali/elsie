@@ -79,7 +79,7 @@ slide.box().text("2: Footnote 2", style=footnote)
 The root `SlideDeck` object and also all boxes have a dictionary which maps string names to text
 styles. If you use a string instead of a `TextStyle` instance, *Elsie* will try to find a style
 with the given name in the corresponding box. You can use
-the [`set_style`](elsie.text.stylecontainer.StyleContainerMixin.set_style) method on a box to
+the [`set_style`](elsie.text.stylecontainer.StyleContainer.set_style) method on a box to
 assign a style to a specific name:
 
 ```elsie
@@ -142,7 +142,7 @@ slide.text("Hello world!")
 ### Updating named text styles
 Since it is a common pattern to get an existing text style by name and update it, *Elsie* provides
 a shortcut method for this
-scenario: [`update_style`](elsie.text.stylecontainer.StyleContainerMixin.update_style):
+scenario: [`update_style`](elsie.text.stylecontainer.StyleContainer.update_style):
 
 ```python
 slides.update_style("default", elsie.TextStyle(color="orange"))
