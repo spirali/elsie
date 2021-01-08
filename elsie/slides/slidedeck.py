@@ -3,7 +3,7 @@ import os
 import sys
 from typing import TYPE_CHECKING, Callable, List, Tuple, Union
 
-from ..boxtree.query import compute_query
+from ..render.backends.svg.query import compute_query
 from ..render.inkscape import InkscapeShell
 from ..render.jupyter import is_inside_notebook
 from ..render.pdfmerge import get_pdf_merger_by_name

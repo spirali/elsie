@@ -7,11 +7,9 @@ from typing import TYPE_CHECKING
 
 import lxml.etree as et
 
-from elsie.boxtree.boxmixin import BoxMixin
-from elsie.svg.svg import svg_size_to_pixels
-
 from ..boxtree.boxitem import SimpleBoxItem
-from ..svg.svg import rename_ids
+from ..boxtree.boxmixin import BoxMixin
+from ..render.backends.svg.utils import rename_ids, svg_size_to_pixels
 
 if TYPE_CHECKING:
     from . import boxitem

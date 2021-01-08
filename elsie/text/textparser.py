@@ -150,25 +150,6 @@ def extract_line(tokens, index):
     return result, index - b + len(open_blocks)
 
 
-def extract_styled_content(tokens, index):
-    assert tokens[index][0] == "begin"
-    start = index
-    index += 1
-    count = 0
-    while index < len(tokens):
-        name = tokens[index][0]
-        if name == "end":
-            count -= 1
-            if count < 0:
-                break
-        elif name == "begin":
-            count += 1
-        break
-        index += 1
-    result = _open_blocks(tokens[:start]) + tokens[start : index + 1]
-    return result + [END_MARKER] * _open_blocks_count(result)
-
-
 def tokens_to_text_without_style(tokens):
     result = []
     for name, value in tokens:

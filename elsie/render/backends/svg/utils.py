@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, Tuple
 
 if TYPE_CHECKING:
-    from ..utils.sxml import Xml
+    from ....utils.sxml import Xml
 
 
 def svg_begin(xml, width=None, height=None, view_box=None, inkscape_namespace=False):

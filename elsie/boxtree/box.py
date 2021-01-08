@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from ..svg.draw import set_paint_style
+from ..render.backends.svg.draw import set_paint_style
 from ..text.stylecontainer import StyleContainer
 from .boxmixin import BoxMixin
 
@@ -88,7 +88,7 @@ class Box(BoxMixin, StyleContainer):
             else:
                 painters += child.get_painters(ctx, depth)
         if ctx.debug_boxes:
-            from elsie.boxtree.boxitem import SimpleBoxItem
+            from .boxitem import SimpleBoxItem
 
             painters.append(
                 SimpleBoxItem(self, lambda ctx: self._debug_paint(ctx, depth - 1))
@@ -143,4 +143,4 @@ class Box(BoxMixin, StyleContainer):
         return self.slide._repr_html_()
 
 
-from elsie.boxtree.boxitem import BoxItem  # noqa
+from .boxitem import BoxItem  # noqa

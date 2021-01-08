@@ -1,6 +1,6 @@
 import os
 
-from ..svg.svg import svg_begin, svg_end
+from ..render.backends.svg.utils import svg_begin, svg_end
 from ..utils.sxml import Xml
 from .inkscape import export_by_inkscape
 
