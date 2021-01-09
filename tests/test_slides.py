@@ -3,7 +3,7 @@ import pytest
 from elsie import SlideDeck
 
 
-@pytest.mark.parametrize("policy", ["auto", "unique"])
+@pytest.mark.parametrize("policy", ["unique"])
 def test_name_policy_unique(policy):
     slides = SlideDeck(name_policy=policy)
     slides.new_slide()
@@ -22,8 +22,9 @@ def test_invalid_name_policy():
         SlideDeck(name_policy="xxx")
 
 
-def test_name_policy_ignore():
-    slides = SlideDeck(name_policy="ignore")
+@pytest.mark.parametrize("policy", ["ignore", "auto"])
+def test_name_policy_ignore(policy):
+    slides = SlideDeck(name_policy=policy)
     slides.new_slide(name="xxx")
     slides.new_slide(name="xxx")
     slides.new_slide(name="yyy")

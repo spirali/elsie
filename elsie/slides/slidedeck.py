@@ -80,7 +80,7 @@ class SlideDeck(StyleContainer):
             if is_inside_notebook():
                 name_policy = "replace"
             else:
-                name_policy = "unique"
+                name_policy = "ignore"
         self.name_policy = name_policy
 
         if not os.path.isdir(cache_dir):
