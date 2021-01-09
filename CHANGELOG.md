@@ -1,3 +1,60 @@
+Note: This file documents major changes visible to users; see Git history for detailed log.
+
+# v3.0
+
+## Breaking changes
+
+### Global instance of Slides is removed and Slides are renamed to SlideDeck
+
+Global slides were removed. You can just create instance of Slides (now SlideDeck)
+as follows:
+
+Before:
+```python
+elsie.slide()
+def a_function(slide):
+    pass
+```
+
+Now:
+```python
+slides = elsie.SlideDeck()
+
+slides.slide()
+def a_function(slide):
+    pass
+```
+
+### Box arguments are now "keyword only"
+
+Before you could write:
+
+```python
+slide.box(50, 0, 100, 100)
+```
+
+To avoid confusion, positional arguments are disabled and all arguments have to be named:
+
+```python
+slide.box(x=50, y=0, width=100, height=100)
+```
+
+
+## New features
+
+* [New documentation](https://spirali.github.io/elsie/)
+* Large speedup in slide rendering by using Inkscape shell interface
+* `ext` package with support for [lists](https://spirali.github.io/elsie/userguide/lists/) and [markdown](https://spirali.github.io/elsie/userguide/lists/)
+* [Jupyter integration](https://spirali.github.io/elsie/userguide/jupyter/)
+
+
+# v2.1
+
+## New features
+
+* ORA support
+* Method TextStyle.compose()
+
 # v2.0
 ## Breaking changes
 ### TextStyles
@@ -40,5 +97,5 @@ Arguments `above` and `below` in `.box(..)` method. See
 for their explanation.
 ```python
 r = b.rect(...)
-b.box(..,  below=r)  # The new box is drawn before rectangle 
+b.box(..,  below=r)  # The new box is drawn before rectangle
 ```
