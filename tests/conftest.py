@@ -65,7 +65,7 @@ class SlideTester:
                         f.write(unit.get_svg())
 
 
-@pytest.yield_fixture(autouse=True, scope="session")
+@pytest.fixture(autouse=True, scope="session")
 def inkscape_shell():
     inkscape_bin = os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
     shell = InkscapeShell(inkscape_bin)
@@ -73,7 +73,7 @@ def inkscape_shell():
     shell.close()
 
 
-@pytest.yield_fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="function")
 def test_env(tmp_path, inkscape_shell):
     cwd = os.getcwd()
     os.chdir(tmp_path)
