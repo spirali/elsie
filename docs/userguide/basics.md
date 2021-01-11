@@ -89,9 +89,10 @@ def slide1(slide):
 Each time you would execute the cell, a new slide would be added to the presentation, which is
 probably not what you want.
 
-To solve this issue, *Elsie* contains a so-called *name policy*, which decides how to react to the
-situation where the same slide is created repeatedly. SlideDeck are identified by their name, which you
-either pass to `new_slide` or it is determined automatically if the [decorator](#decorator) is used.
+To solve this issue, *Elsie* uses a so-called *name policy*, which decides how to react to the
+situation where a slide with the same name is created multiple times. The name of a slide is either
+determined automatically if the [decorator](#decorator) is used, or you can pass it explicitly to the
+`new_slide` function.
 
 The `SlideDeck` instance has one of the following name policies, which decides what to do when a new
 slide is created:
@@ -102,7 +103,7 @@ unset (it is `None`), the slide will be allowed to be created.
 - `replace`: When a slide with the same name already exists, the previous slide will be removed, and
 the new slide will be placed at the end of the slide list.
 - `ignore`: The name of slides will not be checked, essentially turns off name policy.
-- `auto` (the default): Uses `replace` when running inside Jupyter, otherwise uses `unique`.
+- `auto` (the default): Uses `replace` when running inside Jupyter, otherwise uses `ignore`.
 
 Since Jupyter automatically sets a name policy which is most probably the one that you want in an
 interactive environment (`replace`), you will not have to deal with name policy most of the time.
