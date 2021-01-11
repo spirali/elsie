@@ -168,3 +168,25 @@ def draw_polygon(xml, points, rotation=None, **kwargs):
         apply_rotation(xml, rotation, find_centroid(points))
     set_paint_style(xml, **kwargs)
     xml.close("polygon")
+
+
+def draw_polyline(xml, points, **kwargs):
+    xml.element("polyline")
+    xml.set(
+        "points",
+        " ".join(f"{x},{y}" for x, y in points),
+    )
+    set_paint_style(xml, **kwargs)
+    xml.close("polyline")
+
+
+def draw_path(xml, commands, **kwargs):
+    xml.element("path")
+    xml.set("d", " ".join(command_to_str(c) for c in commands))
+    set_paint_style(xml, **kwargs)
+    xml.close("path")
+
+
+def command_to_str(command):
+    name, pairs = command
+    return name + " ".join("{},{}".format(p[0], p[1]) for p in pairs)

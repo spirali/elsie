@@ -21,6 +21,12 @@ class RenderingContext:
     def draw_polygon(self, points, rotation=None, **kwargs):
         raise NotImplementedError
 
+    def draw_polyline(self, points, **kwargs):
+        raise NotImplementedError
+
+    def draw_path(self, commands, **kwargs):
+        raise NotImplementedError
+
     def draw_text(self, *args, **kwargs):
         raise NotImplementedError
 

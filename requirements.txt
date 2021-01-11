@@ -3,3 +3,7 @@ pypdf2>=1.26,<1.27
 pygments>=2.7,<2.8
 lxml>=4.6,<4.7
 marko==1.0.1
+cairocffi==1.2.0
+pangocffi==0.10.0
+pangocairocffi==0.6.0
+webcolors==1.11.1

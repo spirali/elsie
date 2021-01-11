@@ -59,8 +59,12 @@ class TextBoxItem(BoxItem):
             )
         if self._scale_to_fit:
             transforms.append(f"scale({scale})")
+
+        # TODO: how to manage x, y and scale for Cairo?
+        # TODO: how to find (in)line boxes for Cairo?
         if scale > 0.00001:
             ctx.draw_text(
+                rect,
                 x / scale,
                 y / scale,
                 self._parsed_text,

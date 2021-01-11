@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING, BinaryIO, List, Union
 import lxml.etree as et
 from PIL import Image
 
-from ..render.backends.svg.draw import set_paint_style
 from ..render.backends.svg.utils import svg_size_to_pixels
 from ..render.image import create_image_data, get_image_steps
 from ..render.ora import convert_ora_to_svg
@@ -356,26 +355,23 @@ class BoxMixin:
         if not commands:
             return self
 
-        def command_to_str(command):
-            name, pairs = command
-            return name + " ".join("{},{}".format(p[0], p[1]) for p in pairs)
-
         def draw(ctx):
-            # TODO: reimplement using RenderingContext
             cmds = eval_path_commands(commands)
             if end_arrow:
                 end_p1, end_p2 = path_points_for_end_arrow(cmds)
                 end_new_p2 = end_arrow.move_end_point(end_p1, end_p2)
                 path_update_end_point(cmds, end_new_p2)
 
-            xml = ctx.xml
-            xml.element("path")
-            xml.set("d", " ".join(command_to_str(c) for c in cmds))
-            set_paint_style(xml, color, bg_color, stroke_width, stroke_dasharray)
-            xml.close("path")
+            ctx.draw_path(
+                cmds,
+                color=color,
+                bg_color=bg_color,
+                stroke_width=stroke_width,
+                stroke_dasharray=stroke_dasharray,
+            )
 
             if end_arrow:
-                end_arrow.render(xml, end_p1, end_p2, color)
+                end_arrow.render(ctx, end_p1, end_p2, color)
 
         return self._create_simple_box_item(draw)
 
@@ -408,7 +404,6 @@ class BoxMixin:
         """
 
         def draw(ctx):
-            # TODO: reimplement using RenderingContext
             p = [eval_pair(p) for p in points]
             p2 = p[:]
 
@@ -417,17 +412,18 @@ class BoxMixin:
             if end_arrow:
                 p2[-1] = end_arrow.move_end_point(p[-2], p[-1])
 
-            xml = ctx.xml
-            xml.element("polyline")
-            xml.set("points", " ".join("{},{}".format(x, y) for x, y in p2))
-            set_paint_style(xml, color, None, stroke_width, stroke_dasharray)
-            xml.close("polyline")
+            ctx.draw_polyline(
+                p2,
+                color=color,
+                stroke_width=stroke_width,
+                stroke_dasharray=stroke_dasharray,
+            )
 
             if start_arrow:
-                start_arrow.render(xml, p[1], p[0], color)
+                start_arrow.render(ctx, p[1], p[0], color)
 
             if end_arrow:
-                end_arrow.render(xml, p[-2], p[-1], color)
+                end_arrow.render(ctx, p[-2], p[-1], color)
 
         assert len(points) >= 2
         points = [unpack_point(p, self) for p in points]
