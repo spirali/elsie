@@ -31,6 +31,7 @@ class InkscapeBackend(Backend):
         cache_dir: str
             Cache directory for caching SVG files.
         """
+        super().__init__()
         if isinstance(inkscape, InkscapeShell):
             self.inkscape = inkscape
         else:
@@ -53,9 +54,6 @@ class InkscapeBackend(Backend):
 
         self.cache_dir = cache_dir
 
-        if not os.path.isdir(cache_dir):
-            print("Creating cache directory:", cache_dir)
-            os.makedirs(cache_dir)
         self.query_cache = self._load_query_cache()
         self.used_query_cache = {}
 
@@ -63,7 +61,7 @@ class InkscapeBackend(Backend):
         return f"{elsie_version}/{self.inkscape_version}"
 
     def create_render_unit(self, slide, step):
-        ctx = SvgRenderingContext(slide, slide.fs_cache, step, slide.debug_boxes)
+        ctx = SvgRenderingContext(slide, step, slide.debug_boxes)
         painters = slide._box.get_painters(ctx, 0)
         painters.sort(key=lambda painter: painter.z_level)
         for p in painters:

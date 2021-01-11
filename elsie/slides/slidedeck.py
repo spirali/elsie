@@ -1,3 +1,4 @@
+import os
 import sys
 from typing import TYPE_CHECKING, Callable, List, Tuple, Union
 
@@ -102,9 +103,14 @@ class SlideDeck(StyleContainer):
         StyleContainer.__init__(self, styles)
         self.temp_cache = {}
 
+        if not os.path.isdir(cache_dir):
+            print("Creating cache directory:", cache_dir)
+            os.makedirs(cache_dir)
+
         if backend is None:
             backend = InkscapeBackend(cache_dir=cache_dir)
         self.backend = backend
+        self.backend.set_dimensions(width, height)
         self.fs_cache = FsCache(cache_dir, self.backend.get_version(VERSION))
 
     def get_slide_by_name(self, name: str) -> Union[Slide, None]:

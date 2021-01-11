@@ -1,5 +1,6 @@
 import math
 
+from ..render.backends.rcontext import RenderingContext
 from ..utils.geom import segment_delta, segment_resize
 
 
@@ -30,7 +31,7 @@ class Arrow:
         self.stroke_width = stroke_width
         self.inner = inner
 
-    def render(self, xml, p1, p2, color):
+    def render(self, ctx: RenderingContext, p1, p2, color):
         dx, dy = segment_delta(p1, p2)
         a = math.atan2(dx, dy) + math.pi
         px, py = p2
@@ -39,23 +40,17 @@ class Arrow:
         x2 = px + self.size * math.sin(a + self.angle)
         y2 = py + self.size * math.cos(a + self.angle)
 
-        if self.stroke_width is not None:
-            xml.element("polyline")
-            xml.set(
-                "style",
-                "fill:none;stroke:{};stroke-width: {}".format(color, self.stroke_width),
-            )
-        else:
-            xml.element("polygon")
-            xml.set("style", "fill:{};stroke:none;".format(color))
         points = [(x1, y1), p2, (x2, y2)]
 
         if self.inner and not self.stroke_width:
             points.append(
                 segment_resize(p1, p2, -self.inner * self.size * math.cos(self.angle))
             )
-        xml.set("points", " ".join("{},{}".format(x, y) for x, y in points))
-        xml.close()
+
+        if self.stroke_width is not None:
+            ctx.draw_polyline(points, color=color, stroke_width=self.stroke_width)
+        else:
+            ctx.draw_polygon(points, bg_color=color)
 
     def move_end_point(self, p1, p2):
         if not self.stroke_width:
