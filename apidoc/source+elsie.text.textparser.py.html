@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.text.textparser</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.0 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9656; render</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.svg.html>&#9656; svg</a> </li><li><a href=elsie.text.html>&#9662; text</a> </li><li><ul><li><a href=elsie.text.highlight.html>&#9656; highlight</a> </li><li><a href=elsie.text.stylecontainer.html>&#9656; stylecontainer</a> </li><li><a href=elsie.text.textboxitem.html>&#9656; textboxitem</a> </li><li><div class=select><a href=elsie.text.textparser.html>&#9662; textparser</a> </div></li><li><a href=elsie.text.textstyle.html>&#9656; textstyle</a> </li></ul></li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/text/textparser.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.text.html>text</a>.<a class=symbol href=elsie.text.textparser.html>textparser</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre>  1
+<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.text.textparser</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.0 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9656; render</a> </li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9662; text</a> </li><li><ul><li><a href=elsie.text.highlight.html>&#9656; highlight</a> </li><li><a href=elsie.text.stylecontainer.html>&#9656; stylecontainer</a> </li><li><a href=elsie.text.textboxitem.html>&#9656; textboxitem</a> </li><li><div class=select><a href=elsie.text.textparser.html>&#9662; textparser</a> </div></li><li><a href=elsie.text.textstyle.html>&#9656; textstyle</a> </li></ul></li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/text/textparser.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.text.html>text</a>.<a class=symbol href=elsie.text.textparser.html>textparser</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre>  1
   2
   3
   4
@@ -293,26 +293,7 @@
 293
 294
 295
-296
-297
-298
-299
-300
-301
-302
-303
-304
-305
-306
-307
-308
-309
-310
-311
-312
-313
-314
-315</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=n>END_MARKER</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;end&quot;</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
+296</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=n>END_MARKER</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;end&quot;</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
 <a name=line-2></a><span class=n>NEWLINE_1</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;newline&quot;</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 <a name=line-3></a>
 <a name=line-4></a>
@@ -464,167 +445,148 @@
 <a name=line-150></a>    <span class=k>return</span> <span class=n>result</span><span class=p>,</span> <span class=n>index</span> <span class=o>-</span> <span class=n>b</span> <span class=o>+</span> <span class=nb>len</span><span class=p>(</span><span class=n>open_blocks</span><span class=p>)</span>
 <a name=line-151></a>
 <a name=line-152></a>
-<a name=line-153></a><span class=k>def</span> <span class=nf>extract_styled_content</span><span class=p>(</span><span class=n>tokens</span><span class=p>,</span> <span class=n>index</span><span class=p>):</span>
-<a name=line-154></a>    <span class=k>assert</span> <span class=n>tokens</span><span class=p>[</span><span class=n>index</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span>
-<a name=line-155></a>    <span class=n>start</span> <span class=o>=</span> <span class=n>index</span>
-<a name=line-156></a>    <span class=n>index</span> <span class=o>+=</span> <span class=mi>1</span>
-<a name=line-157></a>    <span class=n>count</span> <span class=o>=</span> <span class=mi>0</span>
-<a name=line-158></a>    <span class=k>while</span> <span class=n>index</span> <span class=o>&lt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>tokens</span><span class=p>):</span>
-<a name=line-159></a>        <span class=n>name</span> <span class=o>=</span> <span class=n>tokens</span><span class=p>[</span><span class=n>index</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span>
-<a name=line-160></a>        <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s2>&quot;end&quot;</span><span class=p>:</span>
-<a name=line-161></a>            <span class=n>count</span> <span class=o>-=</span> <span class=mi>1</span>
-<a name=line-162></a>            <span class=k>if</span> <span class=n>count</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>:</span>
-<a name=line-163></a>                <span class=k>break</span>
-<a name=line-164></a>        <span class=k>elif</span> <span class=n>name</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span><span class=p>:</span>
-<a name=line-165></a>            <span class=n>count</span> <span class=o>+=</span> <span class=mi>1</span>
-<a name=line-166></a>        <span class=k>break</span>
-<a name=line-167></a>        <span class=n>index</span> <span class=o>+=</span> <span class=mi>1</span>
-<a name=line-168></a>    <span class=n>result</span> <span class=o>=</span> <span class=n>_open_blocks</span><span class=p>(</span><span class=n>tokens</span><span class=p>[:</span><span class=n>start</span><span class=p>])</span> <span class=o>+</span> <span class=n>tokens</span><span class=p>[</span><span class=n>start</span> <span class=p>:</span> <span class=n>index</span> <span class=o>+</span> <span class=mi>1</span><span class=p>]</span>
-<a name=line-169></a>    <span class=k>return</span> <span class=n>result</span> <span class=o>+</span> <span class=p>[</span><span class=n>END_MARKER</span><span class=p>]</span> <span class=o>*</span> <span class=n>_open_blocks_count</span><span class=p>(</span><span class=n>result</span><span class=p>)</span>
-<a name=line-170></a>
+<a name=line-153></a><span class=k>def</span> <span class=nf>tokens_to_text_without_style</span><span class=p>(</span><span class=n>tokens</span><span class=p>):</span>
+<a name=line-154></a>    <span class=n>result</span> <span class=o>=</span> <span class=p>[]</span>
+<a name=line-155></a>    <span class=k>for</span> <span class=n>name</span><span class=p>,</span> <span class=n>value</span> <span class=ow>in</span> <span class=n>tokens</span><span class=p>:</span>
+<a name=line-156></a>        <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s2>&quot;text&quot;</span><span class=p>:</span>
+<a name=line-157></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>value</span><span class=p>)</span>
+<a name=line-158></a>        <span class=k>elif</span> <span class=n>name</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span><span class=p>:</span>
+<a name=line-159></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span> <span class=o>*</span> <span class=n>value</span><span class=p>)</span>
+<a name=line-160></a>    <span class=k>return</span> <span class=s2>&quot;&quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>result</span><span class=p>)</span>
+<a name=line-161></a>
+<a name=line-162></a>
+<a name=line-163></a><span class=k>def</span> <span class=nf>tokens_merge</span><span class=p>(</span><span class=n>tokens1</span><span class=p>,</span> <span class=n>tokens2</span><span class=p>):</span>
+<a name=line-164></a>    <span class=n>tokens</span> <span class=o>=</span> <span class=n>_tokens_merge_helper</span><span class=p>(</span><span class=n>tokens1</span><span class=p>,</span> <span class=n>tokens2</span><span class=p>)</span>
+<a name=line-165></a>    <span class=n>result</span> <span class=o>=</span> <span class=p>[]</span>
+<a name=line-166></a>    <span class=n>opened</span> <span class=o>=</span> <span class=p>[]</span>
+<a name=line-167></a>    <span class=k>for</span> <span class=n>token</span> <span class=ow>in</span> <span class=n>tokens</span><span class=p>:</span>
+<a name=line-168></a>        <span class=k>if</span> <span class=n>token</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>!=</span> <span class=s2>&quot;_block&quot;</span><span class=p>:</span>
+<a name=line-169></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>token</span><span class=p>)</span>
+<a name=line-170></a>            <span class=k>continue</span>
 <a name=line-171></a>
-<a name=line-172></a><span class=k>def</span> <span class=nf>tokens_to_text_without_style</span><span class=p>(</span><span class=n>tokens</span><span class=p>):</span>
-<a name=line-173></a>    <span class=n>result</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-174></a>    <span class=k>for</span> <span class=n>name</span><span class=p>,</span> <span class=n>value</span> <span class=ow>in</span> <span class=n>tokens</span><span class=p>:</span>
-<a name=line-175></a>        <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s2>&quot;text&quot;</span><span class=p>:</span>
-<a name=line-176></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>value</span><span class=p>)</span>
-<a name=line-177></a>        <span class=k>elif</span> <span class=n>name</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span><span class=p>:</span>
-<a name=line-178></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span> <span class=o>*</span> <span class=n>value</span><span class=p>)</span>
-<a name=line-179></a>    <span class=k>return</span> <span class=s2>&quot;&quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>result</span><span class=p>)</span>
-<a name=line-180></a>
-<a name=line-181></a>
-<a name=line-182></a><span class=k>def</span> <span class=nf>tokens_merge</span><span class=p>(</span><span class=n>tokens1</span><span class=p>,</span> <span class=n>tokens2</span><span class=p>):</span>
-<a name=line-183></a>    <span class=n>tokens</span> <span class=o>=</span> <span class=n>_tokens_merge_helper</span><span class=p>(</span><span class=n>tokens1</span><span class=p>,</span> <span class=n>tokens2</span><span class=p>)</span>
-<a name=line-184></a>    <span class=n>result</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-185></a>    <span class=n>opened</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-186></a>    <span class=k>for</span> <span class=n>token</span> <span class=ow>in</span> <span class=n>tokens</span><span class=p>:</span>
-<a name=line-187></a>        <span class=k>if</span> <span class=n>token</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>!=</span> <span class=s2>&quot;_block&quot;</span><span class=p>:</span>
-<a name=line-188></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>token</span><span class=p>)</span>
-<a name=line-189></a>            <span class=k>continue</span>
-<a name=line-190></a>
-<a name=line-191></a>        <span class=n>_</span><span class=p>,</span> <span class=n>index</span><span class=p>,</span> <span class=n>t</span> <span class=o>=</span> <span class=n>token</span>
-<a name=line-192></a>        <span class=k>if</span> <span class=n>t</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span><span class=p>:</span>
-<a name=line-193></a>            <span class=n>opened</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>token</span><span class=p>)</span>
-<a name=line-194></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>t</span><span class=p>)</span>
-<a name=line-195></a>            <span class=k>continue</span>
-<a name=line-196></a>        <span class=k>assert</span> <span class=n>t</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=s2>&quot;end&quot;</span>
-<a name=line-197></a>        <span class=n>reopen</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-198></a>        <span class=n>pos</span> <span class=o>=</span> <span class=o>-</span><span class=mi>1</span>
-<a name=line-199></a>        <span class=k>for</span> <span class=n>_</span><span class=p>,</span> <span class=n>i2</span><span class=p>,</span> <span class=n>t2</span> <span class=ow>in</span> <span class=nb>reversed</span><span class=p>(</span><span class=n>opened</span><span class=p>):</span>
-<a name=line-200></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>END_MARKER</span><span class=p>)</span>
-<a name=line-201></a>            <span class=k>if</span> <span class=n>i2</span> <span class=o>!=</span> <span class=n>index</span><span class=p>:</span>
-<a name=line-202></a>                <span class=n>pos</span> <span class=o>-=</span> <span class=mi>1</span>
-<a name=line-203></a>                <span class=n>reopen</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>t2</span><span class=p>)</span>
-<a name=line-204></a>            <span class=k>else</span><span class=p>:</span>
-<a name=line-205></a>                <span class=k>break</span>
-<a name=line-206></a>        <span class=k>del</span> <span class=n>opened</span><span class=p>[</span><span class=n>pos</span><span class=p>]</span>
-<a name=line-207></a>        <span class=n>result</span><span class=o>.</span><span class=n>extend</span><span class=p>(</span><span class=n>reopen</span><span class=p>)</span>
-<a name=line-208></a>    <span class=k>assert</span> <span class=ow>not</span> <span class=n>opened</span>
-<a name=line-209></a>    <span class=k>return</span> <span class=n>normalize_tokens</span><span class=p>(</span><span class=n>result</span><span class=p>)</span>
-<a name=line-210></a>
-<a name=line-211></a>
-<a name=line-212></a><span class=k>def</span> <span class=nf>_tokens_merge_helper</span><span class=p>(</span><span class=n>tokens1</span><span class=p>,</span> <span class=n>tokens2</span><span class=p>):</span>
-<a name=line-213></a>    <span class=n>result</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-214></a>
-<a name=line-215></a>    <span class=n>tokens</span> <span class=o>=</span> <span class=p>(</span><span class=n>tokens1</span><span class=p>,</span> <span class=n>tokens2</span><span class=p>)</span>
-<a name=line-216></a>    <span class=n>last</span> <span class=o>=</span> <span class=p>[</span><span class=kc>None</span><span class=p>,</span> <span class=kc>None</span><span class=p>]</span>
-<a name=line-217></a>    <span class=n>indices</span> <span class=o>=</span> <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>]</span>
-<a name=line-218></a>    <span class=n>stacks</span> <span class=o>=</span> <span class=p>([],</span> <span class=p>[])</span>
-<a name=line-219></a>
-<a name=line-220></a>    <span class=k>def</span> <span class=nf>read</span><span class=p>(</span><span class=n>i</span><span class=p>):</span>
-<a name=line-221></a>        <span class=n>index</span> <span class=o>=</span> <span class=n>indices</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
-<a name=line-222></a>        <span class=k>if</span> <span class=n>index</span> <span class=o>&gt;=</span> <span class=nb>len</span><span class=p>(</span><span class=n>tokens</span><span class=p>[</span><span class=n>i</span><span class=p>]):</span>
-<a name=line-223></a>            <span class=n>last</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;&lt;END&gt;&quot;</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
-<a name=line-224></a>        <span class=k>else</span><span class=p>:</span>
-<a name=line-225></a>            <span class=n>last</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>tokens</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=n>index</span><span class=p>]</span>
-<a name=line-226></a>        <span class=n>indices</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>+=</span> <span class=mi>1</span>
-<a name=line-227></a>        <span class=k>return</span> <span class=n>last</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+<a name=line-172></a>        <span class=n>_</span><span class=p>,</span> <span class=n>index</span><span class=p>,</span> <span class=n>t</span> <span class=o>=</span> <span class=n>token</span>
+<a name=line-173></a>        <span class=k>if</span> <span class=n>t</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span><span class=p>:</span>
+<a name=line-174></a>            <span class=n>opened</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>token</span><span class=p>)</span>
+<a name=line-175></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>t</span><span class=p>)</span>
+<a name=line-176></a>            <span class=k>continue</span>
+<a name=line-177></a>        <span class=k>assert</span> <span class=n>t</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=s2>&quot;end&quot;</span>
+<a name=line-178></a>        <span class=n>reopen</span> <span class=o>=</span> <span class=p>[]</span>
+<a name=line-179></a>        <span class=n>pos</span> <span class=o>=</span> <span class=o>-</span><span class=mi>1</span>
+<a name=line-180></a>        <span class=k>for</span> <span class=n>_</span><span class=p>,</span> <span class=n>i2</span><span class=p>,</span> <span class=n>t2</span> <span class=ow>in</span> <span class=nb>reversed</span><span class=p>(</span><span class=n>opened</span><span class=p>):</span>
+<a name=line-181></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>END_MARKER</span><span class=p>)</span>
+<a name=line-182></a>            <span class=k>if</span> <span class=n>i2</span> <span class=o>!=</span> <span class=n>index</span><span class=p>:</span>
+<a name=line-183></a>                <span class=n>pos</span> <span class=o>-=</span> <span class=mi>1</span>
+<a name=line-184></a>                <span class=n>reopen</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>t2</span><span class=p>)</span>
+<a name=line-185></a>            <span class=k>else</span><span class=p>:</span>
+<a name=line-186></a>                <span class=k>break</span>
+<a name=line-187></a>        <span class=k>del</span> <span class=n>opened</span><span class=p>[</span><span class=n>pos</span><span class=p>]</span>
+<a name=line-188></a>        <span class=n>result</span><span class=o>.</span><span class=n>extend</span><span class=p>(</span><span class=n>reopen</span><span class=p>)</span>
+<a name=line-189></a>    <span class=k>assert</span> <span class=ow>not</span> <span class=n>opened</span>
+<a name=line-190></a>    <span class=k>return</span> <span class=n>normalize_tokens</span><span class=p>(</span><span class=n>result</span><span class=p>)</span>
+<a name=line-191></a>
+<a name=line-192></a>
+<a name=line-193></a><span class=k>def</span> <span class=nf>_tokens_merge_helper</span><span class=p>(</span><span class=n>tokens1</span><span class=p>,</span> <span class=n>tokens2</span><span class=p>):</span>
+<a name=line-194></a>    <span class=n>result</span> <span class=o>=</span> <span class=p>[]</span>
+<a name=line-195></a>
+<a name=line-196></a>    <span class=n>tokens</span> <span class=o>=</span> <span class=p>(</span><span class=n>tokens1</span><span class=p>,</span> <span class=n>tokens2</span><span class=p>)</span>
+<a name=line-197></a>    <span class=n>last</span> <span class=o>=</span> <span class=p>[</span><span class=kc>None</span><span class=p>,</span> <span class=kc>None</span><span class=p>]</span>
+<a name=line-198></a>    <span class=n>indices</span> <span class=o>=</span> <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>]</span>
+<a name=line-199></a>    <span class=n>stacks</span> <span class=o>=</span> <span class=p>([],</span> <span class=p>[])</span>
+<a name=line-200></a>
+<a name=line-201></a>    <span class=k>def</span> <span class=nf>read</span><span class=p>(</span><span class=n>i</span><span class=p>):</span>
+<a name=line-202></a>        <span class=n>index</span> <span class=o>=</span> <span class=n>indices</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+<a name=line-203></a>        <span class=k>if</span> <span class=n>index</span> <span class=o>&gt;=</span> <span class=nb>len</span><span class=p>(</span><span class=n>tokens</span><span class=p>[</span><span class=n>i</span><span class=p>]):</span>
+<a name=line-204></a>            <span class=n>last</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;&lt;END&gt;&quot;</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
+<a name=line-205></a>        <span class=k>else</span><span class=p>:</span>
+<a name=line-206></a>            <span class=n>last</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>tokens</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=n>index</span><span class=p>]</span>
+<a name=line-207></a>        <span class=n>indices</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>+=</span> <span class=mi>1</span>
+<a name=line-208></a>        <span class=k>return</span> <span class=n>last</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+<a name=line-209></a>
+<a name=line-210></a>    <span class=k>def</span> <span class=nf>new_block</span><span class=p>(</span><span class=n>i</span><span class=p>):</span>
+<a name=line-211></a>        <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=s2>&quot;_block&quot;</span><span class=p>,</span> <span class=n>i</span><span class=p>,</span> <span class=n>last</span><span class=p>[</span><span class=n>i</span><span class=p>]))</span>
+<a name=line-212></a>        <span class=n>read</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
+<a name=line-213></a>
+<a name=line-214></a>    <span class=n>read</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+<a name=line-215></a>    <span class=n>read</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+<a name=line-216></a>    <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+<a name=line-217></a>        <span class=p>((</span><span class=n>n1</span><span class=p>,</span> <span class=n>v1</span><span class=p>),</span> <span class=p>(</span><span class=n>n2</span><span class=p>,</span> <span class=n>v2</span><span class=p>))</span> <span class=o>=</span> <span class=n>last</span>
+<a name=line-218></a>
+<a name=line-219></a>        <span class=k>if</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;end&quot;</span> <span class=ow>and</span> <span class=p>(</span><span class=n>n2</span> <span class=o>!=</span> <span class=s2>&quot;end&quot;</span> <span class=ow>or</span> <span class=n>stacks</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&gt;</span> <span class=n>stacks</span><span class=p>[</span><span class=mi>1</span><span class=p>]):</span>
+<a name=line-220></a>            <span class=n>stacks</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>pop</span><span class=p>()</span>
+<a name=line-221></a>            <span class=n>new_block</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+<a name=line-222></a>            <span class=k>continue</span>
+<a name=line-223></a>
+<a name=line-224></a>        <span class=k>if</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;end&quot;</span><span class=p>:</span>
+<a name=line-225></a>            <span class=n>stacks</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>pop</span><span class=p>()</span>
+<a name=line-226></a>            <span class=n>new_block</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+<a name=line-227></a>            <span class=k>continue</span>
 <a name=line-228></a>
-<a name=line-229></a>    <span class=k>def</span> <span class=nf>new_block</span><span class=p>(</span><span class=n>i</span><span class=p>):</span>
-<a name=line-230></a>        <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=s2>&quot;_block&quot;</span><span class=p>,</span> <span class=n>i</span><span class=p>,</span> <span class=n>last</span><span class=p>[</span><span class=n>i</span><span class=p>]))</span>
-<a name=line-231></a>        <span class=n>read</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
-<a name=line-232></a>
-<a name=line-233></a>    <span class=n>read</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-<a name=line-234></a>    <span class=n>read</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-<a name=line-235></a>    <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
-<a name=line-236></a>        <span class=p>((</span><span class=n>n1</span><span class=p>,</span> <span class=n>v1</span><span class=p>),</span> <span class=p>(</span><span class=n>n2</span><span class=p>,</span> <span class=n>v2</span><span class=p>))</span> <span class=o>=</span> <span class=n>last</span>
-<a name=line-237></a>
-<a name=line-238></a>        <span class=k>if</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;end&quot;</span> <span class=ow>and</span> <span class=p>(</span><span class=n>n2</span> <span class=o>!=</span> <span class=s2>&quot;end&quot;</span> <span class=ow>or</span> <span class=n>stacks</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&gt;</span> <span class=n>stacks</span><span class=p>[</span><span class=mi>1</span><span class=p>]):</span>
-<a name=line-239></a>            <span class=n>stacks</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>pop</span><span class=p>()</span>
-<a name=line-240></a>            <span class=n>new_block</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-<a name=line-241></a>            <span class=k>continue</span>
-<a name=line-242></a>
-<a name=line-243></a>        <span class=k>if</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;end&quot;</span><span class=p>:</span>
-<a name=line-244></a>            <span class=n>stacks</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>pop</span><span class=p>()</span>
-<a name=line-245></a>            <span class=n>new_block</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-<a name=line-246></a>            <span class=k>continue</span>
-<a name=line-247></a>
-<a name=line-248></a>        <span class=k>if</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span><span class=p>:</span>
-<a name=line-249></a>            <span class=n>i1</span> <span class=o>=</span> <span class=n>indices</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>-</span> <span class=mi>1</span>
-<a name=line-250></a>            <span class=k>if</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span><span class=p>:</span>
-<a name=line-251></a>                <span class=c1># Find which block is shorter</span>
-<a name=line-252></a>                <span class=n>i2</span> <span class=o>=</span> <span class=n>indices</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=mi>1</span>
-<a name=line-253></a>                <span class=n>t1</span> <span class=o>=</span> <span class=n>tokens_to_text_without_style</span><span class=p>(</span>
-<a name=line-254></a>                    <span class=n>tokens</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span><span class=n>i1</span> <span class=p>:</span> <span class=n>_get_block_end_index</span><span class=p>(</span><span class=n>tokens</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>i1</span><span class=p>)]</span>
-<a name=line-255></a>                <span class=p>)</span>
-<a name=line-256></a>                <span class=n>t2</span> <span class=o>=</span> <span class=n>tokens_to_text_without_style</span><span class=p>(</span>
-<a name=line-257></a>                    <span class=n>tokens</span><span class=p>[</span><span class=mi>1</span><span class=p>][</span><span class=n>i2</span> <span class=p>:</span> <span class=n>_get_block_end_index</span><span class=p>(</span><span class=n>tokens</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>i2</span><span class=p>)]</span>
-<a name=line-258></a>                <span class=p>)</span>
-<a name=line-259></a>                <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>t1</span><span class=p>)</span> <span class=o>&gt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>t2</span><span class=p>):</span>
-<a name=line-260></a>                    <span class=n>stacks</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>i1</span><span class=p>)</span>
-<a name=line-261></a>                    <span class=n>new_block</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-<a name=line-262></a>                    <span class=k>continue</span>
-<a name=line-263></a>            <span class=k>else</span><span class=p>:</span>
-<a name=line-264></a>                <span class=n>stacks</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>i1</span><span class=p>)</span>
-<a name=line-265></a>                <span class=n>new_block</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-<a name=line-266></a>                <span class=k>continue</span>
-<a name=line-267></a>
-<a name=line-268></a>        <span class=k>if</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span><span class=p>:</span>
-<a name=line-269></a>            <span class=n>stacks</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>indices</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
-<a name=line-270></a>            <span class=n>new_block</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-<a name=line-271></a>            <span class=k>continue</span>
-<a name=line-272></a>
-<a name=line-273></a>        <span class=k>if</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;&lt;END&gt;&quot;</span> <span class=ow>or</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;&lt;END&gt;&quot;</span><span class=p>:</span>
-<a name=line-274></a>            <span class=k>assert</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;&lt;END&gt;&quot;</span> <span class=ow>and</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;&lt;END&gt;&quot;</span>
-<a name=line-275></a>            <span class=k>break</span>
-<a name=line-276></a>
-<a name=line-277></a>        <span class=k>if</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span> <span class=ow>or</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span><span class=p>:</span>
-<a name=line-278></a>            <span class=k>assert</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span> <span class=ow>and</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span>
-<a name=line-279></a>            <span class=k>if</span> <span class=n>v1</span> <span class=o>==</span> <span class=n>v2</span><span class=p>:</span>
-<a name=line-280></a>                <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
-<a name=line-281></a>                <span class=n>read</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-<a name=line-282></a>                <span class=n>read</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-<a name=line-283></a>            <span class=k>elif</span> <span class=n>v1</span> <span class=o>&lt;</span> <span class=n>v2</span><span class=p>:</span>
-<a name=line-284></a>                <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
-<a name=line-285></a>                <span class=n>last</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;newline&quot;</span><span class=p>,</span> <span class=n>v2</span> <span class=o>-</span> <span class=n>v1</span><span class=p>)</span>
-<a name=line-286></a>                <span class=n>read</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-<a name=line-287></a>            <span class=k>else</span><span class=p>:</span>
-<a name=line-288></a>                <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
-<a name=line-289></a>                <span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;newline&quot;</span><span class=p>,</span> <span class=n>v1</span> <span class=o>-</span> <span class=n>v2</span><span class=p>)</span>
-<a name=line-290></a>                <span class=n>read</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-<a name=line-291></a>            <span class=k>continue</span>
-<a name=line-292></a>
-<a name=line-293></a>        <span class=k>assert</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;text&quot;</span> <span class=ow>and</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;text&quot;</span>
-<a name=line-294></a>        <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>v1</span><span class=p>)</span> <span class=o>==</span> <span class=nb>len</span><span class=p>(</span><span class=n>v2</span><span class=p>):</span>
-<a name=line-295></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
-<a name=line-296></a>            <span class=n>read</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-<a name=line-297></a>            <span class=n>read</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-<a name=line-298></a>            <span class=k>continue</span>
-<a name=line-299></a>
-<a name=line-300></a>        <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>v1</span><span class=p>)</span> <span class=o>&lt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>v2</span><span class=p>):</span>
-<a name=line-301></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
-<a name=line-302></a>            <span class=n>read</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-<a name=line-303></a>            <span class=n>last</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;text&quot;</span><span class=p>,</span> <span class=n>v2</span><span class=p>[</span><span class=nb>len</span><span class=p>(</span><span class=n>v1</span><span class=p>)</span> <span class=p>:])</span>
-<a name=line-304></a>        <span class=k>else</span><span class=p>:</span>
-<a name=line-305></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
-<a name=line-306></a>            <span class=n>read</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-<a name=line-307></a>            <span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;text&quot;</span><span class=p>,</span> <span class=n>v1</span><span class=p>[</span><span class=nb>len</span><span class=p>(</span><span class=n>v2</span><span class=p>)</span> <span class=p>:])</span>
-<a name=line-308></a>    <span class=k>return</span> <span class=n>result</span>
-<a name=line-309></a>
-<a name=line-310></a>
-<a name=line-311></a><span class=k>def</span> <span class=nf>trim_indent</span><span class=p>(</span><span class=n>text</span><span class=p>:</span> <span class=nb>str</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
-<a name=line-312></a>    <span class=sd>&quot;&quot;&quot;Find the smallest common indent from the left in the text and remove it from the text.&quot;&quot;&quot;</span>
-<a name=line-313></a>    <span class=n>lines</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>splitlines</span><span class=p>(</span><span class=n>keepends</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
-<a name=line-314></a>    <span class=n>min_indent</span> <span class=o>=</span> <span class=nb>min</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>line</span><span class=p>)</span> <span class=o>-</span> <span class=nb>len</span><span class=p>(</span><span class=n>line</span><span class=o>.</span><span class=n>lstrip</span><span class=p>())</span> <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>lines</span> <span class=k>if</span> <span class=n>line</span><span class=o>.</span><span class=n>strip</span><span class=p>())</span>
-<a name=line-315></a>    <span class=k>return</span> <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>line</span><span class=p>[</span><span class=n>min_indent</span><span class=p>:]</span> <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>lines</span><span class=p>)</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-01-11 15:29 </p></div></div></body></html>
+<a name=line-229></a>        <span class=k>if</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span><span class=p>:</span>
+<a name=line-230></a>            <span class=n>i1</span> <span class=o>=</span> <span class=n>indices</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>-</span> <span class=mi>1</span>
+<a name=line-231></a>            <span class=k>if</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span><span class=p>:</span>
+<a name=line-232></a>                <span class=c1># Find which block is shorter</span>
+<a name=line-233></a>                <span class=n>i2</span> <span class=o>=</span> <span class=n>indices</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=mi>1</span>
+<a name=line-234></a>                <span class=n>t1</span> <span class=o>=</span> <span class=n>tokens_to_text_without_style</span><span class=p>(</span>
+<a name=line-235></a>                    <span class=n>tokens</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span><span class=n>i1</span> <span class=p>:</span> <span class=n>_get_block_end_index</span><span class=p>(</span><span class=n>tokens</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>i1</span><span class=p>)]</span>
+<a name=line-236></a>                <span class=p>)</span>
+<a name=line-237></a>                <span class=n>t2</span> <span class=o>=</span> <span class=n>tokens_to_text_without_style</span><span class=p>(</span>
+<a name=line-238></a>                    <span class=n>tokens</span><span class=p>[</span><span class=mi>1</span><span class=p>][</span><span class=n>i2</span> <span class=p>:</span> <span class=n>_get_block_end_index</span><span class=p>(</span><span class=n>tokens</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>i2</span><span class=p>)]</span>
+<a name=line-239></a>                <span class=p>)</span>
+<a name=line-240></a>                <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>t1</span><span class=p>)</span> <span class=o>&gt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>t2</span><span class=p>):</span>
+<a name=line-241></a>                    <span class=n>stacks</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>i1</span><span class=p>)</span>
+<a name=line-242></a>                    <span class=n>new_block</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+<a name=line-243></a>                    <span class=k>continue</span>
+<a name=line-244></a>            <span class=k>else</span><span class=p>:</span>
+<a name=line-245></a>                <span class=n>stacks</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>i1</span><span class=p>)</span>
+<a name=line-246></a>                <span class=n>new_block</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+<a name=line-247></a>                <span class=k>continue</span>
+<a name=line-248></a>
+<a name=line-249></a>        <span class=k>if</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;begin&quot;</span><span class=p>:</span>
+<a name=line-250></a>            <span class=n>stacks</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>indices</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
+<a name=line-251></a>            <span class=n>new_block</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+<a name=line-252></a>            <span class=k>continue</span>
+<a name=line-253></a>
+<a name=line-254></a>        <span class=k>if</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;&lt;END&gt;&quot;</span> <span class=ow>or</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;&lt;END&gt;&quot;</span><span class=p>:</span>
+<a name=line-255></a>            <span class=k>assert</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;&lt;END&gt;&quot;</span> <span class=ow>and</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;&lt;END&gt;&quot;</span>
+<a name=line-256></a>            <span class=k>break</span>
+<a name=line-257></a>
+<a name=line-258></a>        <span class=k>if</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span> <span class=ow>or</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span><span class=p>:</span>
+<a name=line-259></a>            <span class=k>assert</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span> <span class=ow>and</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;newline&quot;</span>
+<a name=line-260></a>            <span class=k>if</span> <span class=n>v1</span> <span class=o>==</span> <span class=n>v2</span><span class=p>:</span>
+<a name=line-261></a>                <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
+<a name=line-262></a>                <span class=n>read</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+<a name=line-263></a>                <span class=n>read</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+<a name=line-264></a>            <span class=k>elif</span> <span class=n>v1</span> <span class=o>&lt;</span> <span class=n>v2</span><span class=p>:</span>
+<a name=line-265></a>                <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
+<a name=line-266></a>                <span class=n>last</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;newline&quot;</span><span class=p>,</span> <span class=n>v2</span> <span class=o>-</span> <span class=n>v1</span><span class=p>)</span>
+<a name=line-267></a>                <span class=n>read</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+<a name=line-268></a>            <span class=k>else</span><span class=p>:</span>
+<a name=line-269></a>                <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
+<a name=line-270></a>                <span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;newline&quot;</span><span class=p>,</span> <span class=n>v1</span> <span class=o>-</span> <span class=n>v2</span><span class=p>)</span>
+<a name=line-271></a>                <span class=n>read</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+<a name=line-272></a>            <span class=k>continue</span>
+<a name=line-273></a>
+<a name=line-274></a>        <span class=k>assert</span> <span class=n>n1</span> <span class=o>==</span> <span class=s2>&quot;text&quot;</span> <span class=ow>and</span> <span class=n>n2</span> <span class=o>==</span> <span class=s2>&quot;text&quot;</span>
+<a name=line-275></a>        <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>v1</span><span class=p>)</span> <span class=o>==</span> <span class=nb>len</span><span class=p>(</span><span class=n>v2</span><span class=p>):</span>
+<a name=line-276></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
+<a name=line-277></a>            <span class=n>read</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+<a name=line-278></a>            <span class=n>read</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+<a name=line-279></a>            <span class=k>continue</span>
+<a name=line-280></a>
+<a name=line-281></a>        <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>v1</span><span class=p>)</span> <span class=o>&lt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>v2</span><span class=p>):</span>
+<a name=line-282></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
+<a name=line-283></a>            <span class=n>read</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+<a name=line-284></a>            <span class=n>last</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;text&quot;</span><span class=p>,</span> <span class=n>v2</span><span class=p>[</span><span class=nb>len</span><span class=p>(</span><span class=n>v1</span><span class=p>)</span> <span class=p>:])</span>
+<a name=line-285></a>        <span class=k>else</span><span class=p>:</span>
+<a name=line-286></a>            <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>last</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
+<a name=line-287></a>            <span class=n>read</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+<a name=line-288></a>            <span class=n>last</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;text&quot;</span><span class=p>,</span> <span class=n>v1</span><span class=p>[</span><span class=nb>len</span><span class=p>(</span><span class=n>v2</span><span class=p>)</span> <span class=p>:])</span>
+<a name=line-289></a>    <span class=k>return</span> <span class=n>result</span>
+<a name=line-290></a>
+<a name=line-291></a>
+<a name=line-292></a><span class=k>def</span> <span class=nf>trim_indent</span><span class=p>(</span><span class=n>text</span><span class=p>:</span> <span class=nb>str</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
+<a name=line-293></a>    <span class=sd>&quot;&quot;&quot;Find the smallest common indent from the left in the text and remove it from the text.&quot;&quot;&quot;</span>
+<a name=line-294></a>    <span class=n>lines</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>splitlines</span><span class=p>(</span><span class=n>keepends</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
+<a name=line-295></a>    <span class=n>min_indent</span> <span class=o>=</span> <span class=nb>min</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>line</span><span class=p>)</span> <span class=o>-</span> <span class=nb>len</span><span class=p>(</span><span class=n>line</span><span class=o>.</span><span class=n>lstrip</span><span class=p>())</span> <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>lines</span> <span class=k>if</span> <span class=n>line</span><span class=o>.</span><span class=n>strip</span><span class=p>())</span>
+<a name=line-296></a>    <span class=k>return</span> <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>line</span><span class=p>[</span><span class=n>min_indent</span><span class=p>:]</span> <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>lines</span><span class=p>)</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-01-11 16:24 </p></div></div></body></html>
