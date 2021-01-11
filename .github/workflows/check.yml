@@ -43,3 +43,29 @@ jobs:
       run: flake8 elsie tests
     - name: Format
       run: black --check elsie tests
+  docs:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        sudo add-apt-repository ppa:inkscape.dev/stable
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends inkscape=1.0.1+r74~ubuntu20.04.1
+        python -m pip install --upgrade pip wheel setuptools
+        python -m pip install -r requirements-dev.txt
+        python -m pip install .
+        python -m pip install docs/mkdocs-elsie-plugin
+        python -m pip install docs/mkdocs-nedoc-plugin
+    - name: Build API documentation
+      run: |
+        python -m nedoc build
+        cp -r apidoc docs
+    - name: Build documentation
+      run: mkdocs build
