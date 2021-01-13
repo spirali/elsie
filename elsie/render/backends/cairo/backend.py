@@ -5,7 +5,9 @@ from .rcontext import CairoRenderingContext
 
 class CairoBackend(Backend):
     def create_render_unit(self, slide, step: int) -> RenderUnit:
-        ctx = CairoRenderingContext(*self.dimensions, step, slide.debug_boxes)
+        ctx = CairoRenderingContext(
+            *self.dimensions, slide.view_box, step, slide.debug_boxes
+        )
         painters = slide._box.get_painters(ctx, 0)
         painters.sort(key=lambda painter: painter.z_level)
         for p in painters:
@@ -15,14 +17,14 @@ class CairoBackend(Backend):
 
     def compute_text_width(self, parsed_text, style, styles, *args, **kwargs) -> float:
         return (
-            CairoRenderingContext(*self.dimensions, step=1, debug_boxes=False)
+            CairoRenderingContext(*self.dimensions)
             .compute_text_extents(parsed_text, style, styles)
             .width
         )
 
     def compute_text_x(self, parsed_text, style, styles, *args, **kwargs) -> float:
         return (
-            CairoRenderingContext(*self.dimensions, step=1, debug_boxes=False)
+            CairoRenderingContext(*self.dimensions)
             .compute_text_extents(parsed_text, style, styles)
             .x
         )

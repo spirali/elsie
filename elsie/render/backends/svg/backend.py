@@ -66,7 +66,7 @@ class InkscapeBackend(Backend):
         painters.sort(key=lambda painter: painter.z_level)
         for p in painters:
             p.render(ctx)
-        return SvgRenderUnit(self, step, ctx.render(), self.inkscape)
+        return SvgRenderUnit(slide, step, ctx.render(), self.inkscape)
 
     def prune_cache(self):
         self.query_cache = self.used_query_cache
