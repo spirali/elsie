@@ -77,21 +77,35 @@ def fill_stroke_shape(
         )
 
 
+def apply_viewbox(ctx: cairo.Context, width: float, height: float, viewbox):
+    viewbox_width = viewbox[2]
+    viewbox_height = viewbox[3]
+    scale = min(width / viewbox_width, height / viewbox_height)
+    ctx.translate(-viewbox[0] * scale, -viewbox[1] * scale)
+    ctx.scale(scale, scale)
+    translate_x = (width / scale - viewbox_width) / 2
+    translate_y = (height / scale - viewbox_height) / 2
+    ctx.translate(translate_x, translate_y)
+
+
 class CairoRenderingContext(RenderingContext):
-    def __init__(self, width: int, height: int, step, debug_boxes):
+    def __init__(
+        self, width: int, height: int, viewbox=None, step=1, debug_boxes=False
+    ):
         super().__init__(step, debug_boxes)
 
-        # TODO: PDF path, correct DPI
-        width = width * RESOLUTION_SCALE
-        height = height * RESOLUTION_SCALE
+        # TODO: PDF path
+        device_width = width * RESOLUTION_SCALE
+        device_height = height * RESOLUTION_SCALE
         temp_path = os.path.join(
             tempfile.gettempdir(), next(tempfile._get_candidate_names())
         )
         self.filename = f"{temp_path}.pdf"
-        self.surface = cairo.PDFSurface(self.filename, width, height)
+        self.surface = cairo.PDFSurface(self.filename, device_width, device_height)
         self.ctx = cairo.Context(self.surface)
         self.ctx.scale(RESOLUTION_SCALE, RESOLUTION_SCALE)
-        # TODO: handle viewbox
+        if viewbox:
+            apply_viewbox(self.ctx, width, height, viewbox)
 
     def draw_rect(
         self,
