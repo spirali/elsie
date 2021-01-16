@@ -7,3 +7,4 @@ cairocffi==1.2.0
 pangocffi==0.10.0
 pangocairocffi==0.6.0
 webcolors==1.11.1
+cairosvg==2.5.1

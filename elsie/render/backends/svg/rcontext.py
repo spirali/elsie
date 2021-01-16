@@ -40,6 +40,28 @@ class SvgRenderingContext(RenderingContext):
     def draw_bitmap(self, *args, **kwargs):
         draw_bitmap(self.xml, *args, **kwargs)
 
+    def draw_svg(self, svg, x, y, scale, rotation=None, rotation_center=None, **kwargs):
+        xml = Xml()
+        xml.element("g")
+        transform = []
+
+        # First scale, then rotate (https://gamedev.stackexchange.com/a/16721/73578).
+        # Applied in opposite order in transform.
+        if rotation is not None:
+            assert rotation_center is not None
+            transform.append(
+                f"rotate({rotation} {rotation_center[0]} {rotation_center[1]})"
+            )
+
+        transform.append(f"translate({x}, {y})")
+        if scale != 1.0:
+            transform.append(f"scale({scale})")
+        xml.set("transform", " ".join(transform))
+        xml.raw_text(svg)
+        xml.close("g")
+        xml_string = xml.to_string()
+        self.xml.raw_text(xml_string)
+
     def render(self) -> str:
         svg_end(self.xml)
         return self.xml.to_string()

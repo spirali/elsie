@@ -73,7 +73,14 @@ def _draw(parent, svg, svg_width, svg_height, scale, ctx):
     rect = box.layout.rect
     x = rect.x + (rect.width - svg_width) / 2
     y = rect.y + (rect.height - svg_height) / 2
-    parent._render_svg(ctx, x, y, scale, svg)
+    ctx.draw_svg(
+        svg=svg,
+        x=x,
+        y=y,
+        width=rect.width,
+        height=rect.height,
+        scale=scale,
+    )
 
 
 def _render_latex(text):
