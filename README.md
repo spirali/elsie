@@ -1,3 +1,7 @@
+<p align="center">
+<img width="300" src="docs/logo.jpeg">
+</p>
+
 # Elsie
 Elsie is a framework for **creating slides programmatically** using Python.
 
