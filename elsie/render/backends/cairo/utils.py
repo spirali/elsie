@@ -1,6 +1,7 @@
 from typing import Tuple
 
 import webcolors
+import lxml.etree as et
 
 
 def get_rgb_color(color) -> Tuple[float, float, float]:
@@ -19,3 +20,12 @@ def get_rgb_color(color) -> Tuple[float, float, float]:
 
 def normalize_color(color: Tuple[int, int, int]) -> Tuple[float, float, float]:
     return tuple(v / 255 for v in color)
+
+
+SVG_QUERY = et.XPath(".//*[starts-with(name(), 'flow')]")
+
+
+def normalize_svg(root: et.Element) -> et.Element:
+    for el in SVG_QUERY(root):
+        el.getparent().remove(el)
+    return root

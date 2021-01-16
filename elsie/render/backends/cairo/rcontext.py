@@ -6,20 +6,22 @@ import tempfile
 from typing import Tuple
 
 import cairocffi as cairo
+import cairosvg
 import pangocairocffi
 from PIL import Image
+import lxml.etree as et
 
+from ..svg.utils import svg_size_to_pixels
 from ....text.textstyle import TextStyle
 from ....utils.geom import Rect, find_centroid
 from ..rcontext import RenderingContext
 from .shapes import draw_path
 from .text import build_layout, get_extents
-from .utils import get_rgb_color
+from .utils import get_rgb_color, normalize_svg
 
+TARGET_DPI = 96
 # DPI scaling: 72 (cairo) vs 96 (Inkscape)
-RESOLUTION_SCALE = 0.75
-
-# TODO: SVG/ORA images
+RESOLUTION_SCALE = 72 / TARGET_DPI
 
 
 @contextlib.contextmanager
@@ -187,7 +189,7 @@ class CairoRenderingContext(RenderingContext):
             self.ctx.move_to(rect.x - extents.x, rect.y - extents.y)
             pangocairocffi.show_layout(self.ctx, layout)
 
-    def draw_bitmap(self, x, y, width, height, mime, data, rotation=None):
+    def draw_bitmap(self, x, y, width, height, data, rotation=None, **kwargs):
         assert isinstance(data, bytes)
         image = Image.open(io.BytesIO(data))
         if image.mode != "RGBA":
@@ -206,6 +208,32 @@ class CairoRenderingContext(RenderingContext):
             self.ctx.set_source_surface(surface, x, y)
             self.ctx.move_to(x, y)
             self.ctx.paint()
+
+    def draw_svg(
+        self,
+        svg,
+        x,
+        y,
+        width,
+        height,
+        scale,
+        rotation=None,
+        **kwargs,
+    ):
+        root = et.fromstring(svg)
+        svg_width = svg_size_to_pixels(root.get("width"))
+        svg_height = svg_size_to_pixels(root.get("height"))
+        normalized = normalize_svg(root)
+
+        # TODO: assert that DPI equals `TARGET_DPI`
+        png = cairosvg.svg2png(
+            bytestring=et.tostring(normalized),
+            scale=scale,
+            output_width=svg_width,
+            output_height=svg_height,
+            dpi=TARGET_DPI
+        )
+        self.draw_bitmap(x, y, width, height, data=png, rotation=rotation)
 
     def render(self) -> str:
         self.surface.finish()

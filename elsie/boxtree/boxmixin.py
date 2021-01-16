@@ -435,25 +435,6 @@ class BoxMixin:
         box.add_child(item)
         return item
 
-    def _render_svg(self, ctx, x, y, scale, data, rotation=None, rotation_center=None):
-        ctx.xml.element("g")
-        transform = []
-
-        # First scale, then rotate (https://gamedev.stackexchange.com/a/16721/73578).
-        # Applied in opposite order in transform.
-        if rotation is not None:
-            assert rotation_center is not None
-            transform.append(
-                f"rotate({rotation} {rotation_center[0]} {rotation_center[1]})"
-            )
-
-        transform.append(f"translate({x}, {y})")
-        if scale != 1.0:
-            transform.append(f"scale({scale})")
-        ctx.xml.set("transform", " ".join(transform))
-        ctx.xml.raw_text(data)
-        ctx.xml.close("g")
-
     def image(
         self,
         source: Union[str, BinaryIO, bytes],
@@ -671,14 +652,15 @@ class BoxMixin:
             h = image_height * s
             x = rect.x + (rect.width - w) / 2
             y = rect.y + (rect.height - h) / 2
-            self._render_svg(
-                ctx,
-                x,
-                y,
-                s,
-                data,
-                rotation,
-                (x + w / 2, y + h / 2),
+            ctx.draw_svg(
+                svg=data,
+                x=x,
+                y=y,
+                width=w,
+                height=h,
+                scale=s,
+                rotation=rotation,
+                rotation_center=(x + w / 2, y + h / 2),
             )
 
         return self._create_simple_box_item(draw)
