@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+from collections import defaultdict
 
 from setuptools import setup, find_packages
 
@@ -15,8 +16,16 @@ with open("elsie/version.py") as f:
 if VERSION is None:
     raise Exception("version.py executed but VERSION was not set")
 
+extras = defaultdict(list)
+dependencies = []
 with open("requirements.txt") as f:
-    dependencies = [line.strip() for line in f.readlines()]
+    for line in f:
+        line = line.strip()
+        extra = line.rfind("#")
+        if extra == -1:
+            dependencies.append(line)
+        else:
+            extras[line[extra:].lstrip("# ")].append(line[:extra].strip())
 
 setup(
     name="elsie",
@@ -31,6 +40,7 @@ Check out its documentation at https://spirali.github.io/elsie.
     url="https://github.com/spirali/elsie",
     packages=find_packages(),
     install_requires=dependencies,
+    extras_require=extras,
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
