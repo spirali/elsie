@@ -1,8 +1,9 @@
 import elsie
 
 # Let us create primary colors used in slides
-COLOR1 = "#328cc1"
-COLOR2 = "#d9b310"
+COLOR1 = "#676767"
+COLOR2 = "#6699CC"
+
 
 slides = elsie.SlideDeck()
 
@@ -29,7 +30,7 @@ def first_slide(slide):
 
     # Put text into a box with style "header"
     title_box2.text(
-        "Elsie: SlideDeck in Python in Programmable Way",
+        "Elsie: Slides in Python in Programmable Way",
         elsie.TextStyle(size=35, color="white"),
     )
 
@@ -40,8 +41,11 @@ def first_slide(slide):
     subtitle = slide.box()
     subtitle.text(
         "Stanislav Böhm\n~tt{https://github.com/spirali/elsie}",
-        elsie.TextStyle(size=25, color=COLOR1),
+        elsie.TextStyle(size=25, color=COLOR2),
     )
+
+    # Put an image in a fix position
+    slide.box(x="[50%]", y=60, height=170).image("../../docs/logo.jpeg")
 
 
 # Slide with brief description ############################
@@ -643,7 +647,7 @@ def chessboard_demo(slide):
     board = slide.box(width=500, height=500)
     board.set_style("black", elsie.TextStyle(color="black", size=50))
 
-    colors = [COLOR1, COLOR2]
+    colors = [COLOR2, COLOR1]
     tiles = {}
     for i in range(8):
         row = board.box(height="fill", width="100%", horizontal=True)
@@ -768,7 +772,7 @@ def debugging_slides(slide):
     title_box2.rect(bg_color=COLOR1)
 
     title_box2.text(
-        "Elsie: SlideDeck in Python in Programmable Way",
+        "Elsie: Slides in Python in Programmable Way",
         elsie.TextStyle(size=35, color="white"),
     )
 
