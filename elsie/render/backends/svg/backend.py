@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from typing import Union
 
 from ....utils.sxml import Xml
@@ -10,6 +11,8 @@ from ..backend import DEFAULT_CACHE_DIR, Backend
 from .draw import draw_text
 from .query import compute_query
 from .rcontext import SvgRenderingContext
+
+VERSION_REGEX = re.compile(r"Inkscape\s+(\d+\..*)")
 
 
 class InkscapeBackend(Backend):
@@ -36,7 +39,18 @@ class InkscapeBackend(Backend):
             )
             self.inkscape = InkscapeShell(inkscape_bin)
         self.inkscape_version = self.inkscape.get_version()
-        assert "Inkscape" in self.inkscape_version
+        match = VERSION_REGEX.search(self.inkscape_version)
+        if not match:
+            print(f"WARNING: Unknown Inkscape version ({self.inkscape_version})")
+        else:
+            version = match.group(1)
+            major_version = version.split(".")[0]
+            if int(major_version) < 1:
+                print(
+                    f"WARNING: You are using Inkscape {version}, which might be incompatible "
+                    f"with Elsie. Please consider upgrading to Inkscape 1.0+."
+                )
+
         self.cache_dir = cache_dir
 
         if not os.path.isdir(cache_dir):
