@@ -96,6 +96,8 @@ class Box(BoxMixin, StyleContainer):
         return painters
 
     def _debug_paint(self, ctx: "RenderingContext", depth):
+        from ..text.textstyle import TextStyle
+
         rect = self.layout.rect.copy()
         rect.width = max(rect.width, 0.1)
         rect.height = max(rect.height, 0.1)
@@ -106,32 +108,27 @@ class Box(BoxMixin, StyleContainer):
             stroke_dasharray=[None, "4 2", "1 2"][depth % 3],
         )
 
-        # TODO: implement using RenderingContext
-        xml = ctx.xml
+        def format_num(v):
+            if int(v) == v:
+                return str(v)
+            return f"{v:.2f}"
 
-        text = " {}[{:.2f},{:.2f}]".format(
-            self.name + " " if self.name else "", rect.width, rect.height
-        )
+        name = self.name + " " if self.name else ""
+        text = f" {name}[{format_num(rect.width)},{format_num(rect.height)}]"
         size = 14
         if depth % 2 == 1:
             text = "↖" + text
-            y = rect.y + 14 * 0.9
+            y = rect.y + size * 0.9
         else:
             text = "↙" + text
             y = rect.y + rect.height - size * 0.1
 
-        xml.element("text")
-        xml.set("x", rect.x)
-        xml.set("y", y)
-        xml.set(
-            "style",
-            "fill: #ff00ff,fill-opacity:1;stroke:#000000;stroke-width:0.2px;stroke-linecap:butt"
-            ";stroke-linejoin:miter;stroke-opacity:1;",
+        style = TextStyle(color="#ff00ff", size=size, align="left")
+        style = self.get_style(style, full_style=True)
+        rect.y = y
+        ctx.draw_text(
+            rect, rect.x, y, [("text", text)], style=style, styles=self._styles
         )
-        xml.element("tspan")
-        xml.text(text)
-        xml.close("tspan")
-        xml.close("text")
 
     def _traverse(self, fn):
         fn(self)

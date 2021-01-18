@@ -1,7 +1,7 @@
 from typing import Tuple
 
-import webcolors
 import lxml.etree as et
+import webcolors
 
 
 def get_rgb_color(color) -> Tuple[float, float, float]:

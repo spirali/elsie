@@ -1,3 +1,5 @@
+from typing import Union
+
 from .textstyle import TextStyle, compose_style
 
 
@@ -42,6 +44,11 @@ class StyleContainer:
         self._styles[style_name] = style
         return style
 
-    def get_style(self, style: str, full_style=False) -> TextStyle:
-        """Returns a style associated with the given name."""
+    def get_style(self, style: Union[str, TextStyle], full_style=False) -> TextStyle:
+        """
+        Returns a style associated with the given name.
+
+        If `full_style=True`, you can also pass a text style to this function to compose it with
+        the default style.
+        """
         return compose_style(self._styles, style, full_style)
