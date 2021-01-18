@@ -7,14 +7,14 @@ from typing import Tuple
 
 import cairocffi as cairo
 import cairosvg
+import lxml.etree as et
 import pangocairocffi
 from PIL import Image
-import lxml.etree as et
 
-from ..svg.utils import svg_size_to_pixels
 from ....text.textstyle import TextStyle
 from ....utils.geom import Rect, find_centroid
 from ..rcontext import RenderingContext
+from ..svg.utils import svg_size_to_pixels
 from .shapes import draw_path
 from .text import build_layout, get_extents
 from .utils import get_rgb_color, normalize_svg
@@ -231,7 +231,7 @@ class CairoRenderingContext(RenderingContext):
             scale=scale,
             output_width=svg_width,
             output_height=svg_height,
-            dpi=TARGET_DPI
+            dpi=TARGET_DPI,
         )
         self.draw_bitmap(x, y, width, height, data=png, rotation=rotation)
 
