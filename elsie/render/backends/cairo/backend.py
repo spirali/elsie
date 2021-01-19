@@ -1,5 +1,7 @@
+from .utils import get_temp_path
+from ....utils.cache import FsCache
 from ....utils.geom import Rect
-from ...render import PdfRenderUnit, RenderUnit
+from ...render import RenderUnit
 from ..backend import Backend
 from .rcontext import CairoRenderingContext
 
@@ -13,8 +15,7 @@ class CairoBackend(Backend):
         painters.sort(key=lambda painter: painter.z_level)
         for p in painters:
             p.render(ctx)
-        pdf_path = ctx.render()
-        return PdfRenderUnit(slide, step, pdf_path)
+        return CairoRenderUnit(slide, step, ctx)
 
     def compute_text_width(
         self, parsed_text, style, styles, id_index=None, *args, **kwargs
@@ -31,3 +32,18 @@ class CairoBackend(Backend):
         if id_index is None:
             return ctx.compute_text_extents(parsed_text, style, styles)
         return ctx.compute_subtext_extents(parsed_text, style, styles, id_index)
+
+
+class CairoRenderUnit(RenderUnit):
+    def __init__(self, slide, step, ctx: CairoRenderingContext):
+        super().__init__(slide, step)
+        self.ctx = ctx
+
+    def export(self, fs_cache: FsCache, export_type: str):
+        if export_type == "pdf":
+            self.ctx.surface.finish()
+            return self.ctx.filename
+        elif export_type == "png":
+            path = get_temp_path("png")
+            self.ctx.surface.write_to_png(path)
+            return path

@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from ..boxtree.box import Box
 from ..boxtree.layout import Layout
 from ..render import jupyter
-from ..render.render import PdfRenderUnit
+from ..render.render import ExportedRenderUnit
 from ..utils.geom import Rect
 from .show import ShowInfo
 
@@ -78,4 +78,4 @@ class ExternPdfSlide:
         return 1
 
     def make_render_unit(self, backend, step):
-        return PdfRenderUnit(self, step, self.filename)
+        return ExportedRenderUnit(self, step, self.filename)

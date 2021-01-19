@@ -67,7 +67,6 @@ CSS = """
 """
 
 
-# TODO: Cairo export to PNG
 def get_slide_repr_steps(slide: Slide, format: str) -> List[str]:
     if format not in ("svg", "png"):
         raise Exception("Slide can be rendered only to SVG or PNG")
@@ -95,7 +94,7 @@ def get_slide_repr_steps(slide: Slide, format: str) -> List[str]:
         assert False
 
 
-def render_slide_html(slide: Slide, format: str = "svg") -> str:
+def render_slide_html(slide: Slide, format: str = "png") -> str:
     step_items = get_slide_repr_steps(slide, format)
     fragments = tuple(
         f"<div class='elsie-step step-{index + 1}'>{content}</div>"
