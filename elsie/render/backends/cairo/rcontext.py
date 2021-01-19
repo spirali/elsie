@@ -207,6 +207,9 @@ class CairoRenderingContext(RenderingContext):
             )
             layout.set_width(to_pango_units(rect.width))
             baseline = from_pango_units(layout.get_baseline())
+
+            if rotation is not None:
+                transform(self.ctx, rect.mid_point, rotation=rotation)
             self.ctx.move_to(rect.x, y - baseline)
             pangocairocffi.show_layout(self.ctx, layout)
 
