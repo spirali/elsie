@@ -1,14 +1,11 @@
 import io
 import math
-import os
-import tempfile
 
 import cairocffi as cairo
 import lxml.etree as et
 import pangocairocffi
 from PIL import Image
 
-from ....text.textboxitem import text_x_in_rect
 from ....text.textstyle import TextStyle
 from ....utils.geom import Rect, find_centroid
 from ..rcontext import RenderingContext
@@ -30,7 +27,7 @@ from .text import (
     get_extents,
     to_pango_units,
 )
-from .utils import normalize_svg
+from .utils import get_temp_path, normalize_svg
 
 TARGET_DPI = 96
 # DPI scaling: 72 (cairo) vs 96 (Inkscape)
@@ -43,13 +40,9 @@ class CairoRenderingContext(RenderingContext):
     ):
         super().__init__(step, debug_boxes)
 
-        # TODO: PDF path
         self.device_width = width * RESOLUTION_SCALE
         self.device_height = height * RESOLUTION_SCALE
-        temp_path = os.path.join(
-            tempfile.gettempdir(), next(tempfile._get_candidate_names())
-        )
-        self.filename = f"{temp_path}.pdf"
+        self.filename = get_temp_path("pdf")
         self.surface = cairo.PDFSurface(
             self.filename, self.device_width, self.device_height
         )
@@ -151,6 +144,8 @@ class CairoRenderingContext(RenderingContext):
     def compute_subtext_extents(
         self, parsed_text, style: TextStyle, styles, id_index: int
     ) -> Rect:
+        from ....text.textboxitem import text_x_in_rect
+
         layout = build_layout(
             self.ctx, self.pctx, parsed_text, style, styles, RESOLUTION_SCALE
         )
@@ -227,7 +222,3 @@ class CairoRenderingContext(RenderingContext):
             height=height,
             rotation=rotation,
         )
-
-    def render(self) -> str:
-        self.surface.finish()
-        return self.filename

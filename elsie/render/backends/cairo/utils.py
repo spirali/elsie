@@ -1,3 +1,5 @@
+import os
+import tempfile
 from typing import Tuple
 
 import lxml.etree as et
@@ -29,3 +31,10 @@ def normalize_svg(root: et.Element) -> et.Element:
     for el in SVG_QUERY(root):
         el.getparent().remove(el)
     return root
+
+
+def get_temp_path(extension: str) -> str:
+    temp_path = os.path.join(
+        tempfile.gettempdir(), next(tempfile._get_candidate_names())
+    )
+    return f"{temp_path}.{extension}"

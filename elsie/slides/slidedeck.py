@@ -307,7 +307,7 @@ class SlideDeck(StyleContainer):
 
         prune_cache: bool
             If True, then after a successful render, all data that was not used for this render
-            will be removed fromthe cache directory.
+            will be removed from the cache directory.
             Otherwise unused data will not be touched.
 
         save_cache: bool

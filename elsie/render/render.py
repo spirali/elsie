@@ -17,6 +17,9 @@ class RenderUnit:
     def write_debug(self, out_dir):
         pass
 
+    def export(self, fs_cache, export_type: str):
+        raise NotImplementedError
+
     def get_svg(self):
         return None
 
@@ -47,16 +50,15 @@ class SvgRenderUnit(RenderUnit):
         return self.svg
 
 
-class PdfRenderUnit(RenderUnit):
-    def __init__(self, slide, step, filename):
+class ExportedRenderUnit(RenderUnit):
+    def __init__(self, slide, step, filename, export_type="pdf"):
         super().__init__(slide, step)
         self.filename = filename
+        self.export_type = export_type
 
     def export(self, fs_cache, export_type):
-        if export_type == "pdf":
+        if export_type == self.export_type:
             return self.filename
-        else:
-            return None
 
 
 def per_page_grouping(backend, units, count_x, count_y, width, height):
