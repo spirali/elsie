@@ -11,14 +11,14 @@ import lxml.etree as et
 import pangocairocffi
 from PIL import Image
 
-from .draw import rounded_rectangle
 from ....text.textstyle import TextStyle
 from ....utils.geom import Rect, find_centroid
 from ..rcontext import RenderingContext
 from ..svg.utils import svg_size_to_pixels
+from .draw import fill_shape, fill_stroke_shape, rounded_rectangle, stroke_shape
 from .shapes import draw_path
 from .text import build_layout, from_pango_units, get_extents, to_pango_units
-from .utils import get_rgb_color, normalize_svg
+from .utils import normalize_svg
 
 TARGET_DPI = 96
 # DPI scaling: 72 (cairo) vs 96 (Inkscape)
@@ -47,37 +47,6 @@ def transform(
     if scale_x != 1.0 or scale_y != 1.0:
         ctx.scale(sx=scale_x, sy=scale_y)
     ctx.translate(-point[0], -point[1])
-
-
-def fill_shape(ctx, callback, bg_color):
-    ctx.set_source_rgb(*get_rgb_color(bg_color))
-    callback()
-    ctx.fill()
-
-
-def stroke_shape(ctx, callback, color, stroke_width=None, stroke_dasharray=None):
-    ctx.set_source_rgb(*get_rgb_color(color))
-    stroke_width = stroke_width or 1
-    ctx.set_line_width(stroke_width)
-    if stroke_dasharray:
-        ctx.set_dash([float(v) for v in stroke_dasharray.split()])
-    callback()
-    ctx.stroke()
-
-
-def fill_stroke_shape(
-    ctx, callback, color=None, bg_color=None, stroke_width=None, stroke_dasharray=None
-):
-    if bg_color:
-        fill_shape(ctx, callback, bg_color=bg_color)
-    if color:
-        stroke_shape(
-            ctx,
-            callback,
-            color=color,
-            stroke_width=stroke_width,
-            stroke_dasharray=stroke_dasharray,
-        )
 
 
 def apply_viewbox(ctx: cairo.Context, width: float, height: float, viewbox):
@@ -142,7 +111,6 @@ class CairoRenderingContext(RenderingContext):
     def draw_ellipse(
         self, rect: Rect, rotation=None, color=None, bg_color=None, **kwargs
     ):
-        # TODO: scaled ellipse border stroke
         dim_larger = rect.width
         dim_smaller = rect.height
         if dim_larger < dim_smaller:
@@ -151,15 +119,17 @@ class CairoRenderingContext(RenderingContext):
         scale_y = 1.0 if dim_larger == rect.height else dim_smaller / dim_larger
         center = rect.mid_point
 
+        def draw():
+            self.ctx.arc(center[0], center[1], dim_larger / 2.0, 0, 2 * math.pi)
+
         with ctx_scope(self.ctx):
             transform(
                 self.ctx, center, rotation=rotation, scale_x=scale_x, scale_y=scale_y
             )
-
-            def draw():
-                self.ctx.arc(center[0], center[1], dim_larger / 2.0, 0, 2 * math.pi)
-
-            fill_stroke_shape(self.ctx, draw, color=color, bg_color=bg_color, **kwargs)
+            fill_shape(self.ctx, draw, bg_color=bg_color)
+            draw()
+        # Do not apply transform to stroke (https://www.cairographics.org/cookbook/ellipses/)
+        stroke_shape(self.ctx, lambda: ..., color=color, **kwargs)
 
     def draw_polygon(self, points, rotation=None, **kwargs):
         with ctx_scope(self.ctx):
