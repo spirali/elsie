@@ -11,13 +11,20 @@ import lxml.etree as et
 import pangocairocffi
 from PIL import Image
 
+from ....text.textboxitem import text_x_in_rect
 from ....text.textstyle import TextStyle
 from ....utils.geom import Rect, find_centroid
 from ..rcontext import RenderingContext
 from ..svg.utils import svg_size_to_pixels
 from .draw import fill_shape, fill_stroke_shape, rounded_rectangle, stroke_shape
 from .shapes import draw_path
-from .text import build_layout, from_pango_units, get_extents, to_pango_units
+from .text import (
+    build_layout,
+    compute_subtext_extents,
+    from_pango_units,
+    get_extents,
+    to_pango_units,
+)
 from .utils import normalize_svg
 
 TARGET_DPI = 96
@@ -126,10 +133,13 @@ class CairoRenderingContext(RenderingContext):
             transform(
                 self.ctx, center, rotation=rotation, scale_x=scale_x, scale_y=scale_y
             )
-            fill_shape(self.ctx, draw, bg_color=bg_color)
-            draw()
+            if bg_color:
+                fill_shape(self.ctx, draw, bg_color=bg_color)
+            if color:
+                draw()
         # Do not apply transform to stroke (https://www.cairographics.org/cookbook/ellipses/)
-        stroke_shape(self.ctx, lambda: ..., color=color, **kwargs)
+        if color:
+            stroke_shape(self.ctx, lambda: ..., color=color, **kwargs)
 
     def draw_polygon(self, points, rotation=None, **kwargs):
         with ctx_scope(self.ctx):
@@ -164,20 +174,39 @@ class CairoRenderingContext(RenderingContext):
         layout = build_layout(
             self.ctx, self.pctx, parsed_text, style, styles, RESOLUTION_SCALE
         )
-        return get_extents(layout, ink=True)
+        return get_extents(layout)
 
-    # TODO: line/inline box, scale to fit
+    def compute_subtext_extents(
+        self, parsed_text, style: TextStyle, styles, id_index: int
+    ) -> Rect:
+        layout = build_layout(
+            self.ctx, self.pctx, parsed_text, style, styles, RESOLUTION_SCALE
+        )
+        extents = get_extents(layout)
+        start_x = text_x_in_rect(Rect(x=0, width=extents.width), style)
+        x, width = compute_subtext_extents(layout, parsed_text, id_index)
+        return Rect(x=x - start_x, width=width)
+
+    # TODO: improve scale to fit
     def draw_text(
-        self, rect, x, y, parsed_text, style: TextStyle, styles, *args, **kwargs
+        self,
+        rect,
+        x,
+        y,
+        parsed_text,
+        style: TextStyle,
+        styles,
+        rotation=None,
+        scale=None,
+        **kwargs,
     ):
         # TODO: try basic Cairo text API
         with ctx_scope(self.ctx):
             layout = build_layout(
-                self.ctx, self.pctx, parsed_text, style, styles, RESOLUTION_SCALE
+                self.ctx, self.pctx, parsed_text, style, styles, RESOLUTION_SCALE, scale
             )
             layout.set_width(to_pango_units(rect.width))
             baseline = from_pango_units(layout.get_baseline())
-            # print(f"Cairo text: {rect}, {extents}, {x}, {y}, {baseline}")
             self.ctx.move_to(rect.x, y - baseline)
             pangocairocffi.show_layout(self.ctx, layout)
 
@@ -201,6 +230,7 @@ class CairoRenderingContext(RenderingContext):
             self.ctx.move_to(x, y)
             self.ctx.paint()
 
+    # TODO: draw using cairosvg without converting to PNG
     def draw_svg(
         self,
         svg,
