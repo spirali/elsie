@@ -34,8 +34,16 @@ class SvgRenderingContext(RenderingContext):
     def draw_path(self, commands, **kwargs):
         draw_path(self.xml, commands, **kwargs)
 
-    def draw_text(self, rect, *args, **kwargs):
-        draw_text(self.xml, *args, **kwargs)
+    def draw_text(self, rect, *args, rotation=None, scale=None, **kwargs):
+        transforms = []
+        if rotation:
+            transforms.append(
+                f"rotate({rotation} {rect.mid_point[0]} {rect.mid_point[1]})"
+            )
+        if scale:
+            transforms.append(f"scale({scale})")
+        transform = " ".join(transforms) if transforms else None
+        draw_text(self.xml, *args, transform=transform, **kwargs)
 
     def draw_bitmap(self, *args, **kwargs):
         draw_bitmap(self.xml, *args, **kwargs)

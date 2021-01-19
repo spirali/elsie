@@ -3,7 +3,7 @@ from typing import List, Tuple
 import cairocffi as cairo
 import pangocairocffi
 import pangocffi
-from pangocffi import Attribute, AttrList, FontDescription, Rectangle
+from pangocffi import Attribute, AttrList, FontDescription, Layout, Rectangle
 
 from ....text.textstyle import TextStyle
 from ....utils.geom import Rect
@@ -25,7 +25,7 @@ def to_pango_color(color: Tuple[float, float, float]) -> Tuple[int, int, int]:
 
 
 def style_to_attributes(
-    style: TextStyle, start_index: int, end_index: int
+    style: TextStyle, text_scale: float, start_index: int, end_index: int
 ) -> List[Attribute]:
     kwargs = dict(start_index=start_index, end_index=end_index)
     attrs = [
@@ -35,6 +35,9 @@ def style_to_attributes(
             *to_pango_color(get_rgb_color(style.color)), **kwargs
         ),
     ]
+    if text_scale is not None:
+        attrs.append(Attribute.from_scale(int(text_scale), **kwargs))
+
     weight = pangocffi.Weight.BOLD if style.bold else pangocffi.Weight.NORMAL
     attrs.append(Attribute.from_weight(weight, **kwargs))
 
@@ -43,51 +46,60 @@ def style_to_attributes(
     return attrs
 
 
+INVISIBLE_SPACE = "⠀"  # this is not a normal space, but U+2800
+
+
+def byte_length(text):
+    return len(text.encode("utf8"))
+
+
 def get_text_and_attributes(
-    parsed_text, style: TextStyle, styles
+    parsed_text, style: TextStyle, styles, text_scale: float
 ) -> Tuple[str, AttrList]:
     attr_list = AttrList()
     base_style = [styles["default"].compose(style)]
     start = 0
     text = ""
 
-    def length(t):
-        return len(t.encode("utf8"))
-
     def push_attrs(style, start_index, end_index):
-        for attr in style_to_attributes(style, start_index, end_index):
+        for attr in style_to_attributes(style, text_scale, start_index, end_index):
             attr_list.insert(attr)
 
     def active_style():
         return [style for style in reversed(base_style) if style is not None][0]
 
+    line = ""
     for (token, value) in parsed_text:
         if token == "text":
+            line += value
             text += value
         elif token == "newline":
-            newline_text = "\n" * value
-            text += newline_text
+            for _ in range(value):
+                if not line:
+                    # This fixes the height of empty lines
+                    text += INVISIBLE_SPACE
+                text += "\n"
+                line = ""
         elif token == "begin":
-            push_attrs(active_style(), start, length(text))
-            start = length(text)
+            push_attrs(active_style(), start, byte_length(text))
+            start = byte_length(text)
             if value.startswith("#"):
                 base_style.append(None)
             else:
                 base_style.append(active_style().compose(styles[value]))
         elif token == "end":
-            push_attrs(active_style(), start, length(text))
-            start = length(text)
+            push_attrs(active_style(), start, byte_length(text))
+            start = byte_length(text)
             base_style.pop()
 
-    if start < length(text):
-        push_attrs(base_style[0], start, length(text))
+    if start < byte_length(text):
+        push_attrs(base_style[0], start, byte_length(text))
     assert len(base_style) == 1
     assert base_style[0] is not None
     return text, attr_list
 
 
 def get_text_height(pctx: pangocffi.Context, style: TextStyle, resolution_scale: float):
-    # TODO: optimize
     font = FontDescription()
     font.set_family(style.font)
     font.set_absolute_size(to_pango_units(style.size))
@@ -107,6 +119,7 @@ def build_layout(
     style: TextStyle,
     styles,
     resolution_scale: float,
+    text_scale: float = 1.0,
 ) -> pangocffi.Layout:
     # TODO: fix letter spacing
     style = styles["default"].compose(style)
@@ -114,7 +127,7 @@ def build_layout(
     layout.set_ellipsize(pangocffi.EllipsizeMode.NONE)
 
     layout.set_alignment(get_pango_alignment(style))
-    text, attributes = get_text_and_attributes(parsed_text, style, styles)
+    text, attributes = get_text_and_attributes(parsed_text, style, styles, text_scale)
     layout.set_text(text)
     layout.set_attributes(attributes)
 
@@ -136,9 +149,57 @@ def from_pango_rect(rect: Rectangle) -> Rect:
     )
 
 
-def get_extents(layout: pangocffi.Layout, ink=False) -> Rect:
-    rect_l, rect_i = layout.get_extents()
-    return from_pango_rect(rect_i if ink else rect_l)
+def get_extents(layout: pangocffi.Layout, ink=True) -> Rect:
+    rect_logical, rect_ink = layout.get_extents()
+    return from_pango_rect(rect_ink if ink else rect_logical)
+
+
+def get_byte_range(parsed_text, id_index) -> Tuple[int, int]:
+    stack = []
+    byte_count = 0
+    start = None
+
+    for i, (type, value) in enumerate(parsed_text):
+        if type == "text":
+            byte_count += byte_length(value)
+        elif type == "newline":
+            assert False
+        elif type == "begin":
+            if i == id_index:
+                start = byte_count
+            stack.append(value)
+        elif type == "end":
+            stack.pop()
+            if start is not None and not stack:
+                return (start, byte_count)
+    assert False
+
+
+def compute_subtext_extents(
+    layout: Layout, parsed_text, id_index: int
+) -> Tuple[float, float]:
+    """
+    Returns the x coordinate and width of a subtext of a single line.
+    """
+    assert layout.get_line_count() == 1
+    (start, end) = get_byte_range(parsed_text, id_index)
+    iter = layout.get_iter()
+    x = None
+    width = 0
+
+    while True:
+        byte_offset = iter.get_index()
+        if start <= byte_offset < end:
+            extents = from_pango_rect(iter.get_char_extents())
+            if x is None:
+                assert start == byte_offset
+                x = extents.x
+            width += extents.width
+
+        if byte_offset >= end or not iter.next_char():
+            break
+    assert x is not None
+    return (x, width)
 
 
 PANGO_ALIGNMENTS = {

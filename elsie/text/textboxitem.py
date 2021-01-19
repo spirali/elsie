@@ -49,19 +49,8 @@ class TextBoxItem(BoxItem):
         scale = self._text_scale
         style = self._style
         x = text_x_in_rect(rect, style)
-
         y = rect.y + (rect.height - self._text_size[1]) / 2 + style.size * scale
 
-        transforms = []
-        if self.rotation:
-            transforms.append(
-                f"rotate({self.rotation} {rect.mid_point[0]} {rect.mid_point[1]})"
-            )
-        if self._scale_to_fit:
-            transforms.append(f"scale({scale})")
-
-        # TODO: how to manage x, y and scale for Cairo?
-        # TODO: how to find (in)line boxes for Cairo?
         if scale > 0.00001:
             ctx.draw_text(
                 rect=rect,
@@ -70,7 +59,8 @@ class TextBoxItem(BoxItem):
                 parsed_text=self._parsed_text,
                 style=style,
                 styles=self._styles,
-                transform=" ".join(transforms) if transforms else None,
+                scale=scale if self._scale_to_fit else None,
+                rotation=self.rotation,
             )
 
     def _make_query(self, backend: Backend):
