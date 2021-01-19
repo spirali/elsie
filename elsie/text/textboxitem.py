@@ -64,12 +64,12 @@ class TextBoxItem(BoxItem):
         # TODO: how to find (in)line boxes for Cairo?
         if scale > 0.00001:
             ctx.draw_text(
-                rect,
-                x / scale,
-                y / scale,
-                self._parsed_text,
-                style,
-                self._styles,
+                rect=rect,
+                x=x / scale,
+                y=y / scale,
+                parsed_text=self._parsed_text,
+                style=style,
+                styles=self._styles,
                 transform=" ".join(transforms) if transforms else None,
             )
 

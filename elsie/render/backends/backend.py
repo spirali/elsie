@@ -32,6 +32,9 @@ class Backend:
     def compute_text_width(self, parsed_text, style, styles, **kwargs) -> float:
         raise NotImplementedError
 
+    def compute_text_height(self, parsed_text, style, styles, **kwargs) -> float:
+        raise NotImplementedError
+
     def compute_text_x(self, parsed_text, style, styles, **kwargs) -> float:
         raise NotImplementedError
 

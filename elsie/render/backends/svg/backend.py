@@ -75,17 +75,17 @@ class InkscapeBackend(Backend):
     def save_cache(self):
         self._save_query_cache(self.query_cache)
 
-    def compute_text_x(self, parsed_text, style, styles, id_index=None):
-        xml = Xml()
-        draw_text(xml, 0, 0, parsed_text, style, styles, id="target", id_index=id_index)
-        key = xml.to_string()
-        return self.process_query("inkscape-x", key)
-
     def compute_text_width(self, parsed_text, style, styles, id_index=None):
+        return self._text_query("inkscape-w", parsed_text, style, styles, id_index)
+
+    def compute_text_x(self, parsed_text, style, styles, id_index=None):
+        return self._text_query("inkscape-x", parsed_text, style, styles, id_index)
+
+    def _text_query(self, query, parsed_text, style, styles, id_index):
         xml = Xml()
         draw_text(xml, 0, 0, parsed_text, style, styles, id="target", id_index=id_index)
         key = xml.to_string()
-        return self.process_query("inkscape-w", key)
+        return self.process_query(query, key)
 
     def process_query(self, method: str, data: str):
         key = (method, data)

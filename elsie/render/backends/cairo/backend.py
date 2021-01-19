@@ -16,15 +16,12 @@ class CairoBackend(Backend):
         return PdfRenderUnit(slide, step, pdf_path)
 
     def compute_text_width(self, parsed_text, style, styles, *args, **kwargs) -> float:
-        return (
-            CairoRenderingContext(*self.dimensions)
-            .compute_text_extents(parsed_text, style, styles)
-            .width
-        )
+        return self._text_extents(parsed_text, style, styles).width
 
     def compute_text_x(self, parsed_text, style, styles, *args, **kwargs) -> float:
-        return (
-            CairoRenderingContext(*self.dimensions)
-            .compute_text_extents(parsed_text, style, styles)
-            .x
+        return self._text_extents(parsed_text, style, styles).x
+
+    def _text_extents(self, parsed_text, style, styles):
+        return CairoRenderingContext(*self.dimensions).compute_text_extents(
+            parsed_text, style, styles
         )

@@ -127,7 +127,7 @@ class Box(BoxMixin, StyleContainer):
         style = self.get_style(style, full_style=True)
         rect.y = y
         ctx.draw_text(
-            rect, rect.x, y, [("text", text)], style=style, styles=self._styles
+            rect=rect, x=rect.x, y=y, parsed_text=[("text", text)], style=style, styles=self._styles
         )
 
     def _traverse(self, fn):
