@@ -11,6 +11,7 @@ import lxml.etree as et
 import pangocairocffi
 from PIL import Image
 
+from .draw import rounded_rectangle
 from ....text.textstyle import TextStyle
 from ....utils.geom import Rect, find_centroid
 from ..rcontext import RenderingContext
@@ -119,16 +120,24 @@ class CairoRenderingContext(RenderingContext):
         rotation=None,
         **kwargs,
     ):
-        # TODO: rounded rectangle (https://stackoverflow.com/a/4231963/1107768)
-        assert not rx
-        assert not ry
+        if rx is None:
+            rx = ry
+        if ry is None:
+            ry = rx
+
         with ctx_scope(self.ctx):
             transform(self.ctx, rect.mid_point, rotation)
 
             def draw():
                 self.ctx.rectangle(rect.x, rect.y, rect.width, rect.height)
 
-            fill_stroke_shape(self.ctx, draw, **kwargs)
+            def draw_rounded():
+                rounded_rectangle(
+                    self.ctx, rect.x, rect.y, rect.width, rect.height, rx, ry
+                )
+
+            draw_fn = draw_rounded if rx or ry else draw
+            fill_stroke_shape(self.ctx, draw_fn, **kwargs)
 
     def draw_ellipse(
         self, rect: Rect, rotation=None, color=None, bg_color=None, **kwargs
