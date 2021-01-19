@@ -67,6 +67,7 @@ CSS = """
 """
 
 
+# TODO: Cairo export to PNG
 def get_slide_repr_steps(slide: Slide, format: str) -> List[str]:
     if format not in ("svg", "png"):
         raise Exception("Slide can be rendered only to SVG or PNG")

@@ -558,7 +558,9 @@ class BoxMixin:
             h = image_height * s
             x = rect.x + (rect.width - w) / 2
             y = rect.y + (rect.height - h) / 2
-            ctx.draw_bitmap(x, y, w, h, mime, data, rotation)
+            ctx.draw_bitmap(
+                x=x, y=y, width=w, height=h, data=data, mime=mime, rotation=rotation
+            )
 
         return self._create_simple_box_item(draw)
 

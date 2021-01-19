@@ -16,7 +16,7 @@ from ....utils.geom import Rect, find_centroid
 from ..rcontext import RenderingContext
 from ..svg.utils import svg_size_to_pixels
 from .shapes import draw_path
-from .text import build_layout, get_extents
+from .text import build_layout, from_pango_units, get_extents, to_pango_units
 from .utils import get_rgb_color, normalize_svg
 
 TARGET_DPI = 96
@@ -109,6 +109,8 @@ class CairoRenderingContext(RenderingContext):
         if viewbox:
             apply_viewbox(self.ctx, width, height, viewbox)
 
+        self.pctx = pangocairocffi.create_context(self.ctx)
+
     def draw_rect(
         self,
         rect: Rect,
@@ -117,6 +119,9 @@ class CairoRenderingContext(RenderingContext):
         rotation=None,
         **kwargs,
     ):
+        # TODO: rounded rectangle (https://stackoverflow.com/a/4231963/1107768)
+        assert not rx
+        assert not ry
         with ctx_scope(self.ctx):
             transform(self.ctx, rect.mid_point, rotation)
 
@@ -128,6 +133,7 @@ class CairoRenderingContext(RenderingContext):
     def draw_ellipse(
         self, rect: Rect, rotation=None, color=None, bg_color=None, **kwargs
     ):
+        # TODO: scaled ellipse border stroke
         dim_larger = rect.width
         dim_smaller = rect.height
         if dim_larger < dim_smaller:
@@ -144,7 +150,7 @@ class CairoRenderingContext(RenderingContext):
             def draw():
                 self.ctx.arc(center[0], center[1], dim_larger / 2.0, 0, 2 * math.pi)
 
-            fill_stroke_shape(self.ctx, draw, color=color, bg_color=bg_color)
+            fill_stroke_shape(self.ctx, draw, color=color, bg_color=bg_color, **kwargs)
 
     def draw_polygon(self, points, rotation=None, **kwargs):
         with ctx_scope(self.ctx):
@@ -176,17 +182,24 @@ class CairoRenderingContext(RenderingContext):
             fill_stroke_shape(self.ctx, draw, **kwargs)
 
     def compute_text_extents(self, parsed_text, style: TextStyle, styles) -> Rect:
-        layout = build_layout(self.ctx, parsed_text, style, styles)
-        return get_extents(layout)
+        layout = build_layout(
+            self.ctx, self.pctx, parsed_text, style, styles, RESOLUTION_SCALE
+        )
+        return get_extents(layout, ink=True)
 
+    # TODO: line/inline box, scale to fit
     def draw_text(
         self, rect, x, y, parsed_text, style: TextStyle, styles, *args, **kwargs
     ):
-        # TODO: move to correct location
+        # TODO: try basic Cairo text API
         with ctx_scope(self.ctx):
-            layout = build_layout(self.ctx, parsed_text, style, styles)
-            extents = get_extents(layout)
-            self.ctx.move_to(rect.x - extents.x, rect.y - extents.y)
+            layout = build_layout(
+                self.ctx, self.pctx, parsed_text, style, styles, RESOLUTION_SCALE
+            )
+            layout.set_width(to_pango_units(rect.width))
+            baseline = from_pango_units(layout.get_baseline())
+            # print(f"Cairo text: {rect}, {extents}, {x}, {y}, {baseline}")
+            self.ctx.move_to(rect.x, y - baseline)
             pangocairocffi.show_layout(self.ctx, layout)
 
     def draw_bitmap(self, x, y, width, height, data, rotation=None, **kwargs):
