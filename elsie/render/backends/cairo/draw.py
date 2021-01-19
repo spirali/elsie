@@ -1,3 +1,7 @@
+import contextlib
+import math
+from typing import Tuple
+
 import cairocffi as cairo
 
 from .utils import get_rgb_color
@@ -56,3 +60,38 @@ def fill_stroke_shape(
             stroke_width=stroke_width,
             stroke_dasharray=stroke_dasharray,
         )
+
+
+@contextlib.contextmanager
+def ctx_scope(ctx: cairo.Context):
+    try:
+        ctx.save()
+        yield ctx
+    finally:
+        ctx.restore()
+
+
+def transform(
+    ctx: cairo.Context,
+    point: Tuple[float, float],
+    rotation: float = None,
+    scale_x=1.0,
+    scale_y=1.0,
+):
+    ctx.translate(point[0], point[1])
+    if rotation is not None:
+        ctx.rotate(math.radians(rotation))
+    if scale_x != 1.0 or scale_y != 1.0:
+        ctx.scale(sx=scale_x, sy=scale_y)
+    ctx.translate(-point[0], -point[1])
+
+
+def apply_viewbox(ctx: cairo.Context, width: float, height: float, viewbox):
+    viewbox_width = viewbox[2]
+    viewbox_height = viewbox[3]
+    scale = min(width / viewbox_width, height / viewbox_height)
+    ctx.translate(-viewbox[0] * scale, -viewbox[1] * scale)
+    ctx.scale(scale, scale)
+    translate_x = (width / scale - viewbox_width) / 2
+    translate_y = (height / scale - viewbox_height) / 2
+    ctx.translate(translate_x, translate_y)

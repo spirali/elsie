@@ -1,12 +1,9 @@
-import contextlib
 import io
 import math
 import os
 import tempfile
-from typing import Tuple
 
 import cairocffi as cairo
-import cairosvg
 import lxml.etree as et
 import pangocairocffi
 from PIL import Image
@@ -15,9 +12,17 @@ from ....text.textboxitem import text_x_in_rect
 from ....text.textstyle import TextStyle
 from ....utils.geom import Rect, find_centroid
 from ..rcontext import RenderingContext
-from ..svg.utils import svg_size_to_pixels
-from .draw import fill_shape, fill_stroke_shape, rounded_rectangle, stroke_shape
+from .draw import (
+    apply_viewbox,
+    ctx_scope,
+    fill_shape,
+    fill_stroke_shape,
+    rounded_rectangle,
+    stroke_shape,
+    transform,
+)
 from .shapes import draw_path
+from .svg import render_svg
 from .text import (
     build_layout,
     compute_subtext_extents,
@@ -32,41 +37,6 @@ TARGET_DPI = 96
 RESOLUTION_SCALE = 72 / TARGET_DPI
 
 
-@contextlib.contextmanager
-def ctx_scope(ctx: cairo.Context):
-    try:
-        ctx.save()
-        yield ctx
-    finally:
-        ctx.restore()
-
-
-def transform(
-    ctx: cairo.Context,
-    point: Tuple[float, float],
-    rotation: float = None,
-    scale_x=1.0,
-    scale_y=1.0,
-):
-    ctx.translate(point[0], point[1])
-    if rotation is not None:
-        ctx.rotate(math.radians(rotation))
-    if scale_x != 1.0 or scale_y != 1.0:
-        ctx.scale(sx=scale_x, sy=scale_y)
-    ctx.translate(-point[0], -point[1])
-
-
-def apply_viewbox(ctx: cairo.Context, width: float, height: float, viewbox):
-    viewbox_width = viewbox[2]
-    viewbox_height = viewbox[3]
-    scale = min(width / viewbox_width, height / viewbox_height)
-    ctx.translate(-viewbox[0] * scale, -viewbox[1] * scale)
-    ctx.scale(scale, scale)
-    translate_x = (width / scale - viewbox_width) / 2
-    translate_y = (height / scale - viewbox_height) / 2
-    ctx.translate(translate_x, translate_y)
-
-
 class CairoRenderingContext(RenderingContext):
     def __init__(
         self, width: int, height: int, viewbox=None, step=1, debug_boxes=False
@@ -74,13 +44,15 @@ class CairoRenderingContext(RenderingContext):
         super().__init__(step, debug_boxes)
 
         # TODO: PDF path
-        device_width = width * RESOLUTION_SCALE
-        device_height = height * RESOLUTION_SCALE
+        self.device_width = width * RESOLUTION_SCALE
+        self.device_height = height * RESOLUTION_SCALE
         temp_path = os.path.join(
             tempfile.gettempdir(), next(tempfile._get_candidate_names())
         )
         self.filename = f"{temp_path}.pdf"
-        self.surface = cairo.PDFSurface(self.filename, device_width, device_height)
+        self.surface = cairo.PDFSurface(
+            self.filename, self.device_width, self.device_height
+        )
         self.ctx = cairo.Context(self.surface)
         self.ctx.scale(RESOLUTION_SCALE, RESOLUTION_SCALE)
         if viewbox:
@@ -233,7 +205,6 @@ class CairoRenderingContext(RenderingContext):
             self.ctx.move_to(x, y)
             self.ctx.paint()
 
-    # TODO: draw using cairosvg without converting to PNG
     def draw_svg(
         self,
         svg,
@@ -241,24 +212,21 @@ class CairoRenderingContext(RenderingContext):
         y,
         width,
         height,
-        scale,
         rotation=None,
         **kwargs,
     ):
         root = et.fromstring(svg)
-        svg_width = svg_size_to_pixels(root.get("width"))
-        svg_height = svg_size_to_pixels(root.get("height"))
         normalized = normalize_svg(root)
-
-        # TODO: assert that DPI equals `TARGET_DPI`
-        png = cairosvg.svg2png(
-            bytestring=et.tostring(normalized),
-            scale=scale,
-            output_width=svg_width,
-            output_height=svg_height,
-            dpi=TARGET_DPI,
+        normalized_svg = et.tostring(normalized, encoding="utf8")
+        render_svg(
+            self.surface,
+            svg=normalized_svg.decode(),
+            x=x,
+            y=y,
+            width=width,
+            height=height,
+            rotation=rotation,
         )
-        self.draw_bitmap(x, y, width, height, data=png, rotation=rotation)
 
     def render(self) -> str:
         self.surface.finish()
