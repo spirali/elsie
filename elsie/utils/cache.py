@@ -80,7 +80,7 @@ class FsCache:
 
 
 def get_cache_file_path(directory: str, extension: str) -> str:
-    temp_path = os.path.abspath(os.path.join(
-        directory, f"cache.{next(tempfile._get_candidate_names())}"
-    ))
+    temp_path = os.path.abspath(
+        os.path.join(directory, f"cache.{next(tempfile._get_candidate_names())}")
+    )
     return f"{temp_path}.{extension}"

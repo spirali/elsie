@@ -1,5 +1,6 @@
 import io
 import math
+from typing import Optional
 
 import cairocffi as cairo
 import lxml.etree as et
@@ -28,7 +29,6 @@ from .text import (
     to_pango_units,
 )
 from .utils import normalize_svg
-from ....utils.cache import get_cache_file_path
 
 TARGET_DPI = 96
 # DPI scaling: 72 (cairo) vs 96 (Inkscape)
@@ -37,14 +37,19 @@ RESOLUTION_SCALE = 72 / TARGET_DPI
 
 class CairoRenderingContext(RenderingContext):
     def __init__(
-        self, width: int, height: int, cache_dir: str, viewbox=None, step=1, debug_boxes=False
+        self,
+        width: int,
+        height: int,
+        filename: Optional[str] = None,
+        viewbox=None,
+        step=1,
+        debug_boxes=False,
     ):
         super().__init__(step, debug_boxes)
 
-        self.cache_dir = cache_dir
         self.device_width = width * RESOLUTION_SCALE
         self.device_height = height * RESOLUTION_SCALE
-        self.filename = get_cache_file_path(self.cache_dir, "pdf")
+        self.filename = filename
         self.surface = cairo.PDFSurface(
             self.filename, self.device_width, self.device_height
         )
