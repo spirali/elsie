@@ -1,5 +1,21 @@
 Note: This file documents major changes visible to users; see Git history for detailed log.
 
+# v3.1
+### Add new experimental Cairo backend
+You can use the new Cairo backend to render slides without the need to install `Inkscape`.
+To use it, install elsie with the `cairo` extra package:
+```bash
+$ pip install elsie[cairo]
+```
+
+And then pass `CairoBackend` to `SlideDeck`:
+```python
+import elsie
+from elsie.render.backends import CairoBackend
+
+slides = elsie.SlideDeck(backend=CairoBackend())
+```
+
 # v3.0
 
 ## Breaking changes
