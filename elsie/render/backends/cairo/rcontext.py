@@ -1,6 +1,5 @@
 import io
 import math
-from typing import Optional
 
 import cairocffi as cairo
 import lxml.etree as et
@@ -40,19 +39,17 @@ class CairoRenderingContext(RenderingContext):
         self,
         width: int,
         height: int,
-        filename: Optional[str] = None,
         viewbox=None,
         step=1,
         debug_boxes=False,
     ):
         super().__init__(step, debug_boxes)
 
+        self.width = width
+        self.height = height
         self.device_width = width * RESOLUTION_SCALE
         self.device_height = height * RESOLUTION_SCALE
-        self.filename = filename
-        self.surface = cairo.PDFSurface(
-            self.filename, self.device_width, self.device_height
-        )
+        self.surface = cairo.RecordingSurface(0, (0, 0, width, height))
         self.ctx = cairo.Context(self.surface)
         self.ctx.scale(RESOLUTION_SCALE, RESOLUTION_SCALE)
         if viewbox:

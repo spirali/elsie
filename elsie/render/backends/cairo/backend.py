@@ -1,8 +1,10 @@
+import cairocffi as cairo
+
 from ....utils.cache import FsCache, get_cache_file_path
 from ....utils.geom import Rect
 from ...render import RenderUnit
 from ..backend import DEFAULT_CACHE_DIR, Backend
-from .rcontext import CairoRenderingContext
+from .rcontext import CairoRenderingContext, RESOLUTION_SCALE
 
 
 class CairoBackend(Backend):
@@ -15,10 +17,8 @@ class CairoBackend(Backend):
         super().__init__(cache_dir)
 
     def create_render_unit(self, slide, step: int) -> RenderUnit:
-        filename = get_cache_file_path(self.cache_dir, "pdf")
         ctx = CairoRenderingContext(
             *self.dimensions,
-            filename=filename,
             viewbox=slide.view_box,
             step=step,
             debug_boxes=slide.debug_boxes
@@ -53,10 +53,23 @@ class CairoRenderUnit(RenderUnit):
         self.ctx = ctx
 
     def export(self, fs_cache: FsCache, export_type: str):
+        def render(surface, scale=None):
+            ctx = cairo.Context(surface)
+            if scale:
+                ctx.scale(scale, scale)
+            ctx.set_source_surface(self.ctx.surface)
+            ctx.paint()
+
+        path = None
         if export_type == "pdf":
-            self.ctx.surface.finish()
-            return self.ctx.filename
+            path = get_cache_file_path(self.cache_dir, "pdf")
+            surface = cairo.PDFSurface(path, self.ctx.device_width, self.ctx.device_height)
+            render(surface)
+            surface.finish()
         elif export_type == "png":
+            surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, self.ctx.width, self.ctx.height)
+            # Reverse PDF scaling
+            render(surface, scale=1 / RESOLUTION_SCALE)
             path = get_cache_file_path(self.cache_dir, "png")
-            self.ctx.surface.write_to_png(path)
-            return path
+            surface.write_to_png(path)
+        return path
