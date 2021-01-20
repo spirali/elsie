@@ -31,7 +31,7 @@ class InkscapeBackend(Backend):
         cache_dir: str
             Cache directory for caching SVG files.
         """
-        super().__init__()
+        super().__init__(cache_dir)
         if isinstance(inkscape, InkscapeShell):
             self.inkscape = inkscape
         else:
@@ -39,6 +39,7 @@ class InkscapeBackend(Backend):
                 inkscape or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
             )
             self.inkscape = InkscapeShell(inkscape_bin)
+
         self.inkscape_version = self.inkscape.get_version()
         match = VERSION_REGEX.search(self.inkscape_version)
         if not match:
@@ -51,8 +52,6 @@ class InkscapeBackend(Backend):
                     f"WARNING: You are using Inkscape {version}, which might be incompatible "
                     f"with Elsie. Please consider upgrading to Inkscape 1.0+."
                 )
-
-        self.cache_dir = cache_dir
 
         self.query_cache = self._load_query_cache()
         self.used_query_cache = {}

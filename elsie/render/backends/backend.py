@@ -11,8 +11,9 @@ DEFAULT_CACHE_DIR = "./elsie-cache"
 class Backend:
     """Represents a rendering backend that can render Elsie primitives into PDF."""
 
-    def __init__(self):
+    def __init__(self, cache_dir: str):
         self.dimensions = None
+        self.cache_dir = cache_dir
 
     def set_dimensions(self, width: int, height: int):
         self.dimensions = (width, height)
