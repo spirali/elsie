@@ -1,12 +1,17 @@
-from .utils import get_temp_path
 from ....utils.cache import FsCache
 from ....utils.geom import Rect
 from ...render import RenderUnit
 from ..backend import Backend
 from .rcontext import CairoRenderingContext
+from .utils import get_temp_path
 
 
 class CairoBackend(Backend):
+    """
+    Backend that maps Elsie primitives to Cairo commands and renders them to PDF using a Cairo
+    surface.
+    """
+
     def create_render_unit(self, slide, step: int) -> RenderUnit:
         ctx = CairoRenderingContext(
             *self.dimensions, slide.view_box, step, slide.debug_boxes

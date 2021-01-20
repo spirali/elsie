@@ -1,21 +1,29 @@
 # Installation
 ## Requirements
 - Python 3.6+
-- Inkscape 1.0+
+- Inkscape 1.0+ (required only for Inkscape backend)
+    - You can find installation instructions [here](https://wiki.inkscape.org/wiki/index.php/Installing_Inkscape)
     - Versions under 1.0 and above 0.92 might also work, but they are not primarily supported
-- (Required only for `LaTeX` support): `pdflatex`, `pdf2svg`
+- `pdflatex`, `pdf2svg` (required only for `LaTeX` support)
 
 ## Native installation
-You can install *Elsie* using **PyPi**:
+### Inkscape backend (recommended)
+If you want to use Inkscape for rendering slides to PDF, make sure that you have it installed,
+preferably with version 1.0+. You can find how to install Inkscape
+[here](https://wiki.inkscape.org/wiki/index.php/Installing_Inkscape). On Ubuntu you can simply execute
+```bash
+$ apt-get install inkscape
+```
+
+Then simply install *Elsie* using **PyPi**:
 ```bash
 $ pip3 install elsie
 ```
 
-You will also need **Inkscape** installed, preferably with version 1.0+. You can find how to install
-Inkscape [here](https://wiki.inkscape.org/wiki/index.php/Installing_Inkscape). On Ubuntu you can
-simply execute
+### Cairo backend
+Install *Elsie* with the `cairo` extra package:
 ```bash
-$ apt-get install inkscape
+$ pip3 install elsie[cairo]
 ```
 
 ## Docker installation

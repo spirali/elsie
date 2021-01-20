@@ -1,3 +1,6 @@
+from ....utils.geom import Rect
+from ....utils.sxml import Xml
+from ..rcontext import RenderingContext
 from .draw import (
     draw_bitmap,
     draw_ellipse,
@@ -8,9 +11,6 @@ from .draw import (
     draw_text,
 )
 from .utils import svg_begin, svg_end
-from ..rcontext import RenderingContext
-from ....utils.geom import Rect
-from ....utils.sxml import Xml
 
 
 class SvgRenderingContext(RenderingContext):
@@ -34,8 +34,18 @@ class SvgRenderingContext(RenderingContext):
     def draw_path(self, commands, **kwargs):
         draw_path(self.xml, commands, **kwargs)
 
-    def draw_text(self, rect, x, y, parsed_text, style, styles, rotation=None, scale=None,
-                  **kwargs):
+    def draw_text(
+        self,
+        rect,
+        x,
+        y,
+        parsed_text,
+        style,
+        styles,
+        rotation=None,
+        scale=None,
+        **kwargs,
+    ):
         if scale is not None:
             x /= scale
             y /= scale
@@ -48,8 +58,16 @@ class SvgRenderingContext(RenderingContext):
         if scale:
             transforms.append(f"scale({scale})")
         transform = " ".join(transforms) if transforms else None
-        draw_text(self.xml, x=x, y=y, parsed_text=parsed_text, style=style, styles=styles,
-                  transform=transform, **kwargs)
+        draw_text(
+            self.xml,
+            x=x,
+            y=y,
+            parsed_text=parsed_text,
+            style=style,
+            styles=styles,
+            transform=transform,
+            **kwargs,
+        )
 
     def draw_bitmap(self, *args, **kwargs):
         draw_bitmap(self.xml, *args, **kwargs)

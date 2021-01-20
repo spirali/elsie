@@ -75,9 +75,6 @@ send us a [Pull Request](https://github.com/spirali/elsie/pulls) to share the fu
 others.
 - *Elsie* produces PDF slides, so it can only create animations with a single frame per page.
 If you need 60 FPS animations or GIFs in your presentations, this tool is not for you.
-- *Elsie* currently renders SVG slides to PDF using `Inkscape`. Therefore, you must have it
-installed on your system for it to work. We provide a
-[Docker image](installation.md#docker-installation) with `Inkscape` for convenience.
 - *Elsie* is tested only on Linux. If you find a problem on a different platform, do not hesitate
 to open a [GitHub issue](https://github.com/spirali/elsie/issues/new).
 
@@ -136,10 +133,6 @@ fragment animations, pretty syntax highlighted source code snippets or LaTeX equ
 probably be nigh impossible using this library.
 
 ## FAQ
-- **Why do you use `Inkscape` instead of e.g. `Cairo` for rendering slides?**
-We are experimenting with a `Cairo` backend, but it would be probably difficult to fully support
-embedding SVG images into slides with Cairo, which is something that we use a lot. But it is
-possible that *Elsie* will not require `Inkscape` sometime in the future.
 - **Why don't you use an existing layout model, e.g. `flexbox`?**
 We made the [layout model](userguide/layout.md) tailored for presentations, which might not be
 so easy with a general layout model. We also couldn't find any usable binding of a standalone and
