@@ -1,3 +1,4 @@
+import contextlib
 import os
 import sys
 
@@ -17,10 +18,8 @@ from elsie.render.inkscape import InkscapeShell  # noqa
 
 
 class SlideTester:
-    def __init__(self, inkscape_shell=None):
-        self.slides = elsie.SlideDeck(
-            name_policy="ignore", backend=InkscapeBackend(inkscape=inkscape_shell)
-        )
+    def __init__(self, backend):
+        self.slides = elsie.SlideDeck(name_policy="ignore", backend=backend)
         self._slide = None
 
     @property
@@ -35,7 +34,7 @@ class SlideTester:
     def assets_path(self, subpath):
         return os.path.join(DATA_DIR, "assets", subpath)
 
-    def check(self, expected, expect_count=1, render_args=None, bless=False):
+    def check_svg(self, expected, expect_count=1, render_args=None, bless=False):
         if render_args is None:
             render_args = {}
         done = False
@@ -68,6 +67,16 @@ class SlideTester:
                         f.write(unit.get_svg())
 
 
+@contextlib.contextmanager
+def change_workdir(workdir):
+    cwd = os.getcwd()
+    try:
+        os.chdir(workdir)
+        yield
+    finally:
+        os.chdir(cwd)
+
+
 @pytest.fixture(autouse=True, scope="session")
 def inkscape_shell():
     inkscape_bin = os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
@@ -78,10 +87,35 @@ def inkscape_shell():
 
 @pytest.fixture(autouse=True, scope="function")
 def test_env(tmp_path, inkscape_shell):
-    cwd = os.getcwd()
-    os.chdir(tmp_path)
-    tester = SlideTester(inkscape_shell)
-    try:
+    with change_workdir(tmp_path):
+        backend = InkscapeBackend(inkscape=inkscape_shell)
+        tester = SlideTester(backend)
         yield tester
-    finally:
-        os.chdir(cwd)
+
+
+CAIRO_DIFF_COUNT = 5
+
+
+def check(svg: str = None, cairo=True, **check_kwargs):
+    assert svg or cairo
+
+    def wrapper(wrapped):
+        def fn(tmp_path, inkscape_shell, *args, **kwargs):
+            with change_workdir(tmp_path):
+                if svg:
+                    test_utils.check_svg(
+                        svg,
+                        inkscape_shell,
+                        wrapped,
+                        check_kwargs=check_kwargs,
+                        *args,
+                        **kwargs,
+                    )
+                if cairo:
+                    test_utils.check_cairo(
+                        wrapped, diff_threshold=CAIRO_DIFF_COUNT, *args, **kwargs
+                    )
+
+        return fn
+
+    return wrapper

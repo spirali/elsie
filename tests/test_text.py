@@ -1,4 +1,5 @@
 import pytest
+from conftest import check
 
 import elsie
 from elsie.text.highlight import highlight_code
@@ -11,6 +12,7 @@ from elsie.text.textparser import (
 )
 
 
+@check("linehighlight", expect_count=5, cairo=False)
 def test_line_highlight_1(test_env):
     slide = test_env.slide
 
@@ -44,9 +46,8 @@ def test_line_highlight_1(test_env):
         bg_color="green",
     )
 
-    test_env.check("linehighlight", 5)
 
-
+@check("styles-highlight", cairo=False)
 def test_styles_and_highlight(test_env):
     slide = test_env.slide
     b = slide.box()
@@ -63,9 +64,10 @@ int ~#A{main}() {
     )
 
     t.inline_box("#A", below=t).rect(bg_color="red")
-    test_env.check("styles-highlight")
+    test_env.check_svg("styles-highlight")
 
 
+@check("linenumbers", cairo=False)
 def test_line_numbers(test_env):
     slide = test_env.slide
 
@@ -88,9 +90,8 @@ int main() {
         line_numbers=True,
     )
 
-    test_env.check("linenumbers", 1)
 
-
+@check("highlight-whitespace")
 def test_highlight_whitespace(test_env):
     slide = test_env.slide
 
@@ -102,9 +103,8 @@ line
 second_line // comment""",
     )
 
-    test_env.check("highlight-whitespace", 1)
 
-
+@check("highlight-bug-2", cairo=False)
 def test_highlight_bug2(test_env):
     text = """strlen("ahoj"); // 4
 
@@ -116,9 +116,9 @@ strcat(buffer, "strings");     // append "strings" to buffer"""
 
     slide = test_env.slide
     slide.box().code("c", text)
-    test_env.check("highlight-bug-2")
 
 
+@check("highlight-bug-3")
 def test_highlight_bug3(test_env):
     text = """// b
 
@@ -126,9 +126,9 @@ def test_highlight_bug3(test_env):
 
     slide = test_env.slide
     slide.box().code("c", text, use_styles=True)
-    test_env.check("highlight-bug-3")
 
 
+@check("highlight-bug-4", cairo=False)
 def test_highlight_bug4(test_env):
     text = """int now = (int) time(NULL); // get current time
 srand(now); // initialize S with the current time
@@ -142,9 +142,9 @@ float num4 = rand() / (float) RAND_MAX;"""
 
     slide = test_env.slide
     slide.box().code("c", text, use_styles=False)
-    test_env.check("highlight-bug-4")
 
 
+@check("console", cairo=False)
 def test_console(test_env):
     slide = test_env.slide
 
@@ -168,9 +168,8 @@ def test_console(test_env):
         escape_char="!",
     )
 
-    test_env.check("console")
 
-
+@check("list")
 def test_list(test_env):
     slide = test_env.slide
 
@@ -185,9 +184,8 @@ def test_list(test_env):
     list_item(main).text("This is multi\nline\nitem")
     list_item(main).text("Last item")
 
-    test_env.check("list")
 
-
+@check("styles")
 def test_styles(test_env):
     slide = test_env.slide
 
@@ -213,8 +211,6 @@ def test_styles(test_env):
     slide.box().text(
         "~my_red{red} gray ~my_blue{blue}", elsie.TextStyle(size=7, color="gray")
     )
-
-    test_env.check("styles")
 
 
 def test_pygments_single_line_comment():
@@ -279,34 +275,35 @@ def _test_text_box_slide(slide):
     b.inline_box("my_blue").rect(color="blue")
 
 
+@check("text-box-left", cairo=False)
 def test_text_box_left(test_env):
     slide = test_env.slide
     slide.update_style("default", elsie.TextStyle(align="left"))
     _test_text_box_slide(slide)
-    test_env.check("text-box-left")
 
 
+@check("text-box-middle", cairo=False)
 def test_text_box_middle(test_env):
     slide = test_env.slide
     slide.update_style("default", elsie.TextStyle(align="middle"))
     _test_text_box_slide(slide)
-    test_env.check("text-box-middle")
 
 
+@check("text-box-right", cairo=False)
 def test_text_box_right(test_env):
     slide = test_env.slide
     slide.update_style("default", elsie.TextStyle(align="right"))
     _test_text_box_slide(slide)
-    test_env.check("text-box-right")
 
 
+@check("dummy-style")
 def test_text_dummy_style(test_env):
     slide = test_env.slide
     b = slide.box().text("~#ABC{This} ~#ABC{is} ~#ABC{a text}.")
     b.inline_box("#ABC", n_th=3).rect(color="black")
-    test_env.check("dummy-style")
 
 
+@check("dummy-style-code", expect_count=2)
 def test_code_dummy_style(test_env):
     slide = test_env.slide
     b = slide.box().code(
@@ -316,9 +313,9 @@ def test_code_dummy_style(test_env):
         use_styles=True,
     )
     b.inline_box("#access", show="next+").rect(bg_color="red")
-    test_env.check("dummy-style-code", 2)
 
 
+@check("code-use-styles", cairo=False)
 def test_code_dummy_use_style(test_env):
     c1 = """
     async fn binary_search(array: &[u32], needle: u32) -> i32
@@ -333,7 +330,6 @@ def test_code_dummy_use_style(test_env):
     }"""
     slide = test_env.slide
     slide.box().code("rust", c1 + c2, use_styles=True)
-    test_env.check("code-use-styles")
 
 
 def test_text_merge2():
@@ -420,6 +416,7 @@ def test_text_merge_and_destylize():
     assert r == r2
 
 
+@check("text-fit-a", cairo=False)
 def test_text_scale_to_fit_a(test_env):
     slide = test_env.slide
     slide.box(x=50, y=50, width=300, height=300).rect(bg_color="#bbffbb").text(
@@ -435,9 +432,9 @@ def test_text_scale_to_fit_a(test_env):
     slide.box(x=650, y=400, width=300, height=300).rect(bg_color="#bbffbb").text(
         "This is\ntext", elsie.TextStyle(size=160), scale_to_fit=True
     )
-    test_env.check("text-fit-a")
 
 
+@check("text-fit-b", cairo=False)
 def test_text_scale_to_fit_b(test_env):
     slide = test_env.slide
     slide.box(x=50, y=50, width=300, height=300).fbox().rect(bg_color="#bbffbb").text(
@@ -453,17 +450,17 @@ def test_text_scale_to_fit_b(test_env):
     slide.box(x=650, y=400, width=300, height=300).fbox().rect(bg_color="#bbffbb").text(
         "This is\ntext", elsie.TextStyle(size=160), scale_to_fit=True
     )
-    test_env.check("text-fit-b")
 
 
+@check("text-fit-pointers1", cairo=False)
 def test_text_scale_to_fit_pointers1(test_env):
     slide = test_env.slide
     t = slide.text("This is ~#A{full}\nslide\ntext!", scale_to_fit=True)
     t.line_box(2, z_level=-1).rect(bg_color="red")
     t.inline_box("#A", z_level=-1).rect(bg_color="blue")
-    test_env.check("text-fit-pointers1")
 
 
+@check("text-fit-pointers2", cairo=False)
 def test_text_scale_to_fit_pointers2(test_env):
     slide = test_env.slide
     t = slide.text(
@@ -472,9 +469,9 @@ def test_text_scale_to_fit_pointers2(test_env):
     )
     t.line_box(2, z_level=-1).rect(bg_color="red")
     t.inline_box("#A", z_level=-1).rect(bg_color="blue")
-    test_env.check("text-fit-pointers2")
 
 
+@check("text-fit-code", cairo=False)
 def test_text_scale_to_fit_code(test_env):
     slide = test_env.slide
     slide.code(
@@ -487,9 +484,9 @@ int main() {
 }""",
         scale_to_fit=True,
     )
-    test_env.check("text-fit-code")
 
 
+@check("text-fit-fill")
 def test_text_scale_to_fit_fill(test_env):
     slide = test_env.slide
     box = slide.box(width="100%", height="30%").rect(bg_color="green")
@@ -518,15 +515,14 @@ int main() {
         scale_to_fit=True,
     )
 
-    test_env.check("text-fit-fill")
 
-
+@check("text-fit-empty")
 def test_text_scale_to_fit_empty(test_env):
     slide = test_env.slide
     slide.box().text("", scale_to_fit=True)
-    test_env.check("text-fit-empty")
 
 
+@check("text-above-below")
 def test_text_above_below(test_env):
     slide = test_env.slide
     t = slide.text("Hello ~tt{world!}\nSecond line")
@@ -534,7 +530,6 @@ def test_text_above_below(test_env):
     t.inline_box("tt", below=t).rect(bg_color="orange")
     t.inline_box("tt").rect(color="red", stroke_width=3)
     t.line_box(0, above=t).rect(color="blue", stroke_width=6)
-    test_env.check("text-above-below")
 
 
 def test_text_style_create():
@@ -602,11 +597,10 @@ def test_text_style_compose():
     assert style.align is None
 
 
+@check("text-rotated")
 def test_rotated_text(test_env):
     slide = test_env.slide
 
     slide.box(x=100, y=100).text("Hello world!", rotation=90)
     slide.box(x=100, y=300).text("Hello world!", rotation=180)
     slide.box(x=100, y=500).code("Python", "a = 5", rotation=45)
-
-    test_env.check("text-rotated")

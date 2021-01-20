@@ -1,8 +1,12 @@
 import os
 import re
+from typing import List
 
 import lxml.etree as et
 import pytest
+from PIL import Image, ImageChops, ImageStat
+
+from elsie.render.backends import CairoBackend, InkscapeBackend
 
 numbers_split = re.compile(r"(-?[\d.]+)")
 
@@ -119,3 +123,51 @@ def test_svg_compare():
             "<x><y a='scalex(10.0)'/></x>",
             tolerance=tolerance,
         )
+
+
+def compare_images(
+    png_inkscape: List[str], png_cairo: List[str], diff_threshold: float
+):
+    def concat_images(im1, im2):
+        dst = Image.new("RGB", (im1.width + im2.width, im1.height))
+        dst.paste(im1, (0, 0))
+        dst.paste(im2, (im1.width, 0))
+        return dst
+
+    assert len(png_inkscape) == len(png_cairo)
+    for (inkscape, cairo) in zip(png_inkscape, png_cairo):
+        inkscape_img = Image.open(inkscape)
+        cairo_img = Image.open(cairo)
+        difference = ImageChops.difference(inkscape_img, cairo_img)
+        stat = ImageStat.Stat(difference)
+        diff = sum(stat.mean)
+        if diff > diff_threshold:
+            combined = concat_images(inkscape_img, cairo_img)
+            path = os.path.abspath("combined.png")
+            combined.save(path)
+            raise Exception(
+                f"Cairo and Inkscape images differ by {diff} pixels, images written to {path}"
+            )
+
+
+def check_svg(svg: str, inkscape_shell, wrapped, check_kwargs, *args, **kwargs):
+    from conftest import SlideTester
+
+    test_env = SlideTester(InkscapeBackend(inkscape=inkscape_shell))
+    wrapped(test_env=test_env, *args, **kwargs)
+    test_env.check_svg(svg, **check_kwargs)
+
+
+def check_cairo(wrapped, diff_threshold, *args, **kwargs):
+    from conftest import SlideTester
+
+    t_inkscape = SlideTester(InkscapeBackend())
+    wrapped(test_env=t_inkscape, *args, **kwargs)
+    png_inkscape = t_inkscape.slides.render(
+        output=None, export_type="png", prune_cache=False
+    )
+
+    t_cairo = SlideTester(CairoBackend())
+    wrapped(test_env=t_cairo, *args, **kwargs)
+    png_cairo = t_cairo.slides.render(output=None, export_type="png", prune_cache=False)
+    compare_images(png_inkscape, png_cairo, diff_threshold)

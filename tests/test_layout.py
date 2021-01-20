@@ -1,6 +1,9 @@
+from conftest import check
+
 from elsie import Arrow, TextStyle
 
 
+@check("header")
 def test_header(test_env):
     slide = test_env.slide
     slide.set_style("header", TextStyle(color="white", align="right"))
@@ -20,24 +23,24 @@ def test_header(test_env):
     b3 = footer.box(width="fill", height="fill")
     b3.rect(bg_color="#5F8DD3")
     b3.text("Hello!", "footer")
-    test_env.check("header")
 
 
+@check("fullbox")
 def test_full_box(test_env):
     slide = test_env.slide
     slide.box(width="fill", height="100%").rect(bg_color="green")
-    test_env.check("fullbox")
 
 
+@check("prepend")
 def test_prepend(test_env):
     slide = test_env.slide
     slide.box().text("A")
     slide.box(prepend=True).text("B")
     slide.box(prepend=True).text("C")
     slide.box().text("D")
-    test_env.check("prepend")
 
 
+@check("vbox-nofill")
 def test_vbox_nofill(test_env):
     slide = test_env.slide
     slide.box(width=20, height=40).rect(bg_color="green")
@@ -48,9 +51,9 @@ def test_vbox_nofill(test_env):
     b.box(width="30%", height=20).rect(bg_color="white")
     slide.box(width="fill", height="10%").rect(bg_color="black")
     slide.box(width="20%", height="15%").rect(bg_color="blue")
-    test_env.check("vbox-nofill")
 
 
+@check("vbox-fill")
 def test_vbox_fill(test_env):
     slide = test_env.slide
     slide.box(width=20, height=40).rect(bg_color="green")
@@ -62,9 +65,9 @@ def test_vbox_fill(test_env):
     slide.box(width=20, height="10%").rect(bg_color="green")
     slide.box(width="fill", height="fill").rect(bg_color="black")
     slide.box(width="20%", height="15%").rect(bg_color="blue")
-    test_env.check("vbox-fill")
 
 
+@check("hbox-nofill")
 def test_hbox_nofill(test_env):
     slide = test_env.slide
     box = slide.box(width="70%", height="70%", horizontal=True)
@@ -72,9 +75,9 @@ def test_hbox_nofill(test_env):
     box.box(width="10%", height="30%").rect(bg_color="black")
     box.sbox(width="20%").rect(bg_color="red")
     box.sbox(width=20).rect(bg_color="green")
-    test_env.check("hbox-nofill")
 
 
+@check("hbox-fill")
 def test_hbox_fill(test_env):
     slide = test_env.slide
     box = slide.box(width="70%", height="70%", horizontal=True)
@@ -82,9 +85,9 @@ def test_hbox_fill(test_env):
     box.box(width="fill", height="30%").rect(bg_color="black")
     box.sbox(width="fill").rect(bg_color="red")
     box.sbox(width=20).rect(bg_color="green")
-    test_env.check("hbox-fill")
 
 
+@check("columns")
 def test_columns(test_env):
     slide = test_env.slide
     slide.box(padding=40).text("Columns demo")
@@ -101,9 +104,9 @@ def test_columns(test_env):
 
     column1 = columns.box(width="30%")
     column1.text("Some text again\nin the third\ncolumn")
-    test_env.check("columns")
 
 
+@check("chess", expect_count=4)
 def test_chess(test_env):
     slide = test_env.slide
     board = slide.box(width=500, height=500)
@@ -132,9 +135,9 @@ def test_chess(test_env):
     tiles[(3, 3)].box(show="2").text("♞", "black")
     tiles[(3, 2)].box(show="3").text("♞", "black")
     tiles[(4, 2)].box(show="4").text("♞", "black")
-    test_env.check("chess", 4)
 
 
+@check("sizepos")
 def test_size_and_pos(test_env):
     slide = test_env.slide
 
@@ -204,13 +207,10 @@ def test_size_and_pos(test_env):
     bb.rect(color="black", bg_color="#5F8CA3")
     bb.text("Fill (width='fill(3)')", "inner")
 
-    test_env.check("sizepos")
 
-
+@check("sbox_on_text")
 def test_sbox_on_text(test_env):
     slide = test_env.slide
 
     t = slide.text("Text")
     t.sbox().text("Sbox")
-
-    test_env.check("sbox_on_text")

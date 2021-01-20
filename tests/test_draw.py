@@ -1,6 +1,9 @@
+from conftest import check
+
 from elsie import Arrow
 
 
+@check("shapes")
 def test_shapes(test_env):
     slide = test_env.slide
 
@@ -143,9 +146,8 @@ def test_shapes(test_env):
         stroke_width=5, stroke_dasharray="2", color="black", rx=5, ry=5
     )
 
-    test_env.check("shapes")
 
-
+@check("path")
 def test_path(test_env):
     COLOR1 = "blue"
 
@@ -229,9 +231,8 @@ def test_path(test_env):
         [("M", (600, 450)), ("Q", (700, 250), (800, 450))], bg_color="blue", color=None
     )
 
-    test_env.check("path")
 
-
+@check("draw-boxrel")
 def test_draw_relative_to_box(test_env):
     slide = test_env.slide
 
@@ -241,9 +242,8 @@ def test_draw_relative_to_box(test_env):
     box.line([(0, 50), ("100%", "50%")], color="red")
     box.path([("M", (0, 50)), ("L", ("50%", "100%"))], color="green")
 
-    test_env.check("draw-boxrel")
 
-
+@check("draw-rotated")
 def test_draw_rotated(test_env):
     slide = test_env.slide
 
@@ -266,5 +266,3 @@ def test_draw_rotated(test_env):
     slide.box(width=200, height=400).image(
         test_env.assets_path("arrows.svg"), rotation=180
     )
-
-    test_env.check("draw-rotated")
