@@ -27,15 +27,27 @@ class Backend:
         return elsie_version
 
     def create_render_unit(self, slide: "Slide", step: int) -> RenderUnit:
+        """
+        Create a render unit that can export itself to PDF or PNG.
+        """
         raise NotImplementedError
 
     def compute_text_width(self, parsed_text, style, styles, **kwargs) -> float:
+        """
+        Compute the width of the given text that would be rendered with the given style.
+        """
         raise NotImplementedError
 
     def compute_text_height(self, parsed_text, style, styles, **kwargs) -> float:
+        """
+        Compute the height of the given text that would be rendered with the given style.
+        """
         raise NotImplementedError
 
     def compute_text_x(self, parsed_text, style, styles, **kwargs) -> float:
+        """
+        Compute the x position of the given text that would be rendered with the given style.
+        """
         raise NotImplementedError
 
     def prune_cache(self):
