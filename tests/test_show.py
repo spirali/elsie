@@ -1,3 +1,7 @@
+from conftest import check
+
+
+@check("next", expect_count=10)
 def test_next(test_env):
     slide = test_env.slide
     slide.box().text("X")
@@ -10,7 +14,6 @@ def test_next(test_env):
     slide.box().box(show="next-8").text("E")
     slide.box().box(show="last").text("E1")
     slide.box().box(show="next-10").text("F")
-    test_env.check("next", 10)
 
 
 def test_last_in_empty_slide(test_env):

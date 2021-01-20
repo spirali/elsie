@@ -1,14 +1,15 @@
+from conftest import check
+
 from elsie.ext import ordered_list, unordered_list
 
 
+@check("list-basic")
 def test_list_basic(test_env):
     slide = test_env.slide
     lst = unordered_list(slide.box())
     lst.item().text("Item 1")
     lst.item().text("Item 2")
     lst.item().text("Item 3")
-
-    test_env.check("list-basic")
 
 
 def test_list_with(test_env):
@@ -19,6 +20,7 @@ def test_list_with(test_env):
             pass
 
 
+@check("list-override", expect_count=2)
 def test_list_override(test_env):
     slide = test_env.slide
     lst = unordered_list(slide.box(), label_padding=20, indent=50)
@@ -28,9 +30,8 @@ def test_list_override(test_env):
     lst.ul(indent=5).item().text("Text 4")
     lst.item(label=lambda b, _: b.text("-"), label_padding=10).text("Item 5")
 
-    test_env.check("list-override", expect_count=2)
 
-
+@check("list-no-bullet")
 def test_list_no_bullet(test_env):
     slide = test_env.slide
     lst = unordered_list(slide.box(), label=lambda b, l: None)
@@ -38,9 +39,8 @@ def test_list_no_bullet(test_env):
     lst.item().text("Item 2")
     lst.item().text("Item 3")
 
-    test_env.check("list-no-bullet")
 
-
+@check("list-indent")
 def test_list_indent(test_env):
     slide = test_env.slide
     lst = unordered_list(slide.box())
@@ -54,9 +54,8 @@ def test_list_indent(test_env):
     l2.item().text("Item 6")
     lst.item().text("Item 7")
 
-    test_env.check("list-indent")
 
-
+@check("list-ordered-indent")
 def test_ordered_list(test_env):
     slide = test_env.slide
     lst = ordered_list(slide.box())
@@ -71,9 +70,8 @@ def test_ordered_list(test_env):
     lst.item().text("Item 6")
     lst.item().text("Item 7")
 
-    test_env.check("list-ordered-indent")
 
-
+@check("list-ordered-explicit-level")
 def test_ordered_list_explicit_level(test_env):
     slide = test_env.slide
     lst = ordered_list(slide.box())
@@ -89,9 +87,8 @@ def test_ordered_list_explicit_level(test_env):
     l3.item().text("Item 6")
     lst.item().text("Item 7")
 
-    test_env.check("list-ordered-explicit-level")
 
-
+@check("list-combine-ordered-unordered")
 def test_combine_ordered_unordered_list(test_env):
     slide = test_env.slide
     lst = ordered_list(slide.box())
@@ -107,9 +104,8 @@ def test_combine_ordered_unordered_list(test_env):
     l3.ol().item().text("Item 6")
     lst.item().text("Item 7")
 
-    test_env.check("list-combine-ordered-unordered")
 
-
+@check("list-horizontal-parent")
 def test_list_horizontal_parent(test_env):
     slide = test_env.slide
     lst = ordered_list(slide.box(horizontal=True))
@@ -117,13 +113,10 @@ def test_list_horizontal_parent(test_env):
     lst.item().text("Item 2")
     lst.item().text("Item 3")
 
-    test_env.check("list-horizontal-parent")
 
-
+@check("list-multi-line")
 def test_list_multiline(test_env):
     slide = test_env.slide
     lst = unordered_list(slide.box())
     lst.item().text("Item 1\nItem looong 2\nItem 3")
     lst.item().text("Item 1\nItem 2\nItem 3")
-
-    test_env.check("list-multi-line")

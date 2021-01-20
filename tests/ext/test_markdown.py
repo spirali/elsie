@@ -1,3 +1,5 @@
+from conftest import check
+
 from elsie import TextStyle
 from elsie.ext.markdown import (
     MD_BOLD_STYLE,
@@ -7,6 +9,7 @@ from elsie.ext.markdown import (
 )
 
 
+@check("md-basic")
 def test_md_basic(test_env):
     slide = test_env.slide
     markdown(
@@ -19,9 +22,9 @@ def test_md_basic(test_env):
     And this is another paragraph
     """,
     )
-    test_env.check("md-basic")
 
 
+@check("md-text-formatting")
 def test_md_text_formatting(test_env):
     slide = test_env.slide
     markdown(
@@ -32,9 +35,9 @@ def test_md_text_formatting(test_env):
     *italic text interleaved with **bold** text*
     """,
     )
-    test_env.check("md-text-formatting")
 
 
+@check("md-blank-line-between-paragraphs")
 def test_md_blank_line_between_paragraphs(test_env):
     slide = test_env.slide
     markdown(
@@ -48,9 +51,9 @@ def test_md_blank_line_between_paragraphs(test_env):
     multiple lines
     """,
     )
-    test_env.check("md-blank-line-between-paragraphs")
 
 
+@check("md-inline-style")
 def test_md_inline_style(test_env):
     slide = test_env.slide
 
@@ -60,9 +63,9 @@ def test_md_inline_style(test_env):
     ~tt{monospace font} normal font
     """,
     )
-    test_env.check("md-inline-style")
 
 
+@check("md-override-style")
 def test_md_override_style(test_env):
     slide = test_env.slide
 
@@ -81,9 +84,9 @@ def test_md_override_style(test_env):
     ## Large heading
     """,
     )
-    test_env.check("md-override-style")
 
 
+@check("md-skip-invalid-elements")
 def test_md_skip_invalid_elements(test_env):
     slide = test_env.slide
 
@@ -95,9 +98,9 @@ def test_md_skip_invalid_elements(test_env):
         code block
     """,
     )
-    test_env.check("md-skip-invalid-elements")
 
 
+@check("md-fenced-code")
 def test_md_fenced_code(test_env):
     slide = test_env.slide
 
@@ -118,9 +121,9 @@ def test_md_fenced_code(test_env):
     ```
     """,
     )
-    test_env.check("md-fenced-code")
 
 
+@check("md-list-simple")
 def test_md_list_simple(test_env):
     slide = test_env.slide
 
@@ -136,9 +139,9 @@ def test_md_list_simple(test_env):
     3. Item 3
     """,
     )
-    test_env.check("md-list-simple")
 
 
+@check("md-list-ul-nested")
 def test_md_list_ul_nested(test_env):
     slide = test_env.slide
 
@@ -155,9 +158,9 @@ def test_md_list_ul_nested(test_env):
         - Subitem C
     """,
     )
-    test_env.check("md-list-ul-nested")
 
 
+@check("md-list-ol-nested")
 def test_md_list_ol_nested(test_env):
     slide = test_env.slide
 
@@ -172,9 +175,9 @@ def test_md_list_ol_nested(test_env):
         2. Subitem B
     """,
     )
-    test_env.check("md-list-ol-nested")
 
 
+@check("md-list-ul-ol-nested")
 def test_md_list_ul_ol_nested(test_env):
     slide = test_env.slide
 
@@ -190,9 +193,9 @@ def test_md_list_ul_ol_nested(test_env):
         2. Subitem B
     """,
     )
-    test_env.check("md-list-ul-ol-nested")
 
 
+@check("md-list-ol-ul-nested")
 def test_md_list_ol_ul_nested(test_env):
     slide = test_env.slide
 
@@ -208,9 +211,9 @@ def test_md_list_ol_ul_nested(test_env):
         - Subitem B
     """,
     )
-    test_env.check("md-list-ol-ul-nested")
 
 
+@check("md-list-item-multi-line")
 def test_md_list_item_multi_line(test_env):
     slide = test_env.slide
 
@@ -223,9 +226,9 @@ def test_md_list_item_multi_line(test_env):
     multiple lines
     """,
     )
-    test_env.check("md-list-item-multi-line")
 
 
+@check("md-ul-bullet-point")
 def test_md_ul_bullet_point(test_env):
     slide = test_env.slide
 
@@ -241,16 +244,16 @@ def test_md_ul_bullet_point(test_env):
     * Item C
     """,
     )
-    test_env.check("md-ul-bullet-point")
 
 
+@check("md-link")
 def test_md_link(test_env):
     slide = test_env.slide
 
     markdown(slide, "Hello [link](https://foo.com).")
-    test_env.check("md-link")
 
 
+@check("md-blockquote")
 def test_md_blockquote(test_env):
     slide = test_env.slide
 
@@ -262,4 +265,3 @@ Normal text
 > quoted *text* with **formatting**
 """,
     )
-    test_env.check("md-blockquote")

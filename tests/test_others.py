@@ -1,6 +1,8 @@
 import glob
 import os
 
+from conftest import check
+
 from elsie import SlideDeck
 
 
@@ -77,10 +79,10 @@ def test_cache2(test_env):
     assert files != files2
 
 
+@check("viewbox")
 def test_viewbox(test_env):
     slide = test_env.slides.new_slide(view_box=(100, 250, 200, 300))
     slide.box(x=100, y=200, width=200, height=300).rect("green").text("Hello!")
-    test_env.check("viewbox", 1)
 
 
 def test_add_raw_pdf(test_env):
