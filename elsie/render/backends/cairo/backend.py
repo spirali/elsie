@@ -1,9 +1,8 @@
-from ....utils.cache import FsCache
+from ....utils.cache import FsCache, get_cache_file_path
 from ....utils.geom import Rect
 from ...render import RenderUnit
-from ..backend import Backend
+from ..backend import Backend, DEFAULT_CACHE_DIR
 from .rcontext import CairoRenderingContext
-from .utils import get_temp_path
 
 
 class CairoBackend(Backend):
@@ -11,10 +10,12 @@ class CairoBackend(Backend):
     Backend that maps Elsie primitives to Cairo commands and renders them to PDF using a Cairo
     surface.
     """
+    def __init__(self, cache_dir: str = DEFAULT_CACHE_DIR):
+        super().__init__(cache_dir)
 
     def create_render_unit(self, slide, step: int) -> RenderUnit:
         ctx = CairoRenderingContext(
-            *self.dimensions, slide.view_box, step, slide.debug_boxes
+            *self.dimensions, self.cache_dir, slide.view_box, step, slide.debug_boxes
         )
         painters = slide._box.get_painters(ctx, 0)
         painters.sort(key=lambda painter: painter.z_level)
@@ -33,7 +34,7 @@ class CairoBackend(Backend):
         return self._text_extents(parsed_text, style, styles, id_index=id_index).x
 
     def _text_extents(self, parsed_text, style, styles, id_index=None) -> Rect:
-        ctx = CairoRenderingContext(*self.dimensions)
+        ctx = CairoRenderingContext(*self.dimensions, cache_dir=self.cache_dir)
         if id_index is None:
             return ctx.compute_text_extents(parsed_text, style, styles)
         return ctx.compute_subtext_extents(parsed_text, style, styles, id_index)
@@ -49,6 +50,6 @@ class CairoRenderUnit(RenderUnit):
             self.ctx.surface.finish()
             return self.ctx.filename
         elif export_type == "png":
-            path = get_temp_path("png")
+            path = get_cache_file_path(self.ctx.cache_dir, "png")
             self.ctx.surface.write_to_png(path)
             return path

@@ -27,7 +27,8 @@ from .text import (
     get_extents,
     to_pango_units,
 )
-from .utils import get_temp_path, normalize_svg
+from .utils import normalize_svg
+from ....utils.cache import get_cache_file_path
 
 TARGET_DPI = 96
 # DPI scaling: 72 (cairo) vs 96 (Inkscape)
@@ -36,13 +37,14 @@ RESOLUTION_SCALE = 72 / TARGET_DPI
 
 class CairoRenderingContext(RenderingContext):
     def __init__(
-        self, width: int, height: int, viewbox=None, step=1, debug_boxes=False
+        self, width: int, height: int, cache_dir: str, viewbox=None, step=1, debug_boxes=False
     ):
         super().__init__(step, debug_boxes)
 
+        self.cache_dir = cache_dir
         self.device_width = width * RESOLUTION_SCALE
         self.device_height = height * RESOLUTION_SCALE
-        self.filename = get_temp_path("pdf")
+        self.filename = get_cache_file_path(self.cache_dir, "pdf")
         self.surface = cairo.PDFSurface(
             self.filename, self.device_width, self.device_height
         )

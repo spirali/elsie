@@ -1,5 +1,6 @@
 import hashlib
 import os
+import tempfile
 import threading
 
 
@@ -76,3 +77,10 @@ class FsCache:
             f.write(result)
         self.cache_files.add(cache_file)
         return result
+
+
+def get_cache_file_path(directory: str, extension: str) -> str:
+    temp_path = os.path.abspath(os.path.join(
+        directory, f"cache.{next(tempfile._get_candidate_names())}"
+    ))
+    return f"{temp_path}.{extension}"
