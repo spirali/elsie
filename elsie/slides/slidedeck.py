@@ -103,6 +103,7 @@ class SlideDeck(StyleContainer):
         StyleContainer.__init__(self, styles)
         self.temp_cache = {}
 
+        cache_dir = os.path.abspath(cache_dir)
         if not os.path.isdir(cache_dir):
             print("Creating cache directory:", cache_dir)
             os.makedirs(cache_dir)

@@ -1,3 +1,4 @@
+import os
 from typing import TYPE_CHECKING
 
 from ..render import RenderUnit
@@ -13,7 +14,7 @@ class Backend:
 
     def __init__(self, cache_dir: str):
         self.dimensions = None
-        self.cache_dir = cache_dir
+        self.cache_dir = os.path.abspath(cache_dir)
 
     def set_dimensions(self, width: int, height: int):
         self.dimensions = (width, height)
