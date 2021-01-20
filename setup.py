@@ -20,12 +20,9 @@ extras = defaultdict(list)
 dependencies = []
 with open("requirements.txt") as f:
     for line in f:
-        line = line.strip()
-        extra = line.rfind("#")
-        if extra == -1:
-            dependencies.append(line)
-        else:
-            extras[line[extra:].lstrip("# ")].append(line[:extra].strip())
+        parts = [x.strip() for x in line.rsplit("#", 1)]
+        deps = dependencies if len(parts) == 1 else extras[parts[1]]
+        deps.append(parts[0])
 
 setup(
     name="elsie",
