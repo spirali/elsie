@@ -3,7 +3,7 @@ from typing import List, Tuple
 import cairocffi as cairo
 import pangocairocffi
 import pangocffi
-from pangocffi import Attribute, AttrList, FontDescription, Layout, Rectangle
+from pangocffi import Attribute, AttrList, FontDescription, Layout, Rectangle, ffi
 
 from ....text.textstyle import TextStyle
 from ....utils.geom import Rect
@@ -24,6 +24,16 @@ def to_pango_color(color: Tuple[float, float, float]) -> Tuple[int, int, int]:
     return (int(r * max), int(g * max), int(b * max))
 
 
+def attr_from_scale(scale_factor: float, start_index: int, end_index: int):
+    scale_factor = ffi.cast("double", scale_factor)
+    attr = Attribute._init_pointer(
+        pangocffi.pango.pango_attr_scale_new(scale_factor),
+    )
+    attr.start_index = start_index
+    attr.end_index = end_index
+    return attr
+
+
 def style_to_attributes(
     style: TextStyle, text_scale: float, start_index: int, end_index: int
 ) -> List[Attribute]:
@@ -36,7 +46,7 @@ def style_to_attributes(
         ),
     ]
     if text_scale is not None:
-        attrs.append(Attribute.from_scale(int(text_scale), **kwargs))
+        attrs.append(attr_from_scale(text_scale, **kwargs))
 
     weight = pangocffi.Weight.BOLD if style.bold else pangocffi.Weight.NORMAL
     attrs.append(Attribute.from_weight(weight, **kwargs))
