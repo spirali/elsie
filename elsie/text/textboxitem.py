@@ -54,8 +54,8 @@ class TextBoxItem(BoxItem):
         if scale > 0.00001:
             ctx.draw_text(
                 rect=rect,
-                x=x / scale,
-                y=y / scale,
+                x=x,
+                y=y,
                 parsed_text=self._parsed_text,
                 style=style,
                 styles=self._styles,

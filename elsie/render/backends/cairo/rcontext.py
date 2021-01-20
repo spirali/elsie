@@ -154,7 +154,6 @@ class CairoRenderingContext(RenderingContext):
         x, width = compute_subtext_extents(layout, parsed_text, id_index)
         return Rect(x=x - start_x, width=width)
 
-    # TODO: improve scale to fit
     def draw_text(
         self,
         rect,
