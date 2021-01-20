@@ -17,19 +17,21 @@ Once you have a `SlideDeck` object, you can create new slides from it.
 ## Backends
 *Elsie* needs a `Backend` to render slides to PDF. Currently, two backends are implemented:
 
-- [`InkscapeBackend`](elsie.render.backends.svg.backend.InkscapeBackend) is the default backend. This
-  backend uses `Inkscape` to convert slides to PDF, which means that you need to have `Inkscape`
-  installed on your computer.
+- [`InkscapeBackend`](elsie.render.backends.svg.backend.InkscapeBackend) is the default backend.
+  This backend uses `Inkscape` to convert slides to PDF, which means that you need to
+  have `Inkscape` installed on your computer.
 - [`CairoBackend`](elsie.render.backends.cairo.backend.CairoBackend) is an experimental backend
   that uses the [Cairo](https://www.cairographics.org/) library to render slides. It supports most
   of *Elsie* features, it should produce very similar output to the Inkscape backend and most
   importantly, you do not need `Inkscape` installed for it to work. However, it is currently
   experimental and not tested as thoroughly as the Inkscape backend.
 
-The backends should produce very similar visual output, but it is not guaranteed. Therefore, we
-suggest you to stick to a single backend.
+Both backends should produce very similar visual output, but this is not guaranteed, although
+differences are usually pretty small and mostly only in text rendering. We suggest you to stick to
+a single backend.
 
 To use a specific backend, simply pass it to `SlideDeck` using the `backend` parameter:
+
 ```python
 import elsie
 from elsie.render.backends import CairoBackend
