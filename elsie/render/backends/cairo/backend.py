@@ -4,7 +4,7 @@ from ....utils.cache import FsCache, get_cache_file_path
 from ....utils.geom import Rect
 from ...render import RenderUnit
 from ..backend import DEFAULT_CACHE_DIR, Backend
-from .rcontext import CairoRenderingContext, RESOLUTION_SCALE
+from .rcontext import RESOLUTION_SCALE, CairoRenderingContext
 
 
 class CairoBackend(Backend):
@@ -63,11 +63,15 @@ class CairoRenderUnit(RenderUnit):
         path = None
         if export_type == "pdf":
             path = get_cache_file_path(self.cache_dir, "pdf")
-            surface = cairo.PDFSurface(path, self.ctx.device_width, self.ctx.device_height)
+            surface = cairo.PDFSurface(
+                path, self.ctx.device_width, self.ctx.device_height
+            )
             render(surface)
             surface.finish()
         elif export_type == "png":
-            surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, self.ctx.width, self.ctx.height)
+            surface = cairo.ImageSurface(
+                cairo.FORMAT_ARGB32, self.ctx.width, self.ctx.height
+            )
             # Reverse PDF scaling
             render(surface, scale=1 / RESOLUTION_SCALE)
             path = get_cache_file_path(self.cache_dir, "png")
