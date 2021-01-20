@@ -25,8 +25,14 @@ Once you have a `SlideDeck` object, you can create new slides from it.
   of *Elsie* features, it should produce very similar output to the Inkscape backend and most
   importantly, you do not need `Inkscape` installed for it to work. However, it is currently
   experimental and not tested as thoroughly as the Inkscape backend.
+  
+To use a specific backend, simply pass it to `SlideDeck` using the `backend` parameter:
+```python
+import elsie
+from elsie.render.backends import CairoBackend
 
-To use a specific backend, simply pass it to `SlideDeck` using the `backend` parameter.
+slides = elsie.SlideDeck(backend=CairoBackend())
+```
 
 ## Creating slides
 You can create new slides in two ways, either using
