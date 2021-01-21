@@ -93,10 +93,12 @@ def test_env(tmp_path, inkscape_shell):
         yield tester
 
 
-CAIRO_DIFF_COUNT = 5
+CAIRO_DIFF_THRESHOLD = 10
 
 
-def check(svg: str = None, cairo=True, **check_kwargs):
+def check(
+    svg: str = None, cairo=True, cairo_threshold=CAIRO_DIFF_THRESHOLD, **check_kwargs
+):
     assert svg or cairo
 
     def wrapper(wrapped):
@@ -113,7 +115,11 @@ def check(svg: str = None, cairo=True, **check_kwargs):
                     )
                 if cairo:
                     test_utils.check_cairo(
-                        wrapped, diff_threshold=CAIRO_DIFF_COUNT, *args, **kwargs
+                        wrapped,
+                        inkscape_shell,
+                        diff_threshold=cairo_threshold,
+                        *args,
+                        **kwargs,
                     )
 
         return fn
