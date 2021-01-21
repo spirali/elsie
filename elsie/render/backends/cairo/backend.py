@@ -34,6 +34,11 @@ class CairoBackend(Backend):
     ) -> float:
         return self._text_extents(parsed_text, style, styles, id_index=id_index).width
 
+    def compute_text_height(
+        self, parsed_text, style, styles, id_index=None, *args, **kwargs
+    ) -> float:
+        return self._text_extents(parsed_text, style, styles, id_index=id_index).height
+
     def compute_text_x(
         self, parsed_text, style, styles, *args, id_index=None, **kwargs
     ) -> float:

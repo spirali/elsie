@@ -77,6 +77,9 @@ class InkscapeBackend(Backend):
     def compute_text_width(self, parsed_text, style, styles, id_index=None):
         return self._text_query("inkscape-w", parsed_text, style, styles, id_index)
 
+    def compute_text_height(self, parsed_text, style, styles, id_index=None):
+        return self._text_query("inkscape-h", parsed_text, style, styles, id_index)
+
     def compute_text_x(self, parsed_text, style, styles, id_index=None):
         return self._text_query("inkscape-x", parsed_text, style, styles, id_index)
 
