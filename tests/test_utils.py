@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 from typing import List
 
 import lxml.etree as et
@@ -148,6 +149,8 @@ def compare_images(
             raise Exception(
                 f"Cairo and Inkscape images differ by {diff} pixels, images written to {path}"
             )
+        else:
+            print("Difference:", diff, file=sys.stderr)
 
 
 def check_svg(svg: str, inkscape_shell, wrapped, check_kwargs, *args, **kwargs):
@@ -158,10 +161,10 @@ def check_svg(svg: str, inkscape_shell, wrapped, check_kwargs, *args, **kwargs):
     test_env.check_svg(svg, **check_kwargs)
 
 
-def check_cairo(wrapped, diff_threshold, *args, **kwargs):
+def check_cairo(wrapped, inkscape_shell, diff_threshold, *args, **kwargs):
     from conftest import SlideTester
 
-    t_inkscape = SlideTester(InkscapeBackend())
+    t_inkscape = SlideTester(InkscapeBackend(inkscape=inkscape_shell))
     wrapped(test_env=t_inkscape, *args, **kwargs)
     png_inkscape = t_inkscape.slides.render(
         output=None, export_type="png", prune_cache=False

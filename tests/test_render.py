@@ -21,7 +21,7 @@ def test_postprocessing(test_env):
     assert called[0]
 
 
-@check("debug_boxes", cairo=False)
+@check("debug_boxes")
 def test_debug_boxes(test_env):
     COLOR1 = "black"
     COLOR2 = "gray"

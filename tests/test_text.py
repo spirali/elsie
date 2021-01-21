@@ -12,7 +12,7 @@ from elsie.text.textparser import (
 )
 
 
-@check("linehighlight", expect_count=5, cairo=False)
+@check("linehighlight", expect_count=5)
 def test_line_highlight_1(test_env):
     slide = test_env.slide
 
@@ -47,7 +47,7 @@ def test_line_highlight_1(test_env):
     )
 
 
-@check("styles-highlight", cairo=False)
+@check("styles-highlight")
 def test_styles_and_highlight(test_env):
     slide = test_env.slide
     b = slide.box()
@@ -64,10 +64,9 @@ int ~#A{main}() {
     )
 
     t.inline_box("#A", below=t).rect(bg_color="red")
-    test_env.check_svg("styles-highlight")
 
 
-@check("linenumbers", cairo=False)
+@check("linenumbers")
 def test_line_numbers(test_env):
     slide = test_env.slide
 
@@ -104,7 +103,7 @@ second_line // comment""",
     )
 
 
-@check("highlight-bug-2", cairo=False)
+@check("highlight-bug-2")
 def test_highlight_bug2(test_env):
     text = """strlen("ahoj"); // 4
 
@@ -128,7 +127,7 @@ def test_highlight_bug3(test_env):
     slide.box().code("c", text, use_styles=True)
 
 
-@check("highlight-bug-4", cairo=False)
+@check("highlight-bug-4")
 def test_highlight_bug4(test_env):
     text = """int now = (int) time(NULL); // get current time
 srand(now); // initialize S with the current time
@@ -144,7 +143,7 @@ float num4 = rand() / (float) RAND_MAX;"""
     slide.box().code("c", text, use_styles=False)
 
 
-@check("console", cairo=False)
+@check("console")
 def test_console(test_env):
     slide = test_env.slide
 
@@ -275,21 +274,21 @@ def _test_text_box_slide(slide):
     b.inline_box("my_blue").rect(color="blue")
 
 
-@check("text-box-left", cairo=False)
+@check("text-box-left")
 def test_text_box_left(test_env):
     slide = test_env.slide
     slide.update_style("default", elsie.TextStyle(align="left"))
     _test_text_box_slide(slide)
 
 
-@check("text-box-middle", cairo=False)
+@check("text-box-middle")
 def test_text_box_middle(test_env):
     slide = test_env.slide
     slide.update_style("default", elsie.TextStyle(align="middle"))
     _test_text_box_slide(slide)
 
 
-@check("text-box-right", cairo=False)
+@check("text-box-right")
 def test_text_box_right(test_env):
     slide = test_env.slide
     slide.update_style("default", elsie.TextStyle(align="right"))
@@ -315,7 +314,7 @@ def test_code_dummy_style(test_env):
     b.inline_box("#access", show="next+").rect(bg_color="red")
 
 
-@check("code-use-styles", cairo=False)
+@check("code-use-styles")
 def test_code_dummy_use_style(test_env):
     c1 = """
     async fn binary_search(array: &[u32], needle: u32) -> i32
