@@ -59,7 +59,7 @@ class InkscapeBackend(Backend):
     def get_version(self, elsie_version: str) -> str:
         return f"{elsie_version}/{self.inkscape_version}"
 
-    def create_render_unit(self, slide, step):
+    def create_render_unit(self, slide, step, export_type):
         ctx = SvgRenderingContext(slide, step, slide.debug_boxes)
         painters = slide._box.get_painters(ctx, 0)
         painters.sort(key=lambda painter: painter.z_level)

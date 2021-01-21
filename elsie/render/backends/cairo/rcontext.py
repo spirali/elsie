@@ -30,8 +30,10 @@ from .text import (
 from .utils import normalize_svg
 
 TARGET_DPI = 96
+CAIRO_DPI = 72
+
 # DPI scaling: 72 (cairo) vs 96 (Inkscape)
-RESOLUTION_SCALE = 72 / TARGET_DPI
+RESOLUTION_SCALE = CAIRO_DPI / TARGET_DPI
 
 
 class CairoRenderingContext(RenderingContext):
@@ -39,6 +41,8 @@ class CairoRenderingContext(RenderingContext):
         self,
         width: int,
         height: int,
+        filename: str = None,
+        export_format: str = "pdf",
         viewbox=None,
         step=1,
         debug_boxes=False,
@@ -49,13 +53,33 @@ class CairoRenderingContext(RenderingContext):
         self.height = height
         self.device_width = width * RESOLUTION_SCALE
         self.device_height = height * RESOLUTION_SCALE
-        self.surface = cairo.RecordingSurface(0, (0, 0, width, height))
-        self.ctx = cairo.Context(self.surface)
-        self.ctx.scale(RESOLUTION_SCALE, RESOLUTION_SCALE)
-        if viewbox:
-            apply_viewbox(self.ctx, width, height, viewbox)
+        self.filename = filename
 
-        self.pctx = pangocairocffi.create_context(self.ctx)
+        if export_format == "pdf":
+            self.surface = cairo.PDFSurface(
+                self.filename, self.device_width, self.device_height
+            )
+            self.reference_ctx = self.ctx = cairo.Context(self.surface)
+            self.ctx.scale(RESOLUTION_SCALE, RESOLUTION_SCALE)
+            self.cairosvg_dpi = TARGET_DPI
+        elif export_format == "png":
+            self.surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
+            self.ctx = cairo.Context(self.surface)
+            self.ctx.set_source_rgba(0, 0, 0, 255)
+            reference_surface = cairo.PDFSurface(
+                None, self.device_width, self.device_height
+            )
+            self.reference_ctx = cairo.Context(reference_surface)
+            self.reference_ctx.scale(RESOLUTION_SCALE, RESOLUTION_SCALE)
+            self.cairosvg_dpi = CAIRO_DPI
+        else:
+            assert False
+
+        self.line_scaling = 1.0
+        if viewbox:
+            self.line_scaling = apply_viewbox(self.ctx, width, height, viewbox)
+
+        self.pctx = pangocairocffi.create_context(self.reference_ctx)
 
     def draw_rect(
         self,
@@ -173,7 +197,14 @@ class CairoRenderingContext(RenderingContext):
         # TODO: try basic Cairo text API
         with ctx_scope(self.ctx):
             layout = build_layout(
-                self.ctx, self.pctx, parsed_text, style, styles, RESOLUTION_SCALE, scale
+                self.reference_ctx,
+                self.pctx,
+                parsed_text,
+                style,
+                styles,
+                resolution_scale=RESOLUTION_SCALE,
+                spacing_scale=self.line_scaling,
+                text_scale=scale,
             )
             layout.set_width(to_pango_units(rect.width))
             baseline = from_pango_units(layout.get_baseline())
@@ -224,4 +255,5 @@ class CairoRenderingContext(RenderingContext):
             width=width,
             height=height,
             rotation=rotation,
+            dpi=self.cairosvg_dpi,
         )

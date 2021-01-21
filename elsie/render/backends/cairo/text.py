@@ -129,6 +129,7 @@ def build_layout(
     style: TextStyle,
     styles,
     resolution_scale: float,
+    spacing_scale: float = 1.0,
     text_scale: float = 1.0,
 ) -> pangocffi.Layout:
     # TODO: fix letter spacing
@@ -145,7 +146,7 @@ def build_layout(
 
     assert style.line_spacing >= 1.0
     spacing = (style.line_spacing * style.size) - height
-    layout.set_spacing(to_pango_units(spacing))
+    layout.set_spacing(to_pango_units(spacing * spacing_scale))
 
     return layout
 

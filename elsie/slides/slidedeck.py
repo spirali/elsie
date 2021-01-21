@@ -343,7 +343,7 @@ class SlideDeck(StyleContainer):
         for slide in select_slides:
             slide.prepare()
             for step in range(1, slide.steps() + 1):
-                units.append(slide.make_render_unit(self.backend, step))
+                units.append(slide.make_render_unit(self.backend, step, export_type))
 
         if self.debug:
             for unit in units:

@@ -60,8 +60,8 @@ class Slide:
         self._box._traverse(lambda box: shows.append(box._min_steps()))
         return max(value for value in shows if value)
 
-    def make_render_unit(self, backend, step):
-        return backend.create_render_unit(self, step)
+    def make_render_unit(self, backend, step, export_type: str):
+        return backend.create_render_unit(self, step, export_type)
 
     def _repr_html_(self):
         return jupyter.render_slide_html(self)
@@ -77,5 +77,6 @@ class ExternPdfSlide:
     def steps(self):
         return 1
 
-    def make_render_unit(self, backend, step):
-        return ExportedRenderUnit(self, step, self.filename)
+    def make_render_unit(self, backend, step, export_type):
+        assert export_type == "pdf"
+        return ExportedRenderUnit(self, step, self.filename, "pdf")
