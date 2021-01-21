@@ -58,6 +58,9 @@ class InkscapeShell:
     def get_width(self, svg: str, id: str):
         return self.run_query(svg, "query-width", id)
 
+    def get_height(self, svg: str, id: str):
+        return self.run_query(svg, "query-height", id)
+
     def get_x(self, svg: str, id: str):
         return self.run_query(svg, "query-x", id)
 
