@@ -25,7 +25,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:inkscape.dev/stable
         sudo apt-get update
-        sudo apt-get install -y --no-install-recommends inkscape=1.0.2+r75+1~ubuntu20.04.1
+        sudo apt-get install -y --no-install-recommends inkscape=1.0.2+r75+1~ubuntu20.04.1 poppler-utils
         python -m pip install --upgrade pip wheel setuptools
         python -m pip install -r requirements-dev.txt
         python -m pip install .[cairo]
