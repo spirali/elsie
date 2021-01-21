@@ -127,7 +127,7 @@ def test_svg_compare():
 
 
 def compare_images(
-    png_inkscape: List[str], png_cairo: List[str], diff_threshold: float
+    png_inkscape: List[str], png_cairo: List[str], diff_threshold: float, name: str
 ):
     def concat_images(im1, im2):
         dst = Image.new("RGB", (im1.width + im2.width, im1.height))
@@ -137,8 +137,8 @@ def compare_images(
 
     assert len(png_inkscape) == len(png_cairo)
     for (inkscape, cairo) in zip(png_inkscape, png_cairo):
-        inkscape_img = Image.open(inkscape)
-        cairo_img = Image.open(cairo)
+        inkscape_img = Image.open(inkscape) if isinstance(inkscape, str) else inkscape
+        cairo_img = Image.open(cairo) if isinstance(cairo, str) else cairo
         difference = ImageChops.difference(inkscape_img, cairo_img)
         stat = ImageStat.Stat(difference)
         diff = sum(stat.mean)
@@ -147,10 +147,11 @@ def compare_images(
             path = os.path.abspath("combined.png")
             combined.save(path)
             raise Exception(
-                f"Cairo and Inkscape images differ by {diff} pixels, images written to {path}"
+                f"Cairo and Inkscape {name} images differ by {diff} pixels, "
+                f"images written to {path}"
             )
         else:
-            print("Difference:", diff, file=sys.stderr)
+            print(f"{name} difference: {diff}", file=sys.stderr)
 
 
 def check_svg(svg: str, inkscape_shell, wrapped, check_kwargs, *args, **kwargs):
@@ -161,7 +162,7 @@ def check_svg(svg: str, inkscape_shell, wrapped, check_kwargs, *args, **kwargs):
     test_env.check_svg(svg, **check_kwargs)
 
 
-def check_cairo(wrapped, inkscape_shell, diff_threshold, *args, **kwargs):
+def check_cairo_png(wrapped, inkscape_shell, diff_threshold, *args, **kwargs):
     from conftest import SlideTester
 
     t_inkscape = SlideTester(InkscapeBackend(inkscape=inkscape_shell))
@@ -173,4 +174,30 @@ def check_cairo(wrapped, inkscape_shell, diff_threshold, *args, **kwargs):
     t_cairo = SlideTester(CairoBackend())
     wrapped(test_env=t_cairo, *args, **kwargs)
     png_cairo = t_cairo.slides.render(output=None, export_type="png", prune_cache=False)
-    compare_images(png_inkscape, png_cairo, diff_threshold)
+    compare_images(png_inkscape, png_cairo, diff_threshold, name="PNG")
+
+
+def check_cairo_pdf(wrapped, inkscape_shell, diff_threshold, *args, **kwargs):
+    import pdf2image
+    from conftest import SlideTester
+
+    inkscape_dpi = 96
+
+    inkscape_path = "inkscape.pdf"
+    t_inkscape = SlideTester(InkscapeBackend(inkscape=inkscape_shell))
+    wrapped(test_env=t_inkscape, *args, **kwargs)
+    t_inkscape.slides.render(inkscape_path)
+    inkscape_images = pdf2image.convert_from_path(inkscape_path, dpi=inkscape_dpi)
+
+    cairo_path = "cairo.pdf"
+    t_cairo = SlideTester(CairoBackend())
+    wrapped(test_env=t_cairo, *args, **kwargs)
+    t_cairo.slides.render(cairo_path)
+    cairo_images = pdf2image.convert_from_path(cairo_path, dpi=inkscape_dpi)
+
+    compare_images(cairo_images, inkscape_images, diff_threshold, name="PDF")
+
+
+def check_cairo(wrapped, inkscape_shell, diff_threshold, *args, **kwargs):
+    check_cairo_png(wrapped, inkscape_shell, diff_threshold, *args, **kwargs)
+    check_cairo_pdf(wrapped, inkscape_shell, diff_threshold, *args, **kwargs)

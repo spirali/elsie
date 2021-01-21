@@ -274,7 +274,7 @@ def _test_text_box_slide(slide):
     b.inline_box("my_blue").rect(color="blue")
 
 
-@check("text-box-left")
+@check("text-box-left", cairo_threshold=18)
 def test_text_box_left(test_env):
     slide = test_env.slide
     slide.update_style("default", elsie.TextStyle(align="left"))
@@ -288,7 +288,7 @@ def test_text_box_middle(test_env):
     _test_text_box_slide(slide)
 
 
-@check("text-box-right")
+@check("text-box-right", cairo_threshold=18)
 def test_text_box_right(test_env):
     slide = test_env.slide
     slide.update_style("default", elsie.TextStyle(align="right"))
