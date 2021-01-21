@@ -6,9 +6,9 @@ RUN apt-get update &&\
 
 RUN add-apt-repository ppa:inkscape.dev/stable &&\
     apt-get update &&\
-    apt-get install -y --no-install-recommends python3 python3-pip inkscape=1.0.1+r73~ubuntu20.04.1
+    apt-get install -y --no-install-recommends python3 python3-pip inkscape=1.0.2+r75+1~ubuntu20.04.1
 
-RUN pip3 install pip setuptools wheel
+RUN pip3 install -U pip setuptools wheel
 
 WORKDIR /elsie
 
@@ -17,6 +17,6 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
 COPY . .
-RUN pip3 install .
+RUN pip3 install .[cairo]
 
 WORKDIR /slides
