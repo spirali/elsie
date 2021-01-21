@@ -71,6 +71,12 @@
     <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#native-installation">Native installation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#inkscape-backend-recommended">Inkscape backend (recommended)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cairo-backend">Cairo backend</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#docker-installation">Docker installation</a>
     </li>
@@ -167,20 +173,26 @@
 <h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">#</a></h2>
 <ul>
 <li>Python 3.6+</li>
-<li>Inkscape 1.0+<ul>
+<li>Inkscape 1.0+ (required only for Inkscape backend)<ul>
+<li>You can find installation instructions <a href="https://wiki.inkscape.org/wiki/index.php/Installing_Inkscape">here</a></li>
 <li>Versions under 1.0 and above 0.92 might also work, but they are not primarily supported</li>
 </ul>
 </li>
-<li>(Required only for <code>LaTeX</code> support): <code>pdflatex</code>, <code>pdf2svg</code></li>
+<li><code>pdflatex</code>, <code>pdf2svg</code> (required only for <code>LaTeX</code> support)</li>
 </ul>
 <h2 id="native-installation">Native installation<a class="headerlink" href="#native-installation" title="Permanent link">#</a></h2>
-<p>You can install <em>Elsie</em> using <strong>PyPi</strong>:</p>
+<h3 id="inkscape-backend-recommended">Inkscape backend (recommended)<a class="headerlink" href="#inkscape-backend-recommended" title="Permanent link">#</a></h3>
+<p>If you want to use Inkscape for rendering slides to PDF, make sure that you have it installed,
+preferably with version 1.0+. You can find how to install Inkscape
+<a href="https://wiki.inkscape.org/wiki/index.php/Installing_Inkscape">here</a>. On Ubuntu you can simply execute</p>
+<pre><code class="language-bash">$ apt-get install inkscape
+</code></pre>
+<p>Then simply install <em>Elsie</em> using <strong>PyPi</strong>:</p>
 <pre><code class="language-bash">$ pip3 install elsie
 </code></pre>
-<p>You will also need <strong>Inkscape</strong> installed, preferably with version 1.0+. You can find how to install
-Inkscape <a href="https://wiki.inkscape.org/wiki/index.php/Installing_Inkscape">here</a>. On Ubuntu you can
-simply execute</p>
-<pre><code class="language-bash">$ apt-get install inkscape
+<h3 id="cairo-backend">Cairo backend<a class="headerlink" href="#cairo-backend" title="Permanent link">#</a></h3>
+<p>Install <em>Elsie</em> with the <code>cairo</code> extra package:</p>
+<pre><code class="language-bash">$ pip3 install elsie[cairo]
 </code></pre>
 <h2 id="docker-installation">Docker installation<a class="headerlink" href="#docker-installation" title="Permanent link">#</a></h2>
 <p>We also provide a <a href="https://github.com/spirali/elsie/blob/master/Dockerfile">Docker image</a> that has

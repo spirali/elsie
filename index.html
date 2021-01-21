@@ -203,7 +203,7 @@ def hello_world(slide):
 
 slides.render(&quot;slides.pdf&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-691a2a96d31e4471a680948ad9653e32">
+<div class="elsie-wrapper elsie-wrapper-ecbe08ef78204a4e801ec2dde7c24eca">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADgtJREFUeJzt3X2wFeV9wPHvvWC4
@@ -333,9 +333,6 @@ send us a <a href="https://github.com/spirali/elsie/pulls">Pull Request</a> to s
 others.</li>
 <li><em>Elsie</em> produces PDF slides, so it can only create animations with a single frame per page.
 If you need 60 FPS animations or GIFs in your presentations, this tool is not for you.</li>
-<li><em>Elsie</em> currently renders SVG slides to PDF using <code>Inkscape</code>. Therefore, you must have it
-installed on your system for it to work. We provide a
-<a href="installation/#docker-installation">Docker image</a> with <code>Inkscape</code> for convenience.</li>
 <li><em>Elsie</em> is tested only on Linux. If you find a problem on a different platform, do not hesitate
 to open a <a href="https://github.com/spirali/elsie/issues/new">GitHub issue</a>.</li>
 </ul>
@@ -399,10 +396,6 @@ probably be nigh impossible using this library.</p>
 </ul>
 <h2 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>Why do you use <code>Inkscape</code> instead of e.g. <code>Cairo</code> for rendering slides?</strong>
-We are experimenting with a <code>Cairo</code> backend, but it would be probably difficult to fully support
-embedding SVG images into slides with Cairo, which is something that we use a lot. But it is
-possible that <em>Elsie</em> will not require <code>Inkscape</code> sometime in the future.</li>
 <li><strong>Why don't you use an existing layout model, e.g. <code>flexbox</code>?</strong>
 We made the <a href="userguide/layout/">layout model</a> tailored for presentations, which might not be
 so easy with a general layout model. We also couldn't find any usable binding of a standalone and
@@ -469,5 +462,5 @@ sane layout model in Python. If you know of any, please
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-01-19 22:15:22.074314+00:00
+Build Date UTC : 2021-01-21 13:05:52.253205+00:00
 -->

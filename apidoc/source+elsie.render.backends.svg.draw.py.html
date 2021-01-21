@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.render.backends.svg.draw</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.0 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9662; render</a> </li><li><ul><li><a href=elsie.render.backends.html>&#9662; backends</a> </li><li><ul><li><a href=elsie.render.backends.backend.html>&#9656; backend</a> </li><li><a href=elsie.render.backends.rcontext.html>&#9656; rcontext</a> </li><li><a href=elsie.render.backends.svg.html>&#9662; svg</a> </li><li><ul><li><a href=elsie.render.backends.svg.backend.html>&#9656; backend</a> </li><li><div class=select><a href=elsie.render.backends.svg.draw.html>&#9662; draw</a> </div></li><li><a href=elsie.render.backends.svg.query.html>&#9656; query</a> </li><li><a href=elsie.render.backends.svg.rcontext.html>&#9656; rcontext</a> </li><li><a href=elsie.render.backends.svg.utils.html>&#9656; utils</a> </li></ul></li><li><a href=elsie.render.image.html>&#9656; image</a> </li><li><a href=elsie.render.inkscape.html>&#9656; inkscape</a> </li><li><a href=elsie.render.jupyter.html>&#9656; jupyter</a> </li><li><a href=elsie.render.ora.html>&#9656; ora</a> </li><li><a href=elsie.render.pdfmerge.html>&#9656; pdfmerge</a> </li><li><a href=elsie.render.render.html>&#9656; render</a> </li></ul></li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/render/backends/svg/draw.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.render.html>render</a>.<a class=symbol href=elsie.render.backends.html>backends</a>.<a class=symbol href=elsie.render.backends.svg.html>svg</a>.<a class=symbol href=elsie.render.backends.svg.draw.html>draw</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre>  1
+<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.render.backends.svg.draw</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.1 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9662; render</a> </li><li><ul><li><a href=elsie.render.backends.html>&#9662; backends</a> </li><li><ul><li><a href=elsie.render.backends.backend.html>&#9656; backend</a> </li><li><a href=elsie.render.backends.cairo.html>&#9656; cairo</a> </li><li><a href=elsie.render.backends.rcontext.html>&#9656; rcontext</a> </li><li><a href=elsie.render.backends.svg.html>&#9662; svg</a> </li><li><ul><li><a href=elsie.render.backends.svg.backend.html>&#9656; backend</a> </li><li><div class=select><a href=elsie.render.backends.svg.draw.html>&#9662; draw</a> </div></li><li><a href=elsie.render.backends.svg.query.html>&#9656; query</a> </li><li><a href=elsie.render.backends.svg.rcontext.html>&#9656; rcontext</a> </li><li><a href=elsie.render.backends.svg.utils.html>&#9656; utils</a> </li></ul></li><li><a href=elsie.render.image.html>&#9656; image</a> </li><li><a href=elsie.render.inkscape.html>&#9656; inkscape</a> </li><li><a href=elsie.render.jupyter.html>&#9656; jupyter</a> </li><li><a href=elsie.render.ora.html>&#9656; ora</a> </li><li><a href=elsie.render.pdfmerge.html>&#9656; pdfmerge</a> </li><li><a href=elsie.render.render.html>&#9656; render</a> </li></ul></li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/render/backends/svg/draw.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.render.html>render</a>.<a class=symbol href=elsie.render.backends.html>backends</a>.<a class=symbol href=elsie.render.backends.svg.html>svg</a>.<a class=symbol href=elsie.render.backends.svg.draw.html>draw</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre>  1
   2
   3
   4
@@ -167,7 +167,29 @@
 167
 168
 169
-170</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>base64</span>
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>base64</span>
 <a name=line-2></a>
 <a name=line-3></a><span class=kn>from</span> <span class=nn>....text.textstyle</span> <span class=kn>import</span> <span class=n>TextStyle</span>
 <a name=line-4></a><span class=kn>from</span> <span class=nn>....utils.geom</span> <span class=kn>import</span> <span class=n>Rect</span><span class=p>,</span> <span class=n>find_centroid</span>
@@ -337,4 +359,26 @@
 <a name=line-168></a>        <span class=n>apply_rotation</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>rotation</span><span class=p>,</span> <span class=n>find_centroid</span><span class=p>(</span><span class=n>points</span><span class=p>))</span>
 <a name=line-169></a>    <span class=n>set_paint_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>)</span>
 <a name=line-170></a>    <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;polygon&quot;</span><span class=p>)</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-01-19 22:15 </p></div></div></body></html>
+<a name=line-171></a>
+<a name=line-172></a>
+<a name=line-173></a><span class=k>def</span> <span class=nf>draw_polyline</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>points</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>):</span>
+<a name=line-174></a>    <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;polyline&quot;</span><span class=p>)</span>
+<a name=line-175></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span>
+<a name=line-176></a>        <span class=s2>&quot;points&quot;</span><span class=p>,</span>
+<a name=line-177></a>        <span class=s2>&quot; &quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;</span><span class=si>{</span><span class=n>x</span><span class=si>}</span><span class=s2>,</span><span class=si>{</span><span class=n>y</span><span class=si>}</span><span class=s2>&quot;</span> <span class=k>for</span> <span class=n>x</span><span class=p>,</span> <span class=n>y</span> <span class=ow>in</span> <span class=n>points</span><span class=p>),</span>
+<a name=line-178></a>    <span class=p>)</span>
+<a name=line-179></a>    <span class=n>set_paint_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>)</span>
+<a name=line-180></a>    <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;polyline&quot;</span><span class=p>)</span>
+<a name=line-181></a>
+<a name=line-182></a>
+<a name=line-183></a><span class=k>def</span> <span class=nf>draw_path</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=n>commands</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>):</span>
+<a name=line-184></a>    <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;path&quot;</span><span class=p>)</span>
+<a name=line-185></a>    <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;d&quot;</span><span class=p>,</span> <span class=s2>&quot; &quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>command_to_str</span><span class=p>(</span><span class=n>c</span><span class=p>)</span> <span class=k>for</span> <span class=n>c</span> <span class=ow>in</span> <span class=n>commands</span><span class=p>))</span>
+<a name=line-186></a>    <span class=n>set_paint_style</span><span class=p>(</span><span class=n>xml</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>)</span>
+<a name=line-187></a>    <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;path&quot;</span><span class=p>)</span>
+<a name=line-188></a>
+<a name=line-189></a>
+<a name=line-190></a><span class=k>def</span> <span class=nf>command_to_str</span><span class=p>(</span><span class=n>command</span><span class=p>):</span>
+<a name=line-191></a>    <span class=n>name</span><span class=p>,</span> <span class=n>pairs</span> <span class=o>=</span> <span class=n>command</span>
+<a name=line-192></a>    <span class=k>return</span> <span class=n>name</span> <span class=o>+</span> <span class=s2>&quot; &quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=s2>&quot;</span><span class=si>{}</span><span class=s2>,</span><span class=si>{}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span> <span class=k>for</span> <span class=n>p</span> <span class=ow>in</span> <span class=n>pairs</span><span class=p>)</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-01-21 13:05 </p></div></div></body></html>

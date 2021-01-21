@@ -81,6 +81,8 @@
                 <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Basics</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#backends">Backends</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#creating-slides">Creating slides</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#decorator">Decorator</a>
@@ -178,11 +180,34 @@ presentation is the width and height of the resulting PDF pages, which also affe
 aspect ratio. The default size if <code>1024x768</code>, which corresponds to aspect ratio <code>4:3</code>.</p>
 <p>Here is an example of creating a new presentation:</p>
 <pre><code class="language-python">import elsie
+
 slides = elsie.SlideDeck(width=1024, height=768)
 </code></pre>
 <p>Once you have a <code>SlideDeck</code> object, you can create new slides from it.</p>
+<h2 id="backends">Backends<a class="headerlink" href="#backends" title="Permanent link">#</a></h2>
+<p><em>Elsie</em> needs a <code>Backend</code> to render slides to PDF. Currently, two backends are implemented:</p>
+<ul>
+<li><a href="https://spirali.github.io/elsie/apidoc/elsie.render.backends.svg.backend.InkscapeBackend.html"><code>InkscapeBackend</code></a> is the default backend.
+  This backend uses <code>Inkscape</code> to convert slides to PDF, which means that you need to
+  have <code>Inkscape</code> installed on your computer.</li>
+<li><a href="https://spirali.github.io/elsie/apidoc/elsie.render.backends.cairo.backend.CairoBackend.html"><code>CairoBackend</code></a> is an experimental backend
+  that uses the <a href="https://www.cairographics.org/">Cairo</a> library to render slides. It supports most
+  of <em>Elsie</em> features, it should produce very similar output to the Inkscape backend and most
+  importantly, you do not need <code>Inkscape</code> installed for it to work. However, it is currently
+  experimental and not tested as thoroughly as the Inkscape backend.</li>
+</ul>
+<p>Both backends should produce very similar visual output, but this is not guaranteed, although
+differences are usually pretty small and mostly only in text rendering. We suggest you to stick to
+a single backend.</p>
+<p>To use a specific backend, simply pass it to <code>SlideDeck</code> using the <code>backend</code> parameter:</p>
+<pre><code class="language-python">import elsie
+from elsie.render.backends import CairoBackend
+
+slides = elsie.SlideDeck(backend=CairoBackend())
+</code></pre>
 <h2 id="creating-slides">Creating slides<a class="headerlink" href="#creating-slides" title="Permanent link">#</a></h2>
-<p>You can create new slides in two ways, either using the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_new_slide"><code>new_slide</code></a>
+<p>You can create new slides in two ways, either using
+the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_new_slide"><code>new_slide</code></a>
 method or via a <a href="#decorator">decorator</a>. The <code>new_slide</code> method will create a new slide, but for
 convenience, it will not return the slide itself, but its <a href="../layout/">root box</a>, so that you can
 use the returned object immediately for adding things to the slide. Except for some advanced usage,
@@ -192,7 +217,8 @@ you shouldn't ever need to deal with the <a href="https://spirali.github.io/elsi
 <p>Once you have a slide, you can add content to it, for example <a href="../text/">text</a>, <a href="../images/">images</a>,
 <a href="../shapes/">shapes</a> or <a href="../syntax_highlighting/">source code</a>.</p>
 <h3 id="decorator">Decorator<a class="headerlink" href="#decorator" title="Permanent link">#</a></h3>
-<p>A more convenient way of creating a slide is using the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_slide"><code>slide</code></a>
+<p>A more convenient way of creating a slide is using
+the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_slide"><code>slide</code></a>
 decorator. If you apply it to a function, it will create a new slide and pass its root box as a
 parameter to the function. It will also set the name of the slide according to the name of the
 decorated function.</p>
@@ -207,6 +233,7 @@ will be the same as in the source code:</p>
 def slide1(slide):
     slide.text(&quot;Slide 1&quot;)
 
+
 @slides.slide()
 def slide2(slide):
     slide.text(&quot;Slide 2&quot;)
@@ -214,29 +241,29 @@ def slide2(slide):
 <p>You can also combine the decorator and <code>new_slide</code>, although this is mostly discouraged, as it get
 be confusing to follow the order of the slides.</p>
 <p>Both <code>slide</code> and <code>new_slide</code> have parameters that allow you to change the background color and SVG
-viewbox of the slide (see example usage <a href="../../cookbook/zoom/">here</a>). You can also choose
-its name (see <a href="#name-policy">below</a>) or enable <a href="../layout/#debug-draw-mode">debug draw mode</a>.</p>
+viewbox of the slide (see example usage <a href="../../cookbook/zoom/">here</a>). You can also choose its
+name (see <a href="#name-policy">below</a>) or enable <a href="../layout/#debug-draw-mode">debug draw mode</a>.</p>
 <h2 id="rendering-slides">Rendering slides<a class="headerlink" href="#rendering-slides" title="Permanent link">#</a></h2>
 <p>After you have created all of your desired slides and filled them with content, you can render your
-presentation using the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_render"><code>render</code></a> method. There are several useful
-parameters of this method:</p>
+presentation using the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_render"><code>render</code></a> method. There are
+several useful parameters of this method:</p>
 <ul>
 <li><code>output</code>: Change the output filename of the rendered PDF (default is <code>slides.pdf</code>).</li>
 <li><code>slide_postprocessing</code>: Apply some postprocessing function to all slides. See an example
-<a href="../../cookbook/postprocessing/">here</a>.</li>
+  <a href="../../cookbook/postprocessing/">here</a>.</li>
 <li><code>select_slides</code>: Render only a selected subset of slides.</li>
 <li><code>return_units</code>: Return a list of SVG slides without rendering them. This can be useful if you
-just want to build your slides using <em>Elsie</em>, but render them in a another way.</li>
+  just want to build your slides using <em>Elsie</em>, but render them in a another way.</li>
 <li><code>slider_per_page(x, y)</code>: Group several slides into a single page. Each page will contain a grid
-of slides with <code>x</code> rows and <code>y</code> columns. This can be useful e.g. for creating presentation
-previews.</li>
+  of slides with <code>x</code> rows and <code>y</code> columns. This can be useful e.g. for creating presentation
+  previews.</li>
 </ul>
 <p><em>Elsie</em> uses caching to speed-up the rendering. The cache will be created in a directory named
 <code>elsie-cache</code>.</p>
 <h2 id="name-policy">Name policy<a class="headerlink" href="#name-policy" title="Permanent link">#</a></h2>
 <p>If you create slides in an interactive Python session (for example in <code>IPython</code> or
-<a href="../jupyter/">Jupyter</a>), you might inadvertedly create new slides after modifying and re-executing
-a piece of code.</p>
+<a href="../jupyter/">Jupyter</a>), you might inadvertedly create new slides after modifying and re-executing a
+piece of code.</p>
 <p>For example, if this code was inside a Jupyter notebook cell:</p>
 <pre><code>@slides.slide()
 def slide1(slide):
@@ -246,16 +273,17 @@ def slide1(slide):
 probably not what you want.</p>
 <p>To solve this issue, <em>Elsie</em> uses a so-called <em>name policy</em>, which decides how to react to the
 situation where a slide with the same name is created multiple times. The name of a slide is either
-determined automatically if the <a href="#decorator">decorator</a> is used, or you can pass it explicitly to the
+determined automatically if the <a href="#decorator">decorator</a> is used, or you can pass it explicitly to
+the
 <code>new_slide</code> function.</p>
-<p>The <code>SlideDeck</code> instance has one of the following name policies, which decides what to do when a new
-slide is created:</p>
+<p>The <code>SlideDeck</code> instance has one of the following name policies, which decides what to do when a
+new slide is created:</p>
 <ul>
-<li><code>unique</code>: Creating two slides with the same name will result in an error. This is to stop you from
-creating multiple instances of the same slide inadvertedly. Note that when a name of a slide is
-unset (it is <code>None</code>), the slide will be allowed to be created.</li>
-<li><code>replace</code>: When a slide with the same name already exists, the previous slide will be removed, and
-the new slide will be placed at the end of the slide list.</li>
+<li><code>unique</code>: Creating two slides with the same name will result in an error. This is to stop you
+  from creating multiple instances of the same slide inadvertedly. Note that when a name of a slide
+  is unset (it is <code>None</code>), the slide will be allowed to be created.</li>
+<li><code>replace</code>: When a slide with the same name already exists, the previous slide will be removed,
+  and the new slide will be placed at the end of the slide list.</li>
 <li><code>ignore</code>: The name of slides will not be checked, essentially turns off name policy.</li>
 <li><code>auto</code> (the default): Uses <code>replace</code> when running inside Jupyter, otherwise uses <code>ignore</code>.</li>
 </ul>

@@ -172,16 +172,17 @@ which explains individual concepts in more detail.</p>
 <p>To build a presentation with <em>Elsie</em>, you first have to import it and create an instance of a
 <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html"><code>SlideDeck</code></a>:</p>
 <pre><code class="language-python">import elsie
+
 slides = elsie.SlideDeck()
 </code></pre>
 <p><code>SlideDeck</code> is used to add slides to your presentation and also to render the slides to PDF at the
 end. You can find more about if <a href="../userguide/basics/">here</a>.</p>
 <h2 id="adding-slides">Adding slides<a class="headerlink" href="#adding-slides" title="Permanent link">#</a></h2>
-<p>The easiest way of adding slides to the slide deck is to create a function for each slide and
-mark it with the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_slide"><code>slide</code></a> decorator:</p>
+<p>The easiest way of adding slides to the slide deck is to create a function for each slide and mark
+it with the <a href="https://spirali.github.io/elsie/apidoc/elsie.slides.slidedeck.SlideDeck.html#f_slide"><code>slide</code></a> decorator:</p>
 <pre><code class="language-python">@slides.slide()
 def slide1(slide):
-    # ...
+# ...
 </code></pre>
 <p>Each decorated function will receive a slide as its parameter. It should then fill the slide with
 the desired content.</p>
@@ -220,7 +221,9 @@ details about rendering slides <a href="../userguide/basics/#rendering-slides">h
 present in <em>Elsie</em>.</p>
 <p>For completeness, here is the full code that was shown in this tutorial:</p>
 <pre><code class="language-python">import elsie
+
 slides = elsie.SlideDeck()
+
 
 @slides.slide()
 def slide1(slide):
@@ -233,6 +236,7 @@ def slide2(slide):
     slide.box(show=&quot;1-2&quot;).text(&quot;I am shown in fragments 1 and 2&quot;)
     slide.box(show=&quot;2+&quot;).text(&quot;I am shown in fragment 2 and 3&quot;)
     slide.box(show=&quot;3&quot;).text(&quot;I am shown in fragment 3&quot;)
+
 
 slides.render(&quot;slides.pdf&quot;)
 </code></pre>

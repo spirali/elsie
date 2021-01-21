@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.ext.latex</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.0 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9662; ext</a> </li><li><ul><li><div class=select><a href=elsie.ext.latex.html>&#9662; latex</a> </div></li><li><a href=elsie.ext.list.html>&#9656; list</a> </li><li><a href=elsie.ext.markdown.html>&#9656; markdown</a> </li></ul></li><li><a href=elsie.render.html>&#9656; render</a> </li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/ext/latex.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.ext.html>ext</a>.<a class=symbol href=elsie.ext.latex.html>latex</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre>  1
+<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.ext.latex</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.1 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9662; ext</a> </li><li><ul><li><div class=select><a href=elsie.ext.latex.html>&#9662; latex</a> </div></li><li><a href=elsie.ext.list.html>&#9656; list</a> </li><li><a href=elsie.ext.markdown.html>&#9656; markdown</a> </li></ul></li><li><a href=elsie.render.html>&#9656; render</a> </li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/ext/latex.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.ext.html>ext</a>.<a class=symbol href=elsie.ext.latex.html>latex</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre>  1
   2
   3
   4
@@ -119,7 +119,14 @@
 119
 120
 121
-122</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>functools</span>
+122
+123
+124
+125
+126
+127
+128
+129</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>functools</span>
 <a name=line-2></a><span class=kn>import</span> <span class=nn>hashlib</span>
 <a name=line-3></a><span class=kn>import</span> <span class=nn>os</span>
 <a name=line-4></a><span class=kn>import</span> <span class=nn>subprocess</span>
@@ -194,51 +201,58 @@
 <a name=line-73></a>    <span class=n>rect</span> <span class=o>=</span> <span class=n>box</span><span class=o>.</span><span class=n>layout</span><span class=o>.</span><span class=n>rect</span>
 <a name=line-74></a>    <span class=n>x</span> <span class=o>=</span> <span class=n>rect</span><span class=o>.</span><span class=n>x</span> <span class=o>+</span> <span class=p>(</span><span class=n>rect</span><span class=o>.</span><span class=n>width</span> <span class=o>-</span> <span class=n>svg_width</span><span class=p>)</span> <span class=o>/</span> <span class=mi>2</span>
 <a name=line-75></a>    <span class=n>y</span> <span class=o>=</span> <span class=n>rect</span><span class=o>.</span><span class=n>y</span> <span class=o>+</span> <span class=p>(</span><span class=n>rect</span><span class=o>.</span><span class=n>height</span> <span class=o>-</span> <span class=n>svg_height</span><span class=p>)</span> <span class=o>/</span> <span class=mi>2</span>
-<a name=line-76></a>    <span class=n>parent</span><span class=o>.</span><span class=n>_render_svg</span><span class=p>(</span><span class=n>ctx</span><span class=p>,</span> <span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>,</span> <span class=n>scale</span><span class=p>,</span> <span class=n>svg</span><span class=p>)</span>
-<a name=line-77></a>
-<a name=line-78></a>
-<a name=line-79></a><span class=k>def</span> <span class=nf>_render_latex</span><span class=p>(</span><span class=n>text</span><span class=p>):</span>
-<a name=line-80></a>    <span class=n>args</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;/usr/bin/pdflatex&quot;</span><span class=p>,</span> <span class=s2>&quot;-interaction=batchmode&quot;</span><span class=p>,</span> <span class=s2>&quot;content.tex&quot;</span><span class=p>)</span>
-<a name=line-81></a>
-<a name=line-82></a>    <span class=k>with</span> <span class=n>TemporaryDirectory</span><span class=p>(</span><span class=n>prefix</span><span class=o>=</span><span class=s2>&quot;elsie-&quot;</span><span class=p>)</span> <span class=k>as</span> <span class=n>wdir</span><span class=p>:</span>
-<a name=line-83></a>        <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>wdir</span><span class=p>,</span> <span class=s2>&quot;content.tex&quot;</span><span class=p>),</span> <span class=s2>&quot;w&quot;</span><span class=p>)</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span>
-<a name=line-84></a>            <span class=n>f</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>text</span><span class=p>)</span>
+<a name=line-76></a>    <span class=n>ctx</span><span class=o>.</span><span class=n>draw_svg</span><span class=p>(</span>
+<a name=line-77></a>        <span class=n>svg</span><span class=o>=</span><span class=n>svg</span><span class=p>,</span>
+<a name=line-78></a>        <span class=n>x</span><span class=o>=</span><span class=n>x</span><span class=p>,</span>
+<a name=line-79></a>        <span class=n>y</span><span class=o>=</span><span class=n>y</span><span class=p>,</span>
+<a name=line-80></a>        <span class=n>width</span><span class=o>=</span><span class=n>rect</span><span class=o>.</span><span class=n>width</span><span class=p>,</span>
+<a name=line-81></a>        <span class=n>height</span><span class=o>=</span><span class=n>rect</span><span class=o>.</span><span class=n>height</span><span class=p>,</span>
+<a name=line-82></a>        <span class=n>scale</span><span class=o>=</span><span class=n>scale</span><span class=p>,</span>
+<a name=line-83></a>    <span class=p>)</span>
+<a name=line-84></a>
 <a name=line-85></a>
-<a name=line-86></a>        <span class=n>p</span> <span class=o>=</span> <span class=n>subprocess</span><span class=o>.</span><span class=n>Popen</span><span class=p>(</span>
-<a name=line-87></a>            <span class=n>args</span><span class=p>,</span>
-<a name=line-88></a>            <span class=n>stdin</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
-<a name=line-89></a>            <span class=n>stdout</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
-<a name=line-90></a>            <span class=n>stderr</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
-<a name=line-91></a>            <span class=n>cwd</span><span class=o>=</span><span class=n>wdir</span><span class=p>,</span>
-<a name=line-92></a>        <span class=p>)</span>
-<a name=line-93></a>
-<a name=line-94></a>        <span class=n>_stdout</span><span class=p>,</span> <span class=n>_stderr</span> <span class=o>=</span> <span class=n>p</span><span class=o>.</span><span class=n>communicate</span><span class=p>()</span>
-<a name=line-95></a>        <span class=k>if</span> <span class=n>p</span><span class=o>.</span><span class=n>returncode</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>:</span>
-<a name=line-96></a>            <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>wdir</span><span class=p>,</span> <span class=s2>&quot;content.log&quot;</span><span class=p>))</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span>
-<a name=line-97></a>                <span class=n>error</span> <span class=o>=</span> <span class=n>f</span><span class=o>.</span><span class=n>read</span><span class=p>()</span>
-<a name=line-98></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;pdflatex failed:</span><span class=se>\n</span><span class=s2>&quot;</span> <span class=o>+</span> <span class=n>error</span><span class=p>)</span>
-<a name=line-99></a>
-<a name=line-100></a>        <span class=n>svg_name</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>wdir</span><span class=p>,</span> <span class=s2>&quot;content.svg&quot;</span><span class=p>)</span>
-<a name=line-101></a>
-<a name=line-102></a>        <span class=n>args</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;/usr/bin/pdf2svg&quot;</span><span class=p>,</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>wdir</span><span class=p>,</span> <span class=s2>&quot;content.pdf&quot;</span><span class=p>),</span> <span class=n>svg_name</span><span class=p>)</span>
-<a name=line-103></a>
-<a name=line-104></a>        <span class=n>p</span> <span class=o>=</span> <span class=n>subprocess</span><span class=o>.</span><span class=n>Popen</span><span class=p>(</span>
-<a name=line-105></a>            <span class=n>args</span><span class=p>,</span>
-<a name=line-106></a>            <span class=n>stdin</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
-<a name=line-107></a>            <span class=n>stdout</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
-<a name=line-108></a>            <span class=n>stderr</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
-<a name=line-109></a>            <span class=n>cwd</span><span class=o>=</span><span class=n>wdir</span><span class=p>,</span>
-<a name=line-110></a>        <span class=p>)</span>
-<a name=line-111></a>
-<a name=line-112></a>        <span class=n>_stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>p</span><span class=o>.</span><span class=n>communicate</span><span class=p>()</span>
-<a name=line-113></a>        <span class=k>if</span> <span class=n>p</span><span class=o>.</span><span class=n>returncode</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>:</span>
-<a name=line-114></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;pdf2svg failed:</span><span class=se>\n</span><span class=s2>&quot;</span> <span class=o>+</span> <span class=n>stderr</span><span class=o>.</span><span class=n>decode</span><span class=p>())</span>
-<a name=line-115></a>
-<a name=line-116></a>        <span class=n>root</span> <span class=o>=</span> <span class=n>et</span><span class=o>.</span><span class=n>parse</span><span class=p>(</span><span class=n>svg_name</span><span class=p>)</span><span class=o>.</span><span class=n>getroot</span><span class=p>()</span>
-<a name=line-117></a>
-<a name=line-118></a>    <span class=n>h</span> <span class=o>=</span> <span class=n>hashlib</span><span class=o>.</span><span class=n>md5</span><span class=p>()</span>
-<a name=line-119></a>    <span class=n>h</span><span class=o>.</span><span class=n>update</span><span class=p>(</span><span class=n>text</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span>
-<a name=line-120></a>    <span class=n>suffix</span> <span class=o>=</span> <span class=s2>&quot;-&quot;</span> <span class=o>+</span> <span class=n>h</span><span class=o>.</span><span class=n>hexdigest</span><span class=p>()</span>
-<a name=line-121></a>    <span class=n>rename_ids</span><span class=p>(</span><span class=n>root</span><span class=p>,</span> <span class=n>suffix</span><span class=p>)</span>
-<a name=line-122></a>    <span class=k>return</span> <span class=n>et</span><span class=o>.</span><span class=n>tostring</span><span class=p>(</span><span class=n>root</span><span class=p>)</span><span class=o>.</span><span class=n>decode</span><span class=p>()</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-01-19 22:15 </p></div></div></body></html>
+<a name=line-86></a><span class=k>def</span> <span class=nf>_render_latex</span><span class=p>(</span><span class=n>text</span><span class=p>):</span>
+<a name=line-87></a>    <span class=n>args</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;/usr/bin/pdflatex&quot;</span><span class=p>,</span> <span class=s2>&quot;-interaction=batchmode&quot;</span><span class=p>,</span> <span class=s2>&quot;content.tex&quot;</span><span class=p>)</span>
+<a name=line-88></a>
+<a name=line-89></a>    <span class=k>with</span> <span class=n>TemporaryDirectory</span><span class=p>(</span><span class=n>prefix</span><span class=o>=</span><span class=s2>&quot;elsie-&quot;</span><span class=p>)</span> <span class=k>as</span> <span class=n>wdir</span><span class=p>:</span>
+<a name=line-90></a>        <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>wdir</span><span class=p>,</span> <span class=s2>&quot;content.tex&quot;</span><span class=p>),</span> <span class=s2>&quot;w&quot;</span><span class=p>)</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span>
+<a name=line-91></a>            <span class=n>f</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>text</span><span class=p>)</span>
+<a name=line-92></a>
+<a name=line-93></a>        <span class=n>p</span> <span class=o>=</span> <span class=n>subprocess</span><span class=o>.</span><span class=n>Popen</span><span class=p>(</span>
+<a name=line-94></a>            <span class=n>args</span><span class=p>,</span>
+<a name=line-95></a>            <span class=n>stdin</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
+<a name=line-96></a>            <span class=n>stdout</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
+<a name=line-97></a>            <span class=n>stderr</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
+<a name=line-98></a>            <span class=n>cwd</span><span class=o>=</span><span class=n>wdir</span><span class=p>,</span>
+<a name=line-99></a>        <span class=p>)</span>
+<a name=line-100></a>
+<a name=line-101></a>        <span class=n>_stdout</span><span class=p>,</span> <span class=n>_stderr</span> <span class=o>=</span> <span class=n>p</span><span class=o>.</span><span class=n>communicate</span><span class=p>()</span>
+<a name=line-102></a>        <span class=k>if</span> <span class=n>p</span><span class=o>.</span><span class=n>returncode</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>:</span>
+<a name=line-103></a>            <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>wdir</span><span class=p>,</span> <span class=s2>&quot;content.log&quot;</span><span class=p>))</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span>
+<a name=line-104></a>                <span class=n>error</span> <span class=o>=</span> <span class=n>f</span><span class=o>.</span><span class=n>read</span><span class=p>()</span>
+<a name=line-105></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;pdflatex failed:</span><span class=se>\n</span><span class=s2>&quot;</span> <span class=o>+</span> <span class=n>error</span><span class=p>)</span>
+<a name=line-106></a>
+<a name=line-107></a>        <span class=n>svg_name</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>wdir</span><span class=p>,</span> <span class=s2>&quot;content.svg&quot;</span><span class=p>)</span>
+<a name=line-108></a>
+<a name=line-109></a>        <span class=n>args</span> <span class=o>=</span> <span class=p>(</span><span class=s2>&quot;/usr/bin/pdf2svg&quot;</span><span class=p>,</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>wdir</span><span class=p>,</span> <span class=s2>&quot;content.pdf&quot;</span><span class=p>),</span> <span class=n>svg_name</span><span class=p>)</span>
+<a name=line-110></a>
+<a name=line-111></a>        <span class=n>p</span> <span class=o>=</span> <span class=n>subprocess</span><span class=o>.</span><span class=n>Popen</span><span class=p>(</span>
+<a name=line-112></a>            <span class=n>args</span><span class=p>,</span>
+<a name=line-113></a>            <span class=n>stdin</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
+<a name=line-114></a>            <span class=n>stdout</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
+<a name=line-115></a>            <span class=n>stderr</span><span class=o>=</span><span class=n>subprocess</span><span class=o>.</span><span class=n>PIPE</span><span class=p>,</span>
+<a name=line-116></a>            <span class=n>cwd</span><span class=o>=</span><span class=n>wdir</span><span class=p>,</span>
+<a name=line-117></a>        <span class=p>)</span>
+<a name=line-118></a>
+<a name=line-119></a>        <span class=n>_stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>p</span><span class=o>.</span><span class=n>communicate</span><span class=p>()</span>
+<a name=line-120></a>        <span class=k>if</span> <span class=n>p</span><span class=o>.</span><span class=n>returncode</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>:</span>
+<a name=line-121></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;pdf2svg failed:</span><span class=se>\n</span><span class=s2>&quot;</span> <span class=o>+</span> <span class=n>stderr</span><span class=o>.</span><span class=n>decode</span><span class=p>())</span>
+<a name=line-122></a>
+<a name=line-123></a>        <span class=n>root</span> <span class=o>=</span> <span class=n>et</span><span class=o>.</span><span class=n>parse</span><span class=p>(</span><span class=n>svg_name</span><span class=p>)</span><span class=o>.</span><span class=n>getroot</span><span class=p>()</span>
+<a name=line-124></a>
+<a name=line-125></a>    <span class=n>h</span> <span class=o>=</span> <span class=n>hashlib</span><span class=o>.</span><span class=n>md5</span><span class=p>()</span>
+<a name=line-126></a>    <span class=n>h</span><span class=o>.</span><span class=n>update</span><span class=p>(</span><span class=n>text</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span>
+<a name=line-127></a>    <span class=n>suffix</span> <span class=o>=</span> <span class=s2>&quot;-&quot;</span> <span class=o>+</span> <span class=n>h</span><span class=o>.</span><span class=n>hexdigest</span><span class=p>()</span>
+<a name=line-128></a>    <span class=n>rename_ids</span><span class=p>(</span><span class=n>root</span><span class=p>,</span> <span class=n>suffix</span><span class=p>)</span>
+<a name=line-129></a>    <span class=k>return</span> <span class=n>et</span><span class=o>.</span><span class=n>tostring</span><span class=p>(</span><span class=n>root</span><span class=p>)</span><span class=o>.</span><span class=n>decode</span><span class=p>()</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-01-21 13:05 </p></div></div></body></html>

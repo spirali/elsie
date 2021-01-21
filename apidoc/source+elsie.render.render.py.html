@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.render.render</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.0 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9662; render</a> </li><li><ul><li><a href=elsie.render.backends.html>&#9656; backends</a> </li><li><a href=elsie.render.image.html>&#9656; image</a> </li><li><a href=elsie.render.inkscape.html>&#9656; inkscape</a> </li><li><a href=elsie.render.jupyter.html>&#9656; jupyter</a> </li><li><a href=elsie.render.ora.html>&#9656; ora</a> </li><li><a href=elsie.render.pdfmerge.html>&#9656; pdfmerge</a> </li><li><div class=select><a href=elsie.render.render.html>&#9662; render</a> </div></li><li><ul><li><a href=elsie.render.render.PdfRenderUnit.html> <i>class</i> PdfRenderUnit</a> </li><li><a href=elsie.render.render.RenderUnit.html> <i>class</i> RenderUnit</a> </li><li><a href=elsie.render.render.SvgRenderUnit.html> <i>class</i> SvgRenderUnit</a> </li></ul></li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/render/render.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.render.html>render</a>.<a class=symbol href=elsie.render.render.html>render</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre>  1
+<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.render.render</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.1 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9662; render</a> </li><li><ul><li><a href=elsie.render.backends.html>&#9656; backends</a> </li><li><a href=elsie.render.image.html>&#9656; image</a> </li><li><a href=elsie.render.inkscape.html>&#9656; inkscape</a> </li><li><a href=elsie.render.jupyter.html>&#9656; jupyter</a> </li><li><a href=elsie.render.ora.html>&#9656; ora</a> </li><li><a href=elsie.render.pdfmerge.html>&#9656; pdfmerge</a> </li><li><div class=select><a href=elsie.render.render.html>&#9662; render</a> </div></li><li><ul><li><a href=elsie.render.render.ExportedRenderUnit.html> <i>class</i> ExportedRenderUnit</a> </li><li><a href=elsie.render.render.RenderUnit.html> <i>class</i> RenderUnit</a> </li><li><a href=elsie.render.render.SvgRenderUnit.html> <i>class</i> SvgRenderUnit</a> </li></ul></li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/render/render.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.render.html>render</a>.<a class=symbol href=elsie.render.render.html>render</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre>  1
   2
   3
   4
@@ -107,7 +107,9 @@
 107
 108
 109
-110</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>os</span>
+110
+111
+112</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>os</span>
 <a name=line-2></a>
 <a name=line-3></a><span class=kn>from</span> <span class=nn>..render.backends.svg.utils</span> <span class=kn>import</span> <span class=n>svg_begin</span><span class=p>,</span> <span class=n>svg_end</span>
 <a name=line-4></a><span class=kn>from</span> <span class=nn>..utils.sxml</span> <span class=kn>import</span> <span class=n>Xml</span>
@@ -126,95 +128,97 @@
 <a name=line-17></a>    <span class=k>def</span> <span class=nf>write_debug</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>out_dir</span><span class=p>):</span>
 <a name=line-18></a>        <span class=k>pass</span>
 <a name=line-19></a>
-<a name=line-20></a>    <span class=k>def</span> <span class=nf>get_svg</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<a name=line-21></a>        <span class=k>return</span> <span class=kc>None</span>
+<a name=line-20></a>    <span class=k>def</span> <span class=nf>export</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>fs_cache</span><span class=p>,</span> <span class=n>export_type</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
+<a name=line-21></a>        <span class=k>raise</span> <span class=ne>NotImplementedError</span>
 <a name=line-22></a>
-<a name=line-23></a>
-<a name=line-24></a><span class=k>class</span> <span class=nc>SvgRenderUnit</span><span class=p>(</span><span class=n>RenderUnit</span><span class=p>):</span>
-<a name=line-25></a>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>slide</span><span class=p>,</span> <span class=n>step</span><span class=p>,</span> <span class=n>svg</span><span class=p>,</span> <span class=n>inkscape</span><span class=p>):</span>
-<a name=line-26></a>        <span class=nb>super</span><span class=p>()</span><span class=o>.</span><span class=fm>__init__</span><span class=p>(</span><span class=n>slide</span><span class=p>,</span> <span class=n>step</span><span class=p>)</span>
-<a name=line-27></a>        <span class=bp>self</span><span class=o>.</span><span class=n>svg</span> <span class=o>=</span> <span class=n>svg</span>
-<a name=line-28></a>        <span class=bp>self</span><span class=o>.</span><span class=n>inkscape</span> <span class=o>=</span> <span class=n>inkscape</span>
-<a name=line-29></a>
-<a name=line-30></a>    <span class=k>def</span> <span class=nf>write_debug</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>out_dir</span><span class=p>):</span>
-<a name=line-31></a>        <span class=n>svg_file</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span>
-<a name=line-32></a>            <span class=n>out_dir</span><span class=p>,</span> <span class=s2>&quot;</span><span class=si>{}</span><span class=s2>-</span><span class=si>{}</span><span class=s2>.svg&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>slide</span><span class=o>.</span><span class=n>index</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>step</span><span class=p>)</span>
-<a name=line-33></a>        <span class=p>)</span>
-<a name=line-34></a>        <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>svg_file</span><span class=p>,</span> <span class=s2>&quot;w&quot;</span><span class=p>)</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span>
-<a name=line-35></a>            <span class=n>f</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>svg</span><span class=p>)</span>
-<a name=line-36></a>
-<a name=line-37></a>    <span class=k>def</span> <span class=nf>export</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>fs_cache</span><span class=p>,</span> <span class=n>export_type</span><span class=p>):</span>
-<a name=line-38></a>        <span class=k>return</span> <span class=n>fs_cache</span><span class=o>.</span><span class=n>ensure</span><span class=p>(</span>
-<a name=line-39></a>            <span class=bp>self</span><span class=o>.</span><span class=n>svg</span><span class=o>.</span><span class=n>encode</span><span class=p>(),</span>
-<a name=line-40></a>            <span class=n>export_type</span><span class=p>,</span>
-<a name=line-41></a>            <span class=k>lambda</span> <span class=n>source</span><span class=p>,</span> <span class=n>target</span><span class=p>,</span> <span class=n>et</span><span class=p>:</span> <span class=n>export_by_inkscape</span><span class=p>(</span>
-<a name=line-42></a>                <span class=bp>self</span><span class=o>.</span><span class=n>inkscape</span><span class=p>,</span> <span class=n>source</span><span class=p>,</span> <span class=n>target</span><span class=p>,</span> <span class=n>et</span>
-<a name=line-43></a>            <span class=p>),</span>
-<a name=line-44></a>        <span class=p>)</span>
-<a name=line-45></a>
-<a name=line-46></a>    <span class=k>def</span> <span class=nf>get_svg</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<a name=line-47></a>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>svg</span>
+<a name=line-23></a>    <span class=k>def</span> <span class=nf>get_svg</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+<a name=line-24></a>        <span class=k>return</span> <span class=kc>None</span>
+<a name=line-25></a>
+<a name=line-26></a>
+<a name=line-27></a><span class=k>class</span> <span class=nc>SvgRenderUnit</span><span class=p>(</span><span class=n>RenderUnit</span><span class=p>):</span>
+<a name=line-28></a>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>slide</span><span class=p>,</span> <span class=n>step</span><span class=p>,</span> <span class=n>svg</span><span class=p>,</span> <span class=n>inkscape</span><span class=p>):</span>
+<a name=line-29></a>        <span class=nb>super</span><span class=p>()</span><span class=o>.</span><span class=fm>__init__</span><span class=p>(</span><span class=n>slide</span><span class=p>,</span> <span class=n>step</span><span class=p>)</span>
+<a name=line-30></a>        <span class=bp>self</span><span class=o>.</span><span class=n>svg</span> <span class=o>=</span> <span class=n>svg</span>
+<a name=line-31></a>        <span class=bp>self</span><span class=o>.</span><span class=n>inkscape</span> <span class=o>=</span> <span class=n>inkscape</span>
+<a name=line-32></a>
+<a name=line-33></a>    <span class=k>def</span> <span class=nf>write_debug</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>out_dir</span><span class=p>):</span>
+<a name=line-34></a>        <span class=n>svg_file</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span>
+<a name=line-35></a>            <span class=n>out_dir</span><span class=p>,</span> <span class=s2>&quot;</span><span class=si>{}</span><span class=s2>-</span><span class=si>{}</span><span class=s2>.svg&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>slide</span><span class=o>.</span><span class=n>index</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>step</span><span class=p>)</span>
+<a name=line-36></a>        <span class=p>)</span>
+<a name=line-37></a>        <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>svg_file</span><span class=p>,</span> <span class=s2>&quot;w&quot;</span><span class=p>)</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span>
+<a name=line-38></a>            <span class=n>f</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>svg</span><span class=p>)</span>
+<a name=line-39></a>
+<a name=line-40></a>    <span class=k>def</span> <span class=nf>export</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>fs_cache</span><span class=p>,</span> <span class=n>export_type</span><span class=p>):</span>
+<a name=line-41></a>        <span class=k>return</span> <span class=n>fs_cache</span><span class=o>.</span><span class=n>ensure</span><span class=p>(</span>
+<a name=line-42></a>            <span class=bp>self</span><span class=o>.</span><span class=n>svg</span><span class=o>.</span><span class=n>encode</span><span class=p>(),</span>
+<a name=line-43></a>            <span class=n>export_type</span><span class=p>,</span>
+<a name=line-44></a>            <span class=k>lambda</span> <span class=n>source</span><span class=p>,</span> <span class=n>target</span><span class=p>,</span> <span class=n>et</span><span class=p>:</span> <span class=n>export_by_inkscape</span><span class=p>(</span>
+<a name=line-45></a>                <span class=bp>self</span><span class=o>.</span><span class=n>inkscape</span><span class=p>,</span> <span class=n>source</span><span class=p>,</span> <span class=n>target</span><span class=p>,</span> <span class=n>et</span>
+<a name=line-46></a>            <span class=p>),</span>
+<a name=line-47></a>        <span class=p>)</span>
 <a name=line-48></a>
-<a name=line-49></a>
-<a name=line-50></a><span class=k>class</span> <span class=nc>PdfRenderUnit</span><span class=p>(</span><span class=n>RenderUnit</span><span class=p>):</span>
-<a name=line-51></a>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>slide</span><span class=p>,</span> <span class=n>step</span><span class=p>,</span> <span class=n>filename</span><span class=p>):</span>
-<a name=line-52></a>        <span class=nb>super</span><span class=p>()</span><span class=o>.</span><span class=fm>__init__</span><span class=p>(</span><span class=n>slide</span><span class=p>,</span> <span class=n>step</span><span class=p>)</span>
-<a name=line-53></a>        <span class=bp>self</span><span class=o>.</span><span class=n>filename</span> <span class=o>=</span> <span class=n>filename</span>
-<a name=line-54></a>
-<a name=line-55></a>    <span class=k>def</span> <span class=nf>export</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>fs_cache</span><span class=p>,</span> <span class=n>export_type</span><span class=p>):</span>
-<a name=line-56></a>        <span class=k>if</span> <span class=n>export_type</span> <span class=o>==</span> <span class=s2>&quot;pdf&quot;</span><span class=p>:</span>
-<a name=line-57></a>            <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>filename</span>
-<a name=line-58></a>        <span class=k>else</span><span class=p>:</span>
-<a name=line-59></a>            <span class=k>return</span> <span class=kc>None</span>
-<a name=line-60></a>
-<a name=line-61></a>
-<a name=line-62></a><span class=k>def</span> <span class=nf>per_page_grouping</span><span class=p>(</span><span class=n>backend</span><span class=p>,</span> <span class=n>units</span><span class=p>,</span> <span class=n>count_x</span><span class=p>,</span> <span class=n>count_y</span><span class=p>,</span> <span class=n>width</span><span class=p>,</span> <span class=n>height</span><span class=p>):</span>
-<a name=line-63></a>    <span class=kn>from</span> <span class=nn>.backends</span> <span class=kn>import</span> <span class=n>InkscapeBackend</span>
-<a name=line-64></a>
-<a name=line-65></a>    <span class=k>assert</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>backend</span><span class=p>,</span> <span class=n>InkscapeBackend</span><span class=p>)</span>
+<a name=line-49></a>    <span class=k>def</span> <span class=nf>get_svg</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+<a name=line-50></a>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>svg</span>
+<a name=line-51></a>
+<a name=line-52></a>
+<a name=line-53></a><span class=k>class</span> <span class=nc>ExportedRenderUnit</span><span class=p>(</span><span class=n>RenderUnit</span><span class=p>):</span>
+<a name=line-54></a>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>slide</span><span class=p>,</span> <span class=n>step</span><span class=p>,</span> <span class=n>filename</span><span class=p>,</span> <span class=n>export_type</span><span class=o>=</span><span class=s2>&quot;pdf&quot;</span><span class=p>):</span>
+<a name=line-55></a>        <span class=nb>super</span><span class=p>()</span><span class=o>.</span><span class=fm>__init__</span><span class=p>(</span><span class=n>slide</span><span class=p>,</span> <span class=n>step</span><span class=p>)</span>
+<a name=line-56></a>        <span class=bp>self</span><span class=o>.</span><span class=n>filename</span> <span class=o>=</span> <span class=n>filename</span>
+<a name=line-57></a>        <span class=bp>self</span><span class=o>.</span><span class=n>export_type</span> <span class=o>=</span> <span class=n>export_type</span>
+<a name=line-58></a>
+<a name=line-59></a>    <span class=k>def</span> <span class=nf>export</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>fs_cache</span><span class=p>,</span> <span class=n>export_type</span><span class=p>):</span>
+<a name=line-60></a>        <span class=k>if</span> <span class=n>export_type</span> <span class=o>==</span> <span class=bp>self</span><span class=o>.</span><span class=n>export_type</span><span class=p>:</span>
+<a name=line-61></a>            <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>filename</span>
+<a name=line-62></a>
+<a name=line-63></a>
+<a name=line-64></a><span class=k>def</span> <span class=nf>per_page_grouping</span><span class=p>(</span><span class=n>backend</span><span class=p>,</span> <span class=n>units</span><span class=p>,</span> <span class=n>count_x</span><span class=p>,</span> <span class=n>count_y</span><span class=p>,</span> <span class=n>width</span><span class=p>,</span> <span class=n>height</span><span class=p>):</span>
+<a name=line-65></a>    <span class=kn>from</span> <span class=nn>.backends</span> <span class=kn>import</span> <span class=n>InkscapeBackend</span>
 <a name=line-66></a>
-<a name=line-67></a>    <span class=c1># TODO: reimplement using RenderingContext</span>
-<a name=line-68></a>    <span class=k>def</span> <span class=nf>new</span><span class=p>():</span>
-<a name=line-69></a>        <span class=n>tmp_xml</span> <span class=o>=</span> <span class=n>Xml</span><span class=p>()</span>
-<a name=line-70></a>        <span class=n>svg_begin</span><span class=p>(</span><span class=n>tmp_xml</span><span class=p>,</span> <span class=n>width</span> <span class=o>*</span> <span class=n>count_x</span><span class=p>,</span> <span class=n>height</span> <span class=o>*</span> <span class=n>count_y</span><span class=p>)</span>
-<a name=line-71></a>        <span class=k>return</span> <span class=n>tmp_xml</span>
-<a name=line-72></a>
-<a name=line-73></a>    <span class=k>def</span> <span class=nf>close</span><span class=p>():</span>
-<a name=line-74></a>        <span class=k>if</span> <span class=n>idx</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>:</span>
-<a name=line-75></a>            <span class=n>svg_end</span><span class=p>(</span><span class=n>xml</span><span class=p>)</span>
-<a name=line-76></a>            <span class=n>new_units</span><span class=o>.</span><span class=n>append</span><span class=p>(</span>
-<a name=line-77></a>                <span class=n>SvgRenderUnit</span><span class=p>(</span><span class=kc>None</span><span class=p>,</span> <span class=kc>None</span><span class=p>,</span> <span class=n>xml</span><span class=o>.</span><span class=n>to_string</span><span class=p>(),</span> <span class=n>backend</span><span class=o>.</span><span class=n>inkscape</span><span class=p>)</span>
-<a name=line-78></a>            <span class=p>)</span>
-<a name=line-79></a>
-<a name=line-80></a>    <span class=k>assert</span> <span class=n>count_x</span> <span class=o>&gt;</span> <span class=mi>0</span>
-<a name=line-81></a>    <span class=k>assert</span> <span class=n>count_y</span> <span class=o>&gt;</span> <span class=mi>0</span>
-<a name=line-82></a>    <span class=n>limit</span> <span class=o>=</span> <span class=n>count_x</span> <span class=o>*</span> <span class=n>count_y</span>
-<a name=line-83></a>    <span class=k>if</span> <span class=n>limit</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-<a name=line-84></a>        <span class=k>return</span> <span class=n>units</span>
-<a name=line-85></a>
-<a name=line-86></a>    <span class=n>new_units</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-87></a>    <span class=n>xml</span> <span class=o>=</span> <span class=n>new</span><span class=p>()</span>
-<a name=line-88></a>    <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span>
-<a name=line-89></a>    <span class=k>for</span> <span class=n>unit</span> <span class=ow>in</span> <span class=n>units</span><span class=p>:</span>
-<a name=line-90></a>        <span class=n>svg</span> <span class=o>=</span> <span class=n>unit</span><span class=o>.</span><span class=n>get_svg</span><span class=p>()</span>
-<a name=line-91></a>        <span class=k>if</span> <span class=n>svg</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-92></a>            <span class=n>new_units</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>unit</span><span class=p>)</span>
-<a name=line-93></a>            <span class=k>continue</span>
-<a name=line-94></a>
-<a name=line-95></a>        <span class=k>if</span> <span class=n>idx</span> <span class=o>==</span> <span class=n>limit</span><span class=p>:</span>
-<a name=line-96></a>            <span class=n>close</span><span class=p>()</span>
-<a name=line-97></a>            <span class=n>xml</span> <span class=o>=</span> <span class=n>new</span><span class=p>()</span>
-<a name=line-98></a>            <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span>
-<a name=line-99></a>
-<a name=line-100></a>        <span class=n>x</span> <span class=o>=</span> <span class=p>(</span><span class=n>idx</span> <span class=o>%</span> <span class=n>count_x</span><span class=p>)</span> <span class=o>*</span> <span class=n>width</span>
-<a name=line-101></a>        <span class=n>y</span> <span class=o>=</span> <span class=p>(</span><span class=n>idx</span> <span class=o>//</span> <span class=n>count_x</span><span class=p>)</span> <span class=o>*</span> <span class=n>height</span>
-<a name=line-102></a>
-<a name=line-103></a>        <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;g&quot;</span><span class=p>)</span>
-<a name=line-104></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;transform&quot;</span><span class=p>,</span> <span class=sa>f</span><span class=s2>&quot;translate(</span><span class=si>{</span><span class=n>x</span><span class=si>}</span><span class=s2>, </span><span class=si>{</span><span class=n>y</span><span class=si>}</span><span class=s2>)&quot;</span><span class=p>)</span>
-<a name=line-105></a>        <span class=n>xml</span><span class=o>.</span><span class=n>raw_text</span><span class=p>(</span><span class=n>svg</span><span class=p>)</span>
-<a name=line-106></a>        <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;g&quot;</span><span class=p>)</span>
-<a name=line-107></a>        <span class=n>idx</span> <span class=o>+=</span> <span class=mi>1</span>
-<a name=line-108></a>    <span class=n>close</span><span class=p>()</span>
-<a name=line-109></a>
-<a name=line-110></a>    <span class=k>return</span> <span class=n>new_units</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-01-19 22:15 </p></div></div></body></html>
+<a name=line-67></a>    <span class=k>assert</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>backend</span><span class=p>,</span> <span class=n>InkscapeBackend</span><span class=p>)</span>
+<a name=line-68></a>
+<a name=line-69></a>    <span class=c1># TODO: reimplement using RenderingContext</span>
+<a name=line-70></a>    <span class=k>def</span> <span class=nf>new</span><span class=p>():</span>
+<a name=line-71></a>        <span class=n>tmp_xml</span> <span class=o>=</span> <span class=n>Xml</span><span class=p>()</span>
+<a name=line-72></a>        <span class=n>svg_begin</span><span class=p>(</span><span class=n>tmp_xml</span><span class=p>,</span> <span class=n>width</span> <span class=o>*</span> <span class=n>count_x</span><span class=p>,</span> <span class=n>height</span> <span class=o>*</span> <span class=n>count_y</span><span class=p>)</span>
+<a name=line-73></a>        <span class=k>return</span> <span class=n>tmp_xml</span>
+<a name=line-74></a>
+<a name=line-75></a>    <span class=k>def</span> <span class=nf>close</span><span class=p>():</span>
+<a name=line-76></a>        <span class=k>if</span> <span class=n>idx</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>:</span>
+<a name=line-77></a>            <span class=n>svg_end</span><span class=p>(</span><span class=n>xml</span><span class=p>)</span>
+<a name=line-78></a>            <span class=n>new_units</span><span class=o>.</span><span class=n>append</span><span class=p>(</span>
+<a name=line-79></a>                <span class=n>SvgRenderUnit</span><span class=p>(</span><span class=kc>None</span><span class=p>,</span> <span class=kc>None</span><span class=p>,</span> <span class=n>xml</span><span class=o>.</span><span class=n>to_string</span><span class=p>(),</span> <span class=n>backend</span><span class=o>.</span><span class=n>inkscape</span><span class=p>)</span>
+<a name=line-80></a>            <span class=p>)</span>
+<a name=line-81></a>
+<a name=line-82></a>    <span class=k>assert</span> <span class=n>count_x</span> <span class=o>&gt;</span> <span class=mi>0</span>
+<a name=line-83></a>    <span class=k>assert</span> <span class=n>count_y</span> <span class=o>&gt;</span> <span class=mi>0</span>
+<a name=line-84></a>    <span class=n>limit</span> <span class=o>=</span> <span class=n>count_x</span> <span class=o>*</span> <span class=n>count_y</span>
+<a name=line-85></a>    <span class=k>if</span> <span class=n>limit</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
+<a name=line-86></a>        <span class=k>return</span> <span class=n>units</span>
+<a name=line-87></a>
+<a name=line-88></a>    <span class=n>new_units</span> <span class=o>=</span> <span class=p>[]</span>
+<a name=line-89></a>    <span class=n>xml</span> <span class=o>=</span> <span class=n>new</span><span class=p>()</span>
+<a name=line-90></a>    <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span>
+<a name=line-91></a>    <span class=k>for</span> <span class=n>unit</span> <span class=ow>in</span> <span class=n>units</span><span class=p>:</span>
+<a name=line-92></a>        <span class=n>svg</span> <span class=o>=</span> <span class=n>unit</span><span class=o>.</span><span class=n>get_svg</span><span class=p>()</span>
+<a name=line-93></a>        <span class=k>if</span> <span class=n>svg</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
+<a name=line-94></a>            <span class=n>new_units</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>unit</span><span class=p>)</span>
+<a name=line-95></a>            <span class=k>continue</span>
+<a name=line-96></a>
+<a name=line-97></a>        <span class=k>if</span> <span class=n>idx</span> <span class=o>==</span> <span class=n>limit</span><span class=p>:</span>
+<a name=line-98></a>            <span class=n>close</span><span class=p>()</span>
+<a name=line-99></a>            <span class=n>xml</span> <span class=o>=</span> <span class=n>new</span><span class=p>()</span>
+<a name=line-100></a>            <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span>
+<a name=line-101></a>
+<a name=line-102></a>        <span class=n>x</span> <span class=o>=</span> <span class=p>(</span><span class=n>idx</span> <span class=o>%</span> <span class=n>count_x</span><span class=p>)</span> <span class=o>*</span> <span class=n>width</span>
+<a name=line-103></a>        <span class=n>y</span> <span class=o>=</span> <span class=p>(</span><span class=n>idx</span> <span class=o>//</span> <span class=n>count_x</span><span class=p>)</span> <span class=o>*</span> <span class=n>height</span>
+<a name=line-104></a>
+<a name=line-105></a>        <span class=n>xml</span><span class=o>.</span><span class=n>element</span><span class=p>(</span><span class=s2>&quot;g&quot;</span><span class=p>)</span>
+<a name=line-106></a>        <span class=n>xml</span><span class=o>.</span><span class=n>set</span><span class=p>(</span><span class=s2>&quot;transform&quot;</span><span class=p>,</span> <span class=sa>f</span><span class=s2>&quot;translate(</span><span class=si>{</span><span class=n>x</span><span class=si>}</span><span class=s2>, </span><span class=si>{</span><span class=n>y</span><span class=si>}</span><span class=s2>)&quot;</span><span class=p>)</span>
+<a name=line-107></a>        <span class=n>xml</span><span class=o>.</span><span class=n>raw_text</span><span class=p>(</span><span class=n>svg</span><span class=p>)</span>
+<a name=line-108></a>        <span class=n>xml</span><span class=o>.</span><span class=n>close</span><span class=p>(</span><span class=s2>&quot;g&quot;</span><span class=p>)</span>
+<a name=line-109></a>        <span class=n>idx</span> <span class=o>+=</span> <span class=mi>1</span>
+<a name=line-110></a>    <span class=n>close</span><span class=p>()</span>
+<a name=line-111></a>
+<a name=line-112></a>    <span class=k>return</span> <span class=n>new_units</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-01-21 13:05 </p></div></div></body></html>
