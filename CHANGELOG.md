@@ -1,6 +1,9 @@
 Note: This file documents major changes visible to users; see Git history for detailed log.
 
 # v3.1
+
+## New features
+
 ### Add new experimental Cairo backend
 You can use the new Cairo backend to render slides without the need to install `Inkscape`.
 To use it, install elsie with the `cairo` extra package:
