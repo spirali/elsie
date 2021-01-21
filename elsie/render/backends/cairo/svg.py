@@ -107,7 +107,9 @@ class CairoSurface(Surface):
         return self.surface, width, height
 
 
-def render_svg(surface: cairo.Surface, svg: str, x, y, width, height, rotation=None):
+def render_svg(
+    surface: cairo.Surface, svg: str, x, y, width, height, rotation=None, dpi=96
+):
     tree = Tree(bytestring=svg.encode())
     instance = CairoSurface(
         surface=surface,
@@ -115,7 +117,7 @@ def render_svg(surface: cairo.Surface, svg: str, x, y, width, height, rotation=N
         x=x,
         y=y,
         tree=tree,
-        dpi=96,
+        dpi=dpi,
         output_width=width,
         output_height=height,
     )

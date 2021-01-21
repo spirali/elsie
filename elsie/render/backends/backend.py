@@ -28,7 +28,9 @@ class Backend:
         """
         return elsie_version
 
-    def create_render_unit(self, slide: "Slide", step: int) -> RenderUnit:
+    def create_render_unit(
+        self, slide: "Slide", step: int, export_type: str
+    ) -> RenderUnit:
         """
         Create a render unit that can export itself to PDF or PNG.
         """

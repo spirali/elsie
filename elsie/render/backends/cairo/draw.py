@@ -86,7 +86,7 @@ def transform(
     ctx.translate(-point[0], -point[1])
 
 
-def apply_viewbox(ctx: cairo.Context, width: float, height: float, viewbox):
+def apply_viewbox(ctx: cairo.Context, width: float, height: float, viewbox) -> float:
     viewbox_width = viewbox[2]
     viewbox_height = viewbox[3]
     scale = min(width / viewbox_width, height / viewbox_height)
@@ -95,3 +95,4 @@ def apply_viewbox(ctx: cairo.Context, width: float, height: float, viewbox):
     translate_x = (width / scale - viewbox_width) / 2
     translate_y = (height / scale - viewbox_height) / 2
     ctx.translate(translate_x, translate_y)
+    return scale
