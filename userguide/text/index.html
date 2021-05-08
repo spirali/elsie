@@ -31,17 +31,16 @@
   <script>hljs.initHighlightingOnLoad();</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
  
-  
-  <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-V9H5Q6FZ6D"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-V9H5Q6FZ6D');
+</script>
 
-      ga('create', 'G-V9H5Q6FZ6D', 'https://spirali.github.io/elsie/');
-      ga('send', 'pageview');
-  </script>
-  
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -186,7 +185,7 @@
 By default, it will create a box item that will draw the specified text in the middle of the box:</p>
 <pre><code class="language-python">slide.box().text(&quot;Hello world!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-fe6aa78901c5480190ce5d73742c0c52">
+<div class="elsie-wrapper elsie-wrapper-12820d4475fa4dfd8531adeb8e4df17d">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAD51JREFUeJzt3HtMU3cfx/FPoVSQ
@@ -329,7 +328,7 @@ from its parent style (see below).</p>
 <p>You can pass a text style as a second argument to the <code>text</code> method:</p>
 <pre><code class="language-python">slide.text(&quot;Hello world!&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-3e31dc9b31d947d2a311ee17a5e96a26">
+<div class="elsie-wrapper elsie-wrapper-6cfc465040dc461fb7c5a6bfeed5d72c">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGTNJREFUeJzt3Xl4VNX5B/BvQlgC
@@ -492,7 +491,7 @@ assign a style to a specific name:</p>
 slide.box().text(&quot;Text 1&quot;, style=&quot;text&quot;)
 slide.box().text(&quot;Text 2&quot;, style=&quot;text&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-5b9fee0297964654a23e5a84bc5fdc83">
+<div class="elsie-wrapper elsie-wrapper-94879d74240e4b7e8d4227b6bd64061a">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAEm5JREFUeJzt3XlQVfX/x/EXiOKK
@@ -609,7 +608,7 @@ slides.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&q
 slide = slides.new_slide(name=&quot;slide1&quot;)
 slide.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-f35e613d14d6478eb3213eadfe60b5b7">
+<div class="elsie-wrapper elsie-wrapper-86b43a4cde0e49c9b1f7aa7bd910aa30">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAFcRJREFUeJzt3Xm0pEV5x/FvDYsO
@@ -736,7 +735,7 @@ IiIiIiIiIiIiIiIiIiIiIiIiIiIyrv4PmWJ0hAtY5XEAAAAASUVORK5CYII=
 box.set_style(&quot;big_red&quot;, elsie.TextStyle(size=70, color=&quot;red&quot;))
 box.text(&quot;Hello world!&quot;, &quot;big_red&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-0edbd460cb56442ea48da2d96beab3a0">
+<div class="elsie-wrapper elsie-wrapper-5366caeabb3145d192b6bdfb1991be74">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAcIAAACWCAYAAABNcIgQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGTNJREFUeJzt3Xl4VNX5B/BvQlgC
@@ -897,7 +896,7 @@ slides.set_style(&quot;default&quot;, default_style)
 slide = slides.new_slide(&quot;slide&quot;)
 slide.text(&quot;Hello world!&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-cbce451f81cf422689171553537fa729">
+<div class="elsie-wrapper elsie-wrapper-71ee341fe54f422d9a1495a5af1df4d3">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADQpJREFUeJzt3X+Q3GV9wPH3s3uX
@@ -1003,7 +1002,7 @@ of text.</p>
 <pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
 slide.text(&quot;Normal text ~red{red text} ~tt{Typewriter text}&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-ce6d4fea450e41dc91a25e976ab735cd">
+<div class="elsie-wrapper elsie-wrapper-6248d2b1747a44c088e35185b3cd56b3">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAlgAAADICAYAAAA0n5+2AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzt3Xl4FFW6BvC3OyEJ
@@ -1219,7 +1218,7 @@ together:</p>
 <pre><code class="language-python">slide.set_style(&quot;red&quot;, elsie.TextStyle(color=&quot;red&quot;))
 slide.text(&quot;~red{text1 ~tt{text2}}&quot;)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-32a42eb0dac24799aa32f8006abce7fd">
+<div class="elsie-wrapper elsie-wrapper-5781b1993df549328acd6b99ccbcaba1">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAADICAYAAABS39xVAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAADiBJREFUeJzt3HlsFOUfx/FPDymH
@@ -1317,7 +1316,7 @@ box.</p>
 <pre><code class="language-python">slide.box(width=200, height=80).text(&quot;Hello world!&quot;, scale_to_fit=True)
 slide.box(width=80, height=200).text(&quot;Hello world!&quot;, scale_to_fit=True)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-7d4d33b0c6e540b9b3a3001df3760edb">
+<div class="elsie-wrapper elsie-wrapper-9e7ae2f9372f43aa9d8b764e628be41c">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJztnXl8FUW2x783GJYg
@@ -1544,7 +1543,7 @@ JPTN7nx05yl01O9dq/wkcLdfXa+go4t/B6qiBXWo4/iP1mdX67MO8Cv01PNjIAUtePfgG5Echhah
 around its center.</p>
 <pre><code class="language-python">slide.box().text(&quot;Hello world!&quot;, rotation=45)
 </code></pre>
-<div class="elsie-wrapper elsie-wrapper-c04ee824e68d4367843d95d3cb16256e">
+<div class="elsie-wrapper elsie-wrapper-32e1b80dad8c450ebc8fc83a69766aaf">
 <div class="elsie-slide">
     <div class='elsie-step step-1'><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA
 GXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAGFhJREFUeJzt3XtQVOfBx/Hf7nIR
