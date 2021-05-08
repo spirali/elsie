@@ -7,8 +7,6 @@ edit_uri: blob/master/docs/
 site_description: Documentation of the elsie Python library.
 site_author: Stanislav Böhm
 
-google_analytics: ['G-V9H5Q6FZ6D', 'https://spirali.github.io/elsie/']
-
 nav:
   - Overview: README.md
   - installation.md

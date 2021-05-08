@@ -4,3 +4,14 @@
 {{ super() }}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
 {% endblock %}
+
+{% block analytics %}
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GM306SESF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GM306SESF4');
+</script>
+{% endblock %}
