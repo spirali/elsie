@@ -3,6 +3,7 @@ from elsie import SlideDeck
 
 def export_pptx(slide_deck: SlideDeck, filename: str, **render_args):
     import pptx
+
     pr = pptx.Presentation()
 
     for layout in pr.slide_layouts:

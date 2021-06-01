@@ -51,6 +51,9 @@ class InkscapeShell:
     def convert_to_pdf(self, source, target: str, type: str):
         with svg_file_input(self, source, binary=True):
             self.run_command("export-area-page")
+            # Inkscape 1.1
+            self.run_command("export-png-color-mode:RGBA_8")
+            self.run_command("export-background-opacity:0")
             self.run_command(f"export-type:{type}")
             self.run_command(f"export-filename:{target}")
             self.run_command("export-do")
@@ -80,7 +83,7 @@ class InkscapeShell:
         logging.debug(f"Sending {command} to Inkscape")
         self.process.stdin.write(f"{command}\n")
         self.process.stdin.flush()
-        return self.wait_for_prompt()
+        return self.wait_for_prompt().splitlines(keepends=True)[-1]
 
     def get_version(self):
         return self.run_command("inkscape-version")

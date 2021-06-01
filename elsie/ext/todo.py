@@ -1,5 +1,3 @@
-
-
 def todo_placeholder(box, name=None):
     if name is None:
         name = box.name
