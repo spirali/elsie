@@ -1,100 +1,103 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.render.inkscape</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.1 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9662; render</a> </li><li><ul><li><a href=elsie.render.backends.html>&#9656; backends</a> </li><li><a href=elsie.render.image.html>&#9656; image</a> </li><li><div class=select><a href=elsie.render.inkscape.html>&#9662; inkscape</a> </div></li><li><ul><li><a href=elsie.render.inkscape.InkscapeShell.html> <i>class</i> InkscapeShell</a> </li></ul></li><li><a href=elsie.render.jupyter.html>&#9656; jupyter</a> </li><li><a href=elsie.render.ora.html>&#9656; ora</a> </li><li><a href=elsie.render.pdfmerge.html>&#9656; pdfmerge</a> </li><li><a href=elsie.render.render.html>&#9656; render</a> </li></ul></li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/render/inkscape.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.render.html>render</a>.<a class=symbol href=elsie.render.inkscape.html>inkscape</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>contextlib</span>
+<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.render.inkscape</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.1 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9662; render</a> </li><li><ul><li><a href=elsie.render.backends.html>&#9656; backends</a> </li><li><a href=elsie.render.image.html>&#9656; image</a> </li><li><div class=select><a href=elsie.render.inkscape.html>&#9662; inkscape</a> </div></li><li><ul><li><a href=elsie.render.inkscape.InkscapeShell.html> <i>class</i> InkscapeShell</a> </li></ul></li><li><a href=elsie.render.jupyter.html>&#9656; jupyter</a> </li><li><a href=elsie.render.ora.html>&#9656; ora</a> </li><li><a href=elsie.render.pdfmerge.html>&#9656; pdfmerge</a> </li><li><a href=elsie.render.render.html>&#9656; render</a> </li></ul></li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/render/inkscape.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.render.html>render</a>.<a class=symbol href=elsie.render.inkscape.html>inkscape</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>contextlib</span>
 <a name=line-2></a><span class=kn>import</span> <span class=nn>logging</span>
 <a name=line-3></a><span class=kn>import</span> <span class=nn>os</span>
 <a name=line-4></a><span class=kn>import</span> <span class=nn>subprocess</span>
@@ -179,16 +182,19 @@
 <a name=line-83></a>        <span class=n>logging</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Sending </span><span class=si>{</span><span class=n>command</span><span class=si>}</span><span class=s2> to Inkscape&quot;</span><span class=p>)</span>
 <a name=line-84></a>        <span class=bp>self</span><span class=o>.</span><span class=n>process</span><span class=o>.</span><span class=n>stdin</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;</span><span class=si>{</span><span class=n>command</span><span class=si>}</span><span class=se>\n</span><span class=s2>&quot;</span><span class=p>)</span>
 <a name=line-85></a>        <span class=bp>self</span><span class=o>.</span><span class=n>process</span><span class=o>.</span><span class=n>stdin</span><span class=o>.</span><span class=n>flush</span><span class=p>()</span>
-<a name=line-86></a>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>wait_for_prompt</span><span class=p>()</span><span class=o>.</span><span class=n>splitlines</span><span class=p>(</span><span class=n>keepends</span><span class=o>=</span><span class=kc>True</span><span class=p>)[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
-<a name=line-87></a>
-<a name=line-88></a>    <span class=k>def</span> <span class=nf>get_version</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<a name=line-89></a>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>run_command</span><span class=p>(</span><span class=s2>&quot;inkscape-version&quot;</span><span class=p>)</span>
+<a name=line-86></a>        <span class=n>output</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>wait_for_prompt</span><span class=p>()</span><span class=o>.</span><span class=n>strip</span><span class=p>()</span>
+<a name=line-87></a>        <span class=k>if</span> <span class=n>output</span><span class=p>:</span>
+<a name=line-88></a>            <span class=n>output</span> <span class=o>=</span> <span class=n>output</span><span class=o>.</span><span class=n>splitlines</span><span class=p>(</span><span class=n>keepends</span><span class=o>=</span><span class=kc>False</span><span class=p>)[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+<a name=line-89></a>        <span class=k>return</span> <span class=n>output</span>
 <a name=line-90></a>
-<a name=line-91></a>
-<a name=line-92></a><span class=k>def</span> <span class=nf>export_by_inkscape</span><span class=p>(</span><span class=n>inkscape</span><span class=p>:</span> <span class=n>InkscapeShell</span><span class=p>,</span> <span class=n>source</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>target</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=nb>type</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
-<a name=line-93></a>    <span class=n>inkscape</span><span class=o>.</span><span class=n>convert_to_pdf</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>target</span><span class=p>,</span> <span class=nb>type</span><span class=p>)</span>
-<a name=line-94></a>    <span class=k>if</span> <span class=ow>not</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>isfile</span><span class=p>(</span><span class=n>target</span><span class=p>):</span>
-<a name=line-95></a>        <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
-<a name=line-96></a>            <span class=s2>&quot;Inkscape should produced file &#39;</span><span class=si>{}</span><span class=s2>&#39; but it is not found&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>target</span><span class=p>)</span>
-<a name=line-97></a>        <span class=p>)</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-06-01 08:13 </p></div></div></body></html>
+<a name=line-91></a>    <span class=k>def</span> <span class=nf>get_version</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+<a name=line-92></a>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>run_command</span><span class=p>(</span><span class=s2>&quot;inkscape-version&quot;</span><span class=p>)</span>
+<a name=line-93></a>
+<a name=line-94></a>
+<a name=line-95></a><span class=k>def</span> <span class=nf>export_by_inkscape</span><span class=p>(</span><span class=n>inkscape</span><span class=p>:</span> <span class=n>InkscapeShell</span><span class=p>,</span> <span class=n>source</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>target</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=nb>type</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
+<a name=line-96></a>    <span class=n>inkscape</span><span class=o>.</span><span class=n>convert_to_pdf</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>target</span><span class=p>,</span> <span class=nb>type</span><span class=p>)</span>
+<a name=line-97></a>    <span class=k>if</span> <span class=ow>not</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>isfile</span><span class=p>(</span><span class=n>target</span><span class=p>):</span>
+<a name=line-98></a>        <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
+<a name=line-99></a>            <span class=s2>&quot;Inkscape should produced file &#39;</span><span class=si>{}</span><span class=s2>&#39; but it is not found&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>target</span><span class=p>)</span>
+<a name=line-100></a>        <span class=p>)</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-06-01 08:21 </p></div></div></body></html>
