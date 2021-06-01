@@ -1,5 +1,31 @@
 Note: This file documents major changes visible to users; see Git history for detailed log.
 
+# v3.2
+
+## Fixes
+
+* Comptability with Inkscape 1.1
+
+## New features
+
+### New modules in extension added:
+
+* Simple export to pptx (slides as PNG pictures)
+
+```python
+from elsie.ext.export import export_pptx
+
+export_pptx(slides, "output.pptx")
+```
+
+* Todo placeholder
+
+```python
+from elsie.ext.todo import todo_placehodler
+
+todo_placeholder(box)
+```
+
 # v3.1
 
 ## New features
