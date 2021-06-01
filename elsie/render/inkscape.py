@@ -83,7 +83,10 @@ class InkscapeShell:
         logging.debug(f"Sending {command} to Inkscape")
         self.process.stdin.write(f"{command}\n")
         self.process.stdin.flush()
-        return self.wait_for_prompt().splitlines(keepends=True)[-1]
+        output = self.wait_for_prompt().strip()
+        if output:
+            output = output.splitlines(keepends=False)[-1]
+        return output
 
     def get_version(self):
         return self.run_command("inkscape-version")
