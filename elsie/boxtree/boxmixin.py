@@ -707,6 +707,14 @@ class BoxMixin:
         """
         text = text.replace("\t", " " * tabsize)
 
+        if len(escape_char) == 3:
+            escape_char, begin_char, end_char = escape_char
+        elif len(escape_char) == 1:
+            begin_char = "{"
+            end_char = "}"
+        else:
+            raise Exception("Length of escape char has to be 1 or 3")
+
         if language:
             if use_styles:
                 # pygments strips newlines at the beginning
@@ -719,7 +727,7 @@ class BoxMixin:
                     start_newlines += 1
                     text = text[1:]
 
-                ptext = parse_text(text, escape_char)
+                ptext = parse_text(text, escape_char, begin_char=begin_char, end_char=end_char)
                 text = tokens_to_text_without_style(ptext)
             parsed_text = highlight_code(text, language)
             if use_styles:
@@ -728,7 +736,7 @@ class BoxMixin:
                     parsed_text.insert(0, ("newline", start_newlines))
         else:
             parsed_text = parse_text(
-                text, escape_char=escape_char if use_styles else None
+                text, escape_char=escape_char if use_styles else None, begin_char=begin_char, end_char=end_char
             )
 
         if line_numbers:
@@ -764,8 +772,17 @@ class BoxMixin:
             Rotate the text by the given amount of degrees clockwise around the center of the
             text.
         """
+
+        if len(escape_char) == 3:
+            escape_char, begin_char, end_char = escape_char
+        elif len(escape_char) == 1:
+            begin_char = "{"
+            end_char = "}"
+        else:
+            raise Exception("Length of escape char has to be 1 or 3")
+
         result_style = self._get_box().get_style(style, full_style=True)
-        parsed_text = parse_text(text, escape_char=escape_char)
+        parsed_text = parse_text(text, escape_char=escape_char, begin_char=begin_char, end_char=end_char)
         return self._text_helper(parsed_text, result_style, scale_to_fit, rotation)
 
     def _text_helper(self, parsed_text, style, scale_to_fit, rotation=None):
