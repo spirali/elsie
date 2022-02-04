@@ -1,10 +1,10 @@
-Pillow>=8.2.0,<8.3.0
+Pillow>=8.4.0,<8.5.0
 pypdf2>=1.26,<1.27
-pygments>=2.7,<2.8
+pygments>=2.11,<2.12
 lxml>=4.6,<4.7
-marko==1.0.1
-cairocffi==1.2.0        # cairo
+marko==1.2.0
+cairocffi==1.3.0        # cairo
 pangocffi==0.10.0       # cairo
 pangocairocffi==0.6.0   # cairo
 webcolors==1.11.1       # cairo
-cairosvg==2.5.1         # cairo
+cairosvg==2.5.2         # cairo
