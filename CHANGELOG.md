@@ -1,5 +1,10 @@
 Note: This file documents major changes visible to users; see Git history for detailed log.
 
+# v3.3
+
+* Dependencies updated
+* Better delimiter settings
+
 # v3.2
 
 ## Fixes
