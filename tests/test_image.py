@@ -39,7 +39,7 @@ def test_line_highlight_no_fragments(test_env):
 
 @check("imageshowx", expect_count=3)
 def test_image_show(test_env):
-    """ Regresion test for show attribute when element has no childs """
+    """Regresion test for show attribute when element has no childs"""
     slide = test_env.slide
     slide.image(test_env.assets_path("testimage2.svg"))
 
@@ -149,14 +149,14 @@ def test_ora_fragments_showbegin(test_env):
 
 @check("image-substeps1", expect_count=3, cairo_threshold=10)
 def test_image_substeps_show1(test_env):
-    """ Regresion test for show attribute when element has no childs """
+    """Regresion test for show attribute when element has no childs"""
     slide = test_env.slide
     slide.image(test_env.assets_path("testimage.svg"), select_fragments=[3, None, 1])
 
 
 @check("image-substeps2", expect_count=3)
 def test_image_substeps_show2(test_env):
-    """ Regresion test for show attribute when element has no childs """
+    """Regresion test for show attribute when element has no childs"""
     slide = test_env.slide
     slide.image(
         test_env.assets_path("testimage.svg"), select_fragments=[2], show_begin=2
