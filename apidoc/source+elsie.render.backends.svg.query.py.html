@@ -1,38 +1,38 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.render.backends.svg.query</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.2 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9662; render</a> </li><li><ul><li><a href=elsie.render.backends.html>&#9662; backends</a> </li><li><ul><li><a href=elsie.render.backends.backend.html>&#9656; backend</a> </li><li><a href=elsie.render.backends.cairo.html>&#9656; cairo</a> </li><li><a href=elsie.render.backends.rcontext.html>&#9656; rcontext</a> </li><li><a href=elsie.render.backends.svg.html>&#9662; svg</a> </li><li><ul><li><a href=elsie.render.backends.svg.backend.html>&#9656; backend</a> </li><li><a href=elsie.render.backends.svg.draw.html>&#9656; draw</a> </li><li><div class=select><a href=elsie.render.backends.svg.query.html>&#9662; query</a> </div></li><li><a href=elsie.render.backends.svg.rcontext.html>&#9656; rcontext</a> </li><li><a href=elsie.render.backends.svg.utils.html>&#9656; utils</a> </li></ul></li><li><a href=elsie.render.image.html>&#9656; image</a> </li><li><a href=elsie.render.inkscape.html>&#9656; inkscape</a> </li><li><a href=elsie.render.jupyter.html>&#9656; jupyter</a> </li><li><a href=elsie.render.ora.html>&#9656; ora</a> </li><li><a href=elsie.render.pdfmerge.html>&#9656; pdfmerge</a> </li><li><a href=elsie.render.render.html>&#9656; render</a> </li></ul></li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/render/backends/svg/query.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.render.html>render</a>.<a class=symbol href=elsie.render.backends.html>backends</a>.<a class=symbol href=elsie.render.backends.svg.html>svg</a>.<a class=symbol href=elsie.render.backends.svg.query.html>query</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>from</span> <span class=nn>....utils.sxml</span> <span class=kn>import</span> <span class=n>Xml</span>
-<a name=line-2></a><span class=kn>from</span> <span class=nn>...inkscape</span> <span class=kn>import</span> <span class=n>InkscapeShell</span>
-<a name=line-3></a><span class=kn>from</span> <span class=nn>.utils</span> <span class=kn>import</span> <span class=n>svg_begin</span><span class=p>,</span> <span class=n>svg_end</span>
-<a name=line-4></a>
-<a name=line-5></a>
-<a name=line-6></a><span class=k>def</span> <span class=nf>compute_query</span><span class=p>(</span><span class=n>inkscape</span><span class=p>:</span> <span class=n>InkscapeShell</span><span class=p>,</span> <span class=n>method</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>data</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
-<a name=line-7></a>    <span class=n>xml</span> <span class=o>=</span> <span class=n>Xml</span><span class=p>()</span>
-<a name=line-8></a>    <span class=n>svg_begin</span><span class=p>(</span><span class=n>xml</span><span class=p>)</span>
-<a name=line-9></a>    <span class=n>xml</span><span class=o>.</span><span class=n>raw_text</span><span class=p>(</span><span class=n>data</span><span class=p>)</span>
-<a name=line-10></a>    <span class=n>svg_end</span><span class=p>(</span><span class=n>xml</span><span class=p>)</span>
-<a name=line-11></a>
-<a name=line-12></a>    <span class=k>if</span> <span class=n>method</span> <span class=o>==</span> <span class=s2>&quot;inkscape-w&quot;</span><span class=p>:</span>
-<a name=line-13></a>        <span class=k>return</span> <span class=n>inkscape</span><span class=o>.</span><span class=n>get_width</span><span class=p>(</span><span class=n>xml</span><span class=o>.</span><span class=n>to_string</span><span class=p>(),</span> <span class=s2>&quot;target&quot;</span><span class=p>)</span>
-<a name=line-14></a>    <span class=k>elif</span> <span class=n>method</span> <span class=o>==</span> <span class=s2>&quot;inkscape-h&quot;</span><span class=p>:</span>
-<a name=line-15></a>        <span class=k>return</span> <span class=n>inkscape</span><span class=o>.</span><span class=n>get_height</span><span class=p>(</span><span class=n>xml</span><span class=o>.</span><span class=n>to_string</span><span class=p>(),</span> <span class=s2>&quot;target&quot;</span><span class=p>)</span>
-<a name=line-16></a>    <span class=k>elif</span> <span class=n>method</span> <span class=o>==</span> <span class=s2>&quot;inkscape-x&quot;</span><span class=p>:</span>
-<a name=line-17></a>        <span class=k>return</span> <span class=n>inkscape</span><span class=o>.</span><span class=n>get_x</span><span class=p>(</span><span class=n>xml</span><span class=o>.</span><span class=n>to_string</span><span class=p>(),</span> <span class=s2>&quot;target&quot;</span><span class=p>)</span>
-<a name=line-18></a>    <span class=k>else</span><span class=p>:</span>
-<a name=line-19></a>        <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Invalid method: &quot;</span> <span class=o>+</span> <span class=nb>repr</span><span class=p>(</span><span class=n>method</span><span class=p>))</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-06-15 15:26 </p></div></div></body></html>
+<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.render.backends.svg.query</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.2 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9662; render</a> </li><li><ul><li><a href=elsie.render.backends.html>&#9662; backends</a> </li><li><ul><li><a href=elsie.render.backends.backend.html>&#9656; backend</a> </li><li><a href=elsie.render.backends.cairo.html>&#9656; cairo</a> </li><li><a href=elsie.render.backends.rcontext.html>&#9656; rcontext</a> </li><li><a href=elsie.render.backends.svg.html>&#9662; svg</a> </li><li><ul><li><a href=elsie.render.backends.svg.backend.html>&#9656; backend</a> </li><li><a href=elsie.render.backends.svg.draw.html>&#9656; draw</a> </li><li><div class=select><a href=elsie.render.backends.svg.query.html>&#9662; query</a> </div></li><li><a href=elsie.render.backends.svg.rcontext.html>&#9656; rcontext</a> </li><li><a href=elsie.render.backends.svg.utils.html>&#9656; utils</a> </li></ul></li><li><a href=elsie.render.image.html>&#9656; image</a> </li><li><a href=elsie.render.inkscape.html>&#9656; inkscape</a> </li><li><a href=elsie.render.jupyter.html>&#9656; jupyter</a> </li><li><a href=elsie.render.ora.html>&#9656; ora</a> </li><li><a href=elsie.render.pdfmerge.html>&#9656; pdfmerge</a> </li><li><a href=elsie.render.render.html>&#9656; render</a> </li></ul></li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/render/backends/svg/query.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.render.html>render</a>.<a class=symbol href=elsie.render.backends.html>backends</a>.<a class=symbol href=elsie.render.backends.svg.html>svg</a>.<a class=symbol href=elsie.render.backends.svg.query.html>query</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
+<span class=normal> 2</span>
+<span class=normal> 3</span>
+<span class=normal> 4</span>
+<span class=normal> 5</span>
+<span class=normal> 6</span>
+<span class=normal> 7</span>
+<span class=normal> 8</span>
+<span class=normal> 9</span>
+<span class=normal>10</span>
+<span class=normal>11</span>
+<span class=normal>12</span>
+<span class=normal>13</span>
+<span class=normal>14</span>
+<span class=normal>15</span>
+<span class=normal>16</span>
+<span class=normal>17</span>
+<span class=normal>18</span>
+<span class=normal>19</span></pre></div></td><td class=code><div class=highlight><pre><span></span><a id=line-1 name=line-1></a><span class=kn>from</span> <span class=nn>....utils.sxml</span> <span class=kn>import</span> <span class=n>Xml</span>
+<a id=line-2 name=line-2></a><span class=kn>from</span> <span class=nn>...inkscape</span> <span class=kn>import</span> <span class=n>InkscapeShell</span>
+<a id=line-3 name=line-3></a><span class=kn>from</span> <span class=nn>.utils</span> <span class=kn>import</span> <span class=n>svg_begin</span><span class=p>,</span> <span class=n>svg_end</span>
+<a id=line-4 name=line-4></a>
+<a id=line-5 name=line-5></a>
+<a id=line-6 name=line-6></a><span class=k>def</span> <span class=nf>compute_query</span><span class=p>(</span><span class=n>inkscape</span><span class=p>:</span> <span class=n>InkscapeShell</span><span class=p>,</span> <span class=n>method</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>data</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
+<a id=line-7 name=line-7></a>    <span class=n>xml</span> <span class=o>=</span> <span class=n>Xml</span><span class=p>()</span>
+<a id=line-8 name=line-8></a>    <span class=n>svg_begin</span><span class=p>(</span><span class=n>xml</span><span class=p>)</span>
+<a id=line-9 name=line-9></a>    <span class=n>xml</span><span class=o>.</span><span class=n>raw_text</span><span class=p>(</span><span class=n>data</span><span class=p>)</span>
+<a id=line-10 name=line-10></a>    <span class=n>svg_end</span><span class=p>(</span><span class=n>xml</span><span class=p>)</span>
+<a id=line-11 name=line-11></a>
+<a id=line-12 name=line-12></a>    <span class=k>if</span> <span class=n>method</span> <span class=o>==</span> <span class=s2>&quot;inkscape-w&quot;</span><span class=p>:</span>
+<a id=line-13 name=line-13></a>        <span class=k>return</span> <span class=n>inkscape</span><span class=o>.</span><span class=n>get_width</span><span class=p>(</span><span class=n>xml</span><span class=o>.</span><span class=n>to_string</span><span class=p>(),</span> <span class=s2>&quot;target&quot;</span><span class=p>)</span>
+<a id=line-14 name=line-14></a>    <span class=k>elif</span> <span class=n>method</span> <span class=o>==</span> <span class=s2>&quot;inkscape-h&quot;</span><span class=p>:</span>
+<a id=line-15 name=line-15></a>        <span class=k>return</span> <span class=n>inkscape</span><span class=o>.</span><span class=n>get_height</span><span class=p>(</span><span class=n>xml</span><span class=o>.</span><span class=n>to_string</span><span class=p>(),</span> <span class=s2>&quot;target&quot;</span><span class=p>)</span>
+<a id=line-16 name=line-16></a>    <span class=k>elif</span> <span class=n>method</span> <span class=o>==</span> <span class=s2>&quot;inkscape-x&quot;</span><span class=p>:</span>
+<a id=line-17 name=line-17></a>        <span class=k>return</span> <span class=n>inkscape</span><span class=o>.</span><span class=n>get_x</span><span class=p>(</span><span class=n>xml</span><span class=o>.</span><span class=n>to_string</span><span class=p>(),</span> <span class=s2>&quot;target&quot;</span><span class=p>)</span>
+<a id=line-18 name=line-18></a>    <span class=k>else</span><span class=p>:</span>
+<a id=line-19 name=line-19></a>        <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Invalid method: &quot;</span> <span class=o>+</span> <span class=nb>repr</span><span class=p>(</span><span class=n>method</span><span class=p>))</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.10 at 2022-02-05 18:14 </p></div></div></body></html>

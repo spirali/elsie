@@ -1,0 +1,3 @@
+[mkdocs.plugins]
+elsie = mkdocs_elsie_plugin:ElsiePlugin
+

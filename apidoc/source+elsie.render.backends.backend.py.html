@@ -1,122 +1,122 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.render.backends.backend</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.2 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9662; render</a> </li><li><ul><li><a href=elsie.render.backends.html>&#9662; backends</a> </li><li><ul><li><div class=select><a href=elsie.render.backends.backend.html>&#9662; backend</a> </div></li><li><ul><li><a href=elsie.render.backends.backend.Backend.html> <i>class</i> Backend</a> </li></ul></li><li><a href=elsie.render.backends.cairo.html>&#9656; cairo</a> </li><li><a href=elsie.render.backends.rcontext.html>&#9656; rcontext</a> </li><li><a href=elsie.render.backends.svg.html>&#9656; svg</a> </li></ul></li><li><a href=elsie.render.image.html>&#9656; image</a> </li><li><a href=elsie.render.inkscape.html>&#9656; inkscape</a> </li><li><a href=elsie.render.jupyter.html>&#9656; jupyter</a> </li><li><a href=elsie.render.ora.html>&#9656; ora</a> </li><li><a href=elsie.render.pdfmerge.html>&#9656; pdfmerge</a> </li><li><a href=elsie.render.render.html>&#9656; render</a> </li></ul></li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/render/backends/backend.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.render.html>render</a>.<a class=symbol href=elsie.render.backends.html>backends</a>.<a class=symbol href=elsie.render.backends.backend.html>backend</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>import</span> <span class=nn>os</span>
-<a name=line-2></a><span class=kn>from</span> <span class=nn>typing</span> <span class=kn>import</span> <span class=n>TYPE_CHECKING</span>
-<a name=line-3></a>
-<a name=line-4></a><span class=kn>from</span> <span class=nn>..render</span> <span class=kn>import</span> <span class=n>RenderUnit</span>
-<a name=line-5></a>
-<a name=line-6></a><span class=k>if</span> <span class=n>TYPE_CHECKING</span><span class=p>:</span>
-<a name=line-7></a>    <span class=kn>from</span> <span class=nn>...slides.slide</span> <span class=kn>import</span> <span class=n>Slide</span>
-<a name=line-8></a>
-<a name=line-9></a><span class=n>DEFAULT_CACHE_DIR</span> <span class=o>=</span> <span class=s2>&quot;./elsie-cache&quot;</span>
-<a name=line-10></a>
-<a name=line-11></a>
-<a name=line-12></a><span class=k>class</span> <span class=nc>Backend</span><span class=p>:</span>
-<a name=line-13></a>    <span class=sd>&quot;&quot;&quot;Represents a rendering backend that can render Elsie primitives into PDF.&quot;&quot;&quot;</span>
-<a name=line-14></a>
-<a name=line-15></a>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>cache_dir</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
-<a name=line-16></a>        <span class=bp>self</span><span class=o>.</span><span class=n>dimensions</span> <span class=o>=</span> <span class=kc>None</span>
-<a name=line-17></a>        <span class=bp>self</span><span class=o>.</span><span class=n>cache_dir</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>abspath</span><span class=p>(</span><span class=n>cache_dir</span><span class=p>)</span>
-<a name=line-18></a>
-<a name=line-19></a>    <span class=k>def</span> <span class=nf>set_dimensions</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>width</span><span class=p>:</span> <span class=nb>int</span><span class=p>,</span> <span class=n>height</span><span class=p>:</span> <span class=nb>int</span><span class=p>):</span>
-<a name=line-20></a>        <span class=bp>self</span><span class=o>.</span><span class=n>dimensions</span> <span class=o>=</span> <span class=p>(</span><span class=n>width</span><span class=p>,</span> <span class=n>height</span><span class=p>)</span>
-<a name=line-21></a>
-<a name=line-22></a>    <span class=k>def</span> <span class=nf>get_version</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>elsie_version</span><span class=p>:</span> <span class=nb>str</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
-<a name=line-23></a>        <span class=sd>&quot;&quot;&quot;</span>
-<a name=line-24></a><span class=sd>        Returns unique version of the backend.</span>
-<a name=line-25></a>
-<a name=line-26></a><span class=sd>        It should combine the Elsie version with the version of the backend software (e.g. Inkscape</span>
-<a name=line-27></a><span class=sd>        or Cairo).</span>
-<a name=line-28></a><span class=sd>        &quot;&quot;&quot;</span>
-<a name=line-29></a>        <span class=k>return</span> <span class=n>elsie_version</span>
-<a name=line-30></a>
-<a name=line-31></a>    <span class=k>def</span> <span class=nf>create_render_unit</span><span class=p>(</span>
-<a name=line-32></a>        <span class=bp>self</span><span class=p>,</span> <span class=n>slide</span><span class=p>:</span> <span class=s2>&quot;Slide&quot;</span><span class=p>,</span> <span class=n>step</span><span class=p>:</span> <span class=nb>int</span><span class=p>,</span> <span class=n>export_type</span><span class=p>:</span> <span class=nb>str</span>
-<a name=line-33></a>    <span class=p>)</span> <span class=o>-&gt;</span> <span class=n>RenderUnit</span><span class=p>:</span>
-<a name=line-34></a>        <span class=sd>&quot;&quot;&quot;</span>
-<a name=line-35></a><span class=sd>        Create a render unit that can export itself to PDF or PNG.</span>
-<a name=line-36></a><span class=sd>        &quot;&quot;&quot;</span>
-<a name=line-37></a>        <span class=k>raise</span> <span class=ne>NotImplementedError</span>
-<a name=line-38></a>
-<a name=line-39></a>    <span class=k>def</span> <span class=nf>compute_text_width</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>parsed_text</span><span class=p>,</span> <span class=n>style</span><span class=p>,</span> <span class=n>styles</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>float</span><span class=p>:</span>
-<a name=line-40></a>        <span class=sd>&quot;&quot;&quot;</span>
-<a name=line-41></a><span class=sd>        Compute the width of the given text that would be rendered with the given style.</span>
-<a name=line-42></a><span class=sd>        &quot;&quot;&quot;</span>
-<a name=line-43></a>        <span class=k>raise</span> <span class=ne>NotImplementedError</span>
-<a name=line-44></a>
-<a name=line-45></a>    <span class=k>def</span> <span class=nf>compute_text_height</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>parsed_text</span><span class=p>,</span> <span class=n>style</span><span class=p>,</span> <span class=n>styles</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>float</span><span class=p>:</span>
-<a name=line-46></a>        <span class=sd>&quot;&quot;&quot;</span>
-<a name=line-47></a><span class=sd>        Compute the height of the given text that would be rendered with the given style.</span>
-<a name=line-48></a><span class=sd>        &quot;&quot;&quot;</span>
-<a name=line-49></a>        <span class=k>raise</span> <span class=ne>NotImplementedError</span>
-<a name=line-50></a>
-<a name=line-51></a>    <span class=k>def</span> <span class=nf>compute_text_x</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>parsed_text</span><span class=p>,</span> <span class=n>style</span><span class=p>,</span> <span class=n>styles</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>float</span><span class=p>:</span>
-<a name=line-52></a>        <span class=sd>&quot;&quot;&quot;</span>
-<a name=line-53></a><span class=sd>        Compute the x position of the given text that would be rendered with the given style.</span>
-<a name=line-54></a><span class=sd>        &quot;&quot;&quot;</span>
-<a name=line-55></a>        <span class=k>raise</span> <span class=ne>NotImplementedError</span>
-<a name=line-56></a>
-<a name=line-57></a>    <span class=k>def</span> <span class=nf>prune_cache</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<a name=line-58></a>        <span class=k>pass</span>
-<a name=line-59></a>
-<a name=line-60></a>    <span class=k>def</span> <span class=nf>save_cache</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<a name=line-61></a>        <span class=k>pass</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-06-15 15:26 </p></div></div></body></html>
+<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.render.backends.backend</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.2 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9662; render</a> </li><li><ul><li><a href=elsie.render.backends.html>&#9662; backends</a> </li><li><ul><li><div class=select><a href=elsie.render.backends.backend.html>&#9662; backend</a> </div></li><li><ul><li><a href=elsie.render.backends.backend.Backend.html> <i>class</i> Backend</a> </li></ul></li><li><a href=elsie.render.backends.cairo.html>&#9656; cairo</a> </li><li><a href=elsie.render.backends.rcontext.html>&#9656; rcontext</a> </li><li><a href=elsie.render.backends.svg.html>&#9656; svg</a> </li></ul></li><li><a href=elsie.render.image.html>&#9656; image</a> </li><li><a href=elsie.render.inkscape.html>&#9656; inkscape</a> </li><li><a href=elsie.render.jupyter.html>&#9656; jupyter</a> </li><li><a href=elsie.render.ora.html>&#9656; ora</a> </li><li><a href=elsie.render.pdfmerge.html>&#9656; pdfmerge</a> </li><li><a href=elsie.render.render.html>&#9656; render</a> </li></ul></li><li><a href=elsie.shapes.html>&#9656; shapes</a> </li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/render/backends/backend.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.render.html>render</a>.<a class=symbol href=elsie.render.backends.html>backends</a>.<a class=symbol href=elsie.render.backends.backend.html>backend</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
+<span class=normal> 2</span>
+<span class=normal> 3</span>
+<span class=normal> 4</span>
+<span class=normal> 5</span>
+<span class=normal> 6</span>
+<span class=normal> 7</span>
+<span class=normal> 8</span>
+<span class=normal> 9</span>
+<span class=normal>10</span>
+<span class=normal>11</span>
+<span class=normal>12</span>
+<span class=normal>13</span>
+<span class=normal>14</span>
+<span class=normal>15</span>
+<span class=normal>16</span>
+<span class=normal>17</span>
+<span class=normal>18</span>
+<span class=normal>19</span>
+<span class=normal>20</span>
+<span class=normal>21</span>
+<span class=normal>22</span>
+<span class=normal>23</span>
+<span class=normal>24</span>
+<span class=normal>25</span>
+<span class=normal>26</span>
+<span class=normal>27</span>
+<span class=normal>28</span>
+<span class=normal>29</span>
+<span class=normal>30</span>
+<span class=normal>31</span>
+<span class=normal>32</span>
+<span class=normal>33</span>
+<span class=normal>34</span>
+<span class=normal>35</span>
+<span class=normal>36</span>
+<span class=normal>37</span>
+<span class=normal>38</span>
+<span class=normal>39</span>
+<span class=normal>40</span>
+<span class=normal>41</span>
+<span class=normal>42</span>
+<span class=normal>43</span>
+<span class=normal>44</span>
+<span class=normal>45</span>
+<span class=normal>46</span>
+<span class=normal>47</span>
+<span class=normal>48</span>
+<span class=normal>49</span>
+<span class=normal>50</span>
+<span class=normal>51</span>
+<span class=normal>52</span>
+<span class=normal>53</span>
+<span class=normal>54</span>
+<span class=normal>55</span>
+<span class=normal>56</span>
+<span class=normal>57</span>
+<span class=normal>58</span>
+<span class=normal>59</span>
+<span class=normal>60</span>
+<span class=normal>61</span></pre></div></td><td class=code><div class=highlight><pre><span></span><a id=line-1 name=line-1></a><span class=kn>import</span> <span class=nn>os</span>
+<a id=line-2 name=line-2></a><span class=kn>from</span> <span class=nn>typing</span> <span class=kn>import</span> <span class=n>TYPE_CHECKING</span>
+<a id=line-3 name=line-3></a>
+<a id=line-4 name=line-4></a><span class=kn>from</span> <span class=nn>..render</span> <span class=kn>import</span> <span class=n>RenderUnit</span>
+<a id=line-5 name=line-5></a>
+<a id=line-6 name=line-6></a><span class=k>if</span> <span class=n>TYPE_CHECKING</span><span class=p>:</span>
+<a id=line-7 name=line-7></a>    <span class=kn>from</span> <span class=nn>...slides.slide</span> <span class=kn>import</span> <span class=n>Slide</span>
+<a id=line-8 name=line-8></a>
+<a id=line-9 name=line-9></a><span class=n>DEFAULT_CACHE_DIR</span> <span class=o>=</span> <span class=s2>&quot;./elsie-cache&quot;</span>
+<a id=line-10 name=line-10></a>
+<a id=line-11 name=line-11></a>
+<a id=line-12 name=line-12></a><span class=k>class</span> <span class=nc>Backend</span><span class=p>:</span>
+<a id=line-13 name=line-13></a>    <span class=sd>&quot;&quot;&quot;Represents a rendering backend that can render Elsie primitives into PDF.&quot;&quot;&quot;</span>
+<a id=line-14 name=line-14></a>
+<a id=line-15 name=line-15></a>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>cache_dir</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
+<a id=line-16 name=line-16></a>        <span class=bp>self</span><span class=o>.</span><span class=n>dimensions</span> <span class=o>=</span> <span class=kc>None</span>
+<a id=line-17 name=line-17></a>        <span class=bp>self</span><span class=o>.</span><span class=n>cache_dir</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>abspath</span><span class=p>(</span><span class=n>cache_dir</span><span class=p>)</span>
+<a id=line-18 name=line-18></a>
+<a id=line-19 name=line-19></a>    <span class=k>def</span> <span class=nf>set_dimensions</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>width</span><span class=p>:</span> <span class=nb>int</span><span class=p>,</span> <span class=n>height</span><span class=p>:</span> <span class=nb>int</span><span class=p>):</span>
+<a id=line-20 name=line-20></a>        <span class=bp>self</span><span class=o>.</span><span class=n>dimensions</span> <span class=o>=</span> <span class=p>(</span><span class=n>width</span><span class=p>,</span> <span class=n>height</span><span class=p>)</span>
+<a id=line-21 name=line-21></a>
+<a id=line-22 name=line-22></a>    <span class=k>def</span> <span class=nf>get_version</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>elsie_version</span><span class=p>:</span> <span class=nb>str</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
+<a id=line-23 name=line-23></a>        <span class=sd>&quot;&quot;&quot;</span>
+<a id=line-24 name=line-24></a><span class=sd>        Returns unique version of the backend.</span>
+<a id=line-25 name=line-25></a>
+<a id=line-26 name=line-26></a><span class=sd>        It should combine the Elsie version with the version of the backend software (e.g. Inkscape</span>
+<a id=line-27 name=line-27></a><span class=sd>        or Cairo).</span>
+<a id=line-28 name=line-28></a><span class=sd>        &quot;&quot;&quot;</span>
+<a id=line-29 name=line-29></a>        <span class=k>return</span> <span class=n>elsie_version</span>
+<a id=line-30 name=line-30></a>
+<a id=line-31 name=line-31></a>    <span class=k>def</span> <span class=nf>create_render_unit</span><span class=p>(</span>
+<a id=line-32 name=line-32></a>        <span class=bp>self</span><span class=p>,</span> <span class=n>slide</span><span class=p>:</span> <span class=s2>&quot;Slide&quot;</span><span class=p>,</span> <span class=n>step</span><span class=p>:</span> <span class=nb>int</span><span class=p>,</span> <span class=n>export_type</span><span class=p>:</span> <span class=nb>str</span>
+<a id=line-33 name=line-33></a>    <span class=p>)</span> <span class=o>-&gt;</span> <span class=n>RenderUnit</span><span class=p>:</span>
+<a id=line-34 name=line-34></a>        <span class=sd>&quot;&quot;&quot;</span>
+<a id=line-35 name=line-35></a><span class=sd>        Create a render unit that can export itself to PDF or PNG.</span>
+<a id=line-36 name=line-36></a><span class=sd>        &quot;&quot;&quot;</span>
+<a id=line-37 name=line-37></a>        <span class=k>raise</span> <span class=ne>NotImplementedError</span>
+<a id=line-38 name=line-38></a>
+<a id=line-39 name=line-39></a>    <span class=k>def</span> <span class=nf>compute_text_width</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>parsed_text</span><span class=p>,</span> <span class=n>style</span><span class=p>,</span> <span class=n>styles</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>float</span><span class=p>:</span>
+<a id=line-40 name=line-40></a>        <span class=sd>&quot;&quot;&quot;</span>
+<a id=line-41 name=line-41></a><span class=sd>        Compute the width of the given text that would be rendered with the given style.</span>
+<a id=line-42 name=line-42></a><span class=sd>        &quot;&quot;&quot;</span>
+<a id=line-43 name=line-43></a>        <span class=k>raise</span> <span class=ne>NotImplementedError</span>
+<a id=line-44 name=line-44></a>
+<a id=line-45 name=line-45></a>    <span class=k>def</span> <span class=nf>compute_text_height</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>parsed_text</span><span class=p>,</span> <span class=n>style</span><span class=p>,</span> <span class=n>styles</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>float</span><span class=p>:</span>
+<a id=line-46 name=line-46></a>        <span class=sd>&quot;&quot;&quot;</span>
+<a id=line-47 name=line-47></a><span class=sd>        Compute the height of the given text that would be rendered with the given style.</span>
+<a id=line-48 name=line-48></a><span class=sd>        &quot;&quot;&quot;</span>
+<a id=line-49 name=line-49></a>        <span class=k>raise</span> <span class=ne>NotImplementedError</span>
+<a id=line-50 name=line-50></a>
+<a id=line-51 name=line-51></a>    <span class=k>def</span> <span class=nf>compute_text_x</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>parsed_text</span><span class=p>,</span> <span class=n>style</span><span class=p>,</span> <span class=n>styles</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>float</span><span class=p>:</span>
+<a id=line-52 name=line-52></a>        <span class=sd>&quot;&quot;&quot;</span>
+<a id=line-53 name=line-53></a><span class=sd>        Compute the x position of the given text that would be rendered with the given style.</span>
+<a id=line-54 name=line-54></a><span class=sd>        &quot;&quot;&quot;</span>
+<a id=line-55 name=line-55></a>        <span class=k>raise</span> <span class=ne>NotImplementedError</span>
+<a id=line-56 name=line-56></a>
+<a id=line-57 name=line-57></a>    <span class=k>def</span> <span class=nf>prune_cache</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+<a id=line-58 name=line-58></a>        <span class=k>pass</span>
+<a id=line-59 name=line-59></a>
+<a id=line-60 name=line-60></a>    <span class=k>def</span> <span class=nf>save_cache</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+<a id=line-61 name=line-61></a>        <span class=k>pass</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.10 at 2022-02-05 18:14 </p></div></div></body></html>

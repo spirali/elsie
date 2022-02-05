@@ -1,0 +1,3 @@
+[mkdocs.plugins]
+nedoc = mkdocs_nedoc_plugin:NedocPlugin
+

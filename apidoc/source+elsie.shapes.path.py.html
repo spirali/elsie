@@ -1,102 +1,102 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.shapes.path</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.2 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9656; render</a> </li><li><a href=elsie.shapes.html>&#9662; shapes</a> </li><li><ul><li><a href=elsie.shapes.arrow.html>&#9656; arrow</a> </li><li><div class=select><a href=elsie.shapes.path.html>&#9662; path</a> </div></li></ul></li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/shapes/path.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.shapes.html>shapes</a>.<a class=symbol href=elsie.shapes.path.html>path</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51</pre></div></td><td class=code><div class=highlight><pre><span></span><a name=line-1></a><span class=kn>from</span> <span class=nn>..boxtree.lazy</span> <span class=kn>import</span> <span class=n>eval_pair</span><span class=p>,</span> <span class=n>unpack_point</span>
-<a name=line-2></a>
-<a name=line-3></a><span class=n>COMMAND_NARGS</span> <span class=o>=</span> <span class=p>{</span><span class=s2>&quot;M&quot;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span> <span class=s2>&quot;L&quot;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span> <span class=s2>&quot;C&quot;</span><span class=p>:</span> <span class=mi>3</span><span class=p>,</span> <span class=s2>&quot;S&quot;</span><span class=p>:</span> <span class=mi>2</span><span class=p>,</span> <span class=s2>&quot;Q&quot;</span><span class=p>:</span> <span class=mi>2</span><span class=p>,</span> <span class=s2>&quot;T&quot;</span><span class=p>:</span> <span class=mi>1</span><span class=p>}</span>
-<a name=line-4></a>
-<a name=line-5></a>
-<a name=line-6></a><span class=k>def</span> <span class=nf>check_and_unpack_path_commands</span><span class=p>(</span><span class=n>commands</span><span class=p>,</span> <span class=n>box</span><span class=p>):</span>
-<a name=line-7></a>    <span class=n>result</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-8></a>    <span class=k>for</span> <span class=n>command</span> <span class=ow>in</span> <span class=n>commands</span><span class=p>:</span>
-<a name=line-9></a>        <span class=k>if</span> <span class=p>(</span>
-<a name=line-10></a>            <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>command</span><span class=p>,</span> <span class=nb>tuple</span><span class=p>)</span> <span class=ow>and</span> <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>command</span><span class=p>,</span> <span class=nb>list</span><span class=p>)</span>
-<a name=line-11></a>        <span class=p>)</span> <span class=ow>or</span> <span class=ow>not</span> <span class=n>command</span><span class=p>:</span>
-<a name=line-12></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Invalid command: &#39;</span><span class=si>{!r}</span><span class=s2>&#39;&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>command</span><span class=p>))</span>
-<a name=line-13></a>        <span class=n>name</span> <span class=o>=</span> <span class=n>command</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
-<a name=line-14></a>        <span class=n>nargs</span> <span class=o>=</span> <span class=n>COMMAND_NARGS</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>name</span><span class=p>)</span>
-<a name=line-15></a>        <span class=k>if</span> <span class=n>nargs</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
-<a name=line-16></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Invalid command name: &#39;</span><span class=si>{}</span><span class=s2>&#39;&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>name</span><span class=p>))</span>
-<a name=line-17></a>        <span class=k>if</span> <span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>command</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span> <span class=o>%</span> <span class=n>nargs</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>:</span>
-<a name=line-18></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
-<a name=line-19></a>                <span class=s2>&quot;Invalid number of arguments for command &#39;</span><span class=si>{}</span><span class=s2>&#39; (got </span><span class=si>{}</span><span class=s2> arguments)&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span>
-<a name=line-20></a>                    <span class=n>name</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>command</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span>
-<a name=line-21></a>                <span class=p>)</span>
-<a name=line-22></a>            <span class=p>)</span>
-<a name=line-23></a>        <span class=n>unpacked</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>unpack_point</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>box</span><span class=p>)</span> <span class=k>for</span> <span class=n>p</span> <span class=ow>in</span> <span class=n>command</span><span class=p>[</span><span class=mi>1</span><span class=p>:])</span>
-<a name=line-24></a>        <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=n>name</span><span class=p>,</span> <span class=n>unpacked</span><span class=p>))</span>
-<a name=line-25></a>    <span class=k>return</span> <span class=n>result</span>
-<a name=line-26></a>
-<a name=line-27></a>
-<a name=line-28></a><span class=k>def</span> <span class=nf>eval_path_commands</span><span class=p>(</span><span class=n>commands</span><span class=p>):</span>
-<a name=line-29></a>    <span class=n>result</span> <span class=o>=</span> <span class=p>[]</span>
-<a name=line-30></a>    <span class=k>for</span> <span class=n>name</span><span class=p>,</span> <span class=n>pairs</span> <span class=ow>in</span> <span class=n>commands</span><span class=p>:</span>
-<a name=line-31></a>        <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=n>name</span><span class=p>,</span> <span class=p>[</span><span class=n>eval_pair</span><span class=p>(</span><span class=n>p</span><span class=p>)</span> <span class=k>for</span> <span class=n>p</span> <span class=ow>in</span> <span class=n>pairs</span><span class=p>]))</span>
-<a name=line-32></a>    <span class=k>return</span> <span class=n>result</span>
-<a name=line-33></a>
-<a name=line-34></a>
-<a name=line-35></a><span class=k>def</span> <span class=nf>path_points_for_end_arrow</span><span class=p>(</span><span class=n>commands</span><span class=p>):</span>
-<a name=line-36></a>    <span class=n>name</span><span class=p>,</span> <span class=n>pairs</span> <span class=o>=</span> <span class=n>commands</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
-<a name=line-37></a>    <span class=k>if</span> <span class=n>name</span> <span class=ow>not</span> <span class=ow>in</span> <span class=s2>&quot;CSQT&quot;</span><span class=p>:</span>
-<a name=line-38></a>        <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
-<a name=line-39></a>            <span class=s2>&quot;Current version supports path when last command is &#39;C&#39;, &#39;S&#39;, &#39;Q&#39; ot &#39;T&#39; &quot;</span>
-<a name=line-40></a>            <span class=s2>&quot;(got &#39;</span><span class=si>{}</span><span class=s2>&#39;)&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>name</span><span class=p>)</span>
-<a name=line-41></a>        <span class=p>)</span>
-<a name=line-42></a>    <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>pairs</span><span class=p>)</span> <span class=o>&gt;=</span> <span class=mi>2</span><span class=p>:</span>
-<a name=line-43></a>        <span class=k>return</span> <span class=n>pairs</span><span class=p>[</span><span class=o>-</span><span class=mi>2</span><span class=p>],</span> <span class=n>pairs</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
-<a name=line-44></a>    <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>commands</span><span class=p>)</span> <span class=o>&gt;=</span> <span class=mi>2</span><span class=p>:</span>
-<a name=line-45></a>        <span class=k>return</span> <span class=n>commands</span><span class=p>[</span><span class=o>-</span><span class=mi>2</span><span class=p>][</span><span class=mi>1</span><span class=p>][</span><span class=o>-</span><span class=mi>1</span><span class=p>],</span> <span class=n>pairs</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
-<a name=line-46></a>    <span class=k>else</span><span class=p>:</span>
-<a name=line-47></a>        <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Unsuported commands for end errow&quot;</span><span class=p>)</span>
-<a name=line-48></a>
-<a name=line-49></a>
-<a name=line-50></a><span class=k>def</span> <span class=nf>path_update_end_point</span><span class=p>(</span><span class=n>commands</span><span class=p>,</span> <span class=n>point</span><span class=p>):</span>
-<a name=line-51></a>    <span class=n>commands</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>][</span><span class=mi>1</span><span class=p>][</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>point</span>
-</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.9 at 2021-06-15 15:26 </p></div></div></body></html>
+<!DOCTYPE html><html><head><meta charset=utf-8><title>elsie.shapes.path</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=./assets/purecss/pure-min.css><link rel=stylesheet href=./assets/purecss/grids-responsive-min.css><link rel=stylesheet href=./assets/style.css><link rel=stylesheet href=./assets/pygments/default.css><link rel=stylesheet href=./assets/jquery/jquery-ui.min.css><script src=./assets/jquery/jquery-3.0.0.min.js></script><script src=./assets/jquery/jquery-ui.min.js></script><script src=nedoc.js></script></head><body><div id=layout class=pure-g><div class="sidebar pure-u-1 pure-u-md-1-4"><div class=header><h1 class=brand-title>elsie</h1> 3.2 </div><div id=sbox><input id=search style="color: black;" placeholder="search ..."></div><div class=tree><ul><li><a href=elsie.html>&#9662; elsie</a> </li><li><ul><li><a href=elsie.boxtree.html>&#9656; boxtree</a> </li><li><a href=elsie.ext.html>&#9656; ext</a> </li><li><a href=elsie.render.html>&#9656; render</a> </li><li><a href=elsie.shapes.html>&#9662; shapes</a> </li><li><ul><li><a href=elsie.shapes.arrow.html>&#9656; arrow</a> </li><li><div class=select><a href=elsie.shapes.path.html>&#9662; path</a> </div></li></ul></li><li><a href=elsie.slides.html>&#9656; slides</a> </li><li><a href=elsie.text.html>&#9656; text</a> </li><li><a href=elsie.utils.html>&#9656; utils</a> </li><li><a href=elsie.version.html>&#9656; version</a> </li></ul></ul></div></div><div class="content pure-u-1 pure-u-md-3-4"><h1>Source code elsie/shapes/path.py</h1><div id=path><a class=symbol href=elsie.html>elsie</a>.<a class=symbol href=elsie.shapes.html>shapes</a>.<a class=symbol href=elsie.shapes.path.html>path</a></div><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
+<span class=normal> 2</span>
+<span class=normal> 3</span>
+<span class=normal> 4</span>
+<span class=normal> 5</span>
+<span class=normal> 6</span>
+<span class=normal> 7</span>
+<span class=normal> 8</span>
+<span class=normal> 9</span>
+<span class=normal>10</span>
+<span class=normal>11</span>
+<span class=normal>12</span>
+<span class=normal>13</span>
+<span class=normal>14</span>
+<span class=normal>15</span>
+<span class=normal>16</span>
+<span class=normal>17</span>
+<span class=normal>18</span>
+<span class=normal>19</span>
+<span class=normal>20</span>
+<span class=normal>21</span>
+<span class=normal>22</span>
+<span class=normal>23</span>
+<span class=normal>24</span>
+<span class=normal>25</span>
+<span class=normal>26</span>
+<span class=normal>27</span>
+<span class=normal>28</span>
+<span class=normal>29</span>
+<span class=normal>30</span>
+<span class=normal>31</span>
+<span class=normal>32</span>
+<span class=normal>33</span>
+<span class=normal>34</span>
+<span class=normal>35</span>
+<span class=normal>36</span>
+<span class=normal>37</span>
+<span class=normal>38</span>
+<span class=normal>39</span>
+<span class=normal>40</span>
+<span class=normal>41</span>
+<span class=normal>42</span>
+<span class=normal>43</span>
+<span class=normal>44</span>
+<span class=normal>45</span>
+<span class=normal>46</span>
+<span class=normal>47</span>
+<span class=normal>48</span>
+<span class=normal>49</span>
+<span class=normal>50</span>
+<span class=normal>51</span></pre></div></td><td class=code><div class=highlight><pre><span></span><a id=line-1 name=line-1></a><span class=kn>from</span> <span class=nn>..boxtree.lazy</span> <span class=kn>import</span> <span class=n>eval_pair</span><span class=p>,</span> <span class=n>unpack_point</span>
+<a id=line-2 name=line-2></a>
+<a id=line-3 name=line-3></a><span class=n>COMMAND_NARGS</span> <span class=o>=</span> <span class=p>{</span><span class=s2>&quot;M&quot;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span> <span class=s2>&quot;L&quot;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span> <span class=s2>&quot;C&quot;</span><span class=p>:</span> <span class=mi>3</span><span class=p>,</span> <span class=s2>&quot;S&quot;</span><span class=p>:</span> <span class=mi>2</span><span class=p>,</span> <span class=s2>&quot;Q&quot;</span><span class=p>:</span> <span class=mi>2</span><span class=p>,</span> <span class=s2>&quot;T&quot;</span><span class=p>:</span> <span class=mi>1</span><span class=p>}</span>
+<a id=line-4 name=line-4></a>
+<a id=line-5 name=line-5></a>
+<a id=line-6 name=line-6></a><span class=k>def</span> <span class=nf>check_and_unpack_path_commands</span><span class=p>(</span><span class=n>commands</span><span class=p>,</span> <span class=n>box</span><span class=p>):</span>
+<a id=line-7 name=line-7></a>    <span class=n>result</span> <span class=o>=</span> <span class=p>[]</span>
+<a id=line-8 name=line-8></a>    <span class=k>for</span> <span class=n>command</span> <span class=ow>in</span> <span class=n>commands</span><span class=p>:</span>
+<a id=line-9 name=line-9></a>        <span class=k>if</span> <span class=p>(</span>
+<a id=line-10 name=line-10></a>            <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>command</span><span class=p>,</span> <span class=nb>tuple</span><span class=p>)</span> <span class=ow>and</span> <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>command</span><span class=p>,</span> <span class=nb>list</span><span class=p>)</span>
+<a id=line-11 name=line-11></a>        <span class=p>)</span> <span class=ow>or</span> <span class=ow>not</span> <span class=n>command</span><span class=p>:</span>
+<a id=line-12 name=line-12></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Invalid command: &#39;</span><span class=si>{!r}</span><span class=s2>&#39;&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>command</span><span class=p>))</span>
+<a id=line-13 name=line-13></a>        <span class=n>name</span> <span class=o>=</span> <span class=n>command</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+<a id=line-14 name=line-14></a>        <span class=n>nargs</span> <span class=o>=</span> <span class=n>COMMAND_NARGS</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>name</span><span class=p>)</span>
+<a id=line-15 name=line-15></a>        <span class=k>if</span> <span class=n>nargs</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
+<a id=line-16 name=line-16></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Invalid command name: &#39;</span><span class=si>{}</span><span class=s2>&#39;&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>name</span><span class=p>))</span>
+<a id=line-17 name=line-17></a>        <span class=k>if</span> <span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>command</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span> <span class=o>%</span> <span class=n>nargs</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>:</span>
+<a id=line-18 name=line-18></a>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
+<a id=line-19 name=line-19></a>                <span class=s2>&quot;Invalid number of arguments for command &#39;</span><span class=si>{}</span><span class=s2>&#39; (got </span><span class=si>{}</span><span class=s2> arguments)&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span>
+<a id=line-20 name=line-20></a>                    <span class=n>name</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>command</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span>
+<a id=line-21 name=line-21></a>                <span class=p>)</span>
+<a id=line-22 name=line-22></a>            <span class=p>)</span>
+<a id=line-23 name=line-23></a>        <span class=n>unpacked</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>unpack_point</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>box</span><span class=p>)</span> <span class=k>for</span> <span class=n>p</span> <span class=ow>in</span> <span class=n>command</span><span class=p>[</span><span class=mi>1</span><span class=p>:])</span>
+<a id=line-24 name=line-24></a>        <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=n>name</span><span class=p>,</span> <span class=n>unpacked</span><span class=p>))</span>
+<a id=line-25 name=line-25></a>    <span class=k>return</span> <span class=n>result</span>
+<a id=line-26 name=line-26></a>
+<a id=line-27 name=line-27></a>
+<a id=line-28 name=line-28></a><span class=k>def</span> <span class=nf>eval_path_commands</span><span class=p>(</span><span class=n>commands</span><span class=p>):</span>
+<a id=line-29 name=line-29></a>    <span class=n>result</span> <span class=o>=</span> <span class=p>[]</span>
+<a id=line-30 name=line-30></a>    <span class=k>for</span> <span class=n>name</span><span class=p>,</span> <span class=n>pairs</span> <span class=ow>in</span> <span class=n>commands</span><span class=p>:</span>
+<a id=line-31 name=line-31></a>        <span class=n>result</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=n>name</span><span class=p>,</span> <span class=p>[</span><span class=n>eval_pair</span><span class=p>(</span><span class=n>p</span><span class=p>)</span> <span class=k>for</span> <span class=n>p</span> <span class=ow>in</span> <span class=n>pairs</span><span class=p>]))</span>
+<a id=line-32 name=line-32></a>    <span class=k>return</span> <span class=n>result</span>
+<a id=line-33 name=line-33></a>
+<a id=line-34 name=line-34></a>
+<a id=line-35 name=line-35></a><span class=k>def</span> <span class=nf>path_points_for_end_arrow</span><span class=p>(</span><span class=n>commands</span><span class=p>):</span>
+<a id=line-36 name=line-36></a>    <span class=n>name</span><span class=p>,</span> <span class=n>pairs</span> <span class=o>=</span> <span class=n>commands</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+<a id=line-37 name=line-37></a>    <span class=k>if</span> <span class=n>name</span> <span class=ow>not</span> <span class=ow>in</span> <span class=s2>&quot;CSQT&quot;</span><span class=p>:</span>
+<a id=line-38 name=line-38></a>        <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span>
+<a id=line-39 name=line-39></a>            <span class=s2>&quot;Current version supports path when last command is &#39;C&#39;, &#39;S&#39;, &#39;Q&#39; ot &#39;T&#39; &quot;</span>
+<a id=line-40 name=line-40></a>            <span class=s2>&quot;(got &#39;</span><span class=si>{}</span><span class=s2>&#39;)&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>name</span><span class=p>)</span>
+<a id=line-41 name=line-41></a>        <span class=p>)</span>
+<a id=line-42 name=line-42></a>    <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>pairs</span><span class=p>)</span> <span class=o>&gt;=</span> <span class=mi>2</span><span class=p>:</span>
+<a id=line-43 name=line-43></a>        <span class=k>return</span> <span class=n>pairs</span><span class=p>[</span><span class=o>-</span><span class=mi>2</span><span class=p>],</span> <span class=n>pairs</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+<a id=line-44 name=line-44></a>    <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>commands</span><span class=p>)</span> <span class=o>&gt;=</span> <span class=mi>2</span><span class=p>:</span>
+<a id=line-45 name=line-45></a>        <span class=k>return</span> <span class=n>commands</span><span class=p>[</span><span class=o>-</span><span class=mi>2</span><span class=p>][</span><span class=mi>1</span><span class=p>][</span><span class=o>-</span><span class=mi>1</span><span class=p>],</span> <span class=n>pairs</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+<a id=line-46 name=line-46></a>    <span class=k>else</span><span class=p>:</span>
+<a id=line-47 name=line-47></a>        <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&quot;Unsuported commands for end errow&quot;</span><span class=p>)</span>
+<a id=line-48 name=line-48></a>
+<a id=line-49 name=line-49></a>
+<a id=line-50 name=line-50></a><span class=k>def</span> <span class=nf>path_update_end_point</span><span class=p>(</span><span class=n>commands</span><span class=p>,</span> <span class=n>point</span><span class=p>):</span>
+<a id=line-51 name=line-51></a>    <span class=n>commands</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>][</span><span class=mi>1</span><span class=p>][</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>point</span>
+</pre></div></td></tr></table><p class=footer> Generated by <a href=https://github.com/spirali/nedoc>nedoc</a> v0.10 at 2022-02-05 18:14 </p></div></div></body></html>
