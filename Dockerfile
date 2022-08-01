@@ -6,7 +6,7 @@ RUN apt-get update &&\
 
 RUN add-apt-repository ppa:inkscape.dev/stable &&\
     apt-get update &&\
-    apt-get install -y --no-install-recommends python3 python3-pip inkscape=1.0.2+r75+1~ubuntu20.04.1
+    apt-get install -y --no-install-recommends python3 python3-pip inkscape=1:1.2.1+202207142221+cd75a1ee6d~ubuntu20.04.1
 
 RUN pip3 install -U pip setuptools wheel
 
