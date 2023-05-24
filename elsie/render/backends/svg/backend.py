@@ -36,7 +36,7 @@ class InkscapeBackend(Backend):
             self.inkscape = inkscape
         else:
             inkscape_bin = (
-                inkscape or os.environ.get("ELSIE_INKSCAPE") or "/usr/bin/inkscape"
+                inkscape or os.environ.get("ELSIE_INKSCAPE") or "C:/Program Files/Inkscape/bin/inkscape.exe" or "/usr/bin/inkscape"
             )
             self.inkscape = InkscapeShell(inkscape_bin)
 
