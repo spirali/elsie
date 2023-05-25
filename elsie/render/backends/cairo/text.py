@@ -20,7 +20,7 @@ def from_pango_units(size: int) -> float:
 
 def to_pango_color(color: Tuple[float, float, float]) -> Tuple[int, int, int]:
     r, g, b = color
-    max = 2 ** 16 - 1
+    max = 2**16 - 1
     return (int(r * max), int(g * max), int(b * max))
 
 

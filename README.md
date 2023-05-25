@@ -31,7 +31,6 @@ slides.render("slides.pdf")
     - You can find installation instructions [here](https://wiki.inkscape.org/wiki/index.php/Installing_Inkscape)
     - Versions under 1.0 and above 0.92 might also work, but they are not primarily supported
     - Elsie uses Inkscape in the background, you do not have to know how to use it
-	- For Windows set ELSIE_INKSCAPE env variable to Inkscape bin
 - `pdflatex`, `pdf2svg` (required only for `LaTeX` support)
 
 ### Installation using pip

@@ -15,6 +15,18 @@ from .rcontext import SvgRenderingContext
 VERSION_REGEX = re.compile(r"Inkscape\s+(\d+\..*)")
 
 
+def detect_inkscape_bin():
+    for path in ["/usr/bin/inkscape", "C:/Program Files/Inkscape/bin/inkscape.exe"]:
+        if os.path.isfile(path):
+            return path
+    raise Exception(
+        "Inkscape not found. "
+        "Install Inkscape to a standard path "
+        "or set ELSIE_INKSCAPE variable to Inkscape binary"
+        "or instantiate InkscapeBackend with the path to Inkscape"
+    )
+
+
 class InkscapeBackend(Backend):
     """Backend that maps Elsie primitives to SVG and renders them to PDF using Inkscape."""
 
@@ -36,7 +48,7 @@ class InkscapeBackend(Backend):
             self.inkscape = inkscape
         else:
             inkscape_bin = (
-                inkscape or os.environ.get("ELSIE_INKSCAPE") or "C:/Program Files/Inkscape/bin/inkscape.exe" or "/usr/bin/inkscape"
+                inkscape or os.environ.get("ELSIE_INKSCAPE") or detect_inkscape_bin()
             )
             self.inkscape = InkscapeShell(inkscape_bin)
 
