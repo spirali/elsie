@@ -1,5 +1,9 @@
 Note: This file documents major changes visible to users; see Git history for detailed log.
 
+# v3.4
+
+* Detecting Inkscape on Windows
+
 # v3.3
 
 * Dependencies updated
