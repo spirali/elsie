@@ -2,6 +2,7 @@ import pytest
 from conftest import check
 
 import elsie
+from elsie import TextStyle
 from elsie.text.highlight import highlight_code
 from elsie.text.textparser import (
     extract_line,
@@ -45,6 +46,23 @@ def test_line_highlight_1(test_env):
         [label.p("99%", "40%"), label.p("99%", "60%"), t.line_box(4).p(0, "50%")],
         bg_color="green",
     )
+
+
+@check("styles-priority")
+def test_style_priority(test_env):
+    slide = test_env.slide
+    b = slide.box()
+    b.set_style("grayout", TextStyle(color="gray", priority=1))
+    b.code(
+        "c",
+        """~grayout{#include <stdio.h>
+/* Hello world program */
+
+int ~#A{main}() {}
+    printf("Hello ~emph{world!\\n");}
+    return 0;
+}""",
+    use_styles=True)
 
 
 @check("styles-highlight")

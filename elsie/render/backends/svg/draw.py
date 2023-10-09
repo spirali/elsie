@@ -73,6 +73,8 @@ def draw_text(
     if style.variant_numeric:
         xml.set("font-variant-numeric", style.variant_numeric)
 
+    current_priority = style.priority
+
     for i, (token_type, value) in enumerate(parsed_text):
         if token_type == "text":
             xml.text(value)
@@ -93,16 +95,23 @@ def draw_text(
             s = styles.get(value, None)
             if s is None and not is_dummy:
                 raise Exception("Style '{}' not found".format(value))
+            if s is not None:
+                if current_priority > s.priority:
+                    s = None
+                else:
+                    current_priority = s.priority
             active_styles.append(s)
             xml.element("tspan")
             if id is not None and id_index == i:
                 xml.set("id", id)
             xml.set("xml:space", "preserve")
-            if not is_dummy:
+            if s:
                 set_font_from_style(xml, s)
         elif token_type == "end":
             xml.close("tspan")
             active_styles.pop()
+            if active_styles and active_styles[-1] is not None:
+                current_priority = active_styles[-1].priority
         else:
             raise Exception("Invalid token")
 

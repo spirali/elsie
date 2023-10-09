@@ -73,7 +73,8 @@ class TextStyle:
         "_bold",
         "_italic",
         "_variant_numeric",
-        "_opacity"
+        "_opacity",
+        "_priority"
     )
 
     def __init__(
@@ -87,7 +88,8 @@ class TextStyle:
         bold=None,
         italic=None,
         variant_numeric=None,
-        opacity=None
+        opacity=None,
+        priority=0,
     ):
         """
         Parameters
@@ -120,6 +122,7 @@ class TextStyle:
         self.italic = italic
         self.variant_numeric = variant_numeric
         self.opacity = opacity
+        self.priority = priority
 
     @property
     def font(self):
@@ -194,6 +197,16 @@ class TextStyle:
     @opacity.setter
     def opacity(self, value: float):
         self._opacity = _check_number("opacity", value)
+
+    @property
+    def priority(self):
+        return self._priority
+
+    @priority.setter
+    def priority(self, value):
+        if value is None:
+            raise Exception("Priority cannot be None")
+        self._priority = _check_number("priority", value)
 
     def copy(self) -> "TextStyle":
         """Copies the text style."""
