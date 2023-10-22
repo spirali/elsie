@@ -16,8 +16,8 @@ def svg_file_input(inkscape, svg: str, binary=False):
 
 
 class InkscapeShell:
-    def __init__(self, inkscape_bin: str):
-
+    def __init__(self, inkscape_bin: str, text_to_path=False):
+        self.text_to_path = text_to_path
         self.process = subprocess.Popen(
             [inkscape_bin, "--shell"],
             stdout=subprocess.PIPE,
@@ -56,6 +56,8 @@ class InkscapeShell:
             self.run_command("export-background-opacity:0")
             self.run_command(f"export-type:{type}")
             self.run_command(f"export-filename:{target}")
+            if self.text_to_path:
+                self.run_command("export-text-to-path")
             self.run_command("export-do")
 
     def get_width(self, svg: str, id: str):
