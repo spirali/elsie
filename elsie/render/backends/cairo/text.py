@@ -96,7 +96,12 @@ def get_text_and_attributes(
             if value.startswith("#"):
                 base_style.append(None)
             else:
-                base_style.append(active_style().compose(styles[value]))
+                current_style = active_style()
+                this_style = styles.get(value)
+                if current_style.priority > this_style.priority:
+                    base_style.append(None)
+                else:
+                    base_style.append(current_style.compose(this_style))
         elif token == "end":
             push_attrs(active_style(), start, byte_length(text))
             start = byte_length(text)
