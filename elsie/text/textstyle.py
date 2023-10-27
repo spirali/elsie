@@ -73,6 +73,7 @@ class TextStyle:
         "_bold",
         "_italic",
         "_variant_numeric",
+        "_opacity"
     )
 
     def __init__(
@@ -85,7 +86,8 @@ class TextStyle:
         color=None,
         bold=None,
         italic=None,
-        variant_numeric=None
+        variant_numeric=None,
+        opacity=None
     ):
         """
         Parameters
@@ -106,6 +108,8 @@ class TextStyle:
             If True, the text will be rendered as italic.
         variant_numeric: str
             SVG mode for rendering of digits (e.g. "lining-nums").
+        opacity: float
+            Opacity of the text (value 0.0 - 1.0).
         """
         self.font = font
         self.size = size
@@ -115,6 +119,7 @@ class TextStyle:
         self.bold = bold
         self.italic = italic
         self.variant_numeric = variant_numeric
+        self.opacity = opacity
 
     @property
     def font(self):
@@ -181,6 +186,14 @@ class TextStyle:
         self._variant_numeric = _check_choice(
             "variant_numeric", value, self.VARIANT_NUMERIC_VALUES
         )
+
+    @property
+    def opacity(self) -> float:
+        return self._opacity
+
+    @opacity.setter
+    def opacity(self, value: float):
+        self._opacity = _check_number("opacity", value)
 
     def copy(self) -> "TextStyle":
         """Copies the text style."""

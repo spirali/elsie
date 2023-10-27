@@ -14,6 +14,8 @@ def set_font_from_style(xml, style):
     s = ""
     if style.color is not None:
         s += "fill:{};".format(style.color)
+    if style.opacity is not None:
+        s += f"fill-opacity:{style.opacity};"
     if style.bold:
         s += "font-weight: bold;"
     if style.italic:
