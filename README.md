@@ -2,6 +2,8 @@
 <img width="300" src="docs/logo.jpeg">
 </p>
 
+## IMPORTANT NOTE: Elsie is replaced by [Nelsie](https://github.com/spirali/nelsie/). Elsie is not developed anymore.
+
 # Elsie
 Elsie is a framework for **creating slides programmatically** using Python.
 
